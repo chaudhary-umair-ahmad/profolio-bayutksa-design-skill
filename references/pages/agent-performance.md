@@ -38,6 +38,28 @@ Imported but **not in the component register** — undocumented surface:
 - `render-text`
 - `tru-broker`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/agent-performance/ActivityDrawer.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+    Drawer
+      DrawerHeader
+          FiX size={20}
+      /DrawerHeader
+        InfoIconLeaderboard
+      DrawerContentWrapper
+        DrawerContent
+          AgentActivity
+              Spinner size="small"
+        /DrawerContent
+      /DrawerContentWrapper
+        Button
+        /Button
+    /Drawer
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

@@ -31,6 +31,21 @@ Imported but **not in the component register** — undocumented surface:
 - `platform-switch`
 - `listing-container`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/reports/leads-reports.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      Main
+            PlatfromSwitch
+        Group gap="24px"
+          ReportsLeadsTrafficSection
+          TenantComponents
+        /Group
+      /Main
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

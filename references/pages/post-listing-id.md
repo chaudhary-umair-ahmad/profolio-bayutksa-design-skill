@@ -57,6 +57,16 @@ Imported but **not in the component register** — undocumented surface:
 - `credits-info`
 - `mobile-number-verification`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/post-listing/post-listing-landing.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+    TenantComponents
+    PostListing
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

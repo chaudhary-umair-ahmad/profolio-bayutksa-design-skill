@@ -43,6 +43,76 @@ Imported but **not in the component register** — undocumented surface:
 - `cards`
 - `heading`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/inbox/inbox-container.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      Main
+        NavWrapper
+            Space
+              Heading
+              /Heading
+              Space
+                Heading
+                /Heading
+                Select
+              /Space
+            /Space
+          Row
+            Col
+              Card
+                Navbar
+              /Card
+            /Col
+            Col
+              EmailWrapper
+                Routes
+                Suspense
+                Spin
+                Route
+                PageComponent
+                Route
+                SubComponent
+                /Suspense
+                /Routes
+              /EmailWrapper
+            /Col
+          /Row
+        /NavWrapper
+      /Main
+      Main
+        EmailWrapper
+          Row
+            Radio
+                RadioButtonStyled
+                Space size={6}
+                Icon size={14}
+                /Space
+                /RadioButtonStyled
+            /Radio
+          /Row
+          Card
+                Select
+            Row
+              Col
+                Routes
+                Suspense
+                Spin
+                Route
+                PageComponent
+                Route
+                SubComponent
+                /Suspense
+                /Routes
+              /Col
+            /Row
+          /Card
+        /EmailWrapper
+      /Main
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

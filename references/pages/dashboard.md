@@ -46,6 +46,62 @@ Imported but **not in the component register** — undocumented surface:
 - `platform-switch`
 - `tru-broker`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/dashboard/dashboard.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+              Icon
+      Flex
+        CardMetaStyled
+            Avatar
+            Flex gap="8px" align="center" justify="flex-start"
+                Dropdown
+                TruBrokerTag
+            /Flex
+          PlatfromSwitch
+      /Flex
+          TruBrokerStatus
+          TruPointsWidget
+            Group template="repeat(auto-fit, minmax(min(40ch, 100%), 1fr))" gap="16px"
+                TextWithIcon
+            /Group
+        Flex
+          ListingBreakdown
+        /Flex
+      CreditsQuota
+      Group template="repeat(2, minmax(0, 1fr))" gap="16px"
+                Flex gap="24px"
+                /Flex
+      /Group
+          Skeleton type="button"
+          Row justify="space-between"
+            TextWithIcon
+            LinkWithIcon
+          /Row
+        ListingContainer
+      Spinner
+        ContainerWidgets
+            ReportsLeadsTrafficSection
+        /ContainerWidgets
+            ContainerWidgets gap="0px"
+              ListingBreakdown
+            /ContainerWidgets
+          ListingBreakdown
+        LoaderWrapper
+          ListingCardContainer
+        /LoaderWrapper
+      Spinner
+        ReportsLeadsTrafficSection
+    Main
+        SectionIntroModal
+      Group
+          DashboardPromoBanner
+      /Group
+    /Main
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

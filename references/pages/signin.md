@@ -30,6 +30,15 @@ Imported but **not in the component register** — undocumented surface:
 - `Heading`
 - `radio-button`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/authentication/index.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+(no JSX structure resolved — check the source directly)
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

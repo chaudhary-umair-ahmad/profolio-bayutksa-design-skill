@@ -28,6 +28,23 @@ Imported but **not in the component register** — undocumented surface:
 
 - `Heading`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/ad-license/index.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+    Row
+      Col
+        Button
+        /Button
+        Heading
+        /Heading
+        AdLicensePage
+      /Col
+    /Row
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

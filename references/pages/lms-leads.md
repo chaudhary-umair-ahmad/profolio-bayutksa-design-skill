@@ -49,6 +49,40 @@ Imported but **not in the component register** — undocumented surface:
 - `lead-info`
 - `task-detail`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/lms/leads-dashboard.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      Flex
+        CardMetaStyled
+            Avatar
+            Flex gap="8px" align="center" justify="center"
+                Dropdown
+            /Flex
+      /Flex
+    Main
+        EmptyState
+              Tour
+          Group
+                TotalLeadsCardSkeleton
+                LeadsDashboardCardSkeleton
+                TotalLeadsCard
+                LeadsDashboardCard
+            ViewTrendsGraph
+              LeadsBreakdownGraph
+                AgentPerformanceListingsMobile
+                ListingContainer
+                LinkWithIcon
+                Modal
+                ListingContainer
+                /Modal
+            LeadListingsTable
+          /Group
+    /Main
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

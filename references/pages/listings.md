@@ -44,6 +44,15 @@ Imported but **not in the component register** — undocumented surface:
 - `listing-stats`
 - `staff-details`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/listings/listings.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+(no JSX structure resolved — check the source directly)
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

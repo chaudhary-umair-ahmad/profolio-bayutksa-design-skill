@@ -40,6 +40,43 @@ Imported but **not in the component register** — undocumented surface:
 - `listing-purpose`
 - `upgrade-listing`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/payment/checkout.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      Main
+            EmptyState
+            Spinner type="full"
+            Row justify="center"
+              Col
+                PaymentSuccess
+                Spinner
+                /PaymentSuccess
+                EmptyState
+                PaymentSuccess
+                IllustrationEmptyCart
+                Button type="link"
+                /Button
+                /PaymentSuccess
+                ContactDetailsForm
+                PaymentMethods
+              /Col
+                Col
+                Card
+                EventTicketSummary
+                Ordersummary
+                /Card
+                /Col
+            /Row
+          AdLicenseSuccessModal
+          SuccessfulPaymentModal
+        NafathVerificationModal
+        OtpVerificationModal
+      /Main
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

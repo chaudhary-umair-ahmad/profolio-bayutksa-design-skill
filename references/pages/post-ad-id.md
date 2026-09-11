@@ -34,6 +34,30 @@ Imported but **not in the component register** — undocumented surface:
 - `post-listing`
 - `discount-tag`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/post-ad/index.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      Row align="center"
+        Col
+          HeaderStyled
+              Flex align="center" justify="space-between"
+                ProfolioLogoLite
+                ProfolioLogoLiteAr
+                Flex gap="22px"
+                Button
+                /Button
+                /Flex
+              /Flex
+          /HeaderStyled
+        /Col
+      /Row
+        PostListing
+      SuccessModal
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

@@ -52,6 +52,27 @@ Imported but **not in the component register** — undocumented surface:
 - `profile-completion`
 - `listing`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/user-settings/agancy-settings.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+    Card
+        LoaderWrapper
+          JSONFormStyled
+        /LoaderWrapper
+      ConfirmationModal
+      /ConfirmationModal
+      Row
+        Col align="end"
+          Button
+          /Button
+        /Col
+      /Row
+    /Card
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

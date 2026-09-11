@@ -42,6 +42,73 @@ Imported but **not in the component register** — undocumented surface:
 - `platform-switch`
 - `styled`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/credits-usage/credits-usage.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      DrawerModal
+        CreditTopUps
+      /DrawerModal
+    Filters
+          Flex
+            Flex align="center" justify={'space-between'}
+              TitleStyled
+            /Flex
+          /Flex
+    /Filters
+          PlatformSwitch
+        Row
+          Col
+            LoaderWrapper
+                Skeleton
+                Card
+                Skeleton
+                /Card
+                Card
+                Flex align="center" justify="space-between"
+                TitleStyled
+                Button
+                /Button
+                /Flex
+                Text type="secondary"
+                /Text
+                Card
+                Row
+                Statistic
+                Divider
+                /Row
+                /Card
+                ChartContainer
+                ChartjsDonutChart
+                /ChartContainer
+                Heading
+                List size="small"
+                ProductBreakdown
+                /List
+                EmptyState type="table"
+                EmptyState
+                /Card
+            /LoaderWrapper
+          /Col
+          Col
+            Card
+              LoaderWrapper
+                Card
+                Skeleton
+                /Card
+                InfiniteScroll
+                EmptyState
+              /LoaderWrapper
+            /Card
+          /Col
+        /Row
+        CreditCalculatorModal
+    Main
+    /Main
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.

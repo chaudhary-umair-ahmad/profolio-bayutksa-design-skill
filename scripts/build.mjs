@@ -387,6 +387,28 @@ for (const route of routes) {
     roleAware && 'no-permission',
   ].filter(Boolean);
 
+  /* Layout skeleton — the JSX nesting IS the layout. Keep structural tags and the
+     props that carry layout intent; drop handlers, data and styling noise. */
+  const LAYOUT_PROPS = /\b(template|gap|vertical|justify|align|span|cols?|direction|wrap|width|height|type|shape|size)=(?:"[^"]*"|\{[^}]{0,40}\})/g;
+  const skeletonOf = (code) => {
+    const out = [];
+    for (const line of code.split('\n')) {
+      const m = line.match(/^(\s*)<\/?([A-Z][A-Za-z0-9]*)([^>]*)>?/);
+      if (!m) continue;
+      const [, indent, tag, rest] = m;
+      if (/^(Trans|Fragment|React)$/.test(tag)) continue;
+      const closing = /^\s*<\//.test(line);
+      const props = closing ? [] : (rest.match(LAYOUT_PROPS) || []).slice(0, 3);
+      const depth = Math.min(Math.floor(indent.length / 2), 8);
+      out.push(`${'  '.repeat(depth)}${closing ? '/' : ''}${tag}${props.length ? ' ' + props.join(' ') : ''}`);
+    }
+    // collapse consecutive duplicates (repeated list items render identically)
+    return out.filter((l, i) => l !== out[i - 1]).slice(0, 70).join('\n');
+  };
+  const mainFile = pageFiles.find((f) => /\/(index|[a-z-]+)\.js$/.test(f) && !/style|util|helper/i.test(f))
+                || pageFiles[0];
+  const skeleton = skeletonOf(read(mainFile));
+
   const body = `# ${designName}
 
 > **Derived, not designed.** Fields below were read out of the page directory. Purpose, layout
@@ -412,6 +434,15 @@ Documented components this page already imports:
 ${docd.length ? docd.map((d) => `- ${d}`).join('\n') : '- none resolved automatically — check `components/index.md`'}
 
 ${undoc.length ? `Imported but **not in the component register** — undocumented surface:\n\n${undoc.slice(0, 14).map((n) => `- \`${n}\``).join('\n')}\n` : ''}
+## Layout skeleton
+
+Nesting and layout props read out of \`${mainFile.replace(REPO + '/', '')}\`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+\`\`\`
+${skeleton || '(no JSX structure resolved — check the source directly)'}
+\`\`\`
+
 ## Before designing
 
 1. Fill in \`purpose\` and confirm \`roles\`.

@@ -52,6 +52,84 @@ Imported but **not in the component register** — undocumented surface:
 - `multiplatform`
 - `render-text`
 
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/agancy-staff/agancy-staff.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+    EmptyState
+      Main
+          Group gap="8px"
+            LoaderWrapper
+              AgencyStaffMobilePage
+            /LoaderWrapper
+          /Group
+              Group gap="16px" template="repeat(auto-fit, minmax(min(32ch, 100%), 1fr))"
+                UserCard
+                Flex align={isMobile ? 'start' : 'center'} justify="space-between"
+                LoaderWrapper
+                QuotaCreditsStatsWidget
+                /LoaderWrapper
+                /Flex
+                /UserCard
+              /Group
+                LoaderWrapper
+                SeatsContainer
+                Row justify="center"
+                Col
+                StyledCard
+                Space align="start"
+                IconWrapper
+                AppstoreOutlined
+                /IconWrapper
+                CardTitle
+                CardSubtitle
+                CountText
+                /Space
+                /StyledCard
+                /Col
+                Col
+                StyledCard
+                Space align="start"
+                IconWrapper
+                UserOutlined
+                /IconWrapper
+                CardTitle
+                Row
+                Col span={8}
+                StatLabel
+                StatValue
+                /Col
+                Col span={8}
+                StatLabel
+                StatValue
+                /Col
+                Col span={8}
+                StatLabel
+                StatValue
+                /StatValue
+                /Col
+                /Row
+                /Space
+                /StyledCard
+                /Col
+                Col
+                StyledCard
+                Space align="start"
+                IconWrapper
+                CreditCardOutlined
+                /IconWrapper
+                CardTitle
+                Row
+                Col span={8}
+                StatLabel
+                StatValue
+                /Col
+                Col span={8}
+                StatLabel
+```
+
 ## Before designing
 
 1. Fill in `purpose` and confirm `roles`.
