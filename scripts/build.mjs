@@ -256,12 +256,19 @@ ${routes.length} routes. Every screen inherits \`pages/_shell.md\` unless its ow
 A PRD names a screen in design language. Match on that; cite the repo path.
 No match → ask the designer whether to remake it or receive it. Never improvise.
 
+**Templates marked \`not written\` do not exist yet.** Do not try to load them. For those
+screens you have the shell, the route, the page source and the component register — say
+that plainly, propose a composition from \`components/index.md\`, and get it approved
+before designing. Never pretend a template was read.
+
 | Route | Page source | Template |
 |---|---|---|
 ${routes
   .map((r) => {
     const p = pageFor(r);
-    const t = p ? `pages/${slug(r)}.md` : '—';
+    const tpl = `pages/${slug(r)}.md`;
+    const exists = existsSync(join(REFS, tpl));
+    const t = exists ? `\`${tpl}\`` : '**not written**';
     return `| \`${r}\` | ${p ? '`src/container/pages/' + p + '`' : '—'} | ${t} |`;
   })
   .join('\n')}

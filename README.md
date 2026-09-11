@@ -14,6 +14,17 @@ profolio.bayut.sa.
 | `scripts/build.mjs` | The generator. |
 | `canvas/` | The three `.dc.html` design files — **human browsing only.** |
 
+## Previewing the canvas
+
+Open any `canvas/*.dc.html` in a browser. **It needs internet access on first load** —
+`support.js` fetches React 18.3.1 from unpkg and the fonts from Google Fonts at runtime, and
+renders blank without them. Keep `support.js` and `public/` alongside the HTML; moving a single
+file out on its own gives a blank page.
+
+To make it work offline, download React and ReactDOM UMD builds into `canvas/vendor/` and add
+them as `<script>` tags above `support.js` in each file — it uses `window.React` when present
+instead of fetching.
+
 ## The canvas files are not for the agent
 
 `canvas/` is ~92,000 tokens. Everything an agent needs from it is already extracted into

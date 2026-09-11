@@ -7,36 +7,41 @@
 A PRD names a screen in design language. Match on that; cite the repo path.
 No match → ask the designer whether to remake it or receive it. Never improvise.
 
+**Templates marked `not written` do not exist yet.** Do not try to load them. For those
+screens you have the shell, the route, the page source and the component register — say
+that plainly, propose a composition from `components/index.md`, and get it approved
+before designing. Never pretend a template was read.
+
 | Route | Page source | Template |
 |---|---|---|
-| `/ad-license` | `src/container/pages/ad-license` | pages/ad-license.md |
-| `/agency-profile` | — | — |
-| `/agency-staff` | `src/container/pages/agancy-staff` | pages/agency-staff.md |
-| `/agent-performance` | `src/container/pages/agent-performance` | pages/agent-performance.md |
-| `/bank-detail` | — | — |
-| `/change-password` | — | — |
-| `/checkout` | — | — |
-| `/content/process-payment` | — | — |
-| `/credits-usage` | `src/container/pages/credits-usage` | pages/credits-usage.md |
-| `/dashboard` | `src/container/pages/dashboard` | pages/dashboard.md |
-| `/event-checkout` | — | — |
-| `/inbox/*` | `src/container/pages/inbox` | pages/inbox.md |
-| `/invite` | `src/container/pages/invite-user` | pages/invite.md |
-| `/licenses` | — | — |
-| `/listings` | `src/container/pages/listings` | pages/listings.md |
-| `/lms/leads` | `src/container/pages/lms` | pages/lms-leads.md |
-| `/lms/lms-dashboard` | `src/container/pages/lms` | pages/lms-lms-dashboard.md |
-| `/lms/truleads` | `src/container/pages/lms` | pages/lms-truleads.md |
-| `/maintenance` | — | — |
-| `/packages` | `src/container/pages/prop-shop` | pages/packages.md |
-| `/post-ad/:id` | `src/container/pages/post-ad` | pages/post-ad-id.md |
-| `/post-listing` | `src/container/pages/post-listing` | pages/post-listing.md |
-| `/post-listing/:id` | `src/container/pages/post-listing` | pages/post-listing-id.md |
-| `/post-listing/:id/upgrade` | `src/container/pages/post-listing` | pages/post-listing-id-upgrade.md |
-| `/preferences` | — | — |
-| `/reports/leads-reports` | `src/container/pages/reports` | pages/reports-leads-reports.md |
-| `/reports/listing-report` | `src/container/pages/reports` | pages/reports-listing-report.md |
-| `/reports/summary` | `src/container/pages/reports` | pages/reports-summary.md |
-| `/signin` | `src/container/pages/authentication` | pages/signin.md |
-| `/user-profile` | — | — |
-| `/user-settings/*` | `src/container/pages/user-settings` | pages/user-settings.md |
+| `/ad-license` | `src/container/pages/ad-license` | **not written** |
+| `/agency-profile` | — | **not written** |
+| `/agency-staff` | `src/container/pages/agancy-staff` | **not written** |
+| `/agent-performance` | `src/container/pages/agent-performance` | **not written** |
+| `/bank-detail` | — | **not written** |
+| `/change-password` | — | **not written** |
+| `/checkout` | — | **not written** |
+| `/content/process-payment` | — | **not written** |
+| `/credits-usage` | `src/container/pages/credits-usage` | **not written** |
+| `/dashboard` | `src/container/pages/dashboard` | **not written** |
+| `/event-checkout` | — | **not written** |
+| `/inbox/*` | `src/container/pages/inbox` | **not written** |
+| `/invite` | `src/container/pages/invite-user` | **not written** |
+| `/licenses` | — | **not written** |
+| `/listings` | `src/container/pages/listings` | **not written** |
+| `/lms/leads` | `src/container/pages/lms` | **not written** |
+| `/lms/lms-dashboard` | `src/container/pages/lms` | **not written** |
+| `/lms/truleads` | `src/container/pages/lms` | **not written** |
+| `/maintenance` | — | **not written** |
+| `/packages` | `src/container/pages/prop-shop` | **not written** |
+| `/post-ad/:id` | `src/container/pages/post-ad` | **not written** |
+| `/post-listing` | `src/container/pages/post-listing` | **not written** |
+| `/post-listing/:id` | `src/container/pages/post-listing` | **not written** |
+| `/post-listing/:id/upgrade` | `src/container/pages/post-listing` | **not written** |
+| `/preferences` | — | **not written** |
+| `/reports/leads-reports` | `src/container/pages/reports` | **not written** |
+| `/reports/listing-report` | `src/container/pages/reports` | **not written** |
+| `/reports/summary` | `src/container/pages/reports` | **not written** |
+| `/signin` | `src/container/pages/authentication` | **not written** |
+| `/user-profile` | — | **not written** |
+| `/user-settings/*` | `src/container/pages/user-settings` | **not written** |
