@@ -16,7 +16,15 @@ flags     SHOW_AMENITIES_ICON · SHOW_LISTING_DISCOUNT_TAG · AUTO_TRANSLATE_CON
 states    loading · empty · error · flag-off · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -33,12 +41,10 @@ Documented components this page already imports:
 - `components/switch.md` (Switch)
 - `components/radio.md` (Radio)
 - `components/select.md` (Select)
-- `components/feedback.md` (Spinner, skeleton & progress)
 - `components/tag.md` (Tag)
 - `components/modal.md` (Modal)
 - `components/label.md` (Label & error message)
 - `components/avatar.md` (Avatar & badge)
-- `components/icon.md` (Icon container)
 
 Imported but **not in the component register** — undocumented surface:
 
@@ -56,6 +62,16 @@ Imported but **not in the component register** — undocumented surface:
 - `popup`
 - `credits-info`
 - `mobile-number-verification`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/post-listing/post-listing-landing.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+    TenantComponents
+    PostListing
+```
 
 ## Before designing
 

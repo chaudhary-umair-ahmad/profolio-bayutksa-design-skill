@@ -16,7 +16,15 @@ flags     HIDE_INBOX (gates the route)
 states    loading · empty · error · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -31,7 +39,6 @@ Documented components this page already imports:
 - `components/feedback.md` (Spinner, skeleton & progress)
 - `components/input.md` (Text input)
 - `components/textwithicon.md` (Text with icon)
-- `components/icon.md` (Icon container)
 
 Imported but **not in the component register** — undocumented surface:
 
@@ -42,6 +49,76 @@ Imported but **not in the component register** — undocumented surface:
 - `inbox`
 - `cards`
 - `heading`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/inbox/inbox-container.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      Main
+        NavWrapper
+            Space
+              Heading
+              /Heading
+              Space
+                Heading
+                /Heading
+                Select
+              /Space
+            /Space
+          Row
+            Col
+              Card
+                Navbar
+              /Card
+            /Col
+            Col
+              EmailWrapper
+                Routes
+                Suspense
+                Spin
+                Route
+                PageComponent
+                Route
+                SubComponent
+                /Suspense
+                /Routes
+              /EmailWrapper
+            /Col
+          /Row
+        /NavWrapper
+      /Main
+      Main
+        EmailWrapper
+          Row
+            Radio
+                RadioButtonStyled
+                Space size={6}
+                Icon size={14}
+                /Space
+                /RadioButtonStyled
+            /Radio
+          /Row
+          Card
+                Select
+            Row
+              Col
+                Routes
+                Suspense
+                Spin
+                Route
+                PageComponent
+                Route
+                SubComponent
+                /Suspense
+                /Routes
+              /Col
+            /Row
+          /Card
+        /EmailWrapper
+      /Main
+```
 
 ## Before designing
 

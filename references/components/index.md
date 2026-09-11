@@ -2,19 +2,13 @@
 
 # Component register
 
-64 entries. Load `components/<id>.md` for the one you need — never the whole folder,
+57 entries. Load `components/<id>.md` for the one you need — never the whole folder,
 and never the files in `canvas/`.
 
 Design name is canonical. `source` is provenance for a developer, not something to fetch.
 
 | Design name | id | Layer | Source | Status |
 |---|---|---|---|---|
-| Color | `color` | atom | — | n/a |
-| Typography | `type` | atom | — | n/a |
-| Spacing & layout | `space` | atom | — | n/a |
-| Radius & elevation | `radius` | atom | — | n/a |
-| Control sizes | `control` | atom | — | n/a |
-| Iconography | `iconography` | atom | `components/icons.js` | n/a |
 | Button | `button` | atom | `common/button/button.js` | used |
 | Icon container | `icon` | atom | `common/icon/IconStyled.js` | n/a |
 | Avatar & badge | `avatar` | atom | `common/avatar/avatar.js` | n/a |
@@ -72,7 +66,6 @@ Design name is canonical. `source` is provenance for a developer, not something 
 | Drawer | `drawer` | organism | — | used |
 | Empty states | `empty` | organism | — | n/a |
 | Mobile chrome | `mobile` | organism | — | n/a |
-| System structure | `structure` | organism | `src/theme/index.js` | n/a |
 
 ## Unreferenced exports
 

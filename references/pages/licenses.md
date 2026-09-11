@@ -16,7 +16,15 @@ flags     HIDE_LICENSES (gates the route)
 states    loading · empty · error
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -27,6 +35,23 @@ Documented components this page already imports:
 Imported but **not in the component register** — undocumented surface:
 
 - `Heading`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/ad-license/index.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+    Row
+      Col
+        Button
+        /Button
+        Heading
+        /Heading
+        AdLicensePage
+      /Col
+    /Row
+```
 
 ## Before designing
 

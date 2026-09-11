@@ -1,6 +1,6 @@
 ---
 name: profolio-ksa-design
-version: 0.2.0
+version: 0.5.0
 source_commit: b83e805
 description: "Design system for Bayut Profolio KSA — the agent and seller portal at profolio.bayut.sa. Use when designing, changing or reviewing any Profolio KSA screen, component or flow: turning a PRD into artboards, checking an existing screen against the system, finding which tokens, components or flags a surface uses, or locating where a feature lives in the codebase. Triggers on 'design this screen for Profolio', 'what does the listings page use', 'add X to Profolio KSA', 'is there a component for Y', 'make a mockup of the dashboard'. Covers tenant bayut (KSA) only — not Oman, Bahrain, Qatar, Jordan, Egypt or Zameen, and not the consumer side of bayut.sa, which Strat owns."
 ---
@@ -21,13 +21,16 @@ Load what the task needs. Never load more.
 | File | When |
 |---|---|
 | `references/tenants/ksa.md` | Always. The rules that make KSA different. |
-| `references/pages/_shell.md` | Always. Every screen starts from the shell. |
+| `references/pages/_shell.md` | Always. Real measurements, the exact 14 nav labels, and copy-paste starting markup. |
 | `references/pages/index.md` | To find which screen the request is about. |
 | `references/pages/<route>.md` | The one screen you are working on. 30 of 31 routes have one. |
 | `references/components/index.md` | To find a component by design name. |
-| `references/components/<id>.md` | Only the components this screen uses. |
-| `references/foundations.md` | When you need token names or breakpoints. |
+| `references/components/<id>.md` | Only the components this screen uses. 179 entries — canvas-documented ones carry prose, feature ones carry measured CSS from their own source. |
+| `references/foundations.md` | **All** colour, typography, spacing, radius, elevation, iconography, breakpoints and z-index. Complete — read to the bottom before calling anything undocumented. |
+| `references/copy/index.md` | To find which copy file covers your area. |
+| `references/copy/<area>.md` | **The real shipped strings**, English beside Arabic. Load the area you are designing. |
 | `references/flags.md` | When a surface may be switched off or altered. |
+| `references/screens/<route>.png` | **The live screen.** Open it whenever the page template names one — it is the only visual truth in this system. |
 
 **Never read `canvas/`.** Those three `.dc.html` files are the human browsing surface —
 about 92,000 tokens between them. Everything in them that you need is already in
@@ -44,13 +47,40 @@ same turn as the proposal.
 **2 — Produce, once approved.** Design on top of the shell, composing documented components.
 Cite token names, never raw hex.
 
+## Pre-flight — run this before you output a single artboard
+
+Seven checks. Each one has been failed in a real session; each takes seconds.
+
+1. **Nav.** Count your sidebar items against the table in `_shell.md`. Labels must match
+   character for character — **TruLeads**, not "Leads"; **Credits & Packages**, not "Packages".
+   Do not invent an entry; there is no top-level "Licenses".
+2. **Widths.** Sider is **220px** expanded, 60px collapsed. Header is 74px. If you typed a
+   round number you guessed — go back and read `_shell.md`.
+3. **Classified pill.** A bordered link out to the classified site, min-width 148.71px. Not a
+   solid primary button, and not "Post a Listing".
+4. **Type.** Lato with Droid Arabic Kufi, base 14px / line-height 1.571 — it is in
+   `foundations.md`. Never report the font stack as missing.
+5. **Copy.** Every label, button, empty state and error in your design must come from
+   `copy/<area>.md`. **Never invent a string.** If the word you need is not there, name the
+   file you checked and ask — invented copy is how "Post a Listing" ended up on the classified
+   pill and why every label in that session was a guess.
+6. **Screenshot.** If the template's `shot` field names a file, open it and compare. If it says
+   not captured, say so in your output — do not imply your design matches the live screen.
+7. **Content.** Did you invent a widget or card the page template does not list? If the
+   template has a layout skeleton, your structure must match it. If you needed something that
+   is not there, say so — do not draw it silently.
+
+If a check fails, fix it before producing. If the information genuinely is not in
+`references/`, say which file you looked in and stop — a guess that looks confident is worse
+than a gap that is named.
+
 ## Resolving a request
 
 1. **Name the screen.** A PRD uses design language — "post a listing", not `post-listing-ksa`.
    Match on the design name in `pages/index.md`; the repo path is provenance, not the key.
 2. **No match?** Ask the designer: remake it, or will they supply it? Never improvise a screen.
-3. **Start from the shell** either way. There is no blank canvas in Profolio — a new screen
-   still has the header, side navigation and footer.
+3. **Start from the shell** either way — paste the markup from `_shell.md` rather than
+   redrawing it from the description. There is no blank canvas in Profolio.
 4. **Check the flags.** A surface behind a false flag does not exist for this market.
 5. **Check the roles.** Agency owner, agency staff and individual seller often see different
    versions of one screen. Say which you are designing.
@@ -81,6 +111,7 @@ Violating any of these makes the design wrong, not merely off-style.
 ## Keeping current
 
 `references/` is generated by `scripts/build.mjs` from the Profolio codebase and the canvas
-prose. Hand-written files — `tenants/`, `pages/_shell.md`, `flows/` — are never overwritten.
+prose. `pages/_shell.md` is generated too, so its nav and measurements cannot drift from
+`menuList.js` and `withAdminLayout.js`. Hand-written: `tenants/` and `flows/`.
 Every generated file carries the commit it was built from. If a generated file disagrees with
 the code, the code is right and the generator needs re-running.

@@ -16,7 +16,15 @@ flags     none referenced directly
 states    loading · error
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -30,6 +38,21 @@ Imported but **not in the component register** — undocumented surface:
 - `Group`
 - `platform-switch`
 - `listing-container`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/reports/leads-reports.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      Main
+            PlatfromSwitch
+        Group gap="24px"
+          ReportsLeadsTrafficSection
+          TenantComponents
+        /Group
+      /Main
+```
 
 ## Before designing
 

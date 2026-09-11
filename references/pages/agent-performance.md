@@ -16,7 +16,15 @@ flags     AGENT_PERFORMANCE_ENABLED (gates the route)
 states    loading · empty · error
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -37,6 +45,28 @@ Imported but **not in the component register** — undocumented surface:
 - `drawerPopover`
 - `render-text`
 - `tru-broker`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/agent-performance/ActivityDrawer.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+    Drawer
+      DrawerHeader
+          FiX size={20}
+      /DrawerHeader
+        InfoIconLeaderboard
+      DrawerContentWrapper
+        DrawerContent
+          AgentActivity
+              Spinner size="small"
+        /DrawerContent
+      /DrawerContentWrapper
+        Button
+        /Button
+    /Drawer
+```
 
 ## Before designing
 

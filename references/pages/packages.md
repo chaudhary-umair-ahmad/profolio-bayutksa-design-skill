@@ -16,7 +16,15 @@ flags     SHOW_FRACTION_CURRENCY · LIMIT_CREDIT_PURCHASE · CONTACT_PHONE · CO
 states    loading · empty · error · flag-off
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -35,6 +43,15 @@ Imported but **not in the component register** — undocumented surface:
 - `listing`
 - `listing-purpose`
 - `upgrade-listing`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/prop-shop/prop-shop.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+(no JSX structure resolved — check the source directly)
+```
 
 ## Before designing
 

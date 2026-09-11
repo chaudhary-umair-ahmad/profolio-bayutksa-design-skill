@@ -16,7 +16,15 @@ flags     KC_ENABLED · PROFILE_COMPLETION_APPLICABLE · TRU_BROKER_ENABLED · C
 states    loading · empty · error · flag-off · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -33,9 +41,6 @@ Documented components this page already imports:
 - `components/avatar.md` (Avatar & badge)
 - `components/form.md` (Post-listing form)
 - `components/navitem.md` (Nav item)
-- `components/form.md` (Post-listing form)
-- `components/alert.md` (Alert)
-- `components/icon.md` (Icon container)
 
 Imported but **not in the component register** — undocumented surface:
 
@@ -51,6 +56,27 @@ Imported but **not in the component register** — undocumented surface:
 - `convert-to-agency`
 - `profile-completion`
 - `listing`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/user-settings/agancy-settings.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+    Card
+        LoaderWrapper
+          JSONFormStyled
+        /LoaderWrapper
+      ConfirmationModal
+      /ConfirmationModal
+      Row
+        Col align="end"
+          Button
+          /Button
+        /Col
+      /Row
+    /Card
+```
 
 ## Before designing
 

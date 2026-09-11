@@ -16,7 +16,15 @@ flags     SHOW_AMENITIES_ICON · SHOW_REGA_DETAIL · CURRENCY_SYMBOL · HIDE_AUT
 states    loading · error · flag-off · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -43,6 +51,15 @@ Imported but **not in the component register** — undocumented surface:
 - `products`
 - `listing-stats`
 - `staff-details`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/listings/listings.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+(no JSX structure resolved — check the source directly)
+```
 
 ## Before designing
 

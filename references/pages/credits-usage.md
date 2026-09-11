@@ -16,7 +16,15 @@ flags     ALLOW_CREDITS_TOPTUP · PUSH_CONTENT_ON_SIDEBAR_EXPAND
 states    loading · empty · error · flag-off
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -41,6 +49,73 @@ Imported but **not in the component register** — undocumented surface:
 - `post-listing-button`
 - `platform-switch`
 - `styled`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/credits-usage/credits-usage.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      DrawerModal
+        CreditTopUps
+      /DrawerModal
+    Filters
+          Flex
+            Flex align="center" justify={'space-between'}
+              TitleStyled
+            /Flex
+          /Flex
+    /Filters
+          PlatformSwitch
+        Row
+          Col
+            LoaderWrapper
+                Skeleton
+                Card
+                Skeleton
+                /Card
+                Card
+                Flex align="center" justify="space-between"
+                TitleStyled
+                Button
+                /Button
+                /Flex
+                Text type="secondary"
+                /Text
+                Card
+                Row
+                Statistic
+                Divider
+                /Row
+                /Card
+                ChartContainer
+                ChartjsDonutChart
+                /ChartContainer
+                Heading
+                List size="small"
+                ProductBreakdown
+                /List
+                EmptyState type="table"
+                EmptyState
+                /Card
+            /LoaderWrapper
+          /Col
+          Col
+            Card
+              LoaderWrapper
+                Card
+                Skeleton
+                /Card
+                InfiniteScroll
+                EmptyState
+              /LoaderWrapper
+            /Card
+          /Col
+        /Row
+        CreditCalculatorModal
+    Main
+    /Main
+```
 
 ## Before designing
 

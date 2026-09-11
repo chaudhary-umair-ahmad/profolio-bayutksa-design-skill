@@ -16,7 +16,15 @@ flags     IS_LMS_ENABLED · COUNTRY_CODE · TRU_BROKER_ENABLED · DAILY_RENTAL_E
 states    loading · empty · error · flag-off · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -26,10 +34,8 @@ Documented components this page already imports:
 - `components/icon.md` (Icon container)
 - `components/select.md` (Select)
 - `components/feedback.md` (Spinner, skeleton & progress)
-- `components/feedback.md` (Spinner, skeleton & progress)
 - `components/textwithicon.md` (Text with icon)
 - `components/dropdown.md` (Dropdown)
-- `components/dashboard.md` (Dashboard widgets)
 - `components/dashboard.md` (Dashboard widgets)
 
 Imported but **not in the component register** — undocumented surface:
@@ -45,6 +51,62 @@ Imported but **not in the component register** — undocumented surface:
 - `listing-container`
 - `platform-switch`
 - `tru-broker`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/dashboard/dashboard.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+              Icon
+      Flex
+        CardMetaStyled
+            Avatar
+            Flex gap="8px" align="center" justify="flex-start"
+                Dropdown
+                TruBrokerTag
+            /Flex
+          PlatfromSwitch
+      /Flex
+          TruBrokerStatus
+          TruPointsWidget
+            Group template="repeat(auto-fit, minmax(min(40ch, 100%), 1fr))" gap="16px"
+                TextWithIcon
+            /Group
+        Flex
+          ListingBreakdown
+        /Flex
+      CreditsQuota
+      Group template="repeat(2, minmax(0, 1fr))" gap="16px"
+                Flex gap="24px"
+                /Flex
+      /Group
+          Skeleton type="button"
+          Row justify="space-between"
+            TextWithIcon
+            LinkWithIcon
+          /Row
+        ListingContainer
+      Spinner
+        ContainerWidgets
+            ReportsLeadsTrafficSection
+        /ContainerWidgets
+            ContainerWidgets gap="0px"
+              ListingBreakdown
+            /ContainerWidgets
+          ListingBreakdown
+        LoaderWrapper
+          ListingCardContainer
+        /LoaderWrapper
+      Spinner
+        ReportsLeadsTrafficSection
+    Main
+        SectionIntroModal
+      Group
+          DashboardPromoBanner
+      /Group
+    /Main
+```
 
 ## Before designing
 

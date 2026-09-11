@@ -16,7 +16,15 @@ flags     LMS_ENABLED · COUNTRY_CODE · PHONE_REGEX · DAILY_RENTAL_ENABLED · 
 states    loading · empty · error · flag-off · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -48,6 +56,40 @@ Imported but **not in the component register** — undocumented surface:
 - `source-content`
 - `lead-info`
 - `task-detail`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/lms/leads-dashboard.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      Flex
+        CardMetaStyled
+            Avatar
+            Flex gap="8px" align="center" justify="center"
+                Dropdown
+            /Flex
+      /Flex
+    Main
+        EmptyState
+              Tour
+          Group
+                TotalLeadsCardSkeleton
+                LeadsDashboardCardSkeleton
+                TotalLeadsCard
+                LeadsDashboardCard
+            ViewTrendsGraph
+              LeadsBreakdownGraph
+                AgentPerformanceListingsMobile
+                ListingContainer
+                LinkWithIcon
+                Modal
+                ListingContainer
+                /Modal
+            LeadListingsTable
+          /Group
+    /Main
+```
 
 ## Before designing
 

@@ -16,7 +16,15 @@ flags     SHOW_AMENITIES_ICON · SHOW_LISTING_DISCOUNT_TAG · AUTO_TRANSLATE_CON
 states    loading · empty · error · flag-off · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -33,6 +41,30 @@ Imported but **not in the component register** — undocumented surface:
 - `success-modal`
 - `post-listing`
 - `discount-tag`
+
+## Layout skeleton
+
+Nesting and layout props read out of `src/container/pages/post-ad/index.js`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+```
+      Row align="center"
+        Col
+          HeaderStyled
+              Flex align="center" justify="space-between"
+                ProfolioLogoLite
+                ProfolioLogoLiteAr
+                Flex gap="22px"
+                Button
+                /Button
+                /Flex
+              /Flex
+          /HeaderStyled
+        /Col
+      /Row
+        PostListing
+      SuccessModal
+```
 
 ## Before designing
 
