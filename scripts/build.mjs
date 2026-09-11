@@ -765,6 +765,154 @@ ga4       event names, when product supplies them
 `
 );
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   7. COPY — the real product strings, grouped by the area that uses them
+   The skill shipped none of these, which is why an agent invented every label.
+   ───────────────────────────────────────────────────────────────────────── */
+const enCopy = (() => { try { return JSON.parse(read(join(REPO, 'src/locales/en/translation.json'))); } catch { return {}; } })();
+const arCopy = (() => { try { return JSON.parse(read(join(REPO, 'src/locales/ar/translation.json'))); } catch { return {}; } })();
+
+/* Which area does a source file belong to? */
+const areaOf = (path) => {
+  const rel = path.replace(REPO + '/src/', '');
+  let m = rel.match(/^container\/pages\/([^/]+)/);      if (m) return `page-${m[1]}`;
+  m = rel.match(/^components\/common\/([^/]+)/);         if (m) return `common-${m[1]}`;
+  m = rel.match(/^components\/([^/.]+)/);                if (m) return m[1];
+  m = rel.match(/^tenant\/[^/]+\/components\/([^/]+)/);  if (m) return `tenant-${m[1]}`;
+  if (rel.startsWith('layout')) return 'shell';
+  return '';
+};
+
+/* t('…') and t("…") calls, per area, in first-seen order. */
+const copyByArea = new Map();
+for (const f of srcFiles) {
+  const area = areaOf(f);
+  if (!area) continue;
+  const src = read(f);
+  const keys = [...src.matchAll(/\bt\(\s*['"]([^'"]{2,120})['"]/g)].map((m) => m[1]);
+  if (!keys.length) continue;
+  if (!copyByArea.has(area)) copyByArea.set(area, new Set());
+  const bucket = copyByArea.get(area);
+  for (const k of keys) if (enCopy[k] !== undefined) bucket.add(k);
+}
+
+const copyAreas = [...copyByArea.entries()]
+  .map(([area, set]) => ({ area, keys: [...set].sort() }))
+  .filter((a) => a.keys.length)
+  .sort((a, b) => b.keys.length - a.keys.length);
+
+for (const { area, keys } of copyAreas) {
+  sizes[`copy/${area}.md`] = write(
+    `copy/${area}.md`,
+    `# Copy — ${area}
+
+${keys.length} strings shipped in this area. **Use these exact words.** If a label you need is
+not here, say so rather than writing one — invented copy is how "Post a Listing" ended up on
+the classified pill.
+
+| English | Arabic |
+|---|---|
+${keys.map((k) => `| ${enCopy[k].replace(/\|/g, '\\|')} | ${(arCopy[k] || '—').replace(/\|/g, '\\|')} |`).join('\n')}
+`
+  );
+}
+
+sizes['copy/index.md'] = write(
+  'copy/index.md',
+  `# Product copy
+
+Every user-facing string in Profolio, grouped by the area that renders it, English beside
+Arabic. Load the one area you are designing — never the whole folder.
+
+**Rule: never invent a label.** If the string is not in the relevant file, say which file you
+checked and ask. A plausible-sounding invented label is the failure mode this layer exists to
+stop.
+
+${enCopy && Object.keys(enCopy).length} strings total in \`src/locales/en/translation.json\`.
+
+| Area | Strings | File |
+|---|---|---|
+${copyAreas.map((a) => `| ${a.area} | ${a.keys.length} | \`copy/${a.area}.md\` |`).join('\n')}
+`
+);
+console.log(`copy areas       ${copyAreas.length}`);
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   8. FEATURE COMPONENTS — one entry per real component dir, from its own source
+   The canvas documented 57 generic components. The product has far more, and the
+   ones a PRD actually names (TruPoints, Bayut Match, credits quota) were blanks.
+   ───────────────────────────────────────────────────────────────────────── */
+const covered = new Set(componentList.map((c) => slug(c.name)));
+for (const c of componentList) covered.add(c.id);
+
+const compDirs = [];
+for (const base of ['components', 'components/common']) {
+  const dir = join(REPO, 'src', base);
+  if (!existsSync(dir)) continue;
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (e.isDirectory()) compDirs.push({ name: e.name, base, dir: join(dir, e.name) });
+  }
+}
+
+/* Pull real declarations out of styled-components template literals. */
+const cssOf = (src) => {
+  const decls = new Set();
+  for (const m of src.matchAll(/styled\.[a-zA-Z]+`([\s\S]*?)`|styled\([^)]+\)`([\s\S]*?)`|css`([\s\S]*?)`/g)) {
+    const body = m[1] || m[2] || m[3] || '';
+    for (const d of body.matchAll(/([a-z-]{3,})\s*:\s*([^;{}\n]{1,60});/g)) {
+      const [, prop, val] = d;
+      if (/\$\{/.test(val) && !/tenantTheme|theme\./.test(val)) continue;   // skip opaque interpolation
+      decls.add(`${prop}: ${val.trim().replace(/\$\{[^}]*?([a-zA-Z0-9_'\[\]-]+)\}/g, '$1')}`);
+    }
+  }
+  return [...decls];
+};
+
+let featureCount = 0;
+for (const { name, base, dir } of compDirs) {
+  const id = slug(name);
+  if (covered.has(id)) continue;                         // canvas already documents it
+
+  const files = [];
+  (function walk(d) {
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      const q = join(d, e.name);
+      if (e.isDirectory()) walk(q); else if (e.name.endsWith('.js')) files.push(q);
+    }
+  })(dir);
+  if (!files.length) continue;
+
+  const all = files.map(read).join('\n');
+  const css = cssOf(all);
+  const props = [...new Set(
+    [...all.matchAll(/(?:const|function)\s+[A-Z]\w*\s*=?\s*\(?\s*\{([^}]{5,400})\}/g)]
+      .flatMap((m) => m[1].split(','))
+      .map((x) => x.split(/[:=]/)[0].trim())
+      .filter((x) => /^[a-z]\w{1,28}$/.test(x))
+  )].slice(0, 18);
+  const strings = [...new Set([...all.matchAll(/\bt\(\s*['"]([^'"]{2,60})['"]/g)].map((m) => m[1]))].slice(0, 10);
+  const usesFlags = [...new Set([...all.matchAll(/tenantConstants[?.]*\.([A-Z][A-Z0-9_]+)/g)].map((m) => m[1]))];
+
+
+  sizes[`components/${id}.md`] = write(
+    `components/${id}.md`,
+    `# ${name}
+
+- **layer** feature
+- **source** \`src/${base}/${name}\`
+- **derived from** the component's own source, not the design canvas
+
+${props.length ? `## Props\n\n${props.map((x) => `\`${x}\``).join(' · ')}\n` : ''}
+${!css.length && !strings.length ? `> No styling or copy of its own — it composes other components. Check its source for what it wraps.
+` : ''}
+${css.length ? `## Measured CSS\n\nRead out of this component's styled rules — these are the shipped values.\n\n\`\`\`css\n${css.slice(0, 28).join(';\n')};\n\`\`\`\n` : ''}
+${strings.length ? `## Copy it renders\n\n${strings.map((x) => `- ${x}`).join('\n')}\n\nFull list with Arabic: \`copy/${areaOf(files[0]) || id}.md\`\n` : ''}
+${usesFlags.length ? `## Flags\n\n${usesFlags.map((f) => `\`${f}\``).join(' · ')}\n` : ''}`
+  );
+  featureCount++;
+}
+console.log(`feature comps    ${featureCount}`);
+
 /* report ------------------------------------------------------------------- */
 const total = Object.values(sizes).reduce((a, b) => a + b, 0);
 console.log(`source            profolio-reactjs@${SOURCE_SHA}`);
