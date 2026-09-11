@@ -16,7 +16,15 @@ flags     ENABLE_EVENT_CHECKOUT · ENABLE_NAFATH · SHOW_PAYMENT_METHODS · CONT
 states    loading · empty · error · flag-off
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -27,7 +35,6 @@ Documented components this page already imports:
 - `components/empty.md` (Empty states)
 - `components/feedback.md` (Spinner, skeleton & progress)
 - `components/textwithicon.md` (Text with icon)
-- `components/feedback.md` (Spinner, skeleton & progress)
 
 Imported but **not in the component register** — undocumented surface:
 

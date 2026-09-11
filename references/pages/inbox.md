@@ -16,7 +16,15 @@ flags     HIDE_INBOX (gates the route)
 states    loading · empty · error · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -31,7 +39,6 @@ Documented components this page already imports:
 - `components/feedback.md` (Spinner, skeleton & progress)
 - `components/input.md` (Text input)
 - `components/textwithicon.md` (Text with icon)
-- `components/icon.md` (Icon container)
 
 Imported but **not in the component register** — undocumented surface:
 

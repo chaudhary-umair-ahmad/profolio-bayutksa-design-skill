@@ -16,7 +16,15 @@ flags     SHOW_AMENITIES_ICON · SHOW_REGA_DETAIL · CURRENCY_SYMBOL · HIDE_AUT
 states    loading · error · flag-off · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 

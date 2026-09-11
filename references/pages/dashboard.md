@@ -16,7 +16,15 @@ flags     IS_LMS_ENABLED · COUNTRY_CODE · TRU_BROKER_ENABLED · DAILY_RENTAL_E
 states    loading · empty · error · flag-off · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -26,10 +34,8 @@ Documented components this page already imports:
 - `components/icon.md` (Icon container)
 - `components/select.md` (Select)
 - `components/feedback.md` (Spinner, skeleton & progress)
-- `components/feedback.md` (Spinner, skeleton & progress)
 - `components/textwithicon.md` (Text with icon)
 - `components/dropdown.md` (Dropdown)
-- `components/dashboard.md` (Dashboard widgets)
 - `components/dashboard.md` (Dashboard widgets)
 
 Imported but **not in the component register** — undocumented surface:

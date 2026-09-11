@@ -409,12 +409,13 @@ for (const route of routes) {
   );
 
   // map to documented entries where we can
-  const docd = [...named, ...direct]
+  const docd = [...new Set([...named, ...direct])]
     .map((n) => {
       const hit = resolveComp(n);
       return hit ? `\`components/${hit.id}.md\` (${hit.name})` : null;
     })
     .filter(Boolean);
+  const docdUniq = [...new Set(docd)];
   const undoc = [...new Set([...named, ...direct].filter((n) => !resolveComp(n)))];
 
   // Flags that gate the ROUTE itself live in menuList/appRoutes, not in the page.
@@ -461,6 +462,9 @@ for (const route of routes) {
                 || pageFiles[0];
   const skeleton = skeletonOf(read(mainFile));
 
+  const shotFile = `screens/${slug(route)}.png`;
+  const hasShot = existsSync(join(REFS, shotFile));
+
   const body = `# ${designName}
 
 > **Derived, not designed.** Fields below were read out of the page directory. Purpose, layout
@@ -477,13 +481,27 @@ flags     ${[...gateFlags.map((f) => f + ' (gates the route)'), ...usedFlags].jo
 states    ${states.length ? states.join(' · ') : 'none detected — confirm with the designer'}
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      ${hasShot ? '`references/' + shotFile + '` — OPEN IT BEFORE DESIGNING' : 'not captured — run scripts/capture.mjs'}
 \`\`\`
+${hasShot ? `
+## Reference screenshot
+
+\`references/${shotFile}\` — the live screen. **Open it before you design.** The skeleton gives
+structure, the component specs give values, this gives the truth. If your output disagrees
+with it, your output is wrong.
+` : `
+## Reference screenshot
+
+**Not captured yet.** Run \`node scripts/capture.mjs --login\` once, then
+\`node scripts/capture.mjs\`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+`}
 
 ## Composition
 
 Documented components this page already imports:
 
-${docd.length ? docd.map((d) => `- ${d}`).join('\n') : '- none resolved automatically — check `components/index.md`'}
+${docdUniq.length ? docdUniq.map((d) => `- ${d}`).join('\n') : '- none resolved automatically — check `components/index.md`'}
 
 ${undoc.length ? `Imported but **not in the component register** — undocumented surface:\n\n${undoc.slice(0, 14).map((n) => `- \`${n}\``).join('\n')}\n` : ''}
 ## Layout skeleton

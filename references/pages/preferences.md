@@ -16,7 +16,15 @@ flags     HIDE_PREFERENCES (gates the route) · KC_ENABLED · PROFILE_COMPLETION
 states    loading · empty · error · flag-off · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
@@ -33,9 +41,6 @@ Documented components this page already imports:
 - `components/avatar.md` (Avatar & badge)
 - `components/form.md` (Post-listing form)
 - `components/navitem.md` (Nav item)
-- `components/form.md` (Post-listing form)
-- `components/alert.md` (Alert)
-- `components/icon.md` (Icon container)
 
 Imported but **not in the component register** — undocumented surface:
 

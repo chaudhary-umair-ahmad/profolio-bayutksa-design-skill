@@ -16,7 +16,15 @@ flags     LMS_ENABLED · COUNTRY_CODE · PHONE_REGEX · DAILY_RENTAL_ENABLED · 
 states    loading · empty · error · flag-off · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 

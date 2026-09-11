@@ -1,6 +1,6 @@
 ---
 name: profolio-ksa-design
-version: 0.3.0
+version: 0.4.0
 source_commit: b83e805
 description: "Design system for Bayut Profolio KSA — the agent and seller portal at profolio.bayut.sa. Use when designing, changing or reviewing any Profolio KSA screen, component or flow: turning a PRD into artboards, checking an existing screen against the system, finding which tokens, components or flags a surface uses, or locating where a feature lives in the codebase. Triggers on 'design this screen for Profolio', 'what does the listings page use', 'add X to Profolio KSA', 'is there a component for Y', 'make a mockup of the dashboard'. Covers tenant bayut (KSA) only — not Oman, Bahrain, Qatar, Jordan, Egypt or Zameen, and not the consumer side of bayut.sa, which Strat owns."
 ---
@@ -28,6 +28,7 @@ Load what the task needs. Never load more.
 | `references/components/<id>.md` | Only the components this screen uses. |
 | `references/foundations.md` | **All** colour, typography, spacing, radius, elevation, iconography, breakpoints and z-index. Complete — read to the bottom before calling anything undocumented. |
 | `references/flags.md` | When a surface may be switched off or altered. |
+| `references/screens/<route>.png` | **The live screen.** Open it whenever the page template names one — it is the only visual truth in this system. |
 
 **Never read `canvas/`.** Those three `.dc.html` files are the human browsing surface —
 about 92,000 tokens between them. Everything in them that you need is already in
@@ -57,7 +58,9 @@ Five checks. Each one has been failed in a real session; each takes seconds.
    solid primary button, and not "Post a Listing".
 4. **Type.** Lato with Droid Arabic Kufi, base 14px / line-height 1.571 — it is in
    `foundations.md`. Never report the font stack as missing.
-5. **Content.** Did you invent a widget or card the page template does not list? If the
+5. **Screenshot.** If the template's `shot` field names a file, open it and compare. If it says
+   not captured, say so in your output — do not imply your design matches the live screen.
+6. **Content.** Did you invent a widget or card the page template does not list? If the
    template has a layout skeleton, your structure must match it. If you needed something that
    is not there, say so — do not draw it silently.
 

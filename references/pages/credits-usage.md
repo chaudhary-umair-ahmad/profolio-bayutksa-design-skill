@@ -16,7 +16,15 @@ flags     ALLOW_CREDITS_TOPTUP · PUSH_CONTENT_ON_SIDEBAR_EXPAND
 states    loading · empty · error · flag-off
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      not captured — run scripts/capture.mjs
 ```
+
+## Reference screenshot
+
+**Not captured yet.** Run `node scripts/capture.mjs --login` once, then
+`node scripts/capture.mjs`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+
 
 ## Composition
 
