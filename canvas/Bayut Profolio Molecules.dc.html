@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #F6F7FB; font-family: Figtree, 'Droid Arabic Kufi', sans-serif; font-size: 14px; line-height: 1.571; color: #272B41; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #006169; text-decoration: none; }
+  a:hover { color: #004b52; }
+  h1, h2, h3, h4, h5, h6, p { margin: 0; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  @keyframes profolioSpin { to { transform: rotate(360deg); } }
+  @keyframes profolioShimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+</style>
+</helmet>
+
+<div style="display: grid; grid-template-columns: 236px minmax(0, 1fr); align-items: start; min-height: 100vh">
+
+  <aside style="position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; background: #fff; border-inline-end: 1px solid #f0f0f0; padding: 24px 16px 48px">
+    <div style="display: flex; flex-direction: column; gap: 2px; margin-bottom: 20px">
+      <div style="font-size: 16px; font-weight: 800; color: #006169; letter-spacing: -0.01em">Bayut Profolio</div>
+      <div style="font-size: 12px; color: #707070">Design System</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 2px; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid #f0f0f0">
+      <a href="Bayut Profolio Atoms.dc.html" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 7px 10px; border-radius: 6px" style-hover="background: #f5f5f5">← Foundations &amp; Atoms</a>
+      <div style="font-size: 13px; font-weight: 700; color: #006169; background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 6px; padding: 7px 10px">Molecules</div>
+      <a href="Bayut Profolio Organisms.dc.html" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 7px 10px; border-radius: 6px" style-hover="background: #f5f5f5">Organisms →</a>
+    </div>
+    <div style="font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9D9D9D; padding: 0 8px 6px">Form molecules</div>
+    <nav style="display: flex; flex-direction: column; gap: 1px; margin-bottom: 18px">
+      <a href="#field" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Form field</a>
+      <a href="#unit" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Input with unit</a>
+      <a href="#search" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Search bar</a>
+      <a href="#choice" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Choice groups</a>
+      <a href="#range" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Range inputs &amp; slider</a>
+      <a href="#date" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Date controls</a>
+      <a href="#phone" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Phone input</a>
+      <a href="#upload" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Image upload tile</a>
+    </nav>
+    <div style="font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9D9D9D; padding: 0 8px 6px">Navigation &amp; overlay</div>
+    <nav style="display: flex; flex-direction: column; gap: 1px; margin-bottom: 18px">
+      <a href="#dropdown" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Dropdown</a>
+      <a href="#tabs" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Tabs</a>
+      <a href="#navitem" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Nav item</a>
+      <a href="#breadcrumb" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Breadcrumb</a>
+      <a href="#pagination" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Pagination</a>
+      <a href="#actions" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Action group</a>
+      <a href="#filterchip" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Filter summary chip</a>
+    </nav>
+    <div style="font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9D9D9D; padding: 0 8px 6px">Content molecules</div>
+    <nav style="display: flex; flex-direction: column; gap: 1px">
+      <a href="#textwithicon" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Text with icon</a>
+      <a href="#statistic" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Statistic</a>
+      <a href="#stats" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Stats with percentage</a>
+      <a href="#keyvalue" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Key–value card</a>
+      <a href="#compact" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Compact &amp; gradient card</a>
+      <a href="#meta" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Avatar meta row</a>
+      <a href="#thumb" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Thumbnail &amp; badges</a>
+      <a href="#health" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Health &amp; completion</a>
+      <a href="#notification" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Notification &amp; toast</a>
+    </nav>
+  </aside>
+
+  <main style="padding: 40px 40px 96px; max-width: 1180px">
+
+    <header style="margin-bottom: 40px">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #006169; margin-bottom: 8px">Atomic design — layer 2</div>
+      <h1 style="font-size: 38px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: #222; margin-bottom: 4px">Bayut Profolio Design System</h1>
+      <div style="font-size: 20px; font-weight: 600; color: #006169; margin-bottom: 12px">Molecules</div>
+      <p style="font-size: 15px; color: #626262; max-width: 76ch">Every molecule here is a combination of atoms that already exists in <code style="font-size: 13px; color: #006169">src/components/common/*</code> and <code style="font-size: 13px; color: #006169">src/components/*</code>. Each block names its source file and the props that drive its variants, so the same composition can be rebuilt without re-reading the code.</p>
+    </header>
+
+    <section id="field" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Form field</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/textInput/textInput.js</code> composes <strong style="font-weight: 700">Label + input + ErrorMessage</strong> inside a <code style="font-size: 13px">Group</code> with an 8px gap. Three layouts exist: stacked (default), <code style="font-size: 13px">labelIcon</code> (a <code style="font-size: 13px">max-content auto</code> grid with 16px gap and a 40px icon tile), and <code style="font-size: 13px">horizontal</code> (label start, field capped at 120px). A 32px spacer column can be reserved with <code style="font-size: 13px">reserveLabelIconColumn</code> so unlabelled rows stay aligned.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 20px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Stacked · with popover help</div>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap">
+              <label style="font-size: 14px; font-weight: 600; color: #000">Reference number</label>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#9D9D9D"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm1 13h-2v-6h2zm0-8h-2V6h2z"></path></svg>
+            </div>
+            <div style="height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; background: #fff; display: flex; align-items: center; padding: 0 11px; font-size: 14px; color: #9D9D9D">e.g. BYT-24-0912</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label style="font-size: 14px; font-weight: 600; color: #000">Mobile number</label>
+            <div style="height: 44px; border: 1px solid #f73131; border-radius: 6px; background: #fff; display: flex; align-items: center; padding: 0 11px; font-size: 14px; color: #272B41">05x xxx xxxx</div>
+            <div style="font-size: 13px; color: #f73131; margin-top: -2px">Enter a valid Saudi mobile number</div>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 20px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">labelIcon grid · horizontal</div>
+          <div style="display: grid; grid-template-columns: max-content auto; gap: 16px; align-items: start">
+            <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: #F4F5F7; color: #707070; display: grid; place-content: center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"></path></svg>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+              <label style="font-size: 14px; font-weight: 600; color: #000">Property description</label>
+              <div style="min-height: 80px; border: 1px solid #DEDEDE; border-radius: 6px; background: #fff; padding: 10px 11px; font-size: 14px; color: #9D9D9D">Describe the property…</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; border-top: 1px solid #f5f5f5; padding-top: 16px">
+            <label style="font-size: 14px; font-weight: 600; color: #000">Floor number</label>
+            <div style="flex-basis: 120px; height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; background: #fff; display: flex; align-items: center; padding: 0 11px; font-size: 14px; color: #272B41">4</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="unit" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Input with unit</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/inputWithUnit</code> + <code style="font-size: 13px">common/unitSelect</code> — an input with <code style="font-size: 13px">noRightRadius</code> welded to a unit select with <code style="font-size: 13px">noLeftRadius</code>, so the pair reads as one 44px control. Also used for price + currency and area + area-unit.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label style="font-size: 14px; font-weight: 600; color: #000">Area</label>
+          <div style="display: flex">
+            <div style="flex: 1; height: 44px; border: 1px solid #DEDEDE; border-start-start-radius: 6px; border-end-start-radius: 6px; background: #fff; display: flex; align-items: center; padding: 0 11px; font-size: 14px; color: #272B41">220</div>
+            <div style="height: 44px; min-width: 108px; border: 1px solid #DEDEDE; border-inline-start: 0; border-start-end-radius: 6px; border-end-end-radius: 6px; background: #fff; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 11px; font-size: 14px; color: #272B41">Sq. M.
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label style="font-size: 14px; font-weight: 600; color: #000">Price <span style="font-weight: 400; color: #707070">( SAR )</span></label>
+          <div style="height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 11px; font-size: 14px; color: #272B41">1,250,000<span style="color: #707070">SAR</span></div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label style="font-size: 14px; font-weight: 600; color: #000">Rent frequency</label>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 32px; padding-inline: .7rem; border-radius: 6px; background: #E1F2F0; border: 1px solid #A6C8CA; color: #006169; font-weight: 700; font-size: 14px">Yearly</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 32px; padding-inline: .7rem; border-radius: 6px; background: #f5f5f5; border: 1px solid transparent; color: #222; font-size: 14px">Monthly</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 32px; padding-inline: .7rem; border-radius: 6px; background: #f5f5f5; border: 1px solid transparent; color: #222; font-size: 14px">Weekly</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 32px; padding-inline: .7rem; border-radius: 6px; background: #f5f5f5; border: 1px solid transparent; color: #222; font-size: 14px">Daily</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="search" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Search bar</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">components/header-search</code> and <code style="font-size: 13px">common/selectSearch</code> — a prefixed input, optionally welded to a scope select or a submit button, with an async suggestion list (Algolia-backed for location search). Loading swaps the suffix for a <code style="font-size: 13px">Spinner</code>.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 16px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Scope select + input + button</div>
+          <div style="display: flex">
+            <div style="height: 44px; min-width: 120px; border: 1px solid #DEDEDE; border-start-start-radius: 6px; border-end-start-radius: 6px; background: #fff; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 11px; font-size: 14px; color: #272B41">Listings
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
+            </div>
+            <div style="flex: 1; height: 44px; border: 1px solid #DEDEDE; border-inline: 0; background: #fff; display: flex; align-items: center; gap: 8px; padding: 0 11px">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#006169" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+              <span style="font-size: 14px; color: #9D9D9D">Search by title, reference or location</span>
+            </div>
+            <button style="height: 44px; padding: 0 1.2em; border: 1px solid #006169; border-start-end-radius: 6px; border-end-end-radius: 6px; border-start-start-radius: 0; border-end-start-radius: 0; background: #006169; color: #fff; font: 600 14px Figtree, sans-serif; cursor: pointer">Search</button>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 12px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Suggestions — loading &amp; results</div>
+          <div style="height: 44px; border: 1px solid #006169; border-radius: 6px; background: #fff; box-shadow: 0 0 0 2px #E1F2F0; display: flex; align-items: center; justify-content: space-between; padding: 0 11px">
+            <div style="display: flex; align-items: center; gap: 8px"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#006169" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><span style="font-size: 14px; color: #272B41">Al Malqa</span></div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006169" stroke-width="2.5" style="animation: profolioSpin 1s linear infinite"><path d="M12 3a9 9 0 1 0 9 9" stroke-linecap="round"></path></svg>
+          </div>
+          <div style="border: 1px solid #e3e6ef; border-radius: 6px; background: #fff; box-shadow: 0 0 2px #888; overflow: hidden">
+            <div style="padding: 6px 12px; font-size: 14px; color: #888; display: flex; align-items: center; gap: 8px" style-hover="background: #868eae16; color: #006169"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"></path></svg>Al Malqa, Riyadh</div>
+            <div style="padding: 6px 12px; font-size: 14px; color: #888; display: flex; align-items: center; gap: 8px" style-hover="background: #868eae16; color: #006169"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"></path></svg>Al Malqa District, North Riyadh</div>
+            <div style="padding: 6px 12px; font-size: 14px; color: #888; display: flex; align-items: center; gap: 8px" style-hover="background: #868eae16; color: #006169"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"></path></svg>Al Malqa Plaza</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="choice" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Choice groups</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">RadioGroupStyled</code> is a flex row with an 8px gap that flips to <code style="font-size: 13px">flex: 1</code> children when <code style="font-size: 13px">block</code>; group size maps to the radio-button height scale (<code style="font-size: 13px">small 40px</code> / <code style="font-size: 13px">large 50px</code>). <code style="font-size: 13px">CheckboxGroup</code> and <code style="font-size: 13px">checbox-group</code> add the check-all master.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 18px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Pill group — bedrooms</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 32px; padding-inline: .7rem; border-radius: 6px; background: #E1F2F0; border: 1px solid #A6C8CA; color: #006169; font-weight: 700; font-size: 14px">Studio</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 32px; padding-inline: .7rem; border-radius: 6px; background: #f5f5f5; border: 1px solid transparent; color: #222; font-size: 14px">1</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 32px; padding-inline: .7rem; border-radius: 6px; background: #E1F2F0; border: 1px solid #A6C8CA; color: #006169; font-weight: 700; font-size: 14px">2</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 32px; padding-inline: .7rem; border-radius: 6px; background: #f5f5f5; border: 1px solid transparent; color: #222; font-size: 14px">3</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 32px; padding-inline: .7rem; border-radius: 6px; background: #f5f5f5; border: 1px solid transparent; color: #222; font-size: 14px">4</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 32px; padding-inline: .7rem; border-radius: 6px; background: #f5f5f5; border: 1px solid transparent; color: #222; font-size: 14px">5+</span>
+          </div>
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Block radio buttons</div>
+          <div style="display: flex; border: 1px solid #f0f0f0; border-radius: 6px; overflow: hidden">
+            <span style="flex: 1; height: 44px; line-height: 42px; text-align: center; background: #E1F2F0; color: #006169; font-weight: 600; font-size: 14px; border-inline-end: 1px solid #006169">Buy</span>
+            <span style="flex: 1; height: 44px; line-height: 42px; text-align: center; background: #fff; color: #5A5F7D; font-size: 14px; border-inline-end: 1px solid #f0f0f0">Rent</span>
+            <span style="flex: 1; height: 44px; line-height: 42px; text-align: center; background: #fff; color: #5A5F7D; font-size: 14px">Commercial</span>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 14px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Checkbox group with check-all</div>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #272B41">
+            <span style="width: 16px; height: 16px; border: 1px solid #006169; border-radius: 4px; background: #006169; display: grid; place-content: center"><span style="width: 8px; height: 2px; background: #fff; display: block"></span></span>Check all
+          </label>
+          <div style="display: flex; flex-direction: column; gap: 10px; padding-inline-start: 24px">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #272B41"><span style="width: 16px; height: 16px; border: 1px solid #006169; border-radius: 4px; background: #006169; display: grid; place-content: center; color: #fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"></path></svg></span>Balcony</label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #272B41"><span style="width: 16px; height: 16px; border: 1px solid #006169; border-radius: 4px; background: #006169; display: grid; place-content: center; color: #fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"></path></svg></span>Covered parking</label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #272B41"><span style="width: 16px; height: 16px; border: 1px solid #C2C2C2; border-radius: 4px; background: #fff; display: inline-block"></span>Maid&#8217;s room</label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #272B41"><span style="width: 16px; height: 16px; border: 1px solid #C2C2C2; border-radius: 4px; background: #fff; display: inline-block"></span>Private pool</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="range" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Range inputs &amp; slider</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/range-inputs</code> pairs a min and a max field; <code style="font-size: 13px">common/rangeSlide</code> and <code style="font-size: 13px">common/unitRangeSlider</code> wrap Ant's slider — rail <code style="font-size: 13px">rgba(95,99,242,.2)</code>, track and handle <code style="font-size: 13px">primary-color</code>, handle 12px (token also declares 16px).</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 14px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Min / max pair</div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+              <label style="font-size: 12px; font-weight: 600; color: #707070">Min price</label>
+              <div style="height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; background: #fff; display: flex; align-items: center; padding: 0 11px; font-size: 14px; color: #272B41">500,000</div>
+            </div>
+            <span style="color: #9D9D9D; margin-top: 18px">–</span>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+              <label style="font-size: 12px; font-weight: 600; color: #707070">Max price</label>
+              <div style="height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; background: #fff; display: flex; align-items: center; padding: 0 11px; font-size: 14px; color: #9D9D9D">Any</div>
+            </div>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 18px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Range slider + unit</div>
+          <div style="padding: 6px 0">
+            <div style="position: relative; height: 4px; border-radius: 2px; background: rgba(95,99,242,0.2)">
+              <div style="position: absolute; inset-inline-start: 18%; width: 46%; height: 4px; border-radius: 2px; background: #006169"></div>
+              <span style="position: absolute; inset-inline-start: 18%; inset-block-start: -4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid #006169; transform: translateX(-50%)"></span>
+              <span style="position: absolute; inset-inline-start: 64%; inset-block-start: -4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid #006169; transform: translateX(-50%)"></span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: #707070">
+            <span>120 Sq. M.</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #272B41; border: 1px solid #DEDEDE; border-radius: 6px; height: 34px; padding: 0 10px">Sq. M. <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></span>
+            <span>460 Sq. M.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="date" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Date controls</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px">Three molecules: <code style="font-size: 13px">common/datePicker</code> (<code style="font-size: 13px">DateRangePickerOne</code>, heights 34 / 44 / 50), <code style="font-size: 13px">common/dateFilter</code> (preset ranges plus a custom range, driven by <code style="font-size: 13px">reportsStaticRanges</code>) and <code style="font-size: 13px">common/dateSelect</code> (a select of named periods).</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 14px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Range picker</div>
+          <div style="height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; background: #fff; display: flex; align-items: center; gap: 10px; padding: 0 11px; font-size: 14px; color: #272B41">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006169" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+            01 Aug 2026 <span style="color: #9D9D9D">→</span> 21 Aug 2026
+          </div>
+          <div style="height: 34px; border: 1px solid #DEDEDE; border-radius: 6px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; font-size: 13px; color: #272B41">Last 30 days<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 12px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Preset ranges (DateFilter)</div>
+          <div style="border: 1px solid #e3e6ef; border-radius: 6px; box-shadow: 0 0 2px #888; overflow: hidden">
+            <div style="padding: 6px 12px; font-size: 14px; color: #006169; background: #868eae16">Today</div>
+            <div style="padding: 6px 12px; font-size: 14px; color: #888">Yesterday</div>
+            <div style="padding: 6px 12px; font-size: 14px; color: #888">Last 7 days</div>
+            <div style="padding: 6px 12px; font-size: 14px; color: #888">Last 30 days</div>
+            <div style="padding: 6px 12px; font-size: 14px; color: #888">This month</div>
+            <div style="padding: 6px 12px; font-size: 14px; color: #888; border-top: 1px solid #f0f0f0">Custom range…</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="phone" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Phone input</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">components/phone-input/PhoneIntl</code> — <code style="font-size: 13px">react-phone-number-input</code> with a country select whose flags come from <code style="font-size: 13px">country-flag-icons</code> (3×2), inside the standard 44px field. OTP entry uses <code style="font-size: 13px">@onefifteen-z/react-input-otp</code>.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label style="font-size: 14px; font-weight: 600; color: #000">Mobile number</label>
+          <div style="height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; background: #fff; display: flex; align-items: center; gap: 10px; padding: 0 11px">
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #272B41"><span style="width: 21px; height: 14px; border-radius: 2px; background: #006C35; display: inline-block"></span>+966<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></span>
+            <span style="width: 1px; height: 20px; background: #f0f0f0"></span>
+            <span style="font-size: 14px; color: #272B41">55 123 4567</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label style="font-size: 14px; font-weight: 600; color: #000">Verification code</label>
+          <div style="display: flex; gap: 8px">
+            <span style="width: 44px; height: 44px; border: 1px solid #006169; border-radius: 6px; display: grid; place-content: center; font-size: 16px; font-weight: 600; color: #272B41">4</span>
+            <span style="width: 44px; height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; display: grid; place-content: center; font-size: 16px; font-weight: 600; color: #272B41">2</span>
+            <span style="width: 44px; height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; display: grid; place-content: center; font-size: 16px; color: #9D9D9D"></span>
+            <span style="width: 44px; height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; display: grid; place-content: center; font-size: 16px; color: #9D9D9D"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="upload" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Image upload tile</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/image-uploads</code> — a dashed dropzone plus per-file tiles with progress, cover badge, crop (<code style="font-size: 13px">antd-img-crop</code>) and remove actions; ordering uses <code style="font-size: 13px">react-easy-sort</code>. Thumbnails are square with radius 6px and <code style="font-size: 13px">object-fit: cover</code>.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px">
+          <div style="position: relative; aspect-ratio: 1; border-radius: 6px; overflow: hidden; background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 6px, #f7f7f7 6px, #f7f7f7 12px)">
+            <span style="position: absolute; inset-block-start: 6px; inset-inline-start: 6px; font-size: 10px; font-weight: 700; color: #fff; padding: 4px 6px; border-radius: 4px; background: #006169">COVER</span>
+            <span style="position: absolute; inset-block-start: 6px; inset-inline-end: 6px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px #0002; display: grid; place-content: center; color: #f73131"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h12M9 7V5h6v2M8 7l1 12h6l1-12"></path></svg></span>
+          </div>
+          <div style="position: relative; aspect-ratio: 1; border-radius: 6px; overflow: hidden; background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 6px, #f7f7f7 6px, #f7f7f7 12px)">
+            <div style="position: absolute; inset-block-end: 0; inset-inline: 0; height: 4px; background: rgba(0,0,0,.06)"><div style="width: 62%; height: 100%; background: #006169"></div></div>
+          </div>
+          <div style="aspect-ratio: 1; border-radius: 6px; border: 1px dashed #DEDEDE; background: #F8F9FB; display: grid; place-content: center; gap: 6px; text-align: center; padding: 10px; color: #707070">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006169" stroke-width="2" style="margin: 0 auto"><path d="M12 16V4M7 9l5-5 5 5"></path><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"></path></svg>
+            <span style="font-size: 12px; font-weight: 600; color: #006169">Add photos</span>
+            <span style="font-size: 10px; color: #9D9D9D">JPG / PNG · min 4</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dropdown" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Dropdown</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 8px"><code style="font-size: 13px">common/dropdown</code> — the trigger is a full-width field-like box (10px 11px padding, radius 6px, <code style="font-size: 13px">input-border-color</code>, placeholder text, border turns <code style="font-size: 13px">primary-color</code> on hover / focus / open). The local <code style="font-size: 13px">Content</code> panel is white with <code style="font-size: 13px">0 0 2px #888</code>, a <code style="font-size: 13px">#e3e6ef</code> border and 6px 12px items in <code style="font-size: 13px">#888</code>, hovering to <code style="font-size: 13px">light-gray 16%</code> with primary text; leading icons sit 8px from the label.</p>
+      <p style="font-size: 13px; color: #006169; background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 6px; padding: 10px 12px; margin-bottom: 20px"><strong style="font-weight: 700">Global menu (style.less):</strong> the Ant dropdown menu is min-width <code style="font-size: 12px">200px</code> (var <code style="font-size: 12px">--dropdown-width</code>), radius <code style="font-size: 12px">0 0 5px 5px</code>, shadow <code style="font-size: 12px">0 5px 30px #9299b820</code>; items and anchors are <code style="font-size: 12px">12px 24px</code> in <code style="font-size: 12px">#5a5f7d</code> at weight 400 with an 8px icon gap, hovering to <code style="font-size: 12px">#5f63f205</code>. Named variants: <code style="font-size: 12px">.userDropdown</code> 220px / Lato / 14px items / links #000 at 8px 16px, and <code style="font-size: 12px">.languageDropdown</code> 148px / radius 4px / 1px #dedede / 13px items at 5px 16px with the active item underlined. The compact filter trigger <code style="font-size: 12px">.dropdownTrigger</code> is 7px 12px, min-width 120px, transparent border, primary text at 600, border turning primary on hover.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; align-items: start">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Trigger</div>
+          <div style="border: 1px solid #DEDEDE; border-radius: 6px; padding: 10px 11px; background: #fff; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #9D9D9D">Select an action<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></div>
+          <div style="border: 1px solid #006169; border-radius: 6px; padding: 10px 11px; background: #fff; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #272B41">Open state<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#006169" stroke-width="2"><path d="M18 15l-6-6-6 6"></path></svg></div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Menu panel</div>
+          <div style="background: #fff; border: 1px solid #e3e6ef; border-radius: 6px; box-shadow: 0 0 2px #888; overflow: hidden">
+            <a href="#dropdown" style="display: flex; align-items: center; justify-content: space-between; color: #888; padding: 6px 12px; font-size: 14px" style-hover="background: #868eae16; color: #006169">Edit listing<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-inline-start: 8px"><path d="M4 20h4l10-10-4-4L4 16v4z"></path></svg></a>
+            <a href="#dropdown" style="display: flex; align-items: center; justify-content: space-between; color: #888; padding: 6px 12px; font-size: 14px" style-hover="background: #868eae16; color: #006169">Upgrade<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-inline-start: 8px"><path d="M12 20V6M6 12l6-6 6 6"></path></svg></a>
+            <a href="#dropdown" style="display: flex; align-items: center; justify-content: space-between; color: #888; padding: 6px 12px; font-size: 14px" style-hover="background: #868eae16; color: #006169">View on bayut.sa<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-inline-start: 8px"><path d="M7 17L17 7M17 7H9M17 7v8"></path></svg></a>
+            <a href="#dropdown" style="display: flex; align-items: center; justify-content: space-between; color: #f73131; padding: 6px 12px; font-size: 14px" style-hover="background: #868eae16">Delete<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-inline-start: 8px"><path d="M6 7h12M9 7V5h6v2M8 7l1 12h6l1-12"></path></svg></a>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Split / icon trigger</div>
+          <div style="display: inline-flex; align-items: stretch; border: 1px solid #DEDEDE; border-radius: 5px; overflow: hidden; width: max-content">
+            <span style="padding: 0 16px 0 10px; display: inline-flex; align-items: center; font-size: 14px; font-weight: 600; color: #5A5F7D">Bulk actions</span>
+            <span style="border-inline-start: 1px solid #DEDEDE; padding: 0 8px; display: inline-flex; align-items: center; color: #707070"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></span>
+          </div>
+          <div style="display: inline-flex; width: 32px; height: 32px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; align-items: center; justify-content: center; cursor: pointer" style-hover="background: #E1F2F0; color: #006169">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tabs" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Tabs</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/tabs</code> — the base tab item is 12px 15px with no gutter and an ink bar in the accent colour (<code style="font-size: 13px">primary-color</code> by default, overridable per card). The <code style="font-size: 13px">ant-tabs-pills</code> variant drops the ink bar for 32px-radius chips with an <code style="font-size: 13px">#E6E6E6</code> border, 8px gap and 8px 12px padding; the active chip takes a primary border on <code style="font-size: 13px">primary-light</code>.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 0; overflow: hidden">
+          <div style="display: flex; border-bottom: 1px solid #f0f0f0; padding: 0 8px">
+            <span style="padding: 12px 15px; font-size: 14px; font-weight: 600; color: #006169; box-shadow: inset 0 -2px 0 #006169">Active (18)</span>
+            <span style="padding: 12px 15px; font-size: 14px; color: #5A5F7D; cursor: pointer">Pending (3)</span>
+            <span style="padding: 12px 15px; font-size: 14px; color: #5A5F7D; cursor: pointer">Expired (7)</span>
+            <span style="padding: 12px 15px; font-size: 14px; color: #C2C2C2">Archived</span>
+          </div>
+          <div style="padding: 20px; font-size: 13px; color: #707070">Underline tabs — used in card heads (<code>tabList</code> on <code>Card</code> / <code>DataTable</code>).</div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D; margin-bottom: 16px">Pill tabs</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <span style="border: 1px solid #006169; background: #F7FCFC; border-radius: 32px; font-size: .875rem; line-height: 1.2; padding: 8px 12px; color: #006169; font-weight: 600">All leads</span>
+            <span style="border: 1px solid #E6E6E6; border-radius: 32px; font-size: .875rem; line-height: 1.2; padding: 8px 12px; color: #5A5F7D; cursor: pointer">Calls</span>
+            <span style="border: 1px solid #E6E6E6; border-radius: 32px; font-size: .875rem; line-height: 1.2; padding: 8px 12px; color: #5A5F7D; cursor: pointer">WhatsApp</span>
+            <span style="border: 1px solid #E6E6E6; border-radius: 32px; font-size: .875rem; line-height: 1.2; padding: 8px 12px; color: #5A5F7D; cursor: pointer">Emails</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="navitem" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Nav item</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/navbar/style.js</code> — 8px 16px, radius 4px, weight 500, colour <code style="font-size: 13px">base-color</code>; the icon is at least 18px with a 20px inline-end margin in <code style="font-size: 13px">extra-light-color</code>. Active: <code style="font-size: 13px">primary-light</code> background with primary text and icon at weight 600. Hover: <code style="font-size: 13px">bg-color-light</code> with primary text. Items are 8px apart; a <code style="font-size: 13px">.nav-text</code> row pushes a trailing count to the end.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 20px; max-width: 340px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <a href="#navitem" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 600; font-size: 14px; background: #F7FCFC; color: #006169">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+            <span style="width: 100%; display: flex; justify-content: space-between">Dashboard</span>
+          </a>
+          <a href="#navitem" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; color: #222" style-hover="background: #F8F9FB; color: #006169">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADB4D2" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"></path></svg>
+            <span style="width: 100%; display: flex; justify-content: space-between">My listings<span style="color: #9D9D9D">28</span></span>
+          </a>
+          <a href="#navitem" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; color: #222" style-hover="background: #F8F9FB; color: #006169">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADB4D2" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><path d="M4 5h16v14H4z"></path><path d="M4 8l8 5 8-5"></path></svg>
+            <span style="width: 100%; display: flex; justify-content: space-between">Leads<span style="min-width: 20px; height: 20px; padding: 0 4px; border-radius: 10px; background: #f73131; color: #fff; font-size: 10px; font-weight: 600; display: grid; place-content: center">5</span></span>
+          </a>
+          <a href="#navitem" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; color: #222" style-hover="background: #F8F9FB; color: #006169">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADB4D2" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v8M9 12h6"></path></svg>
+            <span style="width: 100%; display: flex; justify-content: space-between">Credits &amp; shop</span>
+          </a>
+          <a href="#navitem" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 400; font-size: 14px; color: #BDBDBD">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="min-width: 18px; margin-inline: 2px 13px"><path d="M12 5v14M5 12h14"></path></svg>New folder
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="breadcrumb" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Breadcrumb</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px">From <code style="font-size: 13px">ui-elements-styled.js</code> — links in <code style="font-size: 13px">#5A5F7D</code> with a 4px separator margin and a 2px icon gap; the current (last) crumb is <code style="font-size: 13px">#9299B8</code>. A compact demo variant renders 12px crumbs in <code style="font-size: 13px">gray-color</code>, and a 48px nav bar uses <code style="font-size: 13px">bg-color-light</code> with a 4px radius.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; align-items: center; gap: 4px; font-size: 14px; color: #5A5F7D">
+          <a href="#breadcrumb" style="display: inline-flex; align-items: center; gap: 2px; color: #5A5F7D"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"></path></svg>Home</a>
+          <span style="margin: 0 4px; color: #C2C2C2">/</span>
+          <a href="#breadcrumb" style="color: #5A5F7D">My listings</a>
+          <span style="margin: 0 4px; color: #C2C2C2">/</span>
+          <span style="color: #9299B8">BYT-24-0912</span>
+        </div>
+        <div style="height: 48px; line-height: 48px; padding: 0 10px; border-radius: 4px; background: #F8F9FB; display: flex; align-items: center; gap: 4px; font-size: 12px; color: #5A5F7D">
+          <a href="#breadcrumb" style="padding: 0 12px; color: #5A5F7D">Reports</a>
+          <span style="color: #C2C2C2">/</span>
+          <a href="#breadcrumb" style="padding: 0 12px; color: #5A5F7D">Performance</a>
+          <span style="color: #C2C2C2">/</span>
+          <span style="padding: 0 12px; color: #9299B8">Leads &amp; reach</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="pagination" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Pagination</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 8px"><code style="font-size: 13px">common/dataTable</code> renders a <code style="font-size: 13px">TablePagination</code> wrapper below the table when <code style="font-size: 13px">paginationOnBottom</code> is set and there is more than one page. The size changer is hidden; page size defaults to <code style="font-size: 13px">pagination.pageCount</code> or 20, and page changes are pushed into the URL query (<code style="font-size: 13px">?page=</code>) unless <code style="font-size: 13px">noUrlPush</code> is set.</p>
+      <p style="font-size: 13px; color: #006169; background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 6px; padding: 10px 12px; margin-bottom: 20px"><strong style="font-weight: 700">Exact spec:</strong> items carry a <code style="font-size: 12px">1px #f1f2f6</code> border on white with 4px margins (3px and radius 4px inside <code style="font-size: 12px">TablePagination</code>) and links in <code style="font-size: 12px">#5a5f7d</code>; the active item sits on <code style="font-size: 12px">primary-light #F7FCFC</code> with a <code style="font-size: 12px">primary-color</code> border and primary link. Prev / next drop their own border and run at line-height 28px; the ellipsis is <code style="font-size: 12px">#5a5f7d</code>. The row is <strong style="font-weight: 700">end-aligned</strong>, centring below 768px. Table pagination gets a 30px top margin; below 767px items shrink to 25px × 25px with line-height 22px and 5px end margins.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; justify-content: flex-end">
+        <div style="display: flex; align-items: center">
+          <span style="width: 32px; height: 32px; margin: 4px; border-radius: 4px; display: grid; place-content: center; color: #5a5f7d; line-height: 28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"></path></svg></span>
+          <span style="width: 32px; height: 32px; margin: 4px; border: 1px solid #006169; background: #F7FCFC; border-radius: 4px; display: grid; place-content: center; color: #006169; font-size: 14px">1</span>
+          <span style="width: 32px; height: 32px; margin: 4px; border: 1px solid #f1f2f6; background: #fff; border-radius: 4px; display: grid; place-content: center; color: #5a5f7d; font-size: 14px; cursor: pointer">2</span>
+          <span style="width: 32px; height: 32px; margin: 4px; border: 1px solid #f1f2f6; background: #fff; border-radius: 4px; display: grid; place-content: center; color: #5a5f7d; font-size: 14px; cursor: pointer">3</span>
+          <span style="width: 32px; height: 32px; margin: 4px; border: 1px solid #f1f2f6; background: #fff; border-radius: 4px; display: grid; place-content: center; color: #5a5f7d; font-size: 14px">…</span>
+          <span style="width: 32px; height: 32px; margin: 4px; border: 1px solid #f1f2f6; background: #fff; border-radius: 4px; display: grid; place-content: center; color: #5a5f7d; font-size: 14px; cursor: pointer">14</span>
+          <span style="width: 32px; height: 32px; margin: 4px; border-radius: 4px; display: grid; place-content: center; color: #5a5f7d; cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg></span>
+        </div>
+      </div>
+    </section>
+
+    <section id="actions" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Action group</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">BtnGroup</code> (12px / 500 buttons, 10.75px inline padding, 3px outer radius) for segmented actions, and <code style="font-size: 13px">common/listingActionPopover</code> for the per-listing action stack: circular icon buttons plus an overflow popover.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 16px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Inline icon actions</div>
+          <div style="display: flex; gap: 8px; align-items: center">
+            <span style="width: 32px; height: 32px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; display: grid; place-content: center; cursor: pointer" style-hover="background: #E1F2F0; color: #006169"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4l10-10-4-4L4 16v4z"></path></svg></span>
+            <span style="width: 32px; height: 32px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; display: grid; place-content: center; cursor: pointer" style-hover="background: #E1F2F0; color: #006169"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V6M6 12l6-6 6 6"></path></svg></span>
+            <span style="width: 32px; height: 32px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; display: grid; place-content: center; cursor: pointer" style-hover="background: #E1F2F0; color: #006169"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+            <span style="width: 32px; height: 32px; border-radius: 50%; background: rgba(247,49,49,.1); color: #f73131; display: grid; place-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h12M9 7V5h6v2M8 7l1 12h6l1-12"></path></svg></span>
+            <span style="width: 32px; height: 32px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; display: grid; place-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg></span>
+          </div>
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Primary + secondary pair</div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap">
+            <button style="height: 36px; padding: 0 1.2em; border: 1px solid #006169; border-radius: 6px; background: #006169; color: #fff; font: 600 14px Figtree, sans-serif; cursor: pointer">Publish</button>
+            <button style="height: 36px; padding: 0 1.2em; border: 1px solid #A6C8CA; border-radius: 6px; background: #F2FAFA; color: #006169; font: 600 14px Figtree, sans-serif; cursor: pointer">Save draft</button>
+            <button style="height: 36px; padding: 0 1.2em; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #006169; font: 600 14px Figtree, sans-serif; cursor: pointer">Cancel</button>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 16px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Action popover</div>
+          <div style="background: #fff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.15); padding: 16px; max-width: 260px; display: flex; flex-direction: column; gap: 10px">
+            <div style="font-size: 14px; font-weight: 600; color: #272B41">Listing actions</div>
+            <div style="display: flex; flex-direction: column; gap: 2px; font-size: 14px">
+              <span style="display: flex; align-items: center; gap: 8px; color: #626262; padding: 4px 0; cursor: pointer" style-hover="color: #006169"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4l10-10-4-4L4 16v4z"></path></svg>Edit</span>
+              <span style="display: flex; align-items: center; gap: 8px; color: #626262; padding: 4px 0; cursor: pointer" style-hover="color: #006169"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>Duplicate</span>
+              <span style="display: flex; align-items: center; gap: 8px; color: #626262; padding: 4px 0; cursor: pointer" style-hover="color: #006169"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v6h6"></path><path d="M20 20v-6h-6"></path><path d="M4 10a8 8 0 0 1 14-3M20 14a8 8 0 0 1-14 3"></path></svg>Refresh</span>
+              <span style="display: flex; align-items: center; gap: 8px; color: #f73131; padding: 4px 0; cursor: pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h12M9 7V5h6v2M8 7l1 12h6l1-12"></path></svg>Delete</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="filterchip" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Filter summary chip</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/filterTags/filterTags.js</code> — renders <code style="font-size: 13px">label: value</code> where the label is <code style="font-size: 13px">#707070</code> and the value is semi-bold <code style="font-size: 13px">primary-color</code>. It prints the first five values, then a success-tinted <code style="font-size: 13px">+N</code> pill (bg <code style="font-size: 13px">#e6f5e7</code>, radius 15px, 4px 10px) whose tooltip lists the rest.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 14px">
+        <div style="font-size: 14px; color: #707070">Location: <span style="color: #006169; font-weight: 600">Al Malqa, Al Narjis, Hittin, Al Aqiq, King Abdullah District, <span style="background: #e6f5e7; color: #28b16d; padding: 4px 10px; border-radius: 15px; line-height: normal; cursor: pointer">+7</span></span></div>
+        <div style="font-size: 14px; color: #707070">Purpose: <span style="color: #006169; font-weight: 600">For sale</span></div>
+        <div style="font-size: 14px; color: #707070">Property type: <span style="color: #006169; font-weight: 600">Apartment, Villa, Townhouse</span></div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; border-top: 1px solid #f5f5f5; padding-top: 14px">
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #006169; background: #E1F2F0; border: 1px solid #A6C8CA; border-radius: 24px; padding: 4px 10px">For sale <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6z"></path></svg></span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #006169; background: #E1F2F0; border: 1px solid #A6C8CA; border-radius: 24px; padding: 4px 10px">2+ beds <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6z"></path></svg></span>
+          <span style="display: inline-flex; align-items: center; font-size: 12px; color: #f73131; padding: 4px 10px; cursor: pointer">Clear all</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="textwithicon" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Text with icon</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/textWithIcon</code> — a flex row (centre-aligned, 8px gap) of an icon at <code style="font-size: 13px">1.2em</code> in <code style="font-size: 13px">light-gray-color</code> plus text at weight 500 / <code style="font-size: 13px">#222</code>; <code style="font-size: 13px">lead</code> raises it to 600 / <code style="font-size: 13px">1.143rem</code>. With <code style="font-size: 13px">iconProps.hasBackground</code> the icon renders in the icon-container tile. <code style="font-size: 13px">loading</code> swaps both parts for skeletons. <code style="font-size: 13px">common/iconSubText</code> stacks a primary 700 value over a 12px gray sub-label.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-direction: column; gap: 16px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Default · lead · tile · loading</div>
+          <div style="display: flex; align-items: center; gap: 8px"><svg width="17" height="17" viewBox="0 0 24 24" fill="#868EAE"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"></path></svg><span style="font-size: 14px; font-weight: 500; color: #222">Al Malqa, Riyadh</span></div>
+          <div style="display: flex; align-items: center; gap: 8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#868EAE"><path d="M4 18v-5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v5h-2v-3H6v3z"></path><circle cx="8" cy="7" r="2"></circle></svg><span style="font-size: 1.143rem; font-weight: 600; color: #222">3 bedrooms</span></div>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <div style="width: 32px; aspect-ratio: 1; border-radius: 30%; background: rgba(0,97,105,.08); color: #006169; display: grid; place-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9"></circle></svg></div>
+            <span style="font-size: 14px; font-weight: 500; color: #222">142 credits <span style="color: #707070">available</span></span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <span style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(90deg, #F1F2F6 25%, #fafafb 37%, #F1F2F6 63%); background-size: 400% 100%; animation: profolioShimmer 1.4s ease infinite"></span>
+            <span style="width: 120px; height: 18px; border-radius: 6px; background: linear-gradient(90deg, #F1F2F6 25%, #fafafb 37%, #F1F2F6 63%); background-size: 400% 100%; animation: profolioShimmer 1.4s ease infinite"></span>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D; margin-bottom: 18px">Icon with sub-text</div>
+          <div style="display: flex; gap: 32px; flex-wrap: wrap">
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <div style="display: flex; align-items: center; gap: 4px; color: #006169; font-weight: 700; font-size: 16px"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9"></circle></svg>142</div>
+              <span style="font-size: 12px; color: #707070">Total credits</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <div style="display: flex; align-items: center; gap: 4px; color: #006169; font-weight: 700; font-size: 16px"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 11l9-8 9 8v9H3z"></path></svg>28</div>
+              <span style="font-size: 12px; color: #707070">Active listings</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <div style="display: flex; align-items: center; gap: 4px; color: #006169; font-weight: 700; font-size: 16px"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16v14H4z"></path></svg>63</div>
+              <span style="font-size: 12px; color: #707070">Leads this month</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="statistic" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Statistic</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/statistic</code> — title in <code style="font-size: 13px">gray700</code> at 1em (0.857em on mobile) with a 0.143em gap; value at 1.143em / 700, rising to 1.429em with <code style="font-size: 13px">lead</code> and 1.571em with <code style="font-size: 13px">leader</code>. Trends render <code style="font-size: 13px">TiArrowSortedUp/Down</code> in success or danger plus an optional <code style="font-size: 13px">since_when</code> line; <code style="font-size: 13px">inlineTrends</code> moves the delta into the value suffix. Adjacent statistics gain a <code style="font-size: 13px">gray100</code> inline-start divider with 16px padding. Lottie can replace the icon.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px">
+        <div style="display: flex; flex-wrap: wrap; gap: 0">
+          <div style="padding-inline-end: 16px">
+            <div style="font-size: 14px; color: #707070; margin-bottom: 2px">Impressions</div>
+            <div style="font-size: 16px; font-weight: 700; color: #272B41">48,210</div>
+            <small style="display: flex; align-items: center; gap: 2px; font-size: 13px"><svg width="12" height="12" viewBox="0 0 24 24" fill="#28b16d"><path d="M12 6l8 12H4z"></path></svg><span style="color: #28b16d">12%</span><span style="color: #9D9D9D; margin-inline-start: 6px">since last month</span></small>
+          </div>
+          <div style="padding-inline: 16px; border-inline-start: 1px solid #f0f0f0">
+            <div style="font-size: 14px; color: #707070; margin-bottom: 2px">Clicks</div>
+            <div style="font-size: 16px; font-weight: 700; color: #272B41">3,984</div>
+            <small style="display: flex; align-items: center; gap: 2px; font-size: 13px"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f73131"><path d="M12 18L4 6h16z"></path></svg><span style="color: #f73131">4%</span><span style="color: #9D9D9D; margin-inline-start: 6px">since last month</span></small>
+          </div>
+          <div style="padding-inline: 16px; border-inline-start: 1px solid #f0f0f0">
+            <div style="font-size: 14px; color: #707070; margin-bottom: 2px">Leads</div>
+            <div style="font-size: 20px; font-weight: 700; color: #272B41">63 <span style="font-size: 13px; font-weight: 400; color: #28b16d">↑ 9%</span></div>
+            <small style="font-size: 13px; color: #9D9D9D">lead · inlineTrends</small>
+          </div>
+          <div style="padding-inline-start: 16px; border-inline-start: 1px solid #f0f0f0; display: flex; gap: 12px; align-items: flex-start">
+            <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: rgba(0,97,105,.08); color: #006169; display: grid; place-content: center; margin-block-start: .4em"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16v14H4z"></path></svg></div>
+            <div>
+              <div style="font-size: 14px; color: #707070; margin-bottom: 2px">Calls</div>
+              <div style="font-size: 22px; font-weight: 700; color: #272B41">1,024</div>
+              <small style="font-size: 13px; color: #9D9D9D">leader + icon</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stats" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Stats with percentage</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/stats-with-percentage</code> — title row uses TextWithIcon with a <code style="font-size: 13px">gray500</code> icon; the value is 16px / 700 (20px with <code style="font-size: 13px">lead</code>); the trend line is 13px in <code style="font-size: 13px">light-color</code> with <code style="font-size: 13px">HiArrowUp/HiArrowDown</code> in success or danger, and <code style="font-size: 13px">.growth-downward</code> paints the delta in <code style="font-size: 13px">error-color</code>. The lead layout puts a 1.6em icon tile on the start edge with a 12px gap.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 20px">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px"><svg width="17" height="17" viewBox="0 0 24 24" fill="#C2C2C2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"></path></svg><span style="font-size: 14px; font-weight: 500; color: #222">Views</span></div>
+          <div style="font-size: 16px; font-weight: 700; color: #272B41">12,480</div>
+          <small style="display: block; font-size: 13px; color: #9D9D9D; margin-block-start: 4px"><span style="display: inline-flex; align-items: center; padding-inline-end: 10px; color: #006169"><svg width="12" height="12" viewBox="0 0 24 24" fill="#28b16d"><path d="M12 4l8 10h-6v6h-4v-6H4z"></path></svg>18%</span><p style="font-size: 13px; color: #868EAE">vs last 30 days</p></small>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 20px">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px"><svg width="17" height="17" viewBox="0 0 24 24" fill="#C2C2C2"><path d="M4 5h16v14H4z"></path></svg><span style="font-size: 14px; font-weight: 500; color: #222">Emails</span></div>
+          <div style="font-size: 16px; font-weight: 700; color: #272B41">218</div>
+          <small style="display: block; font-size: 13px; color: #9D9D9D; margin-block-start: 4px"><span style="display: inline-flex; align-items: center; padding-inline-end: 10px; color: #f73131"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f73131"><path d="M12 20L4 10h6V4h4v6h6z"></path></svg>6%</span><p style="font-size: 13px; color: #868EAE">vs last 30 days</p></small>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 20px; display: flex; gap: 12px; align-items: flex-start">
+          <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: rgba(173,180,210,.08); color: #ADB4D2; display: grid; place-content: center; margin-block-start: 8px"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4-6 4z"></path></svg></div>
+          <div>
+            <div style="font-size: 1.143rem; font-weight: 600; color: #222">Saved searches</div>
+            <div style="font-size: 20px; font-weight: 700; color: #272B41">37</div>
+            <small style="display: block; font-size: 13px; color: #9D9D9D; margin-block-start: 4px"><span style="color: #006169">–</span><p style="font-size: 13px; color: #868EAE">no change</p></small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="keyvalue" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Key–value card</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/keyValueCard</code> — an optional 12px strong gray title above a card with a <code style="font-size: 13px">#E1F2F0</code> border, radius 8px, 10px top margin and an <code style="font-size: 13px">#F2FAFA</code> body padded 16px 24px. Items sit in a two-column grid with a 14px gap; each is a 12px gray label over a 12px strong value, falling back to <code style="font-size: 13px">-</code> when empty and capitalising non-date values.</p>
+      <div style="max-width: 560px">
+        <div style="font-size: 12px; font-weight: 700; color: #707070; margin-bottom: 10px">REGA licence details</div>
+        <div style="border: 1px solid #E1F2F0; border-radius: 8px; overflow: hidden">
+          <div style="background: #F2FAFA; padding: 16px 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px">
+            <div style="display: flex; flex-direction: column"><span style="font-size: 12px; color: #707070; margin-bottom: 4px">Licence number</span><span style="font-size: 12px; font-weight: 700; color: #272B41">1200012345</span></div>
+            <div style="display: flex; flex-direction: column"><span style="font-size: 12px; color: #707070; margin-bottom: 4px">Status</span><span style="font-size: 12px; font-weight: 700; color: #272B41">Active</span></div>
+            <div style="display: flex; flex-direction: column"><span style="font-size: 12px; color: #707070; margin-bottom: 4px">Issued on</span><span style="font-size: 12px; font-weight: 700; color: #272B41">14 Feb 2026</span></div>
+            <div style="display: flex; flex-direction: column"><span style="font-size: 12px; color: #707070; margin-bottom: 4px">Expires on</span><span style="font-size: 12px; font-weight: 700; color: #272B41">-</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="compact" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Compact &amp; gradient card</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">CardCompact</code> — <code style="font-size: 13px">primary-light-4</code> on a <code style="font-size: 13px">primary-light-2</code> border, radius 4px, padding 8px (both overridable). <code style="font-size: 13px">CardGradient</code> — radius 12px, padding 16px, a 273.74° teal gradient (<code style="font-size: 13px">rgba(113,167,172,.83)</code> → <code style="font-size: 13px">rgba(216,233,240,.83)</code>) optionally over a background image, mirrored to −273.74° in RTL, and dropping to alpha 0.6 when <code style="font-size: 13px">hoverable</code>.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+        <div style="background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 4px; padding: 8px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+          <span style="font-size: 13px; color: #272B41">Credits remaining</span><span style="font-size: 13px; font-weight: 700; color: #006169">142</span>
+        </div>
+        <div style="background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 4px; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #707070">Quota used this cycle</span><span style="font-size: 16px; font-weight: 700; color: #006169">18 / 30</span>
+        </div>
+        <div style="border-radius: 12px; padding: 16px; background: linear-gradient(273.74deg, rgba(113,167,172,0.83) -56.69%, rgba(216,233,240,0.83) 56.07%); background-size: cover; display: flex; flex-direction: column; gap: 8px; cursor: pointer">
+          <span style="font-size: 14px; font-weight: 700; color: #006169">Upgrade to Signature</span>
+          <span style="font-size: 12px; color: #4f4f4f">Get 4× more views on your best listings</span>
+          <button style="margin-top: 4px; align-self: flex-start; height: 32px; padding: 0 14px; border: 0; border-radius: 6px; background: #fff; color: #006169; font: 600 13px Figtree, sans-serif; cursor: pointer">See packages</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="meta" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Avatar meta row</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/custom-card</code> — an icon or avatar, a 600-weight title (14px desktop / 12px mobile) and a 12px gray description, with optional <code style="font-size: 13px">extraContent</code> pushed to the end and a 20px gap. It becomes a link (internal <code style="font-size: 13px">Link</code> or external anchor) when <code style="font-size: 13px">link</code> is set, and verified rows tint the title <code style="font-size: 13px">primary-color</code> at 67% alpha.</p>
+      <div style="display: flex; flex-direction: column; gap: 8px; max-width: 620px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 20px">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: #E3E6EF; color: #5A5F7D; display: grid; place-content: center; font-size: 14px; font-weight: 600">AH</div>
+            <div>
+              <div style="font-size: 14px; font-weight: 600; color: #222; display: flex; align-items: center; gap: 8px">Ahmed Hassan <svg width="14" height="14" viewBox="0 0 24 24" fill="#1890ff"><path d="M12 2l2.4 2.1 3.2-.4 1 3 2.9 1.4-1.3 3 1.3 3-2.9 1.4-1 3-3.2-.4L12 22l-2.4-2.1-3.2.4-1-3L2.5 15.5l1.3-3-1.3-3 2.9-1.4 1-3 3.2.4z"></path></svg></div>
+              <div style="font-size: 12px; color: #707070">Senior agent · 18 active listings</div>
+            </div>
+          </div>
+          <button style="height: 32px; padding: 0 12px; border: 1px solid #f0f0f0; border-radius: 6px; background: #fff; color: #5A5F7D; font: 600 13px Figtree, sans-serif; cursor: pointer">Manage quota</button>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 20px">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: #F4F5F7; color: #707070; display: grid; place-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg></div>
+            <div>
+              <div style="font-size: 14px; font-weight: 600; color: #222">Invite a colleague</div>
+              <div style="font-size: 12px; color: #707070">Send an invitation to join your agency</div>
+            </div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+        </div>
+      </div>
+    </section>
+
+    <section id="thumb" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Thumbnail &amp; badges</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 8px"><code style="font-size: 13px">Thumbnail</code> (<code style="font-size: 13px">components/styled.js</code>) is a 6px-radius grid with a square, cover-fitted image. Over it sit the media counters used on listing cards, the product tag stack and the trust badges — <code style="font-size: 13px">common/bayut-match-badge</code>, <code style="font-size: 13px">common/upgrade-icons</code> (verified check in <code style="font-size: 13px">link-color</code>, applied check on <code style="font-size: 13px">#28b16d</code>) and TruCheck-style seals.</p>
+      <p style="font-size: 13px; color: #006169; background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 6px; padding: 10px 12px; margin-bottom: 20px"><strong style="font-weight: 700">Bayut Match badge — exact spec</strong> (<code style="font-size: 12px">BayutMatchBadge.js</code>): a fully rounded pill (<code style="font-size: 12px">9999px</code>) in <code style="font-size: 12px">rgba(40,177,109,1)</code> on <code style="font-size: 12px">rgba(233,247,240,1)</code> at weight 600, line-height 1, with <code style="font-size: 12px">BayutMatchIcon</code> in <code style="font-size: 12px">#28B16D</code>. Two sizes — <em>medium</em>: 12px text, 11px icon, 5px gap, <code style="font-size: 12px">.5em</code> / 2px padding; <em>small</em>: 10px text, 9px icon, 4px gap, 4px / 2px padding. It renders only when <code style="font-size: 12px">BAYUT_MATCHING_LEAD</code> is on; a tooltip explains it on desktop, a bottom-sheet drawer on mobile.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+        <div style="width: 168px">
+          <div style="position: relative; display: grid; border-radius: 6px; overflow: hidden; aspect-ratio: 1; background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 8px, #f7f7f7 8px, #f7f7f7 16px)">
+            <div style="position: absolute; inset-block-start: 8px; inset-inline-start: 8px; display: flex; gap: 4px">
+              <span style="font-size: 10px; font-weight: 700; color: #fff; padding: 6px; border-radius: 4px; line-height: 1; background-color: #af6fff; background-image: linear-gradient(90deg, rgba(0,0,0,.7), rgba(255,255,255,.2)); background-blend-mode: soft-light">SIGNATURE</span>
+            </div>
+            <div style="position: absolute; inset-block-end: 8px; inset-inline-start: 8px; display: flex; gap: 6px">
+              <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; background: rgba(0,0,0,.55); border-radius: 4px; padding: 3px 6px"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v12H4z"></path></svg>12</span>
+              <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; background: rgba(0,0,0,.55); border-radius: 4px; padding: 3px 6px"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h11v14H4zM17 9l4-2v10l-4-2z"></path></svg>1</span>
+            </div>
+          </div>
+          <div style="font-size: 11px; color: #9D9D9D; margin-top: 8px; font-family: ui-monospace, monospace">radius 6 · aspect 1 · cover</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #1890ff; background: #e4f1ff; border-radius: 4px; padding: 4px 8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.2-.4 1 3 2.9 1.4-1.3 3 1.3 3-2.9 1.4-1 3-3.2-.4L12 22l-2.4-2.1-3.2.4-1-3L2.5 15.5l1.3-3-1.3-3 2.9-1.4 1-3 3.2.4z"></path></svg>Verified</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #28b16d; background: #dff4e9; border-radius: 4px; padding: 4px 8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"></path></svg>Applied</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; gap: 5px; font-size: 12px; font-weight: 600; line-height: 1; color: rgba(40,177,109,1); background-color: rgba(233,247,240,1); border-radius: 9999px; padding-inline: .5em; padding-block: 2px"><svg width="11" height="11" viewBox="0 0 24 24" fill="#28B16D"><path d="M12 2l2.4 2.1 3.2-.4 1 3 2.9 1.4-1.3 3 1.3 3-2.9 1.4-1 3-3.2-.4L12 22l-2.4-2.1-3.2.4-1-3L2.5 15.5l1.3-3-1.3-3 2.9-1.4 1-3 3.2.4z"></path></svg>Bayut Match</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-size: 10px; font-weight: 600; line-height: 1; color: rgba(40,177,109,1); background-color: rgba(233,247,240,1); border-radius: 9999px; padding-inline: 4px; padding-block: 2px"><svg width="9" height="9" viewBox="0 0 24 24" fill="#28B16D"><path d="M12 2l2.4 2.1 3.2-.4 1 3 2.9 1.4-1.3 3 1.3 3-2.9 1.4-1 3-3.2-.4L12 22l-2.4-2.1-3.2.4-1-3L2.5 15.5l1.3-3-1.3-3 2.9-1.4 1-3 3.2.4z"></path></svg>Bayut Match</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #f0a742; background: #fdf1e2; border-radius: 4px; padding: 4px 8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9"></circle></svg>Pending review</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #707070; background: #f5f5f5; border-radius: 4px; padding: 4px 8px">Ref BYT-24-0912</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #707070; background: #f5f5f5; border-radius: 4px; padding: 4px 8px">Posted 3 days ago</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #f73131; background: #fdeaea; border-radius: 4px; padding: 4px 8px">Expires in 4 days</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="health" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Health &amp; completion</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px">Listing health uses the four health tokens as a segmented meter with a label; profile completion pairs an Ant progress with a prompt and a CTA — both patterns come from the dashboard widgets and <code style="font-size: 13px">common/progress-bar</code>.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; align-items: center; justify-content: space-between"><span style="font-size: 14px; font-weight: 600; color: #222">Listing health</span><span style="font-size: 13px; font-weight: 600; color: #28b16d">Good</span></div>
+          <div style="display: flex; gap: 4px">
+            <span style="flex: 1; height: 6px; border-radius: 3px; background: #98DAB9"></span>
+            <span style="flex: 1; height: 6px; border-radius: 3px; background: #98DAB9"></span>
+            <span style="flex: 1; height: 6px; border-radius: 3px; background: #98DAB9"></span>
+            <span style="flex: 1; height: 6px; border-radius: 3px; background: #C1BFBF"></span>
+          </div>
+          <div style="font-size: 12px; color: #707070">Add two more photos and a floor plan to reach excellent.</div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; align-items: center; justify-content: space-between"><span style="font-size: 14px; font-weight: 600; color: #222">Profile completion</span><span style="font-size: 13px; color: #707070">72%</span></div>
+          <div style="height: 8px; border-radius: 4px; background: rgba(0,0,0,.06); overflow: hidden"><div style="width: 72%; height: 100%; background: #006169"></div></div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+            <span style="font-size: 12px; color: #707070">Add your agency logo and licence to finish.</span>
+            <button style="height: 29px; padding: 0 12px; border: 1px solid #A6C8CA; border-radius: 6px; background: #F2FAFA; color: #006169; font: 600 13px Figtree, sans-serif; cursor: pointer">Complete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="notification" style="margin-bottom: 24px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Notification &amp; toast</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">components/notification-center</code> rows and <code style="font-size: 13px">components/lead-nudges/lead-nudge-toasts.css</code> — a leading icon tile, a title, a muted body and a relative timestamp, with unread rows tinted. Toasts are dismissible and used for matching-lead nudges.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+          <div style="padding: 12px 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between">
+            <span style="font-size: 14px; font-weight: 600; color: #272B41">Notifications</span>
+            <a href="#notification" style="font-size: 12px; color: #006169">Mark all read</a>
+          </div>
+          <div style="padding: 12px 16px; display: flex; gap: 12px; background: #F7FCFC; border-bottom: 1px solid #f5f5f5">
+            <div style="width: 32px; aspect-ratio: 1; border-radius: 30%; background: rgba(0,97,105,.08); color: #006169; display: grid; place-content: center; flex: none"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16v14H4z"></path></svg></div>
+            <div style="min-width: 0">
+              <div style="font-size: 14px; font-weight: 600; color: #222">New lead on BYT-24-0912</div>
+              <div style="font-size: 13px; color: #707070">Fatimah requested a callback about your Al Malqa apartment.</div>
+              <div style="font-size: 11px; color: #9D9D9D; margin-top: 2px">12 minutes ago</div>
+            </div>
+          </div>
+          <div style="padding: 12px 16px; display: flex; gap: 12px">
+            <div style="width: 32px; aspect-ratio: 1; border-radius: 30%; background: rgba(240,167,66,.08); color: #f0a742; display: grid; place-content: center; flex: none"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22z"></path></svg></div>
+            <div style="min-width: 0">
+              <div style="font-size: 14px; font-weight: 600; color: #222">3 listings expire this week</div>
+              <div style="font-size: 13px; color: #707070">Refresh them to keep their position in search.</div>
+              <div style="font-size: 11px; color: #9D9D9D; margin-top: 2px">Yesterday</div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <div style="background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.15); padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start">
+            <div style="width: 32px; aspect-ratio: 1; border-radius: 30%; background: rgba(40,177,109,.08); color: #28b16d; display: grid; place-content: center; flex: none"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"></path></svg></div>
+            <div style="flex: 1">
+              <div style="font-size: 14px; font-weight: 600; color: #222">Matching lead found</div>
+              <div style="font-size: 13px; color: #707070">A buyer is searching for 3-bed apartments in Al Malqa.</div>
+              <div style="display: flex; gap: 8px; margin-top: 10px">
+                <button style="height: 29px; padding: 0 12px; border: 1px solid #006169; border-radius: 6px; background: #006169; color: #fff; font: 600 13px Figtree, sans-serif; cursor: pointer">View lead</button>
+                <button style="height: 29px; padding: 0 12px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #707070; font: 600 13px Figtree, sans-serif; cursor: pointer">Dismiss</button>
+              </div>
+            </div>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="#9D9D9D" style="flex: none; cursor: pointer"><path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6z"></path></svg>
+          </div>
+          <div style="background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.15); padding: 14px 16px; display: flex; gap: 12px; align-items: center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#f73131" style="flex: none"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm1 13h-2v-2h2zm0-4h-2V7h2z"></path></svg>
+            <div style="font-size: 14px; color: #222">Could not load leads. <a href="#notification" style="color: #006169; font-weight: 600">Retry</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}"></script>
+</body>
+</html>

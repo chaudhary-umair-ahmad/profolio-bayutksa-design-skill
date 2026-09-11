@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #F6F7FB; font-family: Figtree, 'Droid Arabic Kufi', sans-serif; font-size: 14px; line-height: 1.571; color: #272B41; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #006169; text-decoration: none; }
+  a:hover { color: #004b52; }
+  h1, h2, h3, h4, h5, h6, p { margin: 0; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  @keyframes profolioSpin { to { transform: rotate(360deg); } }
+  @keyframes profolioShimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+</style>
+</helmet>
+
+<div style="display: grid; grid-template-columns: 236px minmax(0, 1fr); align-items: start; min-height: 100vh">
+
+  <aside style="position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; background: #fff; border-inline-end: 1px solid #f0f0f0; padding: 24px 16px 48px">
+    <div style="display: flex; flex-direction: column; gap: 2px; margin-bottom: 20px">
+      <div style="font-size: 16px; font-weight: 800; color: #006169; letter-spacing: -0.01em">Bayut Profolio</div>
+      <div style="font-size: 12px; color: #707070">Design System</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 2px; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid #f0f0f0">
+      <a href="Bayut Profolio Atoms.dc.html" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 7px 10px; border-radius: 6px" style-hover="background: #f5f5f5">← Foundations &amp; Atoms</a>
+      <a href="Bayut Profolio Molecules.dc.html" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 7px 10px; border-radius: 6px" style-hover="background: #f5f5f5">← Molecules</a>
+      <div style="font-size: 13px; font-weight: 700; color: #006169; background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 6px; padding: 7px 10px">Organisms</div>
+    </div>
+    <div style="font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9D9D9D; padding: 0 8px 6px">Shell</div>
+    <nav style="display: flex; flex-direction: column; gap: 1px; margin-bottom: 18px">
+      <a href="#shell" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">App layout</a>
+      <a href="#header" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Header</a>
+      <a href="#sidebar" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Sidebar</a>
+      <a href="#footer" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Footer</a>
+    </nav>
+    <div style="font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9D9D9D; padding: 0 8px 6px">Surfaces</div>
+    <nav style="display: flex; flex-direction: column; gap: 1px; margin-bottom: 18px">
+      <a href="#card" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Card frame</a>
+      <a href="#banner" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Banner</a>
+      <a href="#dashboard" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Dashboard widgets</a>
+      <a href="#listingcard" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Listing card</a>
+      <a href="#grid" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Listing grid</a>
+      <a href="#table" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Data table</a>
+      <a href="#filters" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Filter panel</a>
+      <a href="#form" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Post-listing form</a>
+      <a href="#credits" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Credits &amp; checkout</a>
+    </nav>
+    <div style="font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9D9D9D; padding: 0 8px 6px">Overlays &amp; states</div>
+    <nav style="display: flex; flex-direction: column; gap: 1px">
+      <a href="#modal" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Modal</a>
+      <a href="#drawer" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Drawer</a>
+      <a href="#empty" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Empty states</a>
+      <a href="#mobile" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">Mobile chrome</a>
+      <a href="#structure" style="font-size: 13px; font-weight: 500; color: #4f4f4f; padding: 6px 8px; border-radius: 6px" style-hover="background: #F2FAFA; color: #006169">System structure</a>
+    </nav>
+  </aside>
+
+  <main style="padding: 40px 40px 96px; max-width: 1180px">
+
+    <header style="margin-bottom: 40px">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #006169; margin-bottom: 8px">Atomic design — layer 3</div>
+      <h1 style="font-size: 38px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: #222; margin-bottom: 4px">Bayut Profolio Design System</h1>
+      <div style="font-size: 20px; font-weight: 600; color: #006169; margin-bottom: 12px">Organisms</div>
+      <p style="font-size: 15px; color: #626262; max-width: 76ch">Full interface sections assembled from the atoms and molecules of the previous two layers. Each one maps to a real container or component tree in the codebase — the app shell, the card frame, listing surfaces, tables, filters, the post-listing form, overlays and empty states.</p>
+    </header>
+
+    <section id="shell" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">App layout</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">src/layout</code> + Layout theme tokens — a 74px white header above a white sider and a <code style="font-size: 13px">#F6F7FB</code> content body; header padding <code style="font-size: 13px">0 30px 0 15px</code>, footer <code style="font-size: 13px">24px 15px</code> on <code style="font-size: 13px">#fafafa</code>. Below 992px the sider becomes a fixed 280px drawer anchored at <code style="font-size: 13px">top: 75px</code> that slides in with a 0.35s ease-in transform.</p>
+      <div style="border: 1px solid #f0f0f0; border-radius: 10px; overflow: hidden; background: #F6F7FB">
+        <div style="height: 74px; background: #fff; border-bottom: 1px solid #f0f0f0; padding: 0 30px 0 15px; display: flex; align-items: center; justify-content: space-between; gap: 16px">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <span style="display: inline-flex; align-items: center; gap: 8px"><img src="public/profolio-assets/bayut/logo512.png" alt="Bayut" width="28" height="28" style="display: block; border-radius: 6px"><span style="font-size: 18px; font-weight: 800; color: #006169">profolio</span></span>
+            <span style="font-size: 11px; color: #9D9D9D; font-family: ui-monospace, monospace">layout-header-height 74px</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px">
+            <span style="width: 32px; height: 32px; border-radius: 50%; background: #F4F5F7"></span>
+            <span style="width: 32px; height: 32px; border-radius: 50%; background: #E3E6EF"></span>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 240px minmax(0, 1fr)">
+          <div style="background: #fff; border-inline-end: 1px solid #f0f0f0; padding: 20px 15px; min-height: 220px; display: flex; flex-direction: column; gap: 8px">
+            <span style="height: 34px; border-radius: 4px; background: #F7FCFC"></span>
+            <span style="height: 34px; border-radius: 4px; background: #F8F9FB"></span>
+            <span style="height: 34px; border-radius: 4px; background: #F8F9FB"></span>
+            <span style="font-size: 11px; color: #9D9D9D; font-family: ui-monospace, monospace; margin-top: 6px">layout-sider-background #fff</span>
+          </div>
+          <div style="padding: 24px; display: flex; flex-direction: column; gap: 16px">
+            <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); height: 76px"></div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px">
+              <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); height: 88px"></div>
+              <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); height: 88px"></div>
+              <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); height: 88px"></div>
+            </div>
+            <span style="font-size: 11px; color: #9D9D9D; font-family: ui-monospace, monospace">layout-body-background #F6F7FB · grid-gutter-width 25px</span>
+          </div>
+        </div>
+        <div style="background: #fafafa; border-top: 1px solid #f0f0f0; padding: 24px 15px; font-size: 12px; color: #707070">layout-footer-background #fafafa · padding 24px 15px</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 20px; margin-top: 16px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #626262">
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Page-level chrome (style.less)</div>
+        <div><code style="color: #707070">.ant-layout-content</code> is a grid with <code style="color: #707070">grid-template-rows: auto 1fr</code>, so the page header sits above a stretching content row.</div>
+        <div>Page header padding: <code style="color: #707070">24px 32px</code> — <code style="color: #707070">26px 15px</code> below 768px, <code style="color: #707070">16px 20px</code> below 576px; the boxed variant steps 180 → 130 → 50 → 30px. Below 768px the heading stacks and centres. Header action buttons are 34px at 12px / 500, padding <code style="color: #707070">0 12.32px</code>, shadow <code style="color: #707070">0 3px 5px #9299b805</code>, with 12px primary-tinted icons.</div>
+        <div>Sticky filter bar: <code style="color: #707070">top: 74px</code> (the header height) on <code style="color: #707070">#f4f5f7</code>, padding <code style="color: #707070">7px 16px</code>, gaining <code style="color: #707070">0 2px 14px rgba(0,0,0,.15)</code> once stuck. Sticky section headings use the same 74px offset at <code style="color: #707070">z-index: 99</code>.</div>
+        <div>Scroll areas use <code style="color: #707070">.scroll-y</code> / <code style="color: #707070">.scroll-x</code> — 8px thin scrollbars, track <code style="color: #707070">#ededed</code>, thumb <code style="color: #707070">#c0c0c0</code>, 4px radius.</div>
+        <div>Overlays: dark page overlay <code style="color: #707070">#10122130</code>; modal mask <code style="color: #707070">rgba(34,34,34,.9)</code>; image preview mask <code style="color: #707070">rgba(0,0,0,.9)</code>. Popovers sit at z-index 99999, dropping to 999 below 992px so modals stay above them.</div>
+      </div>
+    </section>
+
+    <section id="header" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Header</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px">Composes the header search, the platform segmented control (Bayut / Dubizzle, shown only for multi-platform users), the credits summary, the notification badge, the "Go to bayut.sa" classified pill (min-width 148.71px) and the account dropdown. On Bayut KSA the inbox entry is hidden by <code style="font-size: 13px">HIDE_INBOX</code>.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 0 30px 0 15px; height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 20px; overflow-x: auto">
+        <div style="display: flex; align-items: center; gap: 16px; flex: none">
+          <span style="display: inline-flex; align-items: center; gap: 8px"><img src="public/profolio-assets/bayut/logo512.png" alt="Bayut" width="28" height="28" style="display: block; border-radius: 6px"><span style="font-size: 18px; font-weight: 800; color: #006169">profolio</span></span>
+          <div style="display: inline-flex; background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 6px; padding: 4px 6px; gap: 2px">
+            <span style="padding: 0 14px; min-height: 25px; line-height: 25px; border-radius: 4px; background: #006169; color: #fff; font-weight: 700; font-size: 12px">Bayut</span>
+            <span style="padding: 0 14px; min-height: 25px; line-height: 25px; border-radius: 4px; color: #707070; font-weight: 700; font-size: 12px; cursor: pointer">Dubizzle</span>
+          </div>
+          <div style="height: 36px; width: 260px; border: 1px solid #DEDEDE; border-radius: 6px; display: flex; align-items: center; gap: 8px; padding: 0 11px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006169" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+            <span style="font-size: 13px; color: #9D9D9D">Search listings</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; flex: none">
+          <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #272B41"><svg width="16" height="16" viewBox="0 0 24 24" fill="#f0a742"><circle cx="12" cy="12" r="9"></circle></svg><strong style="font-weight: 700; color: #006169">142</strong> credits</div>
+          <a href="#header" style="box-sizing: border-box; display: inline-flex; min-width: 148.71px; height: 36px; justify-content: center; align-items: center; gap: 4px; padding: 0 16px; background: #fff; border: 1px solid #f0f0f0; border-radius: 6px; color: #767676; font-weight: 500; font-size: 14px; line-height: 1; white-space: nowrap" style-hover="color: #595959; border-color: #e0e0e0; background: #fafafa">Go to bayut.sa
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H9M17 7v8"></path></svg>
+          </a>
+          <div style="position: relative">
+            <span style="width: 32px; height: 32px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; display: grid; place-content: center; cursor: pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 0 0-5-5.9V4h-2v1.1A6 6 0 0 0 6 11v5l-2 2v1h16v-1z"></path></svg></span>
+            <span style="position: absolute; inset-block-start: -4px; inset-inline-end: -4px; min-width: 20px; height: 20px; padding: 0 4px; border-radius: 10px; background: #f73131; border: 3px solid #fff; color: #fff; font-size: 10px; font-weight: 600; display: grid; place-content: center">5</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; cursor: pointer">
+            <span style="width: 32px; height: 32px; border-radius: 50%; background: #E3E6EF; color: #5A5F7D; display: grid; place-content: center; font-size: 12px; font-weight: 600">AH</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#707070" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sidebar" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Sidebar</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/navbar</code> inside the layout sider — grouped nav items on white, a top block padded <code style="font-size: 13px">30px 30px 0</code> and a bottom block <code style="font-size: 13px">10px 15px 25px</code>. Menu availability is permission- and flag-driven (<code style="font-size: 13px">HIDE_INBOX</code>, <code style="font-size: 13px">HIDE_REPORTS</code>, LMS submodules, contracts).</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; align-items: start">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 20px 15px 25px">
+          <button style="width: 100%; height: 40px; border: 1px solid #006169; border-radius: 6px; background: #006169; color: #fff; font: 600 14px Figtree, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 25px; cursor: pointer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>Post a listing
+          </button>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <a href="#sidebar" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 600; font-size: 14px; background: #F7FCFC; color: #006169"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>Dashboard</a>
+            <a href="#sidebar" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; color: #222" style-hover="background: #F8F9FB; color: #006169"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADB4D2" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"></path></svg><span style="width: 100%; display: flex; justify-content: space-between">My listings<span style="color: #9D9D9D">28</span></span></a>
+            <a href="#sidebar" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; color: #222" style-hover="background: #F8F9FB; color: #006169"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADB4D2" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><path d="M4 5h16v14H4z"></path><path d="M4 8l8 5 8-5"></path></svg><span style="width: 100%; display: flex; justify-content: space-between">Leads<span style="min-width: 20px; height: 20px; padding: 0 4px; border-radius: 10px; background: #f73131; color: #fff; font-size: 10px; font-weight: 600; display: grid; place-content: center">5</span></span></a>
+            <a href="#sidebar" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; color: #222" style-hover="background: #F8F9FB; color: #006169"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADB4D2" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><path d="M4 19V5M9 19V9M14 19v-6M19 19V7"></path></svg>Reports</a>
+            <a href="#sidebar" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; color: #222" style-hover="background: #F8F9FB; color: #006169"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADB4D2" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v8M9 12h6"></path></svg>Credits &amp; shop</a>
+            <a href="#sidebar" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; color: #222" style-hover="background: #F8F9FB; color: #006169"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADB4D2" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><circle cx="9" cy="8" r="3"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6"></path><path d="M17 11h5M19.5 8.5v5"></path></svg>Agency staff</a>
+            <a href="#sidebar" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; color: #222" style-hover="background: #F8F9FB; color: #006169"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADB4D2" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><circle cx="12" cy="12" r="3"></circle><path d="M12 3v3M12 18v3M3 12h3M18 12h3"></path></svg>Settings</a>
+          </div>
+          <div style="border-top: 1px solid #f5f5f5; margin-top: 16px; padding-top: 16px">
+            <a href="#sidebar" style="box-sizing: border-box; display: inline-flex; width: 100%; height: 36px; justify-content: center; align-items: center; gap: 8px; padding: 0 12px; background: #fff; border: 2px solid #e8e8e8; border-radius: 8px; color: #767676; font-weight: 500; font-size: 14px; line-height: 1">Help &amp; support
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H9M17 7v8"></path></svg>
+            </a>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; font-size: 13px; color: #626262; display: flex; flex-direction: column; gap: 10px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Behaviour</div>
+          <div>Active item: <code style="color: #707070">primary-light</code> background, primary text and icon, weight 600.</div>
+          <div>Hover: <code style="color: #707070">bg-color-light</code> background with primary text and icon.</div>
+          <div>Icons: min-width 18px, 20px inline-end margin, <code style="color: #707070">extra-light-color</code> when inactive.</div>
+          <div>Collapse trigger: 48px tall, 36 × 42px zero-trigger, <code style="color: #707070">#002140</code> on dark, white in the light theme.</div>
+          <div>Sub-lists (folders) drop to weight 400 with 7px block padding; the "new folder" row is <code style="color: #707070">#BDBDBD</code>.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="footer" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Footer</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">layout-footer-background #fafafa</code>, padding <code style="font-size: 13px">24px 15px</code>. On Bayut KSA the footer also carries the REGA compliance block and the report-to-REGA link, gated by the same KSA toggles as the post-listing journey.</p>
+      <div style="background: #fafafa; border: 1px solid #f0f0f0; border-radius: 10px; padding: 24px 15px; display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; color: #626262">© 2026 Bayut · Profolio</span>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px">
+            <a href="#footer" style="color: #006169">Terms</a>
+            <a href="#footer" style="color: #006169">Privacy</a>
+            <a href="#footer" style="color: #006169">Help &amp; support</a>
+            <a href="#footer" style="color: #006169">Report to REGA</a>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <span style="font-size: 12px; color: #707070">REGA licence 1200012345</span>
+          <span style="width: 44px; height: 28px; border-radius: 4px; background: #E1F2F0; display: inline-block"></span>
+        </div>
+      </div>
+    </section>
+
+    <section id="card" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Card frame</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 8px"><code style="font-size: 13px">common/cards</code> — the wrapper every widget, table and section sits in. Head is at least 47px with an 18px h4 title; body padding 12px; radius 8px (10px card token) with a 1px border on desktop that drops to 0 below 992px. Card-level tabs get a 24px gutter and an ink bar in <code style="font-size: 13px">--_accent-color</code>, which defaults to <code style="font-size: 13px">primary-color</code> and can be overridden per card.</p>
+      <p style="font-size: 13px; color: #006169; background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 6px; padding: 10px 12px; margin-bottom: 20px"><strong style="font-weight: 700">Global card rules (style.less):</strong> head inline padding is <code style="font-size: 12px">24px</code> (20px below 768px, line-height 1 below 576px), the shadow is <code style="font-size: 12px">0 5px 20px #9299b803</code>, the head <code style="font-size: 12px">extra</code> slot is a centred flex row whose links are <code style="font-size: 12px">#868eae</code> with the overflow dropdown ordered last at a 20px inline-start margin, and below 576px the head stacks into a column. A card-body spinner is absolutely centred with a 200px minimum height. The card nav (<code style="font-size: 12px">.card-nav</code>) is 12px / 500 in <code style="font-size: 12px">#868eae</code>, active in primary with a 1px underline 19px below.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+          <div style="min-height: 47px; padding: 0 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+            <h4 style="font-size: 18px; font-weight: 600; color: #272B41">Performance</h4>
+            <a href="#card" style="font-size: 13px; color: #006169">View report</a>
+          </div>
+          <div style="padding: 12px">
+            <div style="height: 96px; border-radius: 6px; background: linear-gradient(180deg, #F2FAFA, #fff); border: 1px solid #f5f5f5"></div>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+          <div style="min-height: 47px; padding: 0 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: flex-end; gap: 24px">
+            <span style="padding: 12px 0; font-size: 14px; font-weight: 600; color: #006169; box-shadow: inset 0 -2px 0 #006169">Listings</span>
+            <span style="padding: 12px 0; font-size: 14px; color: #5A5F7D; cursor: pointer">Projects</span>
+            <span style="padding: 12px 0; font-size: 14px; color: #5A5F7D; cursor: pointer">Drafts</span>
+          </div>
+          <div style="padding: 12px; font-size: 13px; color: #707070">Card with <code>tabList</code> — the head hosts the tabs and the ink bar takes the accent colour.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="banner" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Banner</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 8px"><code style="font-size: 13px">common/banner</code> — a <code style="font-size: 13px">primary-light-3</code> surface with a layered gradient (<code style="font-size: 13px">90deg, #e1f6edfe → #e1f6edae</code>, becoming a centre-weighted wash above 768px), radius <code style="font-size: 13px">border-radius-lg</code>, padding 16px rising to 24px, and a mirrored <code style="font-size: 13px">scale: -1 1</code> in RTL. Title is 14px / 700 primary on mobile and 24px on desktop (<code style="font-size: 13px">.cardTitle</code> 14 → 21px when not rendered as an h1); secondary text is 12px, rising to 1em above 768px.</p>
+      <p style="font-size: 13px; color: #006169; background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 6px; padding: 10px 12px; margin-bottom: 20px"><strong style="font-weight: 700">Real composition</strong> (<code style="font-size: 12px">banner/index.js</code>): a <code style="font-size: 12px">Group</code> with an 8px (mobile) / 16px gap holding title + subtitle, an optional bullet list built from TextWithIcon with the <code style="font-size: 12px">GoDotFill</code> glyph in <code style="font-size: 12px">warning-color</code> (list items 45% wide at 12px on mobile, auto at 14px above 768px), and a small white <code style="font-size: 12px">.btn-package</code> "Buy Package" button with no border. The art layer is <code style="font-size: 12px">/profolio-assets/{TENANT_KEY}/lite/banner-faces.png</code> positioned on the end edge at 60% width above 768px — shown below. The package variant (<code style="font-size: 12px">BannerContainer</code>) swaps in a solid <code style="font-size: 12px">#006169</code> gradient with white text; <code style="font-size: 12px">ListingBanner</code> uses a 15 / 18px title and 12px / 700 links.</p>
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <div style="position: relative; border-radius: 8px; padding: 24px; overflow: hidden; display: grid; gap: 16px; background-color: #E1F2F0; background-image: linear-gradient(90deg, #fff0 24%, #e1f6ed 56%, #fff0), url('public/profolio-assets/bayut/lite/banner-faces.png'), linear-gradient(168.93deg, #e1f5ec 33.52%, #cfe7e8 126.5%); background-repeat: no-repeat; background-size: 100%, 60% auto, 100%; background-position: center, right -40% center, center">
+          <div>
+            <h1 style="font-size: 24px; font-weight: 700; line-height: 1.3; color: #006169; max-inline-size: 69%; margin-block-end: 2px">Get a package and reach more buyers</h1>
+            <div style="font-size: 14px; color: #4f4f4f; max-width: 43ch">Package listings appear higher in search and get more qualified leads.</div>
+          </div>
+          <ul style="display: flex; flex-wrap: wrap; gap: 4px 24px; list-style: none; margin: 0; padding: 0">
+            <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: #222"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f0a742" style="margin-block-start: 4px; flex: none"><circle cx="12" cy="12" r="8"></circle></svg>More listing slots</li>
+            <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: #222"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f0a742" style="margin-block-start: 4px; flex: none"><circle cx="12" cy="12" r="8"></circle></svg>Discounted credits</li>
+            <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: #222"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f0a742" style="margin-block-start: 4px; flex: none"><circle cx="12" cy="12" r="8"></circle></svg>Lead insights</li>
+          </ul>
+          <button style="height: 32px; padding: 0 1em; border: none; border-radius: 6px; background: #fff; color: #006169; font: 600 13px Figtree, sans-serif; max-width: max-content; display: inline-flex; align-items: center; gap: 6px; cursor: pointer">Buy Package</button>
+        </div>
+        <div style="position: relative; border-radius: 8px; padding: 24px; overflow: hidden; background-image: linear-gradient(90deg, #006169 70%, rgba(0,97,105,0.7) 87%, rgba(0,97,105,0.05) 100%), linear-gradient(90deg, #006169, #006169)">
+          <h1 style="font-size: 24px; font-weight: 700; line-height: 1.3; color: #fff; max-inline-size: 55%; margin-block-end: 2px">Your package renews in 6 days</h1>
+          <div style="font-size: 14px; color: #fff; display: block; max-width: 30ch">142 credits and 12 listing slots remain.</div>
+          <button style="margin-top: 14px; height: 36px; padding: 0 1.2em; border: 0; border-radius: 6px; background: #fff; color: #006169; font: 600 14px Figtree, sans-serif; max-width: max-content; cursor: pointer">Manage package</button>
+        </div>
+        <div style="position: relative; border-radius: 8px; padding: 20px; overflow: hidden; background-image: linear-gradient(90deg, #006169 32%, rgba(0,97,105,0.7) 78%, rgba(0,97,105,0.05) 100%), linear-gradient(90deg, #006169, #006169)">
+          <h1 style="font-size: 18px; font-weight: 700; line-height: 1.3; color: #fff; max-inline-size: 80%; margin-block-end: 2px">3 listings need a refresh to stay visible</h1>
+          <div style="font-size: 12px; color: #fff; display: block; max-width: 43ch">Refreshing uses 1 credit per listing.</div>
+          <a href="#banner" style="font-size: 12px; font-weight: 700; color: #fff; text-decoration: underline; display: inline-block; margin-top: 10px">Review listings</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Dashboard widgets</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">components/widgets</code> — card-framed rows of Statistic and StatsWithPercentage molecules, a chart card (<code style="font-size: 13px">chart.js</code> via <code style="font-size: 13px">react-chartjs-2</code>), the credits/quota widget and the listing-count widget. Each widget owns its own loading skeleton and its own empty state (<code style="font-size: 13px">listings-count-dashboard</code>, <code style="font-size: 13px">analytics-dashboard</code>, <code style="font-size: 13px">quota-credits-dashboard</code>).</p>
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px">
+          <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 16px 12px; display: flex; gap: 12px; align-items: flex-start">
+            <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: rgba(0,97,105,.08); color: #006169; display: grid; place-content: center; margin-block-start: .4em"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"></path></svg></div>
+            <div><div style="font-size: 14px; color: #707070">Impressions</div><div style="font-size: 20px; font-weight: 700; color: #272B41">48,210</div><small style="display: flex; align-items: center; gap: 2px; font-size: 13px"><svg width="12" height="12" viewBox="0 0 24 24" fill="#28b16d"><path d="M12 6l8 12H4z"></path></svg><span style="color: #28b16d">12%</span></small></div>
+          </div>
+          <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 16px 12px; display: flex; gap: 12px; align-items: flex-start">
+            <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: rgba(240,167,66,.08); color: #f0a742; display: grid; place-content: center; margin-block-start: .4em"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4l7 16 2-6 6-2z"></path></svg></div>
+            <div><div style="font-size: 14px; color: #707070">Clicks</div><div style="font-size: 20px; font-weight: 700; color: #272B41">3,984</div><small style="display: flex; align-items: center; gap: 2px; font-size: 13px"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f73131"><path d="M12 18L4 6h16z"></path></svg><span style="color: #f73131">4%</span></small></div>
+          </div>
+          <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 16px 12px; display: flex; gap: 12px; align-items: flex-start">
+            <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: rgba(71,158,235,.08); color: #479eeb; display: grid; place-content: center; margin-block-start: .4em"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16v14H4z"></path></svg></div>
+            <div><div style="font-size: 14px; color: #707070">Leads</div><div style="font-size: 20px; font-weight: 700; color: #272B41">63</div><small style="display: flex; align-items: center; gap: 2px; font-size: 13px"><svg width="12" height="12" viewBox="0 0 24 24" fill="#28b16d"><path d="M12 6l8 12H4z"></path></svg><span style="color: #28b16d">9%</span></small></div>
+          </div>
+          <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 16px 12px; display: flex; gap: 12px; align-items: flex-start">
+            <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: rgba(40,177,109,.08); color: #28b16d; display: grid; place-content: center; margin-block-start: .4em"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4-6 4z"></path></svg></div>
+            <div><div style="font-size: 14px; color: #707070">Calls</div><div style="font-size: 20px; font-weight: 700; color: #272B41">1,024</div><small style="font-size: 13px; color: #9D9D9D">—</small></div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px">
+          <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+            <div style="min-height: 47px; padding: 0 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+              <h4 style="font-size: 18px; font-weight: 600; color: #272B41">Leads &amp; reach</h4>
+              <div style="display: inline-flex; background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 6px; padding: 4px 6px; gap: 2px">
+                <span style="padding: 0 14px; min-height: 25px; line-height: 25px; border-radius: 4px; background: #006169; color: #fff; font-weight: 700; font-size: 12px">30d</span>
+                <span style="padding: 0 14px; min-height: 25px; line-height: 25px; border-radius: 4px; color: #707070; font-weight: 700; font-size: 12px; cursor: pointer">90d</span>
+              </div>
+            </div>
+            <div style="padding: 12px">
+              <div style="height: 172px; border-radius: 6px; border: 1px solid #f5f5f5; background: linear-gradient(180deg, rgba(0,97,105,.10), rgba(0,97,105,0)); position: relative; overflow: hidden">
+                <svg viewBox="0 0 600 160" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%"><path d="M0 130 L80 112 L160 120 L240 78 L320 92 L400 54 L480 66 L600 24" fill="none" stroke="#006169" stroke-width="3"></path><path d="M0 145 L80 138 L160 142 L240 120 L320 128 L400 104 L480 112 L600 88" fill="none" stroke="#479eeb" stroke-width="2" stroke-dasharray="5 5"></path></svg>
+              </div>
+              <div style="display: flex; gap: 18px; margin-top: 12px; font-size: 12px; color: #707070">
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 3px; background: #006169; display: inline-block"></span>Impressions</span>
+                <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 3px; background: #479eeb; display: inline-block"></span>Leads</span>
+              </div>
+            </div>
+          </div>
+          <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+            <div style="min-height: 47px; padding: 0 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center"><h4 style="font-size: 18px; font-weight: 600; color: #272B41">Credits &amp; quota</h4></div>
+            <div style="padding: 12px; display: flex; flex-direction: column; gap: 12px">
+              <div style="background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 4px; padding: 12px; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 13px; color: #272B41">Credits</span><strong style="font-size: 16px; font-weight: 700; color: #006169">142</strong></div>
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #707070; margin-bottom: 6px"><span>Listing quota</span><span>18 / 30</span></div>
+                <div style="height: 8px; border-radius: 4px; background: rgba(0,0,0,.06); overflow: hidden"><div style="width: 60%; height: 100%; background: #006169"></div></div>
+              </div>
+              <button style="height: 36px; border: 1px solid #A6C8CA; border-radius: 6px; background: #F2FAFA; color: #006169; font: 600 14px Figtree, sans-serif; cursor: pointer">Buy credits</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="listingcard" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Listing card</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">ListingCardStyled</code> (<code style="font-size: 13px">components/styled.js</code>) — a Card whose body text is <code style="font-size: 13px">gray700</code> at 12px, with an embedded dropdown that loses its border and padding. <code style="font-size: 13px">ListCardFooter</code> is a flex row with a <code style="font-size: 13px">gray200</code> top border on <code style="font-size: 13px">rgba(245,245,245,.6)</code>, negative 12px margins to bleed to the card edge and 12px inline-end padding. The thumbnail is the 6px square from the molecules layer.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 12px; max-width: 720px">
+        <div style="display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 12px">
+          <div style="position: relative; display: grid; border-radius: 6px; overflow: hidden; aspect-ratio: 1; background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 8px, #f7f7f7 8px, #f7f7f7 16px)">
+            <span style="position: absolute; inset-block-start: 6px; inset-inline-start: 6px; font-size: 10px; font-weight: 700; color: #fff; padding: 6px; border-radius: 4px; line-height: 1; background-color: #af6fff; background-image: linear-gradient(90deg, rgba(0,0,0,.7), rgba(255,255,255,.2)); background-blend-mode: soft-light">SIGNATURE</span>
+            <span style="position: absolute; inset-block-end: 6px; inset-inline-start: 6px; display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #fff; background: rgba(0,0,0,.55); border-radius: 4px; padding: 3px 6px"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v12H4z"></path></svg>12</span>
+          </div>
+          <div style="min-width: 0; font-size: 12px; color: #707070">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px">
+              <div style="min-width: 0">
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px">
+                  <span style="font-size: 16px; font-weight: 700; color: #272B41">1,250,000 SAR</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#1890ff"><path d="M12 2l2.4 2.1 3.2-.4 1 3 2.9 1.4-1.3 3 1.3 3-2.9 1.4-1 3-3.2-.4L12 22l-2.4-2.1-3.2.4-1-3L2.5 15.5l1.3-3-1.3-3 2.9-1.4 1-3 3.2.4z"></path></svg>
+                </div>
+                <div style="font-size: 14px; font-weight: 600; color: #222; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">3-bedroom apartment with maid&#8217;s room, Al Malqa</div>
+                <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="#868EAE"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"></path></svg>Al Malqa, Riyadh · Ref BYT-24-0912</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; color: #626262">
+                  <span style="display: inline-flex; align-items: center; gap: 4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="#868EAE"><path d="M4 18v-5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v5h-2v-3H6v3z"></path></svg>3 beds</span>
+                  <span style="display: inline-flex; align-items: center; gap: 4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="#868EAE"><path d="M6 10V6a3 3 0 0 1 6 0v4h8v4a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5v-4z"></path></svg>3 baths</span>
+                  <span style="display: inline-flex; align-items: center; gap: 4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="#868EAE"><path d="M4 4h16v16H4z"></path></svg>220 Sq. M.</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px; flex: none">
+                <span style="font-size: 11px; font-weight: 600; color: #28b16d; background: #dff4e9; border-radius: 4px; padding: 3px 7px">Active</span>
+                <span style="width: 28px; height: 28px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; display: grid; place-content: center; cursor: pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-inline-end: 12px; margin-block-end: -12px; margin-inline: -12px; margin-block-start: 12px; border-top: 1px solid #f5f5f5; border-bottom: 1px solid #f0f0f0; background-color: rgba(245,245,245,0.6)">
+          <div style="display: flex; flex-wrap: wrap; gap: 0; padding: 10px 12px">
+            <div style="padding-inline-end: 16px"><div style="font-size: 12px; color: #707070">Views</div><div style="font-size: 14px; font-weight: 700; color: #272B41">12,480</div></div>
+            <div style="padding-inline: 16px; border-inline-start: 1px solid #f0f0f0"><div style="font-size: 12px; color: #707070">Leads</div><div style="font-size: 14px; font-weight: 700; color: #272B41">18</div></div>
+            <div style="padding-inline: 16px; border-inline-start: 1px solid #f0f0f0"><div style="font-size: 12px; color: #707070">Health</div><div style="font-size: 14px; font-weight: 700; color: #28b16d">Good</div></div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center">
+            <button style="height: 29px; padding: 0 12px; border: 1px solid #A6C8CA; border-radius: 6px; background: #F2FAFA; color: #006169; font: 600 13px Figtree, sans-serif; cursor: pointer">Upgrade</button>
+            <button style="height: 29px; padding: 0 12px; border: 1px solid #f0f0f0; border-radius: 6px; background: #fff; color: #5A5F7D; font: 600 13px Figtree, sans-serif; cursor: pointer">Edit</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="grid" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Listing grid</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px">The mobile and card view of the listings container: repeated listing cards inside the <code style="font-size: 13px">.grid</code> utility (<code style="font-size: 13px">gap: var(--gap, 32px)</code>, <code style="font-size: 13px">grid-template-columns: var(--template, minmax(0, 1fr))</code>), with infinite scroll (<code style="font-size: 13px">common/infinite-scroll</code>) instead of pagination on small screens.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+          <div style="position: relative; aspect-ratio: 16/10; background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 8px, #f7f7f7 8px, #f7f7f7 16px)">
+            <span style="position: absolute; inset-block-start: 8px; inset-inline-start: 8px; font-size: 10px; font-weight: 700; color: #fff; padding: 6px; border-radius: 4px; line-height: 1; background-color: #f73131; background-image: linear-gradient(90deg, rgba(0,0,0,.7), rgba(255,255,255,.2)); background-blend-mode: soft-light">HOT</span>
+          </div>
+          <div style="padding: 12px; font-size: 12px; color: #707070">
+            <div style="font-size: 15px; font-weight: 700; color: #272B41">890,000 SAR</div>
+            <div style="font-size: 13px; font-weight: 600; color: #222; margin: 4px 0">2-bed apartment, Al Narjis</div>
+            <div style="display: flex; gap: 12px">2 beds · 2 baths · 140 Sq. M.</div>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+          <div style="position: relative; aspect-ratio: 16/10; background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 8px, #f7f7f7 8px, #f7f7f7 16px)">
+            <span style="position: absolute; inset-block-start: 8px; inset-inline-start: 8px; font-size: 10px; font-weight: 700; color: #fff; padding: 6px; border-radius: 4px; line-height: 1; background-color: #28b16d; background-image: linear-gradient(90deg, rgba(0,0,0,.7), rgba(255,255,255,.2)); background-blend-mode: soft-light">BASIC</span>
+          </div>
+          <div style="padding: 12px; font-size: 12px; color: #707070">
+            <div style="font-size: 15px; font-weight: 700; color: #272B41">2,400,000 SAR</div>
+            <div style="font-size: 13px; font-weight: 600; color: #222; margin: 4px 0">Villa with private pool, Hittin</div>
+            <div style="display: flex; gap: 12px">5 beds · 6 baths · 420 Sq. M.</div>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+          <div style="position: relative; aspect-ratio: 16/10; background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 8px, #f7f7f7 8px, #f7f7f7 16px)"></div>
+          <div style="padding: 12px; font-size: 12px; color: #707070">
+            <div style="font-size: 15px; font-weight: 700; color: #272B41">65,000 SAR<span style="font-size: 12px; font-weight: 400; color: #707070"> / year</span></div>
+            <div style="font-size: 13px; font-weight: 600; color: #222; margin: 4px 0">Studio for rent, Al Aqiq</div>
+            <div style="display: flex; gap: 12px">Studio · 1 bath · 55 Sq. M.</div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; padding: 20px 0; color: #006169"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: profolioSpin 1s linear infinite"><path d="M12 3a9 9 0 1 0 9 9" stroke-linecap="round"></path></svg></div>
+    </section>
+
+    <section id="table" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Data table</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 8px"><code style="font-size: 13px">common/dataTable</code> — an Ant table inside a Card that can carry <code style="font-size: 13px">tabList</code> tabs in its head. It scrolls horizontally at <code style="font-size: 13px">max-content</code>, applies the <code style="font-size: 13px">tableHoverGradient</code> row class when there is data, supports <code style="font-size: 13px">rowSelection</code>, hidden and non-highlight rows, a skeleton loading pass, an error state with a retry, and the <code style="font-size: 13px">table</code> empty state (illustration tinted <code style="font-size: 13px">primary-light-2</code>). Pagination sits below the card and syncs to the URL.</p>
+      <div style="font-size: 13px; color: #006169; background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 6px; padding: 12px 14px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 6px">
+        <div><strong style="font-weight: 700">Exact spec</strong> (<code style="font-size: 12px">dataTable/style.js</code> + <code style="font-size: 12px">style.less</code>):</div>
+        <div>Header cells: <code style="font-size: 12px">bg-color-light #F8F9FB</code>, <strong style="font-weight: 700">weight 400</strong>, colour <code style="font-size: 12px">light-color #9D9D9D</code>, top and outer borders <code style="font-size: 12px">border-color-light #F1F2F6</code>, no corner radius. Card body padding is 0 with a −1px margin, and the last row's outer cells take an 8px bottom radius.</div>
+        <div>Row hover: <code style="font-size: 12px">bg-color-light</code>; with <code style="font-size: 12px">.tableHoverGradient</code> the cells take <code style="font-size: 12px">linear-gradient(0deg, var(--primary-light) 0%, #fff 100%)</code>. <code style="font-size: 12px">.hidden-row</code> is <code style="font-size: 12px">#dcdcdc</code>; <code style="font-size: 12px">.no-highlight-row &gt; td</code> inherits its background.</div>
+        <div>Cells are <code style="font-size: 12px">white-space: nowrap</code> with per-column minimums — property / location 130px (wrapping), platform actions 160px, listing actions 190px — and inline padding drops to 8px below 1366px. The bordered variant pads cells <code style="font-size: 12px">16px 25px</code>. A bulk-selection bar sticks to the bottom (<code style="font-size: 12px">.selectedRows</code>, shadow <code style="font-size: 12px">0 0 20px grey</code>, buttons with a <code style="font-size: 12px">#20c997</code> border and 32px inline padding).</div>
+        <div>An empty table reserves <code style="font-size: 12px">calc(100vh - 380px)</code> of body height above 767px.</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+        <div style="min-height: 47px; padding: 0 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: flex-end; gap: 24px">
+          <span style="padding: 12px 0; font-size: 14px; font-weight: 600; color: #006169; box-shadow: inset 0 -2px 0 #006169">All leads (63)</span>
+          <span style="padding: 12px 0; font-size: 14px; color: #5A5F7D; cursor: pointer">Calls (41)</span>
+          <span style="padding: 12px 0; font-size: 14px; color: #5A5F7D; cursor: pointer">WhatsApp (14)</span>
+        </div>
+        <div style="overflow-x: auto">
+          <div style="min-width: 720px">
+            <div style="display: grid; grid-template-columns: 40px 1.6fr 1fr 1fr .8fr 90px; background: #F8F9FB; border-top: 1px solid #F1F2F6; border-bottom: 1px solid #F1F2F6; font-size: 13px; font-weight: 400; color: #9D9D9D">
+              <div style="padding: 12px 16px; border-inline-start: 1px solid #F1F2F6"><span style="width: 16px; height: 16px; border: 1px solid #C2C2C2; border-radius: 4px; background: #fff; display: inline-block"></span></div>
+              <div style="padding: 12px 16px">Lead</div>
+              <div style="padding: 12px 16px">Listing</div>
+              <div style="padding: 12px 16px">Channel</div>
+              <div style="padding: 12px 16px">Received</div>
+              <div style="padding: 12px 16px; border-inline-end: 1px solid #F1F2F6">Actions</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 40px 1.6fr 1fr 1fr .8fr 90px; border-bottom: 1px solid #F1F2F6; font-size: 13px; color: #626262; align-items: center; background: #fff" style-hover="background: linear-gradient(0deg, #F7FCFC 0%, #ffffff 100%)">
+              <div style="padding: 12px 16px"><span style="width: 16px; height: 16px; border: 1px solid #006169; border-radius: 4px; background: #006169; display: grid; place-content: center; color: #fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"></path></svg></span></div>
+              <div style="padding: 12px 16px; display: flex; align-items: center; gap: 10px"><span style="width: 32px; height: 32px; border-radius: 50%; background: #E3E6EF; color: #5A5F7D; display: grid; place-content: center; font-size: 11px; font-weight: 600">FA</span><div><div style="font-weight: 600; color: #222">Fatimah A.</div><div style="font-size: 12px; color: #9D9D9D">+966 55 •• •• 21</div></div></div>
+              <div style="padding: 12px 16px">BYT-24-0912</div>
+              <div style="padding: 12px 16px"><span style="font-size: 11px; font-weight: 600; color: #28b16d; background: #dff4e9; border-radius: 4px; padding: 3px 7px">WhatsApp</span></div>
+              <div style="padding: 12px 16px">12 min ago</div>
+              <div style="padding: 12px 16px; display: flex; gap: 6px"><span style="width: 28px; height: 28px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; display: grid; place-content: center; cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1 2 2.6 3.6 4.6 4.6l2-2 4 1.6V19a2 2 0 0 1-2.2 2A17 17 0 0 1 3 6.2 2 2 0 0 1 5 4h2.8l1.6 4z"></path></svg></span><span style="width: 28px; height: 28px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; display: grid; place-content: center; cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg></span></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 40px 1.6fr 1fr 1fr .8fr 90px; border-bottom: 1px solid #f5f5f5; font-size: 13px; color: #626262; align-items: center">
+              <div style="padding: 12px 16px"><span style="width: 16px; height: 16px; border: 1px solid #C2C2C2; border-radius: 4px; background: #fff; display: inline-block"></span></div>
+              <div style="padding: 12px 16px; display: flex; align-items: center; gap: 10px"><span style="width: 32px; height: 32px; border-radius: 50%; background: #E3E6EF; color: #5A5F7D; display: grid; place-content: center; font-size: 11px; font-weight: 600">MK</span><div><div style="font-weight: 600; color: #222">Mohammed K.</div><div style="font-size: 12px; color: #9D9D9D">m•••@mail.com</div></div></div>
+              <div style="padding: 12px 16px">BYT-24-0877</div>
+              <div style="padding: 12px 16px"><span style="font-size: 11px; font-weight: 600; color: #2C99FF; background: #e4f1ff; border-radius: 4px; padding: 3px 7px">Email</span></div>
+              <div style="padding: 12px 16px">2 hours ago</div>
+              <div style="padding: 12px 16px; display: flex; gap: 6px"><span style="width: 28px; height: 28px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; display: grid; place-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16v14H4z"></path></svg></span><span style="width: 28px; height: 28px; border-radius: 50%; background: #F4F5F7; color: #ADB4D2; display: grid; place-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg></span></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 40px 1.6fr 1fr 1fr .8fr 90px; font-size: 13px; color: #626262; align-items: center">
+              <div style="padding: 12px 16px"><span style="width: 16px; height: 16px; border-radius: 4px; background: linear-gradient(90deg, #F1F2F6 25%, #fafafb 37%, #F1F2F6 63%); background-size: 400% 100%; animation: profolioShimmer 1.4s ease infinite; display: inline-block"></span></div>
+              <div style="padding: 12px 16px"><span style="display: block; width: 70%; height: 14px; border-radius: 4px; background: linear-gradient(90deg, #F1F2F6 25%, #fafafb 37%, #F1F2F6 63%); background-size: 400% 100%; animation: profolioShimmer 1.4s ease infinite"></span></div>
+              <div style="padding: 12px 16px"><span style="display: block; width: 60%; height: 14px; border-radius: 4px; background: linear-gradient(90deg, #F1F2F6 25%, #fafafb 37%, #F1F2F6 63%); background-size: 400% 100%; animation: profolioShimmer 1.4s ease infinite"></span></div>
+              <div style="padding: 12px 16px"><span style="display: block; width: 50%; height: 14px; border-radius: 4px; background: linear-gradient(90deg, #F1F2F6 25%, #fafafb 37%, #F1F2F6 63%); background-size: 400% 100%; animation: profolioShimmer 1.4s ease infinite"></span></div>
+              <div style="padding: 12px 16px"><span style="display: block; width: 50%; height: 14px; border-radius: 4px; background: linear-gradient(90deg, #F1F2F6 25%, #fafafb 37%, #F1F2F6 63%); background-size: 400% 100%; animation: profolioShimmer 1.4s ease infinite"></span></div>
+              <div style="padding: 12px 16px"><span style="display: block; width: 60%; height: 14px; border-radius: 4px; background: linear-gradient(90deg, #F1F2F6 25%, #fafafb 37%, #F1F2F6 63%); background-size: 400% 100%; animation: profolioShimmer 1.4s ease infinite"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; margin-top: 30px">
+        <div style="display: flex; align-items: center">
+          <span style="width: 32px; height: 32px; margin: 3px; border-radius: 4px; display: grid; place-content: center; color: #5a5f7d"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"></path></svg></span>
+          <span style="width: 32px; height: 32px; margin: 3px; border: 1px solid #006169; background: #F7FCFC; border-radius: 4px; display: grid; place-content: center; color: #006169; font-size: 14px">1</span>
+          <span style="width: 32px; height: 32px; margin: 3px; border: 1px solid #f1f2f6; background: #fff; border-radius: 4px; display: grid; place-content: center; color: #5a5f7d; font-size: 14px; cursor: pointer">2</span>
+          <span style="width: 32px; height: 32px; margin: 3px; border: 1px solid #f1f2f6; background: #fff; border-radius: 4px; display: grid; place-content: center; color: #5a5f7d; font-size: 14px; cursor: pointer">3</span>
+          <span style="width: 32px; height: 32px; margin: 3px; border-radius: 4px; display: grid; place-content: center; color: #5a5f7d; cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg></span>
+        </div>
+      </div>
+    </section>
+
+    <section id="filters" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Filter panel</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/filters/filters.js</code> — the shared filter bar for listings, leads and reports. Filters are declared per tenant (<code style="font-size: 13px">tenant/*/filters</code>), serialised into the URL query, and summarised with the FilterTag molecule. On desktop it is an inline row; below 992px the same set opens as a full-height drawer with sticky apply / reset actions.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; align-items: start">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 16px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; flex-wrap: wrap; gap: 10px">
+            <div style="height: 44px; min-width: 190px; flex: 1; border: 1px solid #DEDEDE; border-radius: 6px; display: flex; align-items: center; gap: 8px; padding: 0 11px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006169" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><span style="font-size: 14px; color: #9D9D9D">City, district or reference</span></div>
+            <div style="height: 44px; min-width: 150px; border: 1px solid #DEDEDE; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 11px; font-size: 14px; color: #272B41">Purpose<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></div>
+            <div style="height: 44px; min-width: 150px; border: 1px solid #DEDEDE; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 11px; font-size: 14px; color: #272B41">Property type<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></div>
+            <div style="height: 44px; min-width: 170px; border: 1px solid #DEDEDE; border-radius: 6px; display: flex; align-items: center; gap: 10px; padding: 0 11px; font-size: 14px; color: #272B41"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#006169" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Last 30 days</div>
+            <button style="height: 44px; padding: 0 1.2em; border: 1px solid #006169; border-radius: 6px; background: #006169; color: #fff; font: 600 14px Figtree, sans-serif; cursor: pointer">Apply</button>
+            <button style="height: 44px; padding: 0 1.2em; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #006169; font: 600 14px Figtree, sans-serif; cursor: pointer">Reset</button>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; border-top: 1px solid #f5f5f5; padding-top: 12px">
+            <span style="font-size: 13px; color: #707070">Location: <span style="color: #006169; font-weight: 600">Al Malqa, Al Narjis, Hittin, <span style="background: #e6f5e7; color: #28b16d; padding: 4px 10px; border-radius: 15px">+7</span></span></span>
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #006169; background: #E1F2F0; border: 1px solid #A6C8CA; border-radius: 24px; padding: 4px 10px">For sale <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6z"></path></svg></span>
+            <span style="display: inline-flex; align-items: center; font-size: 12px; color: #f73131; padding: 4px 10px; cursor: pointer">Clear all</span>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+          <div style="padding: 14px 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 16px; font-weight: 700; color: #272B41">Filters</span><svg width="14" height="14" viewBox="0 0 24 24" fill="#868EAE"><path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6z"></path></svg></div>
+          <div style="padding: 16px; display: flex; flex-direction: column; gap: 18px">
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <label style="font-size: 12px; font-weight: 600; color: #707070">Bedrooms</label>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 24px; padding: .1em .2em; padding-inline: .7rem; border-radius: 6px; background: #E1F2F0; border: 1px solid #A6C8CA; color: #006169; font-weight: 700; font-size: 12px">Any</span>
+                <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 24px; padding: .1em .2em; padding-inline: .7rem; border-radius: 6px; background: #f5f5f5; border: 1px solid transparent; color: #222; font-size: 12px">1</span>
+                <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 24px; padding: .1em .2em; padding-inline: .7rem; border-radius: 6px; background: #f5f5f5; border: 1px solid transparent; color: #222; font-size: 12px">2</span>
+                <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 36px; line-height: 24px; padding: .1em .2em; padding-inline: .7rem; border-radius: 6px; background: #f5f5f5; border: 1px solid transparent; color: #222; font-size: 12px">3+</span>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <label style="font-size: 12px; font-weight: 600; color: #707070">Price range (SAR)</label>
+              <div style="position: relative; height: 4px; border-radius: 2px; background: rgba(95,99,242,0.2)">
+                <div style="position: absolute; inset-inline-start: 12%; width: 52%; height: 4px; border-radius: 2px; background: #006169"></div>
+                <span style="position: absolute; inset-inline-start: 12%; inset-block-start: -4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid #006169; transform: translateX(-50%)"></span>
+                <span style="position: absolute; inset-inline-start: 64%; inset-block-start: -4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid #006169; transform: translateX(-50%)"></span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; color: #707070"><span>500,000</span><span>3,000,000</span></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <label style="font-size: 12px; font-weight: 600; color: #707070">Status</label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #272B41"><span style="width: 16px; height: 16px; border: 1px solid #006169; border-radius: 4px; background: #006169; display: grid; place-content: center; color: #fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"></path></svg></span>Active</label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #272B41"><span style="width: 16px; height: 16px; border: 1px solid #C2C2C2; border-radius: 4px; background: #fff; display: inline-block"></span>Pending</label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #272B41"><span style="width: 16px; height: 16px; border: 1px solid #C2C2C2; border-radius: 4px; background: #fff; display: inline-block"></span>Expired</label>
+            </div>
+          </div>
+          <div style="padding: 16px; border-top: 1px solid #f0f0f0; display: flex; gap: 10px">
+            <button style="flex: 1; height: 40px; border: 1px solid #006169; border-radius: 6px; background: #006169; color: #fff; font: 500 14px Figtree, sans-serif; cursor: pointer">Show 28 results</button>
+            <button style="height: 40px; padding: 0 20px; border: 1px solid #f0f0f0; border-radius: 6px; background: #fff; color: #5A5F7D; font: 500 14px Figtree, sans-serif; cursor: pointer">Reset</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="form" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Post-listing form</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/json-form</code> + <code style="font-size: 13px">components/post-listing</code> — sections are generated from API field definitions, validated with Formik + Yup, and wrapped per market. Bayut KSA extends the shared journey with REGA disclosure, Nafath identity, non-Saudi-national rules and project-attached listing behaviour. Fields use the labelIcon grid; steps use the Ant Steps token set (<code style="font-size: 13px">#F5F5F5</code> background, <code style="font-size: 13px">gray400</code> tail).</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+        <div style="min-height: 47px; padding: 12px 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; background: #F5F5F5">
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #006169"><span style="width: 22px; height: 22px; border-radius: 50%; background: #006169; color: #fff; display: grid; place-content: center; font-size: 11px">1</span>Property details</span>
+          <span style="flex: 1; height: 1px; background: #DEDEDE; min-width: 24px"></span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #707070"><span style="width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 1px solid #DEDEDE; color: #707070; display: grid; place-content: center; font-size: 11px">2</span>Photos &amp; media</span>
+          <span style="flex: 1; height: 1px; background: #DEDEDE; min-width: 24px"></span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #707070"><span style="width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 1px solid #DEDEDE; color: #707070; display: grid; place-content: center; font-size: 11px">3</span>REGA &amp; publish</span>
+        </div>
+        <div style="padding: 24px; display: flex; flex-direction: column; gap: 24px">
+          <div style="border: 1px solid #f0a742; background: #fdf1e0; border-radius: 6px; padding: 8px 12px; display: flex; gap: 10px; align-items: flex-start">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="#f0a742" style="flex: none; margin-top: 2px"><path d="M12 2L1 21h22zm1 15h-2v-2h2zm0-4h-2V8h2z"></path></svg>
+            <div><div style="font-size: 14px; font-weight: 600; color: #222">REGA advertising licence required</div><div style="font-size: 13px; color: #626262">Listings in Saudi Arabia must carry a valid REGA licence number before they publish.</div></div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px 24px">
+            <div style="display: grid; grid-template-columns: max-content auto; gap: 16px; align-items: start">
+              <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: #F4F5F7; color: #707070; display: grid; place-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v9H3z"></path></svg></div>
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                <label style="font-size: 14px; font-weight: 600; color: #000">Property type</label>
+                <div style="height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; padding: 0 11px; font-size: 14px; color: #272B41">Apartment<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></div>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: max-content auto; gap: 16px; align-items: start">
+              <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: #F4F5F7; color: #707070; display: grid; place-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"></path></svg></div>
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                <label style="font-size: 14px; font-weight: 600; color: #000">Location</label>
+                <div style="height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; display: flex; align-items: center; padding: 0 11px; font-size: 14px; color: #272B41">Al Malqa, Riyadh</div>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: max-content auto; gap: 16px; align-items: start">
+              <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: #F4F5F7; color: #707070; display: grid; place-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v8"></path></svg></div>
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                <label style="font-size: 14px; font-weight: 600; color: #000">Price <span style="font-weight: 400; color: #707070">( SAR )</span></label>
+                <div style="height: 44px; border: 1px solid #DEDEDE; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; padding: 0 11px; font-size: 14px; color: #272B41">1,250,000<span style="color: #707070">SAR</span></div>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: max-content auto; gap: 16px; align-items: start">
+              <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: #F4F5F7; color: #707070; display: grid; place-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"></path></svg></div>
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                <label style="font-size: 14px; font-weight: 600; color: #000">Area</label>
+                <div style="display: flex">
+                  <div style="flex: 1; height: 44px; border: 1px solid #DEDEDE; border-start-start-radius: 6px; border-end-start-radius: 6px; display: flex; align-items: center; padding: 0 11px; font-size: 14px; color: #272B41">220</div>
+                  <div style="height: 44px; min-width: 104px; border: 1px solid #DEDEDE; border-inline-start: 0; border-start-end-radius: 6px; border-end-end-radius: 6px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 11px; font-size: 14px; color: #272B41">Sq. M.<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9D9D9D" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: max-content auto; gap: 16px; align-items: start">
+            <div style="width: 40px; aspect-ratio: 1; border-radius: 30%; background: #F4F5F7; color: #707070; display: grid; place-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"></path></svg></div>
+            <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+                <label style="font-size: 14px; font-weight: 600; color: #000">Description</label>
+                <button style="height: 29px; padding: 0 12px; border: 1px solid #A6C8CA; border-radius: 6px; background: #F2FAFA; color: #006169; font: 600 13px Figtree, sans-serif; display: inline-flex; align-items: center; gap: 6px; cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"></path></svg>Write with AI</button>
+              </div>
+              <div style="min-height: 96px; border: 1px solid #DEDEDE; border-radius: 6px; padding: 10px 11px; font-size: 14px; color: #9D9D9D">Describe the property, its finishing, the view and the neighbourhood…</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 16px 24px; border-top: 1px solid #f0f0f0; display: flex; justify-content: flex-end; gap: 10px">
+          <button style="height: 40px; padding: 0 20px; border: 1px solid #f0f0f0; border-radius: 6px; background: #fff; color: #5A5F7D; font: 500 14px Figtree, sans-serif; cursor: pointer">Save draft</button>
+          <button style="height: 40px; padding: 0 20px; border: 1px solid #006169; border-radius: 6px; background: #006169; color: #fff; font: 500 14px Figtree, sans-serif; cursor: pointer">Continue</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="credits" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Credits &amp; checkout</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">components/credits-usage</code>, <code style="font-size: 13px">components/prop-shop</code> and <code style="font-size: 13px">components/checkout</code> — the upgrade list (RadioList rows with product tags and credit costs), the cart summary and the PSP hand-off with a safe return. Bayut KSA adds buy-now-pay-later and wallet methods where configured.</p>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; align-items: start">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+          <div style="min-height: 47px; padding: 0 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center"><h4 style="font-size: 18px; font-weight: 600; color: #272B41">Choose an upgrade</h4></div>
+          <div style="padding: 12px">
+            <div style="border-radius: 8px; overflow: hidden">
+              <label style="display: block; padding: 18px 20px; border: 1px solid #7ed8aa; background: linear-gradient(0deg, #fff 0%, #e9f3ef 100%); position: relative; z-index: 2; border-start-start-radius: 8px; border-start-end-radius: 8px; cursor: pointer">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+                  <div><div style="font-size: 14px; font-weight: 600; color: #222">Signature — 30 days</div><div style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #222"><svg width="14" height="14" viewBox="0 0 24 24" fill="#f0a742"><circle cx="12" cy="12" r="9"></circle></svg>24 credits</div></div>
+                  <span style="font-size: 12px; font-weight: 700; color: #fff; padding: 3px 7px 2px; border-radius: 5px; text-transform: uppercase; background-color: #af6fff; background-image: linear-gradient(90deg, rgba(0,0,0,.7), rgba(255,255,255,.2)); background-blend-mode: soft-light">Signature</span>
+                </div>
+              </label>
+              <label style="display: block; padding: 18px 20px; border: 1px solid #f0f0f0; background: #fff; margin-top: -1px; cursor: pointer">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+                  <div><div style="font-size: 14px; font-weight: 600; color: #222">Hot — 14 days</div><div style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #707070"><svg width="14" height="14" viewBox="0 0 24 24" fill="#f0a742"><circle cx="12" cy="12" r="9"></circle></svg>8 credits</div></div>
+                  <span style="font-size: 12px; font-weight: 700; color: #fff; padding: 3px 7px 2px; border-radius: 5px; text-transform: uppercase; background-color: #f73131; background-image: linear-gradient(90deg, rgba(0,0,0,.7), rgba(255,255,255,.2)); background-blend-mode: soft-light">Hot</span>
+                </div>
+              </label>
+              <label style="display: block; padding: 18px 20px; border: 1px solid #f0f0f0; background: #fff; margin-top: -1px; border-end-start-radius: 8px; border-end-end-radius: 8px; cursor: pointer">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+                  <div><div style="font-size: 14px; font-weight: 600; color: #222">Refresh only</div><div style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #707070"><svg width="14" height="14" viewBox="0 0 24 24" fill="#f0a742"><circle cx="12" cy="12" r="9"></circle></svg>1 credit</div></div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+          <div style="min-height: 47px; padding: 0 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center"><h4 style="font-size: 18px; font-weight: 600; color: #272B41">Summary</h4></div>
+          <div style="padding: 16px; display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: #626262">
+            <div style="display: flex; justify-content: space-between"><span>Signature × 1</span><span style="color: #272B41; font-weight: 600">24 credits</span></div>
+            <div style="display: flex; justify-content: space-between"><span>Credits available</span><span style="color: #272B41; font-weight: 600">142</span></div>
+            <div style="height: 1px; background: #f0f0f0"></div>
+            <div style="display: flex; justify-content: space-between; font-size: 14px"><span style="font-weight: 600; color: #222">Remaining after</span><span style="font-weight: 700; color: #006169">118</span></div>
+            <div style="background: #F2FAFA; border: 1px solid #CCDFE1; border-radius: 4px; padding: 8px; font-size: 12px; color: #4f4f4f">Smart utilisation can spend these credits automatically on your best-performing listings.</div>
+            <button style="height: 40px; border: 1px solid #006169; border-radius: 6px; background: #006169; color: #fff; font: 500 14px Figtree, sans-serif; cursor: pointer">Confirm upgrade</button>
+            <button style="height: 40px; border: 1px solid #A6C8CA; border-radius: 6px; background: #F2FAFA; color: #006169; font: 500 14px Figtree, sans-serif; cursor: pointer">Buy more credits</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="modal" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Modal</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/modals</code> — content padding 0, header <code style="font-size: 13px">16px 24px</code> with a <code style="font-size: 13px">#f0f0f0</code> bottom border and a 16px / 700 title, body 24px, footer <code style="font-size: 13px">16px 24px</code> with a top border and 40px / weight-500 buttons; the close icon takes <code style="font-size: 13px">light-gray-color</code>. <code style="font-size: 13px">common/confirmation-modal</code> and <code style="font-size: 13px">sectionIntroModal</code> build on it; a coloured <code style="font-size: 13px">type</code> paints the whole surface in the semantic colour with white text.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px">
+        <div style="background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.15); overflow: hidden; max-width: 460px">
+          <div style="padding: 16px 24px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 16px; font-weight: 700; color: #272B41">Delete listing?</span><svg width="14" height="14" viewBox="0 0 24 24" fill="#868EAE" style="cursor: pointer"><path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6z"></path></svg></div>
+          <div style="padding: 24px; font-size: 14px; color: #626262">BYT-24-0912 will be removed from bayut.sa immediately. Credits already spent on upgrades are not refunded.</div>
+          <div style="padding: 16px 24px; border-top: 1px solid #f0f0f0; display: flex; justify-content: flex-end; gap: 10px">
+            <button style="height: 40px; padding: 0 20px; border: 1px solid #f0f0f0; border-radius: 6px; background: #fff; color: #5A5F7D; font: 500 14px Figtree, sans-serif; cursor: pointer">Cancel</button>
+            <button style="height: 40px; padding: 0 20px; border: 1px solid #f73131; border-radius: 6px; background: #f73131; color: #fff; font: 500 14px Figtree, sans-serif; cursor: pointer">Delete listing</button>
+          </div>
+        </div>
+        <div style="background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.15); overflow: hidden; max-width: 460px">
+          <div style="padding: 24px; text-align: center; display: grid; place-items: center; gap: 16px">
+            <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(40,177,109,.1); color: #28b16d; display: grid; place-content: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"></path></svg></div>
+            <div>
+              <h5 style="font-size: 18px; font-weight: 600; line-height: 22px; color: #000; margin-bottom: 4px">Listing published</h5>
+              <div style="font-size: 14px; color: #707070">Your listing is live on bayut.sa and will appear in search within a few minutes.</div>
+            </div>
+            <button style="height: 40px; padding: 0 20px; border: 1px solid #006169; border-radius: 6px; background: #006169; color: #fff; font: 500 14px Figtree, sans-serif; cursor: pointer">View listing</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="drawer" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Drawer</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/drawer</code>, <code style="font-size: 13px">drawerModal</code> and <code style="font-size: 13px">listing-drawer</code> — a side sheet with a 24px footer block, used for listing detail, filters on mobile and multi-step side flows. <code style="font-size: 13px">drawerPopover</code> switches between a popover on desktop and a drawer on mobile from the same content.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; align-items: start">
+        <div style="min-width: 0; background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.15); overflow: hidden">
+          <div style="padding: 16px 24px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between"><span style="font-size: 16px; font-weight: 700; color: #272B41">Listing details</span><svg width="14" height="14" viewBox="0 0 24 24" fill="#868EAE"><path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6z"></path></svg></div>
+          <div style="padding: 24px; display: flex; flex-direction: column; gap: 16px">
+            <div style="aspect-ratio: 16/10; border-radius: 6px; background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 8px, #f7f7f7 8px, #f7f7f7 16px)"></div>
+            <div>
+              <div style="font-size: 16px; font-weight: 700; color: #272B41">1,250,000 SAR</div>
+              <div style="font-size: 14px; font-weight: 600; color: #222">3-bed apartment, Al Malqa</div>
+            </div>
+            <div style="border: 1px solid #E1F2F0; border-radius: 8px; overflow: hidden">
+              <div style="background: #F2FAFA; padding: 16px 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px">
+                <div><div style="font-size: 12px; color: #707070; margin-bottom: 4px">Reference</div><div style="font-size: 12px; font-weight: 700">BYT-24-0912</div></div>
+                <div><div style="font-size: 12px; color: #707070; margin-bottom: 4px">Status</div><div style="font-size: 12px; font-weight: 700">Active</div></div>
+                <div><div style="font-size: 12px; color: #707070; margin-bottom: 4px">Posted</div><div style="font-size: 12px; font-weight: 700">18 Aug 2026</div></div>
+                <div><div style="font-size: 12px; color: #707070; margin-bottom: 4px">Expires</div><div style="font-size: 12px; font-weight: 700">17 Sep 2026</div></div>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 24px; border-top: 1px solid #f0f0f0; display: flex; gap: 10px">
+            <button style="flex: 1; height: 40px; border: 1px solid #006169; border-radius: 6px; background: #006169; color: #fff; font: 500 14px Figtree, sans-serif; cursor: pointer">Upgrade</button>
+            <button style="height: 40px; padding: 0 20px; border: 1px solid #f0f0f0; border-radius: 6px; background: #fff; color: #5A5F7D; font: 500 14px Figtree, sans-serif; cursor: pointer">Edit</button>
+          </div>
+        </div>
+        <div style="min-width: 0; overflow-wrap: anywhere; background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; font-size: 13px; color: #626262; display: flex; flex-direction: column; gap: 10px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Notes</div>
+          <div>Footer block padding is 24px (<code style="color: #707070; overflow-wrap: anywhere">Drawer.footerPaddingBlock</code>).</div>
+          <div>Mobile sidebar drawer: fixed, 280px wide, anchored at <code style="color: #707070; overflow-wrap: anywhere">top: 75px</code>, translated 100% off-canvas and back with a 0.35s ease-in transform; RTL flips the axis.</div>
+          <div>Inside a drawer, cards drop their body padding to 0 so content aligns to the drawer padding.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="empty" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Empty states</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px"><code style="font-size: 13px">common/EmptyState</code> — a centred grid (<code style="font-size: 13px">place-items: center</code>, 32px gap, 40px block padding, images capped at 500px) with seven registered types: <code style="font-size: 13px">table</code>, <code style="font-size: 13px">listings-mobile</code>, <code style="font-size: 13px">listings-count-dashboard</code>, <code style="font-size: 13px">analytics-dashboard</code>, <code style="font-size: 13px">quota-credits-dashboard</code>, <code style="font-size: 13px">maintenance</code> and the default block. Title is an <code style="font-size: 13px">h5</code> in <code style="font-size: 13px">#000</code>, message is secondary text, and the retry button is a large primary unless <code style="font-size: 13px">hideRetryButton</code> is set; <code style="font-size: 13px">accentColor</code> re-tints both the illustration and the button.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px">
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); display: grid; place-items: center; gap: 32px; padding-block: 40px; padding-inline: 24px; text-align: center">
+          <img src="public/profolio-assets/images/ph-listings.svg" alt="No listings" style="width: 140px; max-width: 100%; display: block">
+          <div>
+            <h5 style="font-size: 18px; font-weight: 600; line-height: 22px; color: #000; margin-bottom: 4px">No record found</h5>
+            <div style="font-size: 14px; color: #707070">Try widening your filters or clearing the search.</div>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); display: grid; place-items: center; gap: 32px; padding-block: 40px; padding-inline: 24px; text-align: center">
+          <img src="public/profolio-assets/images/limit-credits.svg" alt="No data" style="width: 195px; max-width: 100%; display: block">
+          <div>
+            <h5 style="font-size: 18px; font-weight: 600; line-height: 22px; color: #000; margin-bottom: 4px">Analytics unavailable</h5>
+            <div style="font-size: 14px; color: #707070">We could not load your performance data.</div>
+          </div>
+          <button style="height: 40px; padding: 0 1.5em; border: 1px solid #006169; border-radius: 6px; background: #006169; color: #fff; font: 600 16px Figtree, sans-serif; cursor: pointer">Retry</button>
+        </div>
+        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); display: grid; place-items: center; gap: 32px; padding-block: 40px; padding-inline: 24px; text-align: center">
+          <img src="public/profolio-assets/images/maintenance.svg" alt="Under maintenance" style="width: 100%; max-width: 500px; display: block">
+          <div>
+            <h4 style="font-size: 20px; font-weight: 600; line-height: 22px; color: #000; margin-bottom: 4px">We are under scheduled maintenance.</h4>
+            <div style="font-size: 14px; color: #707070">Our website is currently undergoing maintenance. We will be back online shortly!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mobile" style="margin-bottom: 56px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">Mobile chrome</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px">Below 992px cards lose their border (<code style="font-size: 13px">card-border-width-sm: 0</code>), selects shrink to 40px (36px with <code style="font-size: 13px">mobileCompactHeight</code>), sidebar pills become fixed 246px × 36px with a 1px <code style="font-size: 13px">#f0f0f0</code> border and 6px radius, the lite header dropdown replaces the account menu (<code style="font-size: 13px">common/lite-header-dropdown</code>), and the sider becomes the 280px drawer (<code style="font-size: 13px">common/lite-sidebar-drawer</code>).</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+        <div style="width: 300px; border: 1px solid #f0f0f0; border-radius: 12px; overflow: hidden; background: #F6F7FB">
+          <div style="height: 56px; background: #fff; border-bottom: 1px solid #f0f0f0; padding: 0 12px; display: flex; align-items: center; justify-content: space-between">
+            <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#272B41" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><img src="public/profolio-assets/bayut/logo512.png" alt="Bayut" width="22" height="22" style="display: block; border-radius: 5px"><span style="font-size: 15px; font-weight: 800; color: #006169">profolio</span></span>
+            <span style="display: inline-flex; gap: 10px; align-items: center">
+              <span style="width: 28px; height: 28px; border-radius: 50%; background: #F4F5F7"></span>
+              <span style="width: 28px; height: 28px; border-radius: 50%; background: #E3E6EF"></span>
+            </span>
+          </div>
+          <div style="padding: 12px; display: flex; flex-direction: column; gap: 12px">
+            <div style="height: 36px; border: 1px solid #DEDEDE; border-radius: 6px; background: #fff; display: flex; align-items: center; gap: 8px; padding: 0 10px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#006169" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><span style="font-size: 13px; color: #9D9D9D">Search listings</span></div>
+            <div style="background: #fff; border-radius: 8px; padding: 12px; display: flex; gap: 10px">
+              <div style="width: 84px; aspect-ratio: 1; border-radius: 6px; background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 6px, #f7f7f7 6px, #f7f7f7 12px); flex: none"></div>
+              <div style="min-width: 0; font-size: 12px; color: #707070">
+                <div style="font-size: 14px; font-weight: 700; color: #272B41">1,250,000 SAR</div>
+                <div style="font-size: 12px; font-weight: 600; color: #222; margin: 2px 0">3-bed, Al Malqa</div>
+                <div>3 beds · 220 Sq. M.</div>
+              </div>
+            </div>
+            <div style="background: #fff; border-radius: 8px; padding: 12px; display: flex; gap: 10px">
+              <div style="width: 84px; aspect-ratio: 1; border-radius: 6px; background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 6px, #f7f7f7 6px, #f7f7f7 12px); flex: none"></div>
+              <div style="min-width: 0; font-size: 12px; color: #707070">
+                <div style="font-size: 14px; font-weight: 700; color: #272B41">890,000 SAR</div>
+                <div style="font-size: 12px; font-weight: 600; color: #222; margin: 2px 0">2-bed, Al Narjis</div>
+                <div>2 beds · 140 Sq. M.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="width: 268px; background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 20px 11px; display: flex; flex-direction: column; gap: 10px">
+          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D; padding-inline: 5px">Sidebar drawer</div>
+          <a href="#mobile" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 600; font-size: 14px; background: #F7FCFC; color: #006169"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>Dashboard</a>
+          <a href="#mobile" style="display: flex; align-items: center; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; color: #222"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADB4D2" stroke-width="2" style="min-width: 18px; margin-inline-end: 20px"><path d="M3 11l9-8 9 8v9H3z"></path></svg>My listings</a>
+          <a href="#mobile" style="box-sizing: border-box; display: inline-flex; width: 246px; min-width: 246px; height: 36px; justify-content: center; align-items: center; gap: 4px; padding: 0; background: #fff; border: 1px solid rgb(240,240,240); border-radius: 6px; color: #767676; font-weight: 500; font-size: 14px; line-height: 1; white-space: nowrap; margin-top: 6px">Go to bayut.sa
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H9M17 7v8"></path></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="structure" style="margin-bottom: 24px">
+      <h2 style="font-size: 24px; font-weight: 700; color: #222; letter-spacing: -0.01em; margin-bottom: 6px">System structure</h2>
+      <p style="font-size: 14px; color: #707070; margin-bottom: 20px">How the four layers map back onto the codebase, so the system stays in step with the product.</p>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); overflow: hidden">
+        <div style="display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) minmax(0, 1.1fr); font-size: 13px; overflow-wrap: anywhere">
+          <div style="padding: 12px 20px; background: #F8F9FB; font-weight: 700; color: #272B41; border-bottom: 1px solid #f0f0f0">Layer</div>
+          <div style="padding: 12px 20px; background: #F8F9FB; font-weight: 700; color: #272B41; border-bottom: 1px solid #f0f0f0">Source of truth</div>
+          <div style="padding: 12px 20px; background: #F8F9FB; font-weight: 700; color: #272B41; border-bottom: 1px solid #f0f0f0">Contents</div>
+
+          <div style="padding: 12px 20px; font-weight: 600; color: #272B41; border-bottom: 1px solid #f5f5f5">Foundations</div>
+          <div style="padding: 12px 20px; color: #707070; border-bottom: 1px solid #f5f5f5"><code>src/theme/index.js</code>, <code>utils.less</code>, <code>utility/env.js</code></div>
+          <div style="padding: 12px 20px; color: #626262; border-bottom: 1px solid #f5f5f5">Colour, typography, spacing, radius, elevation, motion, control sizes, iconography</div>
+
+          <div style="padding: 12px 20px; font-weight: 600; color: #272B41; border-bottom: 1px solid #f5f5f5">Atoms</div>
+          <div style="padding: 12px 20px; color: #707070; border-bottom: 1px solid #f5f5f5"><code>components/common/{button, tag, checkbox, radio-button, switch, textInput, select, Label, icon, avatar, spinner, divider, alert, segmented, rate, listBullet, progress-bar, product-tag}</code></div>
+          <div style="padding: 12px 20px; color: #626262; border-bottom: 1px solid #f5f5f5">17 single-purpose components with every variant, size and state the code exposes</div>
+
+          <div style="padding: 12px 20px; font-weight: 600; color: #272B41; border-bottom: 1px solid #f5f5f5">Molecules</div>
+          <div style="padding: 12px 20px; color: #707070; border-bottom: 1px solid #f5f5f5"><code>common/{textInput, inputWithUnit, unitSelect, selectSearch, dropdown, tabs, navbar, dateFilter, datePicker, range-inputs, rangeSlide, filterTags, textWithIcon, iconSubText, statistic, stats-with-percentage, keyValueCard, custom-card, image-uploads}</code>, <code>components/{header-search, phone-input, notification-center}</code></div>
+          <div style="padding: 12px 20px; color: #626262; border-bottom: 1px solid #f5f5f5">Form fields, search, choice groups, ranges, dates, dropdowns, tabs, nav items, breadcrumb, pagination, action groups, filter chips, stat blocks, meta rows, badges, notifications</div>
+
+          <div style="padding: 12px 20px; font-weight: 600; color: #272B41">Organisms</div>
+          <div style="padding: 12px 20px; color: #707070"><code>src/layout</code>, <code>common/{cards, banner, dataTable, filters, json-form, EmptyState, modals, drawer}</code>, <code>components/{widgets, table, post-listing, checkout, prop-shop, credits-usage, leads-management}</code>, <code>tenant/bayut/components</code></div>
+          <div style="padding: 12px 20px; color: #626262">App shell, header, sidebar, footer, card frame, banners, dashboard widgets, listing card and grid, data table, filter panel, post-listing form, credits &amp; checkout, modal, drawer, empty states, mobile chrome</div>
+        </div>
+      </div>
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 20px; margin-top: 16px; font-size: 13px; color: #626262; display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D">Rules carried through every layer</div>
+        <div>All directional spacing uses logical properties (<code style="color: #707070">margin-inline-*</code>, <code style="color: #707070">inset-inline-*</code>) so Arabic RTL mirrors without overrides.</div>
+        <div>Colour is never hard-coded in components: they read theme tokens, which the tenant can override at runtime via <code style="color: #707070">getColors()</code>.</div>
+        <div>Every data surface ships four states — loading skeleton, empty, error with retry, and loaded.</div>
+        <div>Feature availability is flag-driven (<code style="color: #707070">HIDE_INBOX</code>, <code style="color: #707070">HIDE_REPORTS</code>, LMS submodules, REGA/Nafath, TruBroker), so organisms must render correctly with sections absent.</div>
+        <div><strong style="font-weight: 700">Cascade order matters:</strong> theme tokens (<code style="color: #707070">src/theme/index.js</code>) → styled-component rules per component → global <code style="color: #707070">style.less</code>. Where the last layer restates a property it wins, which is why rendered tags are 600-weight and multi-select chips are fully rounded.</div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 5px 20px rgba(146,153,184,0.03); padding: 24px; margin-top: 16px">
+        <h3 style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9D9D9D; margin-bottom: 6px">Audit trail — cross-check against the codebase</h3>
+        <p style="font-size: 13px; color: #707070; margin-bottom: 18px">Full pass over <code style="font-size: 12px">src/theme/index.js</code>, <code style="font-size: 12px">static/less/{style,utils,antd-customized}.less</code>, <code style="font-size: 12px">components/common/**</code>, <code style="font-size: 12px">components/skeleton</code>, <code style="font-size: 12px">dataTable/style.js</code>, <code style="font-size: 12px">utility/env.js</code>, <code style="font-size: 12px">public/profolio-assets</code> and <code style="font-size: 12px">features-overview.md</code>. Corrections applied in this pass:</p>
+        <div style="display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr) minmax(0, 1fr); font-size: 13px; overflow-wrap: anywhere; border: 1px solid #f0f0f0; border-radius: 8px; overflow: hidden">
+          <div style="padding: 10px 14px; background: #F8F9FB; font-weight: 700; color: #272B41; border-bottom: 1px solid #f0f0f0">Item</div>
+          <div style="padding: 10px 14px; background: #F8F9FB; font-weight: 700; color: #272B41; border-bottom: 1px solid #f0f0f0">Was</div>
+          <div style="padding: 10px 14px; background: #F8F9FB; font-weight: 700; color: #272B41; border-bottom: 1px solid #f0f0f0">Corrected to (source)</div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Tag weight &amp; padding</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">400, padding-inline .5em</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5">600, padding <code>0 9.5px</code> — global <code>.ant-tag</code> in style.less</div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Multi-select chip</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">radius 4px, 22px, primary 10%</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5">radius <code>2rem</code>, primary on <code>primary-light-3</code>, 44px selector</div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Table header</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">#fafafa, 600, #272B41</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5"><code>#F8F9FB</code>, weight 400, <code>#9D9D9D</code>, <code>#F1F2F6</code> borders — dataTable/style.js</div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Row hover</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">flat #F8F9FB</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5"><code>linear-gradient(0deg, primary-light, #fff)</code> via <code>.tableHoverGradient</code></div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Pagination</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">centred, radius 6, primary border only</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5">end-aligned, radius 4, 3–4px margins, active on <code>primary-light</code> with <code>#f1f2f6</code> borders</div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Bayut Match badge</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">teal bordered 4px chip</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5"><code>9999px</code> pill, <code>#28B16D</code> on <code>#E9F7F0</code>, 10 / 12px sizes — BayutMatchBadge.js</div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Card head padding</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">16px inline</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5">24px inline (20px ≤768px) — style.less</div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Banner</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">gradient only, generic CTA</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5">real <code>banner-faces.png</code> art layer, warning-dot bullet list, "Buy Package" small button</div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Product tag shape</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">square 4px only</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5">defaults to <code>shape="round"</code>, bg from <code>iconProps.color</code>, 1em icon in 1.4em container</div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Tooltip / popover</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">generic white surface</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5">exact padding, borders and <code>#9299b8</code>-tinted shadows; black collapsed-menu variant</div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Rate empty star</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">#DEDEDE</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5"><code>#c6d0dc</code>, 2px star gap, text <code>#5a5f7d</code></div>
+
+          <div style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #f5f5f5">Iconography</div>
+          <div style="padding: 10px 14px; color: #707070; border-bottom: 1px solid #f5f5f5">react-icons + svg.js</div>
+          <div style="padding: 10px 14px; color: #626262; border-bottom: 1px solid #f5f5f5">four-source resolution order incl. <code>AmenitiesSvg</code> / <code>NewAmenitiesSvg</code>; asset-first rule for illustrations</div>
+
+          <div style="padding: 10px 14px; font-weight: 600">Legacy palette</div>
+          <div style="padding: 10px 14px; color: #707070">not documented</div>
+          <div style="padding: 10px 14px; color: #626262">16 hard-coded utility colours in style.less that differ from the tokens, now listed under Foundations → Color</div>
+        </div>
+        <div style="font-size: 12px; color: #9D9D9D; margin-top: 14px">Verified unchanged: all theme tokens (colour ramps, type scale, radii, shadows, control heights), utils.less spacing scale, button variant matrix, radio pill / button / list specs, switch and checkbox geometry, input focus ring, segmented control, nav item states, empty-state types, modal and drawer padding, and the layout metrics.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}"></script>
+</body>
+</html>
