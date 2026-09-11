@@ -103,6 +103,13 @@ for (const [file, layer] of LAYERS) {
   }
 }
 
+/* Foundation sections live in the canvas alongside components but are NOT components.
+   Filing them under components/ is what made an agent report the font stack as
+   undocumented while components/type.md carried it. They go into foundations.md. */
+const FOUNDATION_IDS = new Set(['color','type','space','radius','control','iconography','structure']);
+const foundationSections = components.filter((c) => FOUNDATION_IDS.has(c.id));
+const componentList = components.filter((c) => !FOUNDATION_IDS.has(c.id));
+
 /* ─────────────────────────────────────────────────────────────────────────────
    2. USAGE — which barrel exports are actually imported anywhere
    ───────────────────────────────────────────────────────────────────────── */
@@ -186,6 +193,44 @@ const flagSurfaces = Object.fromEntries(
 );
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   4b. THE SHELL — menu entries, widths, header parts, read from source
+   ───────────────────────────────────────────────────────────────────────── */
+const menuFile = read(join(REPO, 'src/tenant/common/menuList/menuList.js'));
+const layoutFile = read(join(REPO, 'src/layout/withAdminLayout.js'));
+
+/* Walk menuList in source order. Guards open at `...(cond ?` and close at `: []),`.
+   Children live inside `list: [`. Role gating rides on permission/isAgencyPage. */
+const menuEntries = [];
+{
+  let guard = '', inList = false, pending = null;
+  const push = () => { if (pending && pending.title) menuEntries.push(pending); pending = null; };
+  for (const raw of menuFile.split('\n')) {
+    const line = raw.trimEnd();
+    const g = line.match(/\.\.\.\(\s*(.+?)\s*$/);
+    if (g) guard = g[1].replace(/\?\s*$/, '').replace(/tenantConstants[?.]*\./g, '').trim();
+    if (/:\s*\[\]\)/.test(line)) { push(); guard = ''; }
+    if (/\blist:\s*\[/.test(line)) { push(); inList = true; }
+    else if (inList && /^\s{12}\],\s*$/.test(line)) { push(); inList = false; }
+
+    if (/^\s*\{\s*$/.test(line)) { push(); pending = { title: '', path: '', guard, child: inList, roles: [] }; }
+    if (!pending) continue;
+    const t = line.match(/title:\s*t\(\s*'([^']+)'/);           if (t) pending.title = t[1];
+    const pth = line.match(/path:\s*'([^']+)'/);                 if (pth && !pending.path) pending.path = pth[1];
+    const perm = line.match(/permission:\s*PERMISSIONS_TYPE\.(\w+)/); if (perm) pending.roles.push(perm[1].toLowerCase());
+    if (/isAgencyPage:\s*true/.test(line)) pending.roles.push('agency only');
+    if (/isPremiumUserPage:\s*true/.test(line)) pending.roles.push('premium');
+  }
+  push();
+}
+
+const shellConst = (name) => {
+  const m = layoutFile.match(new RegExp(`${name}\\s*=\\s*(\\d+)`));
+  return m ? m[1] : '?';
+};
+const SIDER_W = shellConst('SIDEBAR_EXPANDED_WIDTH');
+const SIDER_COLLAPSED_W = shellConst('SIDEBAR_COLLAPSED_WIDTH');
+
+/* ─────────────────────────────────────────────────────────────────────────────
    5. TOKENS
    ───────────────────────────────────────────────────────────────────────── */
 const themeSrc = read(join(REPO, 'src/theme/index.js'));
@@ -199,6 +244,13 @@ const lessAll = lessDirs.map(read).join('\n');
 const breakpoints = [...new Set([...lessAll.matchAll(/(?:max|min)-width:\s*(\d+)px/g)].map((m) => +m[1]))]
   .sort((a, b) => a - b);
 
+const fontFamilies = [...new Set(
+  [...lessAll.matchAll(/font-family:\s*([^;]+);/g)].map((m) => m[1].replace(/\s+/g, ' ').trim())
+)].filter((f) => f.length < 90 && !f.startsWith('@')).slice(0, 6);
+const liteFont = (flags.find((f) => f.key === 'FONT_FAMILY_LITE') || {}).value || '';
+const radii = [...new Set([...lessAll.matchAll(/border-radius:\s*(\d+px)/g)].map((m) => m[1]))].slice(0, 10);
+const zIndexes = [...new Set([...lessAll.matchAll(/z-index:\s*(\d+)/g)].map((m) => +m[1]))].sort((a, b) => a - b);
+
 /* ─────────────────────────────────────────────────────────────────────────────
    EMIT
    ───────────────────────────────────────────────────────────────────────── */
@@ -211,14 +263,14 @@ sizes['components/index.md'] = write(
   'components/index.md',
   `# Component register
 
-${components.length} entries. Load \`components/<id>.md\` for the one you need — never the whole folder,
+${componentList.length} entries. Load \`components/<id>.md\` for the one you need — never the whole folder,
 and never the files in \`canvas/\`.
 
 Design name is canonical. \`source\` is provenance for a developer, not something to fetch.
 
 | Design name | id | Layer | Source | Status |
 |---|---|---|---|---|
-${components
+${componentList
   .map((c) => {
     const st = usage[c.name.replace(/\s+/g, '')] || usage[c.name] || '';
     return `| ${c.name} | \`${c.id}\` | ${c.layer} | ${c.source ? '`' + c.source + '`' : '—'} | ${st || 'n/a'} |`;
@@ -235,7 +287,7 @@ ${exported.filter((n) => usage[n] === 'unreferenced').map((n) => `- \`${n}\``).j
 );
 
 // components/<id>.md ────────────────────────────────────────────────────────
-for (const c of components) {
+for (const c of componentList) {
   sizes[`components/${c.id}.md`] = write(
     `components/${c.id}.md`,
     `# ${c.name}
@@ -280,7 +332,7 @@ const filesIn = (dir) => {
   return out;
 };
 
-const componentByName = new Map(components.map((c) => [c.name.toLowerCase(), c]));
+const componentByName = new Map(componentList.map((c) => [c.name.toLowerCase(), c]));
 const ALIAS = {
   EmptyState: 'empty', JSONForm: 'form', Spinner: 'feedback', Skeleton: 'feedback',
   TextInput: 'input', Select: 'select', Cards: 'card', Card: 'card', DataTable: 'table',
@@ -296,10 +348,10 @@ const ALIAS = {
 };
 const resolveComp = (n) => {
   const id = ALIAS[n] || ALIAS[n.replace(/s$/, '')];
-  if (id) return components.find((c) => c.id === id);
+  if (id) return componentList.find((c) => c.id === id);
   return componentByName.get(n.toLowerCase())
-      || components.find((c) => c.id === slug(n))
-      || components.find((c) => slug(c.name) === slug(n));
+      || componentList.find((c) => c.id === slug(n))
+      || componentList.find((c) => slug(c.name) === slug(n));
 };
 const TITLECASE = (s) => s.replace(/[-/]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()).trim();
 
@@ -505,14 +557,36 @@ sizes['foundations.md'] = write(
   'foundations.md',
   `# Foundations
 
+**This file is complete.** Colour, typography, spacing, radius, elevation and iconography are
+all here. Do not conclude something is undocumented without reading to the bottom.
+
 Cite token names, not hex values. The cascade resolves in three layers, last wins:
 \`src/theme/index.js\` → styled-components → \`src/static/less/style.less\`.
 
-## Tokens
+## Typography
+
+Font stacks found in \`src/static/less/style.less\`:
+
+${fontFamilies.map((f) => `- \`${f}\``).join('\n')}
+
+Lite / member-area surfaces swap family via \`FONT_FAMILY_LITE\` = \`${liteFont}\`.
+
+${foundationSections.filter((f) => f.id === 'type').map((f) => f.description + (f.variants.length ? '\n\n' + f.variants.map((v) => `- ${v}`).join('\n') : '')).join('\n\n')}
+
+## Colour tokens
 
 | Token | Value |
 |---|---|
 ${tokens.map((t) => `| \`${t.key}\` | \`${t.value}\` |`).join('\n')}
+
+${foundationSections
+  .filter((f) => f.id !== 'type')
+  .map((f) => `## ${f.name}\n\n${f.description}${f.notes.length ? '\n\n' + f.notes.map((n) => `> ${n}`).join('\n\n') : ''}${f.variants.length ? '\n\n' + f.variants.map((v) => `- ${v}`).join('\n') : ''}`)
+  .join('\n\n')}
+
+## Radius in use
+
+${radii.join(' · ') || '—'}
 
 ## Breakpoints in use
 
@@ -520,6 +594,156 @@ ${breakpoints.join(' · ')} px
 
 Inconsistent by inheritance — 991/992, 767/768, 575/576 and 479/480 all appear. Until a
 canonical scale is agreed, match the value already used by the surface you are changing.
+
+## z-index in use
+
+${zIndexes.join(' · ')}
+
+No layer model. The \`2147483647\` is real and is in the codebase.
+`
+);
+
+// pages/_shell.md — GENERATED; supersedes the hand-written version ──────────
+const navRows = menuEntries.map((e) =>
+  `| ${e.child ? '&nbsp;&nbsp;↳ ' : ''}**${e.title}** | \`${e.path || '— (parent)'}\` | ${e.guard ? '`' + e.guard + '`' : 'always'} | ${e.roles.length ? e.roles.join(', ') : 'all'} |`
+).join('\n');
+
+const navHtml = menuEntries.filter((e) => !e.child)
+  .map((e, i) => {
+    const kids = e.path ? '' : menuEntries.filter((k) => k.child)
+      .map((k) => `\n      <a href="${k.path}">${k.title}</a>`).join('');
+    return e.path
+      ? `    <a href="${e.path}"${i === 0 ? ' class="on"' : ''}>${e.title}</a>`
+      : `    <div class="grp"><span>${e.title}</span>${kids}\n    </div>`;
+  }).join('\n');
+
+sizes['pages/_shell.md'] = write(
+  'pages/_shell.md',
+  `# The Profolio shell
+
+**Every Profolio KSA screen starts here.** There is no blank canvas. A screen that does not
+exist yet still has the header, side navigation and footer — so the worst case a designer
+receives is correct chrome around an empty content area, never an improvised layout.
+
+Source: \`src/layout/withAdminLayout.js\` · \`src/tenant/common/menuList/menuList.js\`
+
+## Measurements — use these, do not estimate
+
+| Part | Value | Source |
+|---|---|---|
+| Sider width, expanded | **${SIDER_W}px** | \`SIDEBAR_EXPANDED_WIDTH\` |
+| Sider width, collapsed | **${SIDER_COLLAPSED_W}px** | \`SIDEBAR_COLLAPSED_WIDTH\` |
+| Header height | **74px** | layout |
+| Content ground | \`#F6F7FB\` | layout |
+| Page header padding | \`24px 32px\` (\`26px 15px\` ≤768px, \`16px 20px\` ≤576px) | style.less |
+| Footer | \`#fafafa\` · \`24px 15px\` | layout |
+| Mobile sider drawer | 280px at \`top: 75px\`, 0.35s ease-in | layout |
+
+## The sidebar — these exact ${menuEntries.length} entries, these exact labels
+
+Never invent, rename, reorder or omit one. "TruLeads" is not "Leads"; "Credits & Packages" is
+not "Packages"; there is no top-level "Licenses" entry.
+
+| Label | Path | Shown when | Roles |
+|---|---|---|---|
+${navRows}
+
+## Header parts, in order
+
+1. Logo — Bayut + KSA lockup
+2. Header search — **hidden on KSA**, \`SHOW_SEARCH_HEADER: false\`
+3. Platform segmented control — multi-platform users only
+4. Credits summary
+5. Notification bell with unread badge
+6. **Classified pill** — a link out to the classified site, min-width 148.71px, 1px \`#f0f0f0\`
+   border, radius 6px, 36px tall. It is a bordered link, **not a solid primary button**, and
+   it is not "Post a Listing".
+7. Account dropdown — avatar plus name
+
+## Starting markup
+
+Copy this. It is the shell at the measurements above, with the real nav. Replace only the
+content area.
+
+\`\`\`html
+<div class="pf">
+  <header class="pf-header">
+    <div class="pf-logo">bayut <span>KSA</span></div>
+    <div class="pf-spacer"></div>
+    <div class="pf-credits"><em>Credits</em><b>1,280</b></div>
+    <button class="pf-bell" aria-label="Notifications">7</button>
+    <a class="pf-classified" href="#">Go to Bayut.sa</a>
+    <div class="pf-account"><span class="av">SA</span> Saad Al-Harbi</div>
+  </header>
+  <nav class="pf-sider">
+${navHtml}
+  </nav>
+  <main class="pf-content"><!-- the screen goes here --></main>
+  <footer class="pf-footer">
+    <small>© 2026 Bayut KSA</small>
+    <span class="rega">Licensed by <b>REGA</b> · <a href="#">Report to REGA</a></span>
+  </footer>
+</div>
+
+<style>
+.pf{display:grid;grid-template-columns:${SIDER_W}px 1fr;background:#F6F7FB;
+    font-family:Lato,'Droid Arabic Kufi',sans-serif;font-size:14px;line-height:1.571;color:#222}
+.pf-header{grid-column:1/-1;height:74px;background:#fff;border-bottom:1px solid #F1F2F6;
+    display:flex;align-items:center;gap:18px;padding:0 24px}
+.pf-logo{width:${SIDER_W - 24}px;flex:none;font-weight:900;color:#006169;font-size:19px}
+.pf-logo span{font-weight:400;font-size:12px;color:#9D9D9D;text-transform:uppercase}
+.pf-spacer{flex:1}
+.pf-credits{display:flex;flex-direction:column;padding-inline-end:18px;border-right:1px solid #f0f0f0}
+.pf-credits em{font-style:normal;font-size:10.5px;color:#9D9D9D;text-transform:uppercase}
+.pf-credits b{font-size:14px;color:#222}
+.pf-bell{background:none;border:0;color:#5A5F7D;cursor:pointer}
+.pf-classified{min-width:148.71px;height:36px;border:1px solid #f0f0f0;border-radius:6px;
+    display:grid;place-items:center;padding:0 16px;color:#767676;text-decoration:none;font-size:13px}
+.pf-account{display:flex;align-items:center;gap:9px;font-size:13px;color:#4f4f4f}
+.pf-account .av{width:36px;height:36px;border-radius:50%;background:#E1F2F0;color:#006169;
+    display:grid;place-items:center;font-weight:700;font-size:13px}
+.pf-sider{background:#fff;border-right:1px solid #F1F2F6;padding:30px 0 0}
+.pf-sider a{display:block;padding:8px 16px;margin:0 15px 8px;border-radius:4px;
+    font-weight:500;color:#222;text-decoration:none}
+.pf-sider a:hover{background:#F8F9FB;color:#006169}
+.pf-sider a.on{background:#F7FCFC;color:#006169;font-weight:600}
+.pf-sider .grp>span{display:block;padding:8px 16px;margin:0 15px;font-weight:500;color:#222}
+.pf-sider .grp a{font-weight:400;padding-block:7px;margin-inline-start:31px}
+.pf-content{padding:24px 32px;display:grid;grid-template-rows:auto 1fr;gap:16px}
+.pf-footer{grid-column:1/-1;background:#fafafa;padding:24px 15px;border-top:1px solid #F1F2F6;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11.5px;color:#707070}
+.pf-footer b{color:#006169}
+@media (max-width:992px){.pf{grid-template-columns:1fr}.pf-sider{display:none}}
+</style>
+\`\`\`
+
+## Variants
+
+\`withAdminLayout.js\` branches four ways. Name which one you are designing.
+
+| Variant | Condition | What changes |
+|---|---|---|
+| \`isMobile\` | ≤992px | Sider → 280px drawer at \`top:75px\`. \`lite-header-dropdown\` replaces the account menu; \`lite-sidebar-drawer\` replaces the sider. Cards lose their border; selects shrink to 40px. |
+| \`isMemberArea\` | \`HAS_MEMBER_AREA: true\` on KSA | Reduced chrome. **This is the lite surface — v2, not specified.** Stop and say so. |
+| \`topMenu\` | layout preference | Horizontal nav replaces the sider. |
+| \`isWebView\` | embedded in the app | Chrome suppressed entirely. |
+
+## Page template header
+
+Every \`pages/<route>.md\` opens with these fields. Filling it in **is** the proposal.
+
+\`\`\`
+shell     default | isMobile | isMemberArea | topMenu | isWebView
+route     /the-route
+source    src/container/pages/<dir>
+purpose   one sentence, user-side
+roles     agency owner · agency staff · individual seller — and what differs
+flags     tenant constants that change or remove it
+uses      documented components it composes
+states    loading · empty · error · flag-off · no-permission
+lang      en <draft|approved> · ar <pending|passed>
+ga4       event names, when product supplies them
+\`\`\`
 `
 );
 
