@@ -151,7 +151,13 @@ const pageDirs = existsSync(join(REPO, 'src/container/pages'))
   : [];
 
 /* Match a route to the page directory that most likely renders it. */
-const SPELLING = { 'agency-staff': 'agancy-staff', 'listings': 'listings', 'packages': 'prop-shop', 'signin': 'authentication' };
+const SPELLING = {
+  'agency-staff': 'agancy-staff', 'packages': 'prop-shop', 'signin': 'authentication',
+  'checkout': 'payment', 'event-checkout': 'payment', 'content': 'payment',
+  'licenses': 'ad-license', 'invite': 'invite-user', 'preferences': 'user-settings',
+  'user-profile': 'user-settings', 'agency-profile': 'user-settings',
+  'bank-detail': 'user-settings', 'change-password': 'user-settings',
+};
 const pageFor = (route) => {
   const seg = route.split('/').filter(Boolean)[0] || '';
   if (SPELLING[seg] && pageDirs.includes(SPELLING[seg])) return SPELLING[seg];
@@ -245,6 +251,178 @@ ${c.variants.length ? `## Variants documented\n\n${c.variants.map((v) => `- ${v}
 `
   );
 }
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   6. PAGE TEMPLATES — derived per route from its page directory
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Design names come from the sidebar menu — the lingo a PRD will use. */
+const menuSrc = read(join(REPO, 'src/tenant/common/menuList/menuList.js'));
+const menuLabels = {};
+for (const m of menuSrc.matchAll(/key:\s*['"]([^'"]+)['"][\s\S]{0,400}?t\(\s*['"]([^'"]+)['"]/g)) {
+  menuLabels[m[1]] = m[2];
+}
+for (const m of menuSrc.matchAll(/t\(\s*['"]([^'"]+)['"][\s\S]{0,200}?key:\s*['"]([^'"]+)['"]/g)) {
+  if (!menuLabels[m[2]]) menuLabels[m[2]] = m[1];
+}
+
+const filesIn = (dir) => {
+  const out = [];
+  if (!existsSync(dir)) return out;
+  (function walk(d) {
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      const q = join(d, e.name);
+      if (e.isDirectory()) walk(q);
+      else if (e.name.endsWith('.js')) out.push(q);
+    }
+  })(dir);
+  return out;
+};
+
+const componentByName = new Map(components.map((c) => [c.name.toLowerCase(), c]));
+const ALIAS = {
+  EmptyState: 'empty', JSONForm: 'form', Spinner: 'feedback', Skeleton: 'feedback',
+  TextInput: 'input', Select: 'select', Cards: 'card', Card: 'card', DataTable: 'table',
+  Drawer: 'drawer', Modal: 'modal', Dropdown: 'dropdown', Tabs: 'tabs', Tag: 'tag',
+  Button: 'button', Icon: 'icon', Avatar: 'avatar', Alert: 'alert', Switch: 'switch',
+  Statistic: 'statistic', Banner: 'banner', Filters: 'filters', FilterTag: 'filterchip',
+  Label: 'label', Divider: 'misc', Pagination: 'pagination', Navbar: 'navitem',
+  Segmented: 'segmented', Checkbox: 'checkbox', RadioButtons: 'radio', Upload: 'upload',
+  'image-uploads': 'upload', 'phone-input': 'phone', 'header-search': 'search',
+  'listing-card': 'listingcard', 'listing-health': 'health', widgets: 'dashboard',
+  'notification-center': 'notification', table: 'table', charts: 'dashboard',
+  'product-tag': 'producttag', 'json-form': 'form', dataTable: 'table', EmptyStates: 'empty',
+};
+const resolveComp = (n) => {
+  const id = ALIAS[n] || ALIAS[n.replace(/s$/, '')];
+  if (id) return components.find((c) => c.id === id);
+  return componentByName.get(n.toLowerCase())
+      || components.find((c) => c.id === slug(n))
+      || components.find((c) => slug(c.name) === slug(n));
+};
+const TITLECASE = (s) => s.replace(/[-/]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()).trim();
+
+let templatesWritten = 0;
+for (const route of routes) {
+  const dir = pageFor(route);
+  if (!dir) continue;                                   // no page dir → no template to derive
+  const pageFiles = filesIn(join(REPO, 'src/container/pages', dir));
+  let src = pageFiles.map(read).join('\n');
+  if (!src) continue;
+
+  // Several screens are thin pages whose logic lives in feature dirs they never import
+  // directly (post-listing drives everything through JSONForm, for instance). Curated.
+  const EXTRA = {
+    'post-listing': ['components/post-listing', 'components/post-listing-ksa',
+                     'helpers/post-listing', 'tenant/common/components/post-listing'],
+    'post-ad':      ['components/post-listing', 'helpers/post-listing'],
+    'checkout':     ['components/checkout', 'components/prop-shop'],
+    'prop-shop':    ['components/prop-shop', 'components/checkout'],
+    'listings':     ['components/listing-card', 'components/listing-container',
+                     'components/listing-drawer', 'components/table'],
+    'dashboard':    ['components/widgets', 'components/charts'],
+    'credits-usage':['components/credits-usage', 'components/credits-info'],
+    'quota-credits':['components/credits-usage', 'components/set-credit-limit'],
+    'agancy-staff': ['components/agency-staff-header', 'components/invite-user',
+                     'components/delete-agency-user'],
+    'user-settings':['components/add-license', 'components/license-card',
+                     'components/nafath-verification-modal'],
+    'ad-license':   ['components/add-license', 'components/license-card'],
+    'lms':          ['components/leads-management', 'components/lead-nudges'],
+  };
+  for (const extra of EXTRA[dir] || [])
+    src += '\n' + filesIn(join(REPO, 'src', extra)).map(read).join('\n');
+
+  // follow one level into the feature components this page pulls in — that is where
+  // the KSA logic (flags, role branching) actually lives for most screens
+  const followed = new Set(
+    [...src.matchAll(/from\s*'[^']*\/components\/([a-zA-Z-]+)'/g)].map((m) => m[1])
+  );
+  for (const f of followed) {
+    if (f === 'common' || f === 'svg') continue;
+    src += '\n' + filesIn(join(REPO, 'src/components', f)).map(read).join('\n');
+  }
+
+  const seg = route.split('/').filter(Boolean)[0] || '';
+  const designName = menuLabels[seg] || menuLabels[dir] || TITLECASE(seg);
+
+  // components: named imports from the common barrel, plus direct component paths
+  const named = new Set();
+  for (const m of src.matchAll(/import\s*\{([^}]+)\}\s*from\s*'[^']*components\/common'/g))
+    m[1].split(',').forEach((n) => { const t = n.trim(); if (/^[A-Z]/.test(t)) named.add(t); });
+  const direct = new Set(
+    [...src.matchAll(/from\s*'[^']*components\/(?:common\/)?([a-zA-Z-]+)(?:\/[^']*)?'/g)]
+      .map((m) => m[1]).filter((n) => n !== 'common' && n !== 'svg')
+  );
+
+  // map to documented entries where we can
+  const docd = [...named, ...direct]
+    .map((n) => {
+      const hit = resolveComp(n);
+      return hit ? `\`components/${hit.id}.md\` (${hit.name})` : null;
+    })
+    .filter(Boolean);
+  const undoc = [...new Set([...named, ...direct].filter((n) => !resolveComp(n)))];
+
+  // Flags that gate the ROUTE itself live in menuList/appRoutes, not in the page.
+  const routeGuard = new Set();
+  const guardSrc = menuSrc + '\n' + routeSrc;
+  for (const m of guardSrc.matchAll(/tenantConstants[?.]*\.([A-Z][A-Z0-9_]+)([\s\S]{0,600}?)(?=tenantConstants[?.]*\.[A-Z]|$)/g)) {
+    if (m[2].includes(`'${seg}'`) || m[2].includes(`"${seg}"`) || m[2].includes(`/${seg}`))
+      routeGuard.add(m[1]);
+  }
+
+  const usedFlags = [...new Set(
+    [...src.matchAll(/tenantConstants[?.]*\.([A-Z][A-Z0-9_]+)/g)].map((m) => m[1])
+  )].filter((f) => flags.some((x) => x.key === f));
+  const gateFlags = [...routeGuard].filter((f) => flags.some((x) => x.key === f) && !usedFlags.includes(f));
+
+  const roleAware = /is_agency|isAgency|user_type|PERMISSIONS_TYPE/.test(src);
+  const states = [
+    /isLoading|loading|Skeleton|Spinner/.test(src) && 'loading',
+    /EmptyState|no-data|noData/.test(src) && 'empty',
+    /error|Error/.test(src) && 'error',
+    usedFlags.length && 'flag-off',
+    roleAware && 'no-permission',
+  ].filter(Boolean);
+
+  const body = `# ${designName}
+
+> **Derived, not designed.** Fields below were read out of the page directory. Purpose, layout
+> intent and the artboard are still to be written — that is the designer's work, and this
+> header is the proposal to get approved first.
+
+\`\`\`
+shell     default
+route     ${route}
+source    src/container/pages/${dir}
+purpose   TODO — one sentence, user-side
+roles     ${roleAware ? 'role-aware — agency owner / agency staff / individual seller differ; confirm which' : 'no role branching found in this directory'}
+flags     ${[...gateFlags.map((f) => f + ' (gates the route)'), ...usedFlags].join(' · ') || 'none referenced directly'}
+states    ${states.length ? states.join(' · ') : 'none detected — confirm with the designer'}
+lang      en pending · ar pending
+ga4       — product supplies in the PRD
+\`\`\`
+
+## Composition
+
+Documented components this page already imports:
+
+${docd.length ? docd.map((d) => `- ${d}`).join('\n') : '- none resolved automatically — check `components/index.md`'}
+
+${undoc.length ? `Imported but **not in the component register** — undocumented surface:\n\n${undoc.slice(0, 14).map((n) => `- \`${n}\``).join('\n')}\n` : ''}
+## Before designing
+
+1. Fill in \`purpose\` and confirm \`roles\`.
+2. Check every flag above in \`flags.md\` — a false flag removes the surface.
+3. Start from \`pages/_shell.md\` default unless the PRD says otherwise.
+4. Get this header approved, then design.
+`;
+  sizes[`pages/${slug(route)}.md`] = write(`pages/${slug(route)}.md`, body);
+  templatesWritten++;
+}
+console.log(`templates        ${templatesWritten}`);
 
 // pages/index.md ────────────────────────────────────────────────────────────
 sizes['pages/index.md'] = write(

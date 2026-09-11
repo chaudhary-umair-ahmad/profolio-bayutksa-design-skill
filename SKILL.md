@@ -1,6 +1,6 @@
 ---
 name: profolio-ksa-design
-version: 0.1.0
+version: 0.2.0
 source_commit: b83e805
 description: "Design system for Bayut Profolio KSA — the agent and seller portal at profolio.bayut.sa. Use when designing, changing or reviewing any Profolio KSA screen, component or flow: turning a PRD into artboards, checking an existing screen against the system, finding which tokens, components or flags a surface uses, or locating where a feature lives in the codebase. Triggers on 'design this screen for Profolio', 'what does the listings page use', 'add X to Profolio KSA', 'is there a component for Y', 'make a mockup of the dashboard'. Covers tenant bayut (KSA) only — not Oman, Bahrain, Qatar, Jordan, Egypt or Zameen, and not the consumer side of bayut.sa, which Strat owns."
 ---
@@ -23,7 +23,7 @@ Load what the task needs. Never load more.
 | `references/tenants/ksa.md` | Always. The rules that make KSA different. |
 | `references/pages/_shell.md` | Always. Every screen starts from the shell. |
 | `references/pages/index.md` | To find which screen the request is about. |
-| `references/pages/<route>.md` | The one screen you are working on. |
+| `references/pages/<route>.md` | The one screen you are working on. 30 of 31 routes have one. |
 | `references/components/index.md` | To find a component by design name. |
 | `references/components/<id>.md` | Only the components this screen uses. |
 | `references/foundations.md` | When you need token names or breakpoints. |

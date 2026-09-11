@@ -14,34 +14,34 @@ before designing. Never pretend a template was read.
 
 | Route | Page source | Template |
 |---|---|---|
-| `/ad-license` | `src/container/pages/ad-license` | **not written** |
-| `/agency-profile` | — | **not written** |
-| `/agency-staff` | `src/container/pages/agancy-staff` | **not written** |
-| `/agent-performance` | `src/container/pages/agent-performance` | **not written** |
-| `/bank-detail` | — | **not written** |
-| `/change-password` | — | **not written** |
-| `/checkout` | — | **not written** |
-| `/content/process-payment` | — | **not written** |
-| `/credits-usage` | `src/container/pages/credits-usage` | **not written** |
-| `/dashboard` | `src/container/pages/dashboard` | **not written** |
-| `/event-checkout` | — | **not written** |
-| `/inbox/*` | `src/container/pages/inbox` | **not written** |
-| `/invite` | `src/container/pages/invite-user` | **not written** |
-| `/licenses` | — | **not written** |
-| `/listings` | `src/container/pages/listings` | **not written** |
-| `/lms/leads` | `src/container/pages/lms` | **not written** |
-| `/lms/lms-dashboard` | `src/container/pages/lms` | **not written** |
-| `/lms/truleads` | `src/container/pages/lms` | **not written** |
+| `/ad-license` | `src/container/pages/ad-license` | `pages/ad-license.md` |
+| `/agency-profile` | `src/container/pages/user-settings` | `pages/agency-profile.md` |
+| `/agency-staff` | `src/container/pages/agancy-staff` | `pages/agency-staff.md` |
+| `/agent-performance` | `src/container/pages/agent-performance` | `pages/agent-performance.md` |
+| `/bank-detail` | `src/container/pages/user-settings` | `pages/bank-detail.md` |
+| `/change-password` | `src/container/pages/user-settings` | `pages/change-password.md` |
+| `/checkout` | `src/container/pages/payment` | `pages/checkout.md` |
+| `/content/process-payment` | `src/container/pages/payment` | `pages/content-process-payment.md` |
+| `/credits-usage` | `src/container/pages/credits-usage` | `pages/credits-usage.md` |
+| `/dashboard` | `src/container/pages/dashboard` | `pages/dashboard.md` |
+| `/event-checkout` | `src/container/pages/payment` | `pages/event-checkout.md` |
+| `/inbox/*` | `src/container/pages/inbox` | `pages/inbox.md` |
+| `/invite` | `src/container/pages/invite-user` | `pages/invite.md` |
+| `/licenses` | `src/container/pages/ad-license` | `pages/licenses.md` |
+| `/listings` | `src/container/pages/listings` | `pages/listings.md` |
+| `/lms/leads` | `src/container/pages/lms` | `pages/lms-leads.md` |
+| `/lms/lms-dashboard` | `src/container/pages/lms` | `pages/lms-lms-dashboard.md` |
+| `/lms/truleads` | `src/container/pages/lms` | `pages/lms-truleads.md` |
 | `/maintenance` | — | **not written** |
-| `/packages` | `src/container/pages/prop-shop` | **not written** |
-| `/post-ad/:id` | `src/container/pages/post-ad` | **not written** |
-| `/post-listing` | `src/container/pages/post-listing` | **not written** |
-| `/post-listing/:id` | `src/container/pages/post-listing` | **not written** |
-| `/post-listing/:id/upgrade` | `src/container/pages/post-listing` | **not written** |
-| `/preferences` | — | **not written** |
-| `/reports/leads-reports` | `src/container/pages/reports` | **not written** |
-| `/reports/listing-report` | `src/container/pages/reports` | **not written** |
-| `/reports/summary` | `src/container/pages/reports` | **not written** |
-| `/signin` | `src/container/pages/authentication` | **not written** |
-| `/user-profile` | — | **not written** |
-| `/user-settings/*` | `src/container/pages/user-settings` | **not written** |
+| `/packages` | `src/container/pages/prop-shop` | `pages/packages.md` |
+| `/post-ad/:id` | `src/container/pages/post-ad` | `pages/post-ad-id.md` |
+| `/post-listing` | `src/container/pages/post-listing` | `pages/post-listing.md` |
+| `/post-listing/:id` | `src/container/pages/post-listing` | `pages/post-listing-id.md` |
+| `/post-listing/:id/upgrade` | `src/container/pages/post-listing` | `pages/post-listing-id-upgrade.md` |
+| `/preferences` | `src/container/pages/user-settings` | `pages/preferences.md` |
+| `/reports/leads-reports` | `src/container/pages/reports` | `pages/reports-leads-reports.md` |
+| `/reports/listing-report` | `src/container/pages/reports` | `pages/reports-listing-report.md` |
+| `/reports/summary` | `src/container/pages/reports` | `pages/reports-summary.md` |
+| `/signin` | `src/container/pages/authentication` | `pages/signin.md` |
+| `/user-profile` | `src/container/pages/user-settings` | `pages/user-profile.md` |
+| `/user-settings/*` | `src/container/pages/user-settings` | `pages/user-settings.md` |
