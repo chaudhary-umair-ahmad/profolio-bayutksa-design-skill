@@ -136,8 +136,13 @@ const ATTR = {
   xlinkHref: 'xlink:href', xmlnsXlink: 'xmlns:xlink',
 };
 
-/** Attributes that describe React, not paint — drop them wholesale. */
-const DROP_ATTR = new Set(['width', 'height', 'style', 'className', 'key', 'onClick', 'xmlns', 'xmlnsXlink', 'ref']);
+/** Attributes that describe React, not paint — drop them wholesale.
+    Note what is NOT here: width and height. They are meaningless on the root
+    <svg> (the <use> sizes it) but load-bearing on <mask>, <rect>, <pattern> and
+    <filter>. Dropping them everywhere made the brand wordmark paint nothing,
+    because its mask had no extent to mask. They are stripped from the root tag
+    only, further down. */
+const DROP_ATTR = new Set(['style', 'className', 'key', 'onClick', 'xmlns', 'xmlnsXlink', 'ref']);
 
 /**
  * Resolve one JSX attribute expression to a plain SVG value.
@@ -145,10 +150,14 @@ const DROP_ATTR = new Set(['width', 'height', 'style', 'className', 'key', 'onCl
  * `unresolved` collects anything this does not understand, so a value is never
  * silently invented or silently lost.
  */
-function resolveExpr(attr, expr, unresolved) {
+function resolveExpr(attr, expr, unresolved, defaults = {}) {
   const e = expr.trim();
 
   if (DROP_ATTR.has(attr)) return null;
+
+  /* a prop whose default is a literal colour: that default is the product's
+     intent, not a placeholder for the cascade */
+  if (Object.prototype.hasOwnProperty.call(defaults, e)) return defaults[e];
 
   // a number:  strokeWidth={0.8}
   if (/^-?[\d.]+$/.test(e)) return e;
@@ -171,6 +180,9 @@ function resolveExpr(attr, expr, unresolved) {
   const fallback = e.match(/\|\|\s*['"]([^'"]*)['"]\s*$/);
   if (fallback) return fallback[1];
 
+  // size on the root <svg> is the caller's, and the <use> supplies it here
+  if (attr === 'width' || attr === 'height') return null;
+
   unresolved.push(`${attr}={${e.length > 60 ? e.slice(0, 60) + '…' : e}}`);
   return null;
 }
@@ -180,7 +192,24 @@ function resolveExpr(attr, expr, unresolved) {
    (tenant/bayut/constants/constants.js:44), so the wordmark reads "Profolio KSA". */
 const TEXT_CHILD = { 'props.text': 'KSA' };
 
-function toSvg(jsx, name, unresolved) {
+/**
+ * Literal colour defaults in a component's own signature, e.g.
+ * `({ color = '#28B16D', ... })`. That default is the product's intent — the
+ * classified-link icon is green wherever it appears — so it must win over
+ * `currentColor`, which would let it inherit whatever the parent happens to be.
+ * Read from the component body, not the <svg> block: by then the signature is
+ * already behind us.
+ */
+function colourDefaults(body) {
+  const params = body.match(/\(\s*\{([^}]*)\}/)?.[1] || '';
+  const out = {};
+  for (const m of params.matchAll(/(\w+)\s*=\s*'(#[0-9a-fA-F]{3,8}|rgba?\([^)]*\))'/g))
+    out[m[1]] = m[2];
+  return out;
+}
+
+function toSvg(jsx, name, unresolved, defaults = {}) {
+
   // 1 — spreads carry no paint information
   let s = jsx.replace(/\{\s*\.\.\.\w+\s*\}/g, '');
 
@@ -207,16 +236,16 @@ function toSvg(jsx, name, unresolved) {
       j++;
     }
     const expr = s.slice(m.index + full.length, j - 1);
-    const value = resolveExpr(attr, expr, unresolved);
+    const value = resolveExpr(attr, expr, unresolved, defaults);
     out += s.slice(i, m.index) + (value === null ? '' : `${attr}="${value}"`);
     i = j;
     re.lastIndex = j;
   }
   s = out + s.slice(i);
 
-  // 3 — drop the literal width/height that sit alongside the viewBox
-  s = s.replace(/(<svg\b[^>]*?)\s(?:width|height)="[^"]*"/g, '$1');
-  s = s.replace(/(<svg\b[^>]*?)\s(?:width|height)="[^"]*"/g, '$1');
+  // 3 — width/height belong to the <use>, not the symbol, but only on the root
+  //     tag: nested elements need theirs
+  s = s.replace(/^<svg\b[^>]*>/, (tag) => tag.replace(/\s(?:width|height)="[^"]*"/g, ''));
   s = s.replace(/\s(?:xmlns|xmlnsXlink)="[^"]*"/g, '');
 
   // 4 — camelCase → SVG attribute names
@@ -257,6 +286,7 @@ const blocks = new Map();
 }
 
 const symbols = [];
+const inlineArt = [];      /* art that cannot travel through <use> — see below */
 const missing = [];
 const suspect = [];
 const unresolved = [];
@@ -268,13 +298,38 @@ for (const [name, use] of Object.entries(WANTED)) {
   if (!raw) { missing.push(`${name} (no <svg> in body)`); continue; }
 
   const before = unresolved.length;
-  const svg = toSvg(raw, name, unresolved);
+  const svg = toSvg(raw, name, unresolved, colourDefaults(body));
   if (unresolved.length > before) suspect.push(`${name}: ${unresolved.slice(before).join(', ')}`);
   const viewBox = svg.match(/viewBox="([^"]+)"/)?.[1];
   if (!viewBox) { missing.push(`${name} (no viewBox)`); continue; }
   if (/\{|\}/.test(svg)) suspect.push(`${name}: JSX braces survived`);
 
   const inner = svg.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '').trim();
+
+  /* A <mask> or <filter> inside a <symbol> does not survive instancing through
+     <use>: the reference resolves against the sprite's own zero-size,
+     overflow-hidden viewport and the masked group paints nothing. The brand
+     wordmark is the one asset here that uses one. It is also used once per page
+     rather than many times, so it loses nothing by being written out as
+     ready-to-inline markup instead. */
+  if (/<(mask|filter)\b/.test(inner)) {
+    /* Strip the mask. These are Figma export artefacts that crop the art to a
+       rectangle it already fits inside, so removing one changes nothing you can
+       see — and keeping one costs you the whole glyph, because a mask stops
+       resolving once the art is instanced or the document carries a stylesheet.
+       Verified on the brand wordmark: identical with and without, in isolation;
+       blank with it, correct without it, on the page. If a future icon's mask
+       is load-bearing, the proof sheet will show it. */
+    const unmasked = inner
+      .replace(/<mask[\s\S]*?<\/mask>\s*/g, '')
+      .replace(/\s*mask="url\(#[^)]*\)"/g, '');
+    inlineArt.push({ name, use, viewBox, masked: inner !== unmasked, markup:
+      `<svg class="pf-${name.toLowerCase()}" width="${viewBox.split(' ')[2]}" ` +
+      `height="${viewBox.split(' ')[3]}" viewBox="${viewBox}" role="img" aria-label="${use}">\n` +
+      unmasked.split('\n').filter((l) => l.trim()).map((l) => '  ' + l.trim()).join('\n') + `\n</svg>` });
+    continue;
+  }
+
   symbols.push(
     `  <!-- ${use} · src/components/svg.js -->\n` +
     `  <symbol id="pf-${name}" viewBox="${viewBox}">\n` +
@@ -367,7 +422,19 @@ ${symbols.join('\n')}
 mkdirSync(join(ROOT, 'deliverables'), { recursive: true });
 writeFileSync(join(ROOT, 'deliverables', 'sprite.svg'), out);
 
+if (inlineArt.length) {
+  writeFileSync(join(ROOT, 'deliverables', 'inline-art.html'),
+`<!-- GENERATED by scripts/icons.mjs — do not edit.
+     Art that carries a <mask> or <filter>. Those do not survive instancing
+     through <use>, so paste these in directly where they are needed rather
+     than referencing them from the sprite. -->
+${inlineArt.map((a) => `\n<!-- ${a.use} -->\n${a.markup}`).join('\n')}
+`);
+}
+
 console.log(`  deliverables/sprite.svg — ${symbols.length} symbols, ${(out.length / 1024).toFixed(0)}KB`);
+if (inlineArt.length)
+  console.log(`  deliverables/inline-art.html — ${inlineArt.length} masked: ${inlineArt.map((a) => a.name).join(', ')}`);
 if (suspect.length) {
   console.log(`  ! ${suspect.length} attribute(s) dropped as unresolvable — check these glyphs:`);
   for (const w of suspect) console.log(`      ${w}`);

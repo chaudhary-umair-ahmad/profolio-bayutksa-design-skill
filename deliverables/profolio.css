@@ -271,7 +271,14 @@
   --header-gutter:16px;                /* Row gutter={16} */
   --header-brand-gap:12px;
   --rail-pad-block:4px;
+  --rail-brand-inset:20px;             /* SideBarStyle --sidebar-brand-inset when
+                                          collapsed (10px expanded, 1px in RTL).
+                                          It is what leaves only the mark visible
+                                          in a 60px rail. */
   --rail-item-h:36px;                  /* --ant-menu-item-height */
+  --rail-item-margin:4px;              /* antd Menu itemMarginBlock = marginXXS.
+                                          Pitch is 36 + 2x4 = 44px, not 36 — the
+                                          rail was reading too tight without it. */
   --rail-item-w:70%;                   /* collapsed menu item width */
   --rail-item-pad-inline:10px;         /* collapsed, ltr */
   --rail-icon:20px;
@@ -433,7 +440,7 @@ table{border-collapse:collapse}
   /* the wordmark is 205px wide and the rail is 60px: on the live screen you
      see its leading mark and nothing else, because the rail clips it */
   overflow:hidden;
-  padding-inline-start:var(--sp-8);
+  padding-inline-start:var(--rail-brand-inset);
 }
 .pf-rail-logo{
   display:grid;
@@ -453,6 +460,7 @@ table{border-collapse:collapse}
 .pf-rail-item{
   width:var(--rail-item-w);
   height:var(--rail-item-h);
+  margin-block:var(--rail-item-margin);
   display:flex;
   align-items:center;
   justify-content:center;
