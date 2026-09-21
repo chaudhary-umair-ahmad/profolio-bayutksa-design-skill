@@ -212,6 +212,17 @@ ${[['Posted On', 'Select Date Range'], ['City', 'Select City'], ['Location', 'Se
   </div>
 </div>`;
 
+/* The prototype bar is NOT a product component — it is the only thing on this
+   page the product does not have, and it says so. It switches the page between
+   the three captured states. */
+const protoBar = `
+<div class="pf-proto-bar" role="group" aria-label="Prototype states — not part of the product">
+  <b>Prototype</b>
+  <button type="button" data-state-set="default" aria-pressed="true">Default</button>
+  <button type="button" data-state-set="loading" aria-pressed="false">Loading</button>
+  <button type="button" data-state-set="error" aria-pressed="false">Error</button>
+</div>`;
+
 const html = open({ title: page.title, current: page.railCurrent, docTitle: `${page.title} — Profolio KSA`, comment, contentGap: 8 }) +
 `      <!-- ── Filters ────────────────────────────────────────────────── -->
       <div class="pf-filter-bar">
@@ -226,6 +237,11 @@ ${page.filters.map(field).join('\n')}
           <button class="pf-btn" data-variant="primary" data-size="large" type="button">${icon('FiSearch', null)}<span>${esc(page.actions.search)}</span></button>
         </div>
       </div>
+      <!-- ── the three page states ──────────────────────────────────────
+           default, loading and error, each captured from the product rather
+           than imagined. The prototype bar at the bottom switches between
+           them; #state=loading reaches one directly. -->
+      <div data-state-panel="default">
       <!-- ── DataTable: status tabs in the card head, the table in its body ──
            One panel per tab, all but the current one hidden. The column set
            per tab is listingUtilities.js:402's, and the row COUNT follows the
@@ -277,7 +293,45 @@ ${body.map(row(cols)).join('\n')}
 }).join('\n')}
       </section>
 ${pager}
-` + close({ overlays });
+      </div><!-- /default -->
+
+      <!-- data/live/listings--loading.capture.json — the listings query held
+           open. The card head stays (47 tall) but carries no tabs: the counts
+           come from the same query. The body is 553 with a 400px spin area. -->
+      <div data-state-panel="loading" hidden>
+        <section class="pf-table-card">
+          <div class="pf-table-card-head"><div class="pf-tabs" role="tablist"></div></div>
+          <div class="pf-spin"><span class="pf-spin-dot"><i></i><i></i><i></i><i></i></span></div>
+        </section>
+      </div>
+
+      <!-- data/live/listings--error.capture.json — /api/surge/listings answers
+           500 and the product renders NO error card: the table falls back to
+           the same No Record Found empty state. That is the product's
+           behaviour, not a shortcut here. -->
+      <div data-state-panel="error" hidden>
+        <section class="pf-table-card">
+          <div class="pf-table-card-head">
+            <!-- the tabs render, but WITHOUT data-panel: they belong to this
+                 state's card, and sharing the panel names would let a click
+                 here reveal the default state's table underneath -->
+            <div class="pf-tabs" role="tablist">
+${page.tabs.map((t) => `              <button class="pf-tab" role="tab"${t.current ? ' aria-selected="true"' : ''} type="button"><span class="pf-tab-label">${esc(t.label)} (${t.count})</span></button>`).join('\n')}
+            </div>
+          </div>
+          <table class="pf-table">
+            <thead><tr><th></th></tr></thead>
+            <tbody><tr><td>
+              <div class="pf-empty">
+                ${emptyArt()}
+                <div><div class="pf-empty-title">No Record Found</div></div>
+                <button class="pf-btn" data-variant="primary" data-size="large" type="button">${icon('PostListingIcon', null)}<span>Post Listing</span></button>
+              </div>
+            </td></tr></tbody>
+          </table>
+        </section>
+      </div>
+` + close({ overlays, states: protoBar });
 
 const out = join(ROOT, 'deliverables', 'listings.html');
 writeFileSync(out, html);

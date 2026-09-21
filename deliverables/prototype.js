@@ -91,6 +91,9 @@
   /* ── page states ─────────────────────────────────────────────────────── */
 
   function setState(name) {
+    /* the state is also an attribute on <body>, so a rule can dress what sits
+       outside the panel — the loading state dims the Search button */
+    document.body.setAttribute('data-page-state', name);
     Array.prototype.forEach.call(document.querySelectorAll('[data-state-panel]'), function (p) {
       p.hidden = p.getAttribute('data-state-panel') !== name;
     });

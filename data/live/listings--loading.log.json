@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": true,
+  "pageHeight": 900,
+  "note": "the listings query held open — antd Skeleton/Spin, whatever the product paints while waiting",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

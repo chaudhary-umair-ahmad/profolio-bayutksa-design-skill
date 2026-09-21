@@ -500,6 +500,10 @@
      data/live/listings--tab-removed.capture.json: the wrapper is a grid with
      32px gaps and a 300px minimum, the illustration is 164x89 intrinsic and
      the title is an antd h5 at 18/600 in #000. */
+  --spin-area-h:400px;                 /* .ant-spin inside the table body */
+  --spin-dot-box:27px;                 /* .ant-spin-dot */
+  --spin-dot:9px;
+  --loading-opacity:0.65;              /* antd .ant-btn-loading, measured */
   --empty-gap:32px;
   --empty-min-h:300px;
   --empty-title-mb:9px;                /* antd Title marginBottom 0.5em at 18px */
@@ -1980,6 +1984,37 @@ table{border-collapse:collapse}
   margin-block-end:var(--empty-title-mb);
 }
 .pf-empty-text{color:var(--gray-700);max-width:var(--empty-text-w)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · spin — what the table shows while its query is in flight
+   data/live/listings--loading.capture.json, captured by holding the listings
+   request open rather than by drawing a guess:
+     .ant-spin            1332x400 inside a 553 card body
+     .ant-spin-dot        27x27, four 9px dots, colour #006169
+   The card head stays, 47 tall, with an empty 16px tab strip in it — the tab
+   counts come from the same query, so there are no tabs yet.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-spin{
+  display:grid;place-content:center;
+  block-size:var(--spin-area-h);
+  color:var(--primary);
+}
+.pf-spin-dot{
+  inline-size:var(--spin-dot-box);block-size:var(--spin-dot-box);
+  display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4);
+  animation:pf-spin-rotate 1.2s infinite linear;
+}
+.pf-spin-dot i{
+  inline-size:var(--spin-dot);block-size:var(--spin-dot);
+  background:currentColor;border-radius:var(--radius-round);
+  display:block;
+}
+@keyframes pf-spin-rotate{to{transform:rotate(360deg)}}
+/* the page's own loading state dims the Search button, as antd does while a
+   query is open — measured at 0.65 on .ant-btn-loading */
+body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary"]{
+  opacity:var(--loading-opacity);pointer-events:none;
+}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · skeleton — the loading state antd paints while a query is open

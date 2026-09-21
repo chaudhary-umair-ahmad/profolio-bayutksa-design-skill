@@ -179,6 +179,11 @@ async function qa(route, browser, state = null) {
     await p.waitForTimeout(300);
   }
 
+  /* The prototype bar is ours alone — it says so on the page — and being
+     fixed it lands on the footer in a full-page shot. Take it out of the
+     comparison rather than let it read as a 15% footer difference. */
+  await p.evaluate(() => document.querySelectorAll('.pf-proto-bar').forEach((el) => { el.hidden = true; }));
+
   /* An open overlay is positioned in the viewport, so the harness shot the
      viewport rather than the full page. Match it, or the two images are in
      different coordinate systems and every crop is wrong. */

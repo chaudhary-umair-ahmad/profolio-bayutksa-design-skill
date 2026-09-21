@@ -89,4 +89,18 @@ export default [
     note: 'Ad License Requests (0) — a different table entirely (adLicenseTableColumnMapper)',
     do: async (p) => { await p.getByRole('tab', { name: /^Ad License/ }).click(); await p.waitForTimeout(1500); },
   },
+  /* the two states that are not a click: what the screen looks like while the
+     listings query is in flight, and what it looks like when it fails. Both
+     are the PRODUCT's own rendering — a skeleton it ships and an error card it
+     ships — captured rather than imagined. */
+  {
+    name: 'loading',
+    note: 'the listings query held open — antd Skeleton/Spin, whatever the product paints while waiting',
+    mode: 'slow',
+  },
+  {
+    name: 'error',
+    note: '/api/surge/listings answers 500 — the product\'s own error card',
+    mode: 'error',
+  },
 ];

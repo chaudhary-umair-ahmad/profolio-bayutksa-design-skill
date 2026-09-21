@@ -64,6 +64,9 @@ const captureSrc = readFileSync(join(ROOT, 'tools/profolio-capture/capture.js'),
 const FONTS_CSS = readFileSync(join(ROOT, 'deliverables/fonts.css'), 'utf8');
 const locales = flag('--rtl') ? ['en', 'ar'] : ['en'];
 const WITH_STATES = flag('--states');
+/* the answer-set mode a state step is running under — null for a normal
+   answer, 'error' or 'slow' while one step wants a failure or a wait */
+let MODE = null;
 
 /* ── one page per route ────────────────────────────────────────────────── */
 /* wait for the page to stop moving — the same settle every capture uses, so a
@@ -139,6 +142,22 @@ async function captureRoute(browser, base, route, locale) {
     if (u.host !== appHost) { log.blocked++; return r.abort(); }         /* nothing else leaves the sandbox */
     if (u.pathname.startsWith('/harness-img/')) return r.fulfill({ status: 200, contentType: THUMB.contentType, body: u.pathname.includes('avatar') ? AVATAR_SVG : THUMB.body });
     if (u.pathname.startsWith('/api/')) {
+      /* A step may put the answer set into a MODE, which is how the loading
+         and error states get captured rather than drawn:
+           'error' — the listings query fails, and the product renders its own
+                     error card. Only that endpoint fails; a 500 everywhere
+                     would take the shell down with it.
+           'slow'  — the listings query is held open, so the screen the
+                     product paints while waiting is what gets captured.
+         Anything else answers normally. */
+      if (MODE === 'error' && /\/api\/surge\/listings$/.test(u.pathname)) {
+        log.mode = 'error on /api/surge/listings';
+        return r.fulfill({ status: 500, contentType: 'application/json', body: '{"error":"harness: deliberate failure"}' });
+      }
+      if (MODE === 'slow' && /\/api\/surge\/(listings|ovation)/.test(u.pathname)) {
+        log.mode = 'listings held open';
+        return new Promise(() => {});      /* never settles; the step snaps the skeleton */
+      }
       const body = answer(r.request().method(), u.pathname, u.search);
       (body === undefined ? log.unanswered : log.answered).push(`${r.request().method()} ${u.pathname}`);
       /* never abort an API call: an aborted request pins a skeleton forever, a 200 lands in an empty state */
@@ -188,16 +207,20 @@ async function captureRoute(browser, base, route, locale) {
       const steps = (await import(file)).default;
       for (const step of steps) {
         try {
+          MODE = step.mode || null;
           await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60_000 });
           await page.waitForSelector('.ant-layout', { timeout: 30_000 });
-          await settle(page);
-          await step.do(page);
+          /* a held-open or failed query never settles — that is the point */
+          if (!step.mode) await settle(page);
+          if (step.do) await step.do(page);
           await page.waitForTimeout(600);
           const r = await snap(page, `${name}--${step.name}`, captureSrc, locale, { note: step.note, url });
           const kinds = Object.entries(r.state.overlay).filter(([, v]) => v).map(([k]) => k);
           states.push({ name: step.name, ok: true, nodes: r.nodes, overlay: kinds.join('+') || 'inline' });
         } catch (e) {
           states.push({ name: step.name, ok: false, why: String(e).split('\n')[0].slice(0, 90) });
+        } finally {
+          MODE = null;
         }
       }
     }

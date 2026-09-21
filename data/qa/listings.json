@@ -1,6 +1,6 @@
 {
   "route": "listings",
-  "at": "2026-09-21T18:44:11.864Z",
+  "at": "2026-09-21T18:49:30.263Z",
   "shellFails": [],
   "diffs": [
     {
@@ -293,6 +293,158 @@
       ]
     },
     {
+      "state": "error",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "tabs.tab",
+          "diff": 14.2
+        },
+        {
+          "id": "filter.clear",
+          "diff": 13.1
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 12.3
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 10.8
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4.9
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.8
+        },
+        {
+          "id": "table.cell",
+          "diff": 4.6
+        },
+        {
+          "id": "table.card",
+          "diff": 4.2
+        },
+        {
+          "id": "table",
+          "diff": 4.2
+        },
+        {
+          "id": "filter.bar",
+          "diff": 3.5
+        },
+        {
+          "id": "shell.content",
+          "diff": 2.9
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "table.head",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.search",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "loading",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.clear",
+          "diff": 13.1
+        },
+        {
+          "id": "filter.search",
+          "diff": 10.8
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 10.8
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.8
+        },
+        {
+          "id": "filter.bar",
+          "diff": 4.1
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "shell.content",
+          "diff": 0.5
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        }
+      ],
+      "notModelled": [
+        "table",
+        "table.head",
+        "table.cell"
+      ]
+    },
+    {
       "state": "modal-delete",
       "shellFails": [],
       "diffs": [
@@ -338,7 +490,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 2.4
+          "diff": 2.5
         },
         {
           "id": "shell.header",
