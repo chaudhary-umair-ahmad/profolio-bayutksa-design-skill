@@ -5,3 +5,4 @@ node_modules/
 references/screens/*.png
 
 site/
+canvas/live/

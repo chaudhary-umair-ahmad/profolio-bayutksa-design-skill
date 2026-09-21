@@ -26,6 +26,15 @@ import { createInterface } from 'node:readline/promises';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
 const SCREENS = join(ROOT, 'references', 'screens');
+const LIVE = join(ROOT, 'canvas', 'live');
+
+/* Redact production data before anything is written to disk. The capture runs
+   against a real logged-in account; names, numbers and ids must not reach git. */
+const scrub = (html) => html
+  .replace(/(\+?9665\d{8}|\b05\d{8}\b)/g, '+966500000000')
+  .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, 'user@example.com')
+  .replace(/\b\d{10,}\b/g, (m) => '0'.repeat(m.length))
+  .replace(/\b(1200\d{6})\b/g, '1200000000');
 const AUTH = join(ROOT, '.auth.json');
 
 const arg = (name, fallback) => {
@@ -109,9 +118,61 @@ for (const route of routes) {
     // Let skeletons settle so the shot shows loaded content, not loading state.
     await page.waitForTimeout(2500);
 
-    const out = join(SCREENS, `${slug(route)}.png`);
-    await page.screenshot({ path: out, fullPage: true });
-    console.log(`  ✓ ${route.padEnd(34)} → references/screens/${slug(route)}.png`);
+    const name = slug(route);
+
+    /* 1 — screenshot */
+    await page.screenshot({ path: join(SCREENS, `${name}.png`), fullPage: true });
+
+    /* 2 — rendered DOM. Raw, goes to canvas/live/ which the agent never reads;
+           the generator distils it. Scrubbed first — this is production data. */
+    const rawHtml = await page.evaluate(() => document.documentElement.outerHTML);
+    mkdirSync(LIVE, { recursive: true });
+    writeFileSync(join(LIVE, `${name}.html`), scrub(rawHtml));
+
+    /* 3 — computed styles of the widget containers. An image cannot tell you a
+           card's padding is 24px; this can. */
+    const styles = await page.evaluate(() => {
+      const PROPS = ['display','gridTemplateColumns','gridTemplateRows','flexDirection','gap',
+        'width','minHeight','padding','margin','backgroundColor','color','borderRadius',
+        'border','boxShadow','fontFamily','fontSize','fontWeight','lineHeight','alignItems',
+        'justifyContent','textAlign'];
+      const seen = new Set();
+      const pick = (el) => {
+        const cs = getComputedStyle(el);
+        const r = el.getBoundingClientRect();
+        const o = {};
+        for (const p of PROPS) { const v = cs[p]; if (v && v !== 'none' && v !== 'normal' && v !== 'auto') o[p] = v; }
+        return {
+          selector: el.tagName.toLowerCase() +
+            (el.id ? '#' + el.id : '') +
+            (typeof el.className === 'string' && el.className
+              ? '.' + el.className.trim().split(/\s+/).slice(0, 3).join('.') : ''),
+          box: { w: Math.round(r.width), h: Math.round(r.height), x: Math.round(r.x), y: Math.round(r.y) },
+          text: (el.innerText || '').trim().split('\n')[0].slice(0, 60),
+          style: o,
+        };
+      };
+      const out = { chrome: [], widgets: [] };
+      for (const sel of ['header', 'aside', '.ant-layout-sider', 'main', '.ant-layout-content', 'footer']) {
+        const el = document.querySelector(sel);
+        if (el && !seen.has(el)) { seen.add(el); out.chrome.push(pick(el)); }
+      }
+      const content = document.querySelector('.ant-layout-content, main') || document.body;
+      for (const el of content.querySelectorAll('.ant-card, [class*="card" i], [class*="widget" i]')) {
+        const r = el.getBoundingClientRect();
+        if (r.width < 120 || r.height < 60 || seen.has(el)) continue;
+        if (el.closest('.ant-card') && el.closest('.ant-card') !== el) continue;  // outermost only
+        seen.add(el);
+        out.widgets.push(pick(el));
+      }
+      return out;
+    });
+    writeFileSync(join(SCREENS, `${name}.styles.json`), JSON.stringify(styles, null, 2));
+
+    console.log(`  ✓ ${route}`);
+    console.log(`      screenshot  references/screens/${name}.png`);
+    console.log(`      dom         canvas/live/${name}.html`);
+    console.log(`      styles      references/screens/${name}.styles.json  (${styles.chrome.length} chrome, ${styles.widgets.length} widgets)`);
     ok++;
   } catch (e) {
     console.log(`  ✗ ${route.padEnd(34)} ${String(e.message).slice(0, 80)}`);
