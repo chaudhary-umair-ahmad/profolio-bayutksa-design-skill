@@ -372,8 +372,12 @@
   --health-tag-shadow:2px 0 4px rgba(0,0,0,0.06);
 
   /* upgrade + action grids — platformActions.js, table-actions.js */
-  --action-cell:32px;
-  --action-gap:8px;
+  /* MEASURED 36 on both grids — the upgrade circles and the row actions are
+     the same size. It read 32 here, which is antd's controlHeightSM and not
+     what either column renders: data/live/listings.capture.json */
+  --action-cell:36px;
+  --action-gap:8px;                    /* .col-listing-actions grid gap */
+  --action-gap-dense:4px;              /* .col-platform-actions — pitch 40, not 44 */
   --badge-h:20px;                      /* .ant-badge-count — antd-css.md.
                                           Not controlHeightXS (16): that is the
                                           global token, not what Badge emits. */
@@ -475,6 +479,9 @@
   --popover-radius-noti:8px;           /* antd's own borderRadiusLG on .ant-popover-inner */
   --avatar-40:40px;                    /* .user-info avatar — measured 40x40, radius 50% */
   --icon-20:20px;                      /* the 20px glyph inside it */
+  --icon-applied:19px;                 /* an applied upgrade's glyph is larger */
+  --applied-check:14px;                /* the tick on an applied upgrade */
+  --applied-check-inset:-2px;          /* upgrade-icons/styled.js:33 */
   --tag-pad-inline:10.2px;             /* .ant-tag padding-inline — antd's 0.85em at 12px */
   --tag-h:26px;                        /* measured height of the verified pills */
   --tag-gap:6px;                       /* .ant-space-compact gap inside the pill */
@@ -1444,6 +1451,7 @@ table{border-collapse:collapse}
 
 /* platformActions.js — <Group gap="8px" template="repeat(3, minmax(0, 32px))"> */
 .pf-action-grid{display:grid;grid-template-columns:repeat(3, minmax(0, var(--action-cell)));gap:var(--action-gap);width:fit-content}
+.pf-action-grid[data-dense]{gap:var(--action-gap-dense)}
 /* table-actions.js:170 — every row action is primary on primary at 8% */
 .pf-round-action{
   --ra-fg:var(--primary);
@@ -1464,7 +1472,26 @@ table{border-collapse:collapse}
 .pf-round-action[data-tone="photo"]    {--ra-fg:var(--svc-photography);  --ra-bg:var(--tint-photography)}
 .pf-round-action[data-tone="video"]    {--ra-fg:var(--svc-videography);  --ra-bg:var(--tint-videography)}
 .pf-round-action[data-tone="drone"]    {--ra-fg:var(--svc-drone);        --ra-bg:var(--tint-drone)}
+/* MEASURED: an upgrade that is NOT applied is #F4F5F7 under rgb(173,180,210),
+   and its glyph is 16. An applied one keeps its product colour at 10% and its
+   glyph is 19 — a different icon, with the tick drawn into the art. */
 .pf-round-action[data-tone="muted"]    {--ra-fg:var(--extra-light);      --ra-bg:var(--bg-gray-normal)}
+.pf-round-action[data-applied] svg{inline-size:var(--icon-applied);block-size:var(--icon-applied)}
+/* the tick on an applied upgrade — upgrade-icons.js:50 renders an HiCheck
+   beside the button, and styled.js:29 gives it --icon-bg #28b16d on white at
+   -2/-2. Measured 14x14 at (button + 20, button + 24). It was listed as a
+   missing component in the first QA; this is it. */
+.pf-round-action-wrap{position:relative;display:inline-grid;place-content:center}
+.pf-applied-check{
+  position:absolute;
+  inset-block-end:var(--applied-check-inset);
+  inset-inline-end:var(--applied-check-inset);
+  inline-size:var(--applied-check);block-size:var(--applied-check);
+  border-radius:var(--radius-round);
+  background:var(--success);color:var(--white);
+  display:grid;place-items:center;
+}
+.pf-applied-check svg{inline-size:var(--sp-8);block-size:var(--sp-8)}
 .pf-round-action[data-state="disabled"]{opacity:var(--disabled-opacity);cursor:not-allowed}
 .pf-round-action:hover,
 .pf-round-action[data-state="hover"]{filter:brightness(.96)}

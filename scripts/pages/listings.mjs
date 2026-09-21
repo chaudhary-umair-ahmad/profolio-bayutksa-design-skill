@@ -28,15 +28,28 @@ const PRODUCT = {
   hot:       { label: 'Hot',       icon: 'IconSuperHot' },
   signature: { label: 'Signature', icon: 'BsFillLightningChargeFill' },
 };
-/* which upgrade circles are lit for a given product — table-actions.js reads
-   products_information; the dashboard's rows established this mapping */
+/* An upgrade circle is COLOURED ONLY WHEN THE UPGRADE IS APPLIED, and every
+   one of them is disabled for this user. Both were wrong here: we lit five of
+   six circles in their brand colours on every row, which is the state the
+   product shows for an applied upgrade only.
+
+   data/live/listings.capture.json, six circles per row across ten rows:
+     not applied  #F4F5F7 under rgb(173,180,210), 16px glyph
+     applied      the product colour at 10%, 19px glyph (a different icon —
+                  the tick is drawn into the art, not a badge element)
+     all of them  opacity 0.54, because the row's upgrades are disabled
+                  ([disabled] in utils.less:142, and the click times out)
+
+   table-actions.js reads products_information[].is_applied; our fixture rows
+   carry `product`, which is the applied one. The four service upgrades are
+   never applied in this fixture. */
 const UPGRADES = (product) => [
-  ['signature', 'Signature',    'BsFillLightningChargeFill'],
-  [product === 'hot' ? 'hot' : 'muted', 'Hot', 'IconSuperHot'],
-  ['refresh',   'Refresh',      'MdRefresh'],
-  ['photo',     'Photography',  'HiCamera'],
-  ['video',     'Videography',  'HiVideoCamera'],
-  ['drone',     'Drone Footage','DroneIcon'],
+  ['signature', 'Signature',     'BsFillLightningChargeFill', product === 'signature'],
+  ['hot',       'Hot',           'IconSuperHot',              product === 'hot'],
+  ['refresh',   'Refresh',       'MdRefresh',                 false],
+  ['photo',     'Photography',   'HiCamera',                  false],
+  ['video',     'Videography',   'HiVideoCamera',             false],
+  ['drone',     'Drone Footage', 'DroneIcon',                 false],
 ];
 /* FIVE, not six. The product's Actions cell was counted in the state capture —
    `colActions:5btn` — and each was clicked to see what it opens:
@@ -99,8 +112,8 @@ const CELL = {
             </td>`,
   status: () => `            <td><span class="pf-status-pill" data-status="green">Live</span></td>`,
   upgrades: (r) => `            <td class="col-upgrades">
-              <div class="pf-action-grid">
-${UPGRADES(r.product).map(([tone, label, ic]) => `                <button class="pf-round-action" data-tone="${tone}" type="button" aria-label="${label}">${icon(ic)}</button>`).join('\n')}
+              <div class="pf-action-grid" data-dense>
+${UPGRADES(r.product).map(([tone, label, ic, applied]) => `                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="${applied ? tone : 'muted'}"${applied ? ' data-applied' : ''} type="button" aria-label="${label}" disabled>${icon(ic, applied ? null : 16)}</button>${applied ? `<span class="pf-applied-check">${icon('HiCheck', null)}</span>` : ''}</span>`).join('\n')}
               </div>
             </td>`,
   actions: () => `            <td class="col-actions">

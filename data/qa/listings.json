@@ -1,6 +1,6 @@
 {
   "route": "listings",
-  "at": "2026-09-21T18:49:30.263Z",
+  "at": "2026-09-21T18:55:40.032Z",
   "shellFails": [],
   "diffs": [
     {
@@ -25,7 +25,7 @@
     },
     {
       "id": "table.row",
-      "diff": 11.1
+      "diff": 11
     },
     {
       "id": "filter.showmore",
@@ -466,7 +466,7 @@
         },
         {
           "id": "modal.mask",
-          "diff": 5
+          "diff": 4.9
         },
         {
           "id": "shell.sider",
@@ -482,7 +482,7 @@
         },
         {
           "id": "table",
-          "diff": 2.8
+          "diff": 2.7
         },
         {
           "id": "table.card",
@@ -490,7 +490,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 2.5
+          "diff": 2.4
         },
         {
           "id": "shell.header",
@@ -578,7 +578,7 @@
         },
         {
           "id": "table.row",
-          "diff": 7.8
+          "diff": 7.6
         }
       ],
       "notModelled": [
@@ -603,11 +603,11 @@
         },
         {
           "id": "modal.mask",
-          "diff": 9.8
+          "diff": 9.7
         },
         {
           "id": "table.row",
-          "diff": 9.5
+          "diff": 9.2
         },
         {
           "id": "filter.showmore",
@@ -627,7 +627,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 5
+          "diff": 4.9
         },
         {
           "id": "shell.sider",
@@ -736,7 +736,7 @@
         },
         {
           "id": "modal.mask",
-          "diff": 12.5
+          "diff": 12.4
         },
         {
           "id": "modal",
@@ -752,11 +752,11 @@
         },
         {
           "id": "table",
-          "diff": 7.5
+          "diff": 7.4
         },
         {
           "id": "table.card",
-          "diff": 7.3
+          "diff": 7.2
         },
         {
           "id": "filter.clear",
@@ -764,7 +764,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 6.4
+          "diff": 6.3
         },
         {
           "id": "shell.sider",
@@ -844,7 +844,7 @@
         },
         {
           "id": "table.row",
-          "diff": 11.7
+          "diff": 11.5
         }
       ],
       "notModelled": [
@@ -869,7 +869,7 @@
         },
         {
           "id": "table.row",
-          "diff": 11.6
+          "diff": 11.5
         },
         {
           "id": "filter.bar",
@@ -885,7 +885,7 @@
         },
         {
           "id": "table.card",
-          "diff": 4.7
+          "diff": 4.6
         },
         {
           "id": "shell.content",
@@ -994,7 +994,7 @@
         },
         {
           "id": "table",
-          "diff": 4.5
+          "diff": 4.4
         },
         {
           "id": "table.card",
@@ -1070,7 +1070,7 @@
         },
         {
           "id": "table.row",
-          "diff": 11.9
+          "diff": 11.7
         },
         {
           "id": "filter.bar",
@@ -1204,15 +1204,15 @@
         },
         {
           "id": "table.row",
-          "diff": 10.4
+          "diff": 10.3
         },
         {
           "id": "table",
-          "diff": 8.9
+          "diff": 8.8
         },
         {
           "id": "table.card",
-          "diff": 7.9
+          "diff": 7.8
         },
         {
           "id": "shell.sider",
