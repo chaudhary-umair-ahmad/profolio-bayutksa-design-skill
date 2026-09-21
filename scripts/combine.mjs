@@ -24,6 +24,7 @@ const css   = read('profolio.css');
 const fonts = read('fonts.css');
 const cat   = read('components.html');
 const dash  = read('dashboard.html');
+const list  = read('listings.html');
 const md    = readFileSync(join(D, '..', 'authoring', 'extraction-report.md'), 'utf8');
 
 /* ── slice out the parts ──────────────────────────────────────────────── */
@@ -39,6 +40,7 @@ const catChrome = between(cat,  '/* ── CATALOGUE CHROME ONLY', '</style>', '
 const catBody   = between(cat,  '<nav class="cat-nav">', '</main>', 'catalogue body');
 const dashBody  = between(dash, '<div class="pf-shell">', '<!-- /.pf-shell -->', 'dashboard body');
 const fbTab     = between(dash, '<div class="pf-feedback-tab">', '</div>', 'feedback tab');
+const listBody  = between(list, '<div class="pf-shell">', '<!-- /.pf-shell -->', 'listings body');
 
 /* ── markdown → html (only what the report actually uses) ─────────────── */
 const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -246,8 +248,8 @@ body{margin:var(--sp-0)}
 .cmb-doc strong{color:var(--base)}
 
 /* the dashboard view keeps its own full-bleed shell */
-#view-dashboard .pf-rail-fixed{inset-block-start:var(--cmb-tabbar-h)}
-#view-dashboard .pf-header-fixed{inset-block-start:var(--cmb-tabbar-h)}
+#view-dashboard .pf-rail-fixed,#view-listings .pf-rail-fixed{inset-block-start:var(--cmb-tabbar-h)}
+#view-dashboard .pf-header-fixed,#view-listings .pf-header-fixed{inset-block-start:var(--cmb-tabbar-h)}
 
 @media (max-width:991px){
   #view-report,#view-catalogue{grid-template-columns:1fr}
@@ -260,8 +262,9 @@ body{margin:var(--sp-0)}
 ${sprite}
 
 <nav class="cmb-tabbar" role="tablist" aria-label="Deliverables">
-  <span class="cmb-brand">Profolio KSA<span>design system · /dashboard</span></span>
+  <span class="cmb-brand">Profolio KSA<span>design system · /dashboard + /listings</span></span>
   <button class="cmb-tab" role="tab" data-view="dashboard" aria-selected="true" type="button">Dashboard</button>
+  <button class="cmb-tab" role="tab" data-view="listings" aria-selected="false" type="button">My Listings</button>
   <button class="cmb-tab" role="tab" data-view="catalogue" aria-selected="false" type="button">Catalogue</button>
   <button class="cmb-tab" role="tab" data-view="report" aria-selected="false" type="button">Extraction report</button>
   <span class="cmb-meta">sourced from profolio-reactjs @ b83e805</span>
@@ -271,6 +274,11 @@ ${sprite}
 <div id="view-dashboard">
 ${dashBody}
 ${fbTab}
+</div>
+
+<!-- ═════ LISTINGS ══════════════════════════════════════════════════════ -->
+<div id="view-listings" hidden>
+${listBody}
 </div>
 
 <!-- ═════ CATALOGUE ═════════════════════════════════════════════════════ -->
@@ -293,8 +301,9 @@ ${report}
    A hash link counts as a navigation inside a sandboxed viewer and pops an
    "external link" dialog; this does not. */
 (function () {
-  var views = { dashboard: 'view-dashboard', catalogue: 'view-catalogue', report: 'view-report' };
   var tabs = document.querySelectorAll('.cmb-tab');
+  var views = {};
+  tabs.forEach(function (t) { views[t.dataset.view] = 'view-' + t.dataset.view; });
 
   function show(name) {
     Object.keys(views).forEach(function (k) {
