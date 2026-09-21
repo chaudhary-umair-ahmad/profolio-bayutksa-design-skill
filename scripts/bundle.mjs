@@ -16,13 +16,16 @@ import { fileURLToPath } from 'node:url';
 
 const D = join(dirname(fileURLToPath(import.meta.url)), '..', 'deliverables');
 const css = readFileSync(join(D, 'profolio.css'), 'utf8');
+const fonts = readFileSync(join(D, 'fonts.css'), 'utf8');
 
 for (const [src, out] of [['dashboard.html', 'dashboard.bundled.html'],
                           ['components.html', 'components.bundled.html']]) {
   const html = readFileSync(join(D, src), 'utf8');
   const link = '<link rel="stylesheet" href="profolio.css">';
+  const fontLink = '<link rel="stylesheet" href="fonts.css">';
   if (!html.includes(link)) throw new Error(`no stylesheet link in ${src}`);
-  writeFileSync(join(D, out),
-    html.replace(link, `<style>\n/* inlined from profolio.css — see scripts/bundle.mjs */\n${css}\n</style>`));
+  writeFileSync(join(D, out), html
+    .replace(fontLink, `<style>\n/* inlined from fonts.css — see scripts/bundle.mjs */\n${fonts}\n</style>`)
+    .replace(link, `<style>\n/* inlined from profolio.css — see scripts/bundle.mjs */\n${css}\n</style>`));
   console.log(`  ${out}`);
 }

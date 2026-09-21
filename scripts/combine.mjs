@@ -21,6 +21,7 @@ const D = join(dirname(fileURLToPath(import.meta.url)), '..', 'deliverables');
 const read = (f) => readFileSync(join(D, f), 'utf8');
 
 const css   = read('profolio.css');
+const fonts = read('fonts.css');
 const cat   = read('components.html');
 const dash  = read('dashboard.html');
 const md    = read('extraction-report.md');
@@ -126,9 +127,15 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Profolio KSA — Overview</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Inter:wght@400;500;600&display=swap">
 <style>
+/* ═══════════════════════════════════════════════════════════════════════
+   0 · THE PRODUCT'S OWN FONT FACES  (fonts.css, inlined)
+   Lato 300/400/700 and Droid Arabic Kufi, copied out of
+   public/profolio-assets/bayut/fonts/. No network, and no weight the product
+   does not ship.
+   ═══════════════════════════════════════════════════════════════════════ */
+${fonts}
+
 /* ═══════════════════════════════════════════════════════════════════════
    1 · THE SHARED STYLESHEET  (profolio.css, inlined verbatim)
    Every component on both the catalogue and the page is defined here, once.

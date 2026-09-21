@@ -48,6 +48,7 @@
   --heading:#222;
   --dark:#272B41;              /* darkColor — antd text-color */
   --gray-color:#5A5F7D;        /* default button content */
+  --extra-light:#ADB4D2;       /* extraLightColor — iconCircled's default fg */
   --light-gray:#868EAE;        /* lightGrayColor — meta text */
   --black:#000;                /* page title colour, set explicitly in withAdminLayout */
   --white:#fff;
@@ -66,6 +67,47 @@
   --card-bg:#fff;
   --footer-bg:rgba(255,255,255,.90);   /* withAdminLayout footerStyle */
   --footer-text:rgba(0,0,0,0.65);      /* withAdminLayout footerStyle */
+
+  /* antd Tag presets — common/tag/styled.js. Backgrounds are
+     chroma.mix(colour, '#fff', 0.85).saturate(0.24), evaluated here so the
+     stylesheet carries the value the browser actually paints. */
+  --tag-rest-fg:#707070;               /* the --tag-color fallback */
+  --tag-rest-bg:#f5f5f5;               /* the --tag-bg fallback */
+  --tag-green-fg:#28b16d;  --tag-green-bg:#e5f7eb;
+  --tag-red-fg:#f73131;    --tag-red-bg:#ffe9e9;
+  --tag-warning-fg:#f0a742;--tag-warning-bg:#fff3e5;
+  --tag-blue-fg:#2C99FF;   --tag-blue-bg:#e7f3ff;
+
+  /* row action circles — table-actions.js:170 writes primary-color + '14' */
+  --action-circle-bg:#00616914;
+
+  /* image-count badge on the listing thumbnail — listing-purpose.js.
+     Hardcoded there, not a theme token. */
+  --count-badge-bg:#00a651;
+
+  /* table — dataTable/style.js + style.less:2728 */
+  --table-head-bg:#F8F9FB;
+  --table-row-hover:linear-gradient(0deg, #F2FAFA 0%, #ffffff 100%);
+
+  /* profile-completion ring — tenantData.getClassificationColor,
+     tenant/common/data/staticLists.js:299. The classification string itself is
+     API-driven; the mapping is not. */
+  --classification-high:#28b16d;
+  --classification-medium:#f0a742;
+  --classification-low:#f73131;
+  --classification-default:#f0a742;
+
+  /* package tiers — tenant/bayut/data/packages.js. Platinum Plus is what the
+     captured account is on; the rest are here so the badge is not a one-off. */
+  --pkg-platinum-plus-icon:#cfae19;
+  --pkg-platinum-plus-bg:#FFD1002B;    /* 8-digit hex, alpha 2B ≈ 17% */
+  --pkg-platinum-plus-text:#DFBC21;
+
+  /* upgrade services — tenant/bayut/data/products.js */
+  --svc-refresh:#479EEB;
+  --svc-photography:#5462AF;
+  --svc-videography:#FFA900;
+  --svc-drone:#79cdd1;
 
   /* classification / product colours — theme/index.js getTheme() */
   --color-signature:#af6fff;
@@ -93,9 +135,10 @@
   --chart-grid:rgba(0,0,0,0.1);
   --chart-zero-line:#e5e9f2;
   --chart-tick:#182b49;
-  --chart-line:#006169;                /* accentColor = platform brandColor [TBC: */
-                                       /* the exact bayut.sa brandColor comes from the */
-                                       /* /platforms API, not the repo. Measure on live. */
+  /* accentColor = platform.brandColor. For bayut this is not API-supplied:
+     tenant/bayut/data/staticLists.js:21 sets it to tenantTheme['primary-color'].
+     (zameen hardcodes #009f2b / #2874ff; bayut does not.) */
+  --chart-line:#006169;
   --tooltip-value:#63b963;             /* widgets/styled.js .tooltip-value */
 
   /* tint ramp — IconStyled builds a tile ground as `chroma(color).alpha(0.08)`.
@@ -130,12 +173,18 @@
   --shadow-tab-active:0px 16px 0 -1px #fff, 2px 0px 21px -10px #41414164;
 
   /* ── TYPE ──────────────────────────────────────────────────────────── */
-  /* CONFLICT, unresolved: theme['font-family'] = Lato (styled-components layer)
-     but antd token fontFamily = Figtree (antd v5 layer). Both ship. Which one
-     paints a given node depends on which layer wins. [TBC] */
+  /* RESOLVED. theme['font-family'] says Lato and the antd v5 token says
+     Figtree, but only one of them is ever fetched: useAppInit.js injects
+     /profolio-assets/<tenant>/fonts/lato-font.css at runtime and nothing
+     anywhere loads Figtree, so Lato is what paints. Faces are embedded in
+     fonts.css, straight from the tenant's own directory.
+     Three weights exist — 300, 400, 700. .fw-500 and .fw-600 are synthesised
+     by the browser in production, and must be here too. */
   --font-body:Lato,'Droid Arabic Kufi',Arial,sans-serif;
-  --font-alt:Figtree,'Droid Arabic Kufi',Arial,sans-serif;
-  --font-chart:'Inter',sans-serif;     /* widgets/styled.js tooltip-title/-value */
+  /* widgets/styled.js asks for Inter on the chart tooltip. Nothing loads Inter
+     either, so in production this falls through to the generic sans — which is
+     what the stack below reproduces. Not a typo: it is the shipped behaviour. */
+  --font-chart:'Inter',sans-serif;
 
   --fs-base:14px;                      /* theme font-size-base + antd fontSize */
   --lh-base:1.571;                     /* antd token lineHeight */
@@ -150,6 +199,7 @@
   --fs-btn-sm:13px;                    /* button/styled.js size=small */
   --fs-btn-lg:16px;
   --fs-13:13px;                        /* listing-breakdown stat fontSize="13px" */
+  --fs-10:10px;                        /* utils.less @fontSizes floor */
   --fs-12:12px;                        /* .fz-12 banner message, tooltip-title */
   --fs-18:18px;                        /* utils.less @fontSizes */
   --fs-tag:11px;                        /* theme tag-font-size */
@@ -167,13 +217,28 @@
   --fw-500:500;                        /* TextWithIcon default, rail item */
   --fw-600:600;                        /* buttons, TextWithIcon lead, nav selected */
   --fw-700:700;                        /* card titles, stat values, segmented item */
-  --fw-900:900;
+  --fw-900:800;                        /* utils.less emits 800 for .fw-900.
+                                          Their bug, mirrored on purpose: the
+                                          live screen renders 800, so we must. */
 
-  /* ── SPACING ── utils.less generated scale ─────────────────────────── */
-  --sp-0:0px;  --sp-2:2px;  --sp-4:4px;  --sp-6:6px;  --sp-8:8px;
-  --sp-10:10px; --sp-12:12px; --sp-14:14px; --sp-16:16px; --sp-20:20px;
-  --sp-24:24px; --sp-25:25px; --sp-28:28px; --sp-30:30px; --sp-32:32px;
-  --sp-40:40px; --sp-48:48px; --sp-50:50px; --sp-54:54px;
+  /* ── SPACING ───────────────────────────────────────────────────────────
+     utils.less:137 generates .p-/.px-/.py-/.m*- from
+       0 2 4 8 12 16 20 24 32 40 48 54
+     and utils.less:186 adds 20 25 30 for .mt-/.mb-/.pb- only. That is the
+     whole scale — there is no 6, 10, 14, 28 or 50 utility. */
+  --sp-0:0px;  --sp-2:2px;  --sp-4:4px;  --sp-8:8px;  --sp-12:12px;
+  --sp-16:16px; --sp-20:20px; --sp-24:24px; --sp-32:32px; --sp-40:40px;
+  --sp-48:48px; --sp-54:54px;
+  --sp-25:25px;                 /* .mt-/.mb-/.pb- only */
+  --sp-30:30px;                 /* .mt-/.mb-/.pb- only */
+
+  /* Off-scale values the product writes as literals in one place each. They
+     are real, but they are not steps — do not reach for them by default. */
+  --one-6:6px;                  /* CardMetaStyled gap, dashboard.js */
+  --one-10:10px;                /* <Flex justify="center" gap="10px">, credits-quota.js */
+  --one-14:14px;                /* <Group gap="14px 28px">, listing-breakdown.js */
+  --one-28:28px;                /* same Group, column gap */
+  --one-50:50px;                /* <Flex align="center" gap="50px">, listing-breakdown.js */
 
   /* ── RADIUS + BORDER ───────────────────────────────────────────────── */
   --border-w:1px;
@@ -206,6 +271,41 @@
   --rail-icon:20px;
   --wordmark-w:205px;           /* ProfolioLogo viewBox, svg.js */
   --wordmark-h:33px;
+
+  /* Main — container/styled.js:14. The content gutter is 20px/24px, not the
+     16px that was measured off the screenshot. */
+  --main-pad-block:20px;
+  --main-pad-inline:24px;
+  --main-pad-inline-md:16px;           /* ≤1199px */
+  --main-pad-block-md:24px;
+
+  /* listing table — listing-purpose.js + style.less:1373 */
+  --listing-thumb:106px;               /* Group template="106px 1fr", aspect-ratio 1 */
+  --listing-gap:0.571rem;              /* the same Group's gap */
+  --col-property-minw:130px;
+  --col-upgrades-minw:160px;
+  --col-actions-minw:190px;
+  --col-actions-w:180px;               /* listingUtilities.js width: 180 */
+  --table-cell-pad:16px;               /* antd default — no override in this repo */
+
+  /* health score — listing-health/styled.js:42 + health.js:61 */
+  --health-tag-w:50px;
+  --health-tag-pad-block:5px;
+  --health-tag-shadow:2px 0 4px rgba(0,0,0,0.06);
+
+  /* upgrade + action grids — platformActions.js, table-actions.js */
+  --action-cell:32px;
+  --action-gap:8px;
+
+  /* DateFilter.js — minWidth 250 on desktop; antd input padding is unoverridden */
+  --datepicker-minw:250px;
+  --input-pad-inline:11px;
+
+  /* upgrade-service grounds, alpha .1 of the product colour */
+  --tint-refresh:rgb(71 158 235 / .10);
+  --tint-photography:rgb(84 98 175 / .10);
+  --tint-videography:rgb(255 169 0 / .10);
+  --tint-drone:rgb(121 205 209 / .10);
   --rail-bottom-gap:8px;
   --footer-pad-block:12px;
   --footer-pad-inline:16px;
@@ -272,16 +372,14 @@
   --gap-stat-grid:30px;                       /* Group gap '30px 30px' */
   --gap-credits-stats:32px;                   /* QuotaCreditsStatWidget gap */
 
-  --content-pad-inline:16px;           /* [px] main content gutter */
-  --content-pad-block:16px;            /* [px] */
+  --content-pad-inline:var(--main-pad-inline);
+  --content-pad-block:var(--main-pad-block);
 
   /* ── UNSOURCED ─────────────────────────────────────────────────────── */
   --chart-h: /* [TBC] ChartjsAreaChart is height=64 with maintainAspectRatio:true,
                 so the painted height is width/64*ratio — it is not a CSS value.
                 Measure the rendered canvas on live. */ 300px;
-  --listing-thumb-w: /* [TBC] not declared in ListingContainer */ 80px;
-  --listing-thumb-h: /* [TBC] */ 64px;
-  --listing-row-h:   /* [TBC] no row height is declared */ auto;
+  --listing-row-h:   /* [TBC] no row height is declared; it is content-driven */ auto;
   --feedback-tab-w:  /* [TBC] third-party widget, not in this repo */ 28px;
 }
 
@@ -313,7 +411,7 @@ table{border-collapse:collapse}
   background:var(--sider-bg);
   box-shadow:var(--shadow-sider);
   border-inline-end:var(--border-w) solid var(--gray-400);
-  padding-block:var(--rail-pad-block) var(--sp-10);
+  padding-block:var(--rail-pad-block) var(--one-10);
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -868,7 +966,7 @@ table{border-collapse:collapse}
   background:var(--rule-blur);
   filter:blur(var(--sp-4));
 }
-.pf-inline-metric{display:inline-flex;align-items:center;gap:var(--sp-6);white-space:nowrap}
+.pf-inline-metric{display:inline-flex;align-items:center;gap:var(--one-6);white-space:nowrap}
 .pf-inline-metric .pf-stat-title,
 .pf-inline-metric .pf-stat-value{display:inline}
 .pf-inline-metric .pf-stat-title{margin-block-end:var(--sp-0);color:var(--gray-700)}
@@ -878,13 +976,16 @@ table{border-collapse:collapse}
    COMPONENT · date-picker
    src/components/common/date-filter — rendered as a bordered input
    ═══════════════════════════════════════════════════════════════════════ */
+/* DateFilter renders a TextInput at size="middle": input-height-base 44px,
+   antd's default 11px inline padding, and minWidth 250 from the component */
 .pf-datepicker{
   display:inline-flex;
   align-items:center;
   justify-content:space-between;
   gap:var(--sp-8);
-  height:var(--ctl-h);
-  padding-inline:var(--sp-12);
+  height:var(--input-h);
+  min-width:var(--datepicker-minw);
+  padding-inline:var(--input-pad-inline);
   border:var(--border-w) solid var(--border-normal);
   border-radius:var(--radius-control);
   background:var(--white);
@@ -921,7 +1022,7 @@ table{border-collapse:collapse}
 .pf-tooltip{
   background:var(--white);
   box-shadow:var(--shadow-tooltip);
-  padding:var(--sp-10) var(--sp-12);
+  padding:var(--one-10) var(--sp-12);
   border-radius:var(--radius-tooltip);
   border:var(--border-w) solid var(--border-light);
   min-width:var(--metric-tab-minw);
@@ -949,48 +1050,68 @@ table{border-collapse:collapse}
 .pf-tooltip-row{
   display:flex;
   align-items:center;
-  gap:var(--sp-6);
+  gap:var(--one-6);
   font-size:var(--fs-13);
   font-weight:var(--fw-500);
   color:var(--dark);
   white-space:nowrap;
 }
-.pf-tooltip-key{width:var(--sp-10);height:var(--sp-10);border-radius:var(--radius-round);background:var(--chart-line);flex:none}
+.pf-tooltip-key{width:var(--one-10);height:var(--one-10);border-radius:var(--radius-round);background:var(--chart-line);flex:none}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · listing table (Recent Listings)
    columns: src/tenant/bayut/utils/listingUtilities.js listingTableColumnMapper
    ═══════════════════════════════════════════════════════════════════════ */
-.pf-table{width:100%;background:var(--card-bg);border-radius:var(--radius-card);font-size:var(--fs-13)}
+.pf-table{width:100%;background:var(--card-bg);border-radius:var(--radius-card);font-size:var(--fs-base)}
+/* dataTable/style.js:403 — the header is a light panel with 400-weight,
+   light-grey labels, not the dark 600-weight I had */
 .pf-table th{
   text-align:start;
-  font-weight:var(--fw-600);
-  color:var(--gray-700);
-  padding:var(--sp-12) var(--sp-16);
-  border-block-end:var(--border-w) solid var(--gray-100);
+  font-weight:var(--fw-400);
+  color:var(--gray-600);
+  background:var(--table-head-bg);
+  padding:var(--table-cell-pad);
+  border-block-start:var(--border-w) solid var(--border-light);
+  border-block-end:var(--border-w) solid var(--border-light);
   white-space:nowrap;
 }
+.pf-table th:first-child{border-inline-start:var(--border-w) solid var(--border-light)}
+.pf-table th:last-child {border-inline-end:var(--border-w) solid var(--border-light)}
 .pf-table td{
-  padding:var(--sp-16);
-  border-block-end:var(--border-w) solid var(--gray-100);
+  padding:var(--table-cell-pad);
+  border-block-end:var(--border-w) solid var(--border-light);
   vertical-align:top;
+  white-space:nowrap;
 }
-.pf-table tbody tr:hover{background:var(--bg-gray-light)}
-.pf-listing{display:flex;gap:var(--sp-12)}
+.pf-table td:first-child{border-inline-start:var(--border-w) solid var(--border-light)}
+.pf-table td:last-child {border-inline-end:var(--border-w) solid var(--border-light)}
+/* style.less:2728 — the hover is a gradient, not a flat fill */
+.pf-table tbody tr:hover td{background:var(--table-row-hover)}
+.pf-table tbody tr:last-child td:first-child{border-end-start-radius:var(--radius-card)}
+.pf-table tbody tr:last-child td:last-child {border-end-end-radius:var(--radius-card)}
+/* style.less:1373 — the only declared column widths */
+.pf-table .col-property{min-width:var(--col-property-minw);white-space:normal}
+.pf-table .col-upgrades{min-width:var(--col-upgrades-minw)}
+.pf-table .col-actions {min-width:var(--col-actions-minw);width:var(--col-actions-w)}
+/* listing-purpose.js — <Group template="106px 1fr" gap=".571rem"> */
+.pf-listing{display:grid;grid-template-columns:var(--listing-thumb) 1fr;gap:var(--listing-gap)}
+/* styled.js:96 — grid, radius 6, overflow hidden, image object-fit cover */
 .pf-listing-thumb{
   position:relative;
-  width:var(--listing-thumb-w);
-  height:var(--listing-thumb-h);
+  width:var(--listing-thumb);
+  aspect-ratio:1;
   border-radius:var(--radius-control);
   background:var(--gray-200);
   flex:none;
   overflow:hidden;
 }
+/* counts the listing's images — antd Badge shape="square", overflowCount 90,
+   and the green is hardcoded in listing-purpose.js, not a theme token */
 .pf-listing-count{
   position:absolute;
   inset-block-start:var(--sp-4);
   inset-inline-start:var(--sp-4);
-  background:var(--success);
+  background:var(--count-badge-bg);
   color:var(--white);
   font-size:var(--fs-tag);
   font-weight:var(--fw-700);
@@ -998,11 +1119,21 @@ table{border-collapse:collapse}
   padding:var(--sp-2) var(--sp-4);
   border-radius:var(--radius-tag);
 }
-.pf-listing-price{display:flex;align-items:center;gap:var(--sp-8);font-weight:var(--fw-700);color:var(--base)}
-.pf-listing-title{color:var(--primary);font-weight:var(--fw-700);display:block;margin-block:var(--sp-4)}
-.pf-listing-specs{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
-.pf-listing-loc{color:var(--gray-700)}
-.pf-listing-ids{color:var(--gray-600);font-size:var(--fs-tag);margin-block-start:var(--sp-4)}
+/* <Space className="fz-14 fw-700" style={{lineHeight:1.2}}> */
+.pf-listing-price{display:flex;align-items:center;gap:var(--sp-8);font-size:var(--fs-base);font-weight:var(--fw-700);line-height:var(--lh-tight);color:var(--base)}
+/* the purpose+type line is a Tag on primary-light-4, not a link */
+.pf-listing-title{
+  display:inline-block;margin-block:var(--sp-4);
+  padding-inline:.5em;border-radius:var(--radius-tag);
+  background:var(--primary-light-4);color:var(--primary);
+  font-weight:var(--fw-700);line-height:var(--lh-stat);
+}
+/* getListingSpecs: icons at gray500, text at gray700 */
+.pf-listing-specs{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700);font-size:var(--fs-12)}
+.pf-listing-specs svg{color:var(--gray-500)}
+.pf-listing-loc{color:var(--gray-700);max-width:30ch;white-space:normal}
+/* className="fz-10" — 10 is the bottom of the utils.less size scale */
+.pf-listing-ids{color:var(--gray-600);font-size:var(--fs-10);margin-block-start:var(--sp-4)}
 .pf-listing-ids span + span{margin-inline-start:var(--sp-8)}
 
 /* product tag — theme color-basic / color-hot / color-signature */
@@ -1010,7 +1141,7 @@ table{border-collapse:collapse}
   display:inline-flex;
   align-items:center;
   gap:var(--sp-4);
-  padding:var(--sp-2) var(--sp-6);
+  padding:var(--sp-2) var(--one-6);
   border-radius:var(--radius-tag);
   font-size:var(--fs-tag);
   font-weight:var(--fw-700);
@@ -1022,29 +1153,53 @@ table{border-collapse:collapse}
 .pf-tag[data-tone="signature"]{background:var(--color-signature)}
 .pf-tag[data-tone="default"]  {background:var(--bg-gray-deep);color:var(--dark)}
 
-.pf-score{font-weight:var(--fw-700);font-size:var(--fs-12)}
-.pf-score[data-band="high"]{color:var(--success)}
-.pf-score[data-band="mid"] {color:var(--warning)}
-.pf-score[data-band="low"] {color:var(--danger)}
+/* the listing score is a tag with a ground, not coloured text —
+   health.js:61 renders <HealthTag className="fw-700 fz-14 text-center"
+   style={{width:'50px', paddingBlock:'5px'}} color={high|medium|low}> */
+.pf-score{
+  display:inline-block;
+  width:var(--health-tag-w);
+  padding-block:var(--health-tag-pad-block);
+  border-radius:var(--radius-tag);
+  box-shadow:var(--health-tag-shadow);
+  font-size:var(--fs-base);
+  font-weight:var(--fw-700);
+  line-height:var(--lh-stat);
+  text-align:center;
+  color:var(--tag-warning-fg);
+  background:var(--tag-warning-bg);
+}
+.pf-score[data-band="high"]  {color:var(--tag-green-fg);  background:var(--tag-green-bg)}
+.pf-score[data-band="medium"]{color:var(--tag-warning-fg);background:var(--tag-warning-bg)}
+.pf-score[data-band="low"]   {color:var(--tag-red-fg);    background:var(--tag-red-bg)}
 
 .pf-status-pill{
   display:inline-flex;
   align-items:center;
-  padding:var(--sp-2) var(--sp-12);
-  border-radius:var(--radius-chip);
-  font-size:var(--fs-12);
-  font-weight:var(--fw-600);
+  border-radius:var(--radius-chip);        /* shape="round" */
+  line-height:2em;
+  padding-inline:0.85em;
+  font-size:var(--fs-base);
+  font-weight:var(--fw-400);
+  border:var(--border-w) solid transparent;
+  color:var(--tag-rest-fg);
+  background:var(--tag-rest-bg);
 }
-.pf-status-pill[data-status="live"]    {background:var(--primary-light-3);color:var(--primary)}
-.pf-status-pill[data-status="pending"] {background:var(--tint-warning-12);color:var(--warning)}
-.pf-status-pill[data-status="rejected"]{background:var(--tint-danger-12);color:var(--danger)}
-.pf-status-pill[data-status="expired"] {background:var(--bg-gray-deep);color:var(--gray-700)}
+/* listingDispositionMapper (tenant/bayut/utils/listingUtilities.js:81) gives a
+   colour, never a hex: 'green' for live, 'red' for the terminal states, and ''
+   — the grey default — for everything in flight. The label is API copy. */
+.pf-status-pill[data-status="green"]{color:var(--tag-green-fg);background:var(--tag-green-bg)}
+.pf-status-pill[data-status="red"]  {color:var(--tag-red-fg);  background:var(--tag-red-bg)}
+.pf-status-pill[data-status="blue"] {color:var(--tag-blue-fg); background:var(--tag-blue-bg)}
+.pf-status-pill[data-status="warning"]{color:var(--tag-warning-fg);background:var(--tag-warning-bg)}
 
-.pf-action-grid{display:grid;grid-template-columns:repeat(3, auto);gap:var(--sp-8);width:fit-content}
+/* platformActions.js — <Group gap="8px" template="repeat(3, minmax(0, 32px))"> */
+.pf-action-grid{display:grid;grid-template-columns:repeat(3, minmax(0, var(--action-cell)));gap:var(--action-gap);width:fit-content}
+/* table-actions.js:170 — every row action is primary on primary at 8% */
 .pf-round-action{
   --ra-fg:var(--primary);
-  --ra-bg:var(--bg-gray-normal);
-  width:var(--icon-tile);
+  --ra-bg:var(--action-circle-bg);
+  width:var(--action-cell);
   aspect-ratio:1;
   border-radius:var(--radius-round);
   background:var(--ra-bg);
@@ -1052,12 +1207,15 @@ table{border-collapse:collapse}
   display:grid;
   place-content:center;
 }
-.pf-round-action[data-tone="signature"]{--ra-fg:var(--color-signature);--ra-bg:var(--tint-signature-10)}
-.pf-round-action[data-tone="hot"]      {--ra-fg:var(--color-hot);      --ra-bg:var(--tint-hot-10)}
-.pf-round-action[data-tone="refresh"]  {--ra-fg:var(--color-for-rent); --ra-bg:var(--tint-for-rent-10)}
-.pf-round-action[data-tone="photo"]    {--ra-fg:var(--color-for-rent); --ra-bg:var(--tint-for-rent-10)}
-.pf-round-action[data-tone="video"]    {--ra-fg:var(--color-clicks);   --ra-bg:var(--tint-clicks-10)}
-.pf-round-action[data-tone="muted"]    {--ra-fg:var(--gray-500);       --ra-bg:var(--bg-gray-normal)}
+/* Upgrade circles take the product's own colour at alpha .1 —
+   button/styled.js iconCircled(), fed from tenant/bayut/data/products.js */
+.pf-round-action[data-tone="signature"]{--ra-fg:var(--color-signature);  --ra-bg:var(--tint-signature-10)}
+.pf-round-action[data-tone="hot"]      {--ra-fg:var(--color-hot);        --ra-bg:var(--tint-hot-10)}
+.pf-round-action[data-tone="refresh"]  {--ra-fg:var(--svc-refresh);      --ra-bg:var(--tint-refresh)}
+.pf-round-action[data-tone="photo"]    {--ra-fg:var(--svc-photography);  --ra-bg:var(--tint-photography)}
+.pf-round-action[data-tone="video"]    {--ra-fg:var(--svc-videography);  --ra-bg:var(--tint-videography)}
+.pf-round-action[data-tone="drone"]    {--ra-fg:var(--svc-drone);        --ra-bg:var(--tint-drone)}
+.pf-round-action[data-tone="muted"]    {--ra-fg:var(--extra-light);      --ra-bg:var(--bg-gray-normal)}
 .pf-round-action[data-state="disabled"]{opacity:.45;cursor:not-allowed}
 .pf-round-action:hover,
 .pf-round-action[data-state="hover"]{filter:brightness(.96)}
@@ -1140,9 +1298,9 @@ table{border-collapse:collapse}
                                                                   /* <Group template=repeat(2,1fr) gap 16> */
 .pf-card-head[data-pad="16"]{padding-inline:var(--sp-16);margin-block-end:var(--sp-16)}
                                                                   /* renderCardTitle: className="px-16 mb-16" */
-.pf-chart-toolbar{display:flex;align-items:center;gap:var(--sp-8);margin-block-end:var(--sp-10)}
+.pf-chart-toolbar{display:flex;align-items:center;gap:var(--sp-8);margin-block-end:var(--one-10)}
                                                                   /* <Flex marginBottom 10px space-between> */
-.pf-credit-actions{display:flex;justify-content:center;gap:var(--sp-10);margin-block-start:var(--gap-widget)}
+.pf-credit-actions{display:flex;justify-content:center;gap:var(--one-10);margin-block-start:var(--gap-widget)}
                                                                   /* <Flex justify=center gap=10px> */
 .pf-credit-actions > .pf-btn{width:100%}                          /* className="w-100" */
 
@@ -1154,7 +1312,9 @@ table{border-collapse:collapse}
    and on the page.
    ═══════════════════════════════════════════════════════════════════════ */
 .pf-sprite{position:absolute;width:var(--sp-0);height:var(--sp-0);overflow:hidden}
-.i{width:1.2em;height:1.2em;fill:none;stroke:currentColor;flex:none}
+/* inline-block, not block: these sit beside text as often as they sit in a
+   flex row, and `display:block` pushes them onto a line of their own */
+.i{display:inline-block;vertical-align:middle;width:1.2em;height:1.2em;flex:none}
 .i-14{width:var(--fs-base);height:var(--fs-base)}
 .i-18{width:var(--fs-18);height:var(--fs-18)}
 .i-32{width:var(--sp-32);height:var(--sp-32)}
