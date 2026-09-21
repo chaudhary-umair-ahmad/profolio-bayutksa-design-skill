@@ -1,0 +1,28 @@
+{
+  "url": "http://127.0.0.1:3000/en/reports/summary",
+  "finalPath": "/en/reports/summary",
+  "shell": true,
+  "errorCard": false,
+  "spinning": false,
+  "pageHeight": 924,
+  "answered": [
+    "GET /api/surge/users/current",
+    "GET /api/surge/users/88010234",
+    "GET /api/surge/languages",
+    "GET /api/surge/area_units",
+    "GET /api/surge/experience_list",
+    "GET /api/surge/lms/leads/stats",
+    "GET /api/surge/notifications/stats",
+    "GET /api/surge/products",
+    "GET /api/surge/agencies/880042",
+    "GET /api/surge/dashboard/listing_stats",
+    "GET /api/surge/ovation/stats/trends",
+    "GET /api/surge/ovation/stats/product_stats"
+  ],
+  "unanswered": [
+    "GET /api/surge/dashboard/listings_by_area"
+  ],
+  "errors": [],
+  "blocked": 4,
+  "ms": 6043
+}

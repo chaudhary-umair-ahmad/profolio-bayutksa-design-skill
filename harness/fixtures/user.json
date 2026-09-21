@@ -1,0 +1,93 @@
+{
+  "_": "GET /api/surge/users/current — an invented KSA agency admin on a package. Field names follow src/tenant/common/transformers/user.js (userDetailTransformer). Nothing here is a real person or agency.",
+  "user": {
+    "id": 88010234,
+    "name": "Faisal Al-Harbi",
+    "name_l1": "فيصل الحربي",
+    "email": "faisal@najdhorizon.example",
+    "email_verified": true,
+    "mobile": "+966501234567",
+    "mobile_verified": true,
+    "is_package_user": true,
+    "is_suspended": false,
+    "agency_admin": true,
+    "credit_user": true,
+    "is_multi_platform": false,
+    "is_lms_enabled": true,
+    "role": "admin",
+    "is_nafaz_verified": true,
+    "is_rega_verified": true,
+    "broker_type": "agency",
+    "city": {
+      "id": 1,
+      "title": "Riyadh",
+      "title_l1": "الرياض"
+    },
+    "agency": {
+      "id": 880042,
+      "name": "Najd Horizon Real Estate",
+      "name_l1": "نجد هورايزن للعقارات",
+      "platform_mapping": {
+        "bayut": {
+          "mapped": true,
+          "external_id": 880042,
+          "platform_id": 1
+        },
+        "ksa": {
+          "mapped": true,
+          "external_id": 880042,
+          "platform_id": 1
+        }
+      },
+      "logo": null,
+      "address": "King Fahd Rd, Riyadh",
+      "city": {
+        "id": 1,
+        "name": "Riyadh",
+        "name_l1": "الرياض"
+      },
+      "_": {
+        "_": "platform_mapping carries both keys: the user mapper reads platformList.responseKey (bayut), the agency mapper reads platformList.key (ksa)"
+      }
+    },
+    "license": {
+      "id": 7201000001,
+      "number": "7201000001",
+      "license_owner_type": "Agency",
+      "end_date": "2027-03-31"
+    },
+    "platform_mapping": {
+      "bayut": {
+        "mapped": true,
+        "external_id": 88010234,
+        "platform_id": 1
+      }
+    },
+    "permissions": {
+      "staff": true,
+      "listings": true,
+      "reports": true,
+      "credits": true
+    },
+    "credits": {
+      "bayut": {
+        "allocated": 75000,
+        "available": 72880,
+        "used": 2120,
+        "expiring": 0,
+        "percentage_used": 2.83,
+        "current_package": {
+          "name": "Platinum Plus",
+          "slug": "platinum_plus"
+        }
+      }
+    },
+    "settings": [],
+    "profile_completion": {
+      "score": 90
+    },
+    "quality_lister": "high",
+    "unread_notifications_count": 46
+  },
+  "banners": []
+}

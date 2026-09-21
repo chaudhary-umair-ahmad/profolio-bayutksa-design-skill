@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Building a page, repeatably — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#guide">Guide</a> › Building a page, repeatably</nav>
+<main>
+<h1>Building a page, repeatably</h1>
+<p>The dashboard took several passes and most of the cost was rework: values read off a screenshot that were declared in the codebase all along, and fixes that landed in a generated file but never reached the page. This is the order that avoids both.</p>
+<p>It is written to be followed by a person or an agent. Every step is either a command or a question with a file that answers it.</p>
+<hr>
+<h2>0 · Before anything</h2>
+<pre class="code"><code>npm run all          # icons, fonts, antd tokens, layers, references, check</code></pre>
+<p>If <code>check</code> fails, stop. It means a routed path is missing or an embedded asset has drifted, and everything downstream would inherit that.</p>
+<hr>
+<h2>1 · Read, don't look — in this order</h2>
+<p>Roughly ninety per cent of what a page needs is declared somewhere. The first dashboard pass read the component layer and stopped, which is how sixteen values ended up marked "cannot tell" when twelve of them were in files nobody opened.</p>
+<table><tr><th>Question</th><th>File</th></tr><tr><td>What renders, in what order, under what condition?</td><td>the page container in <code>src/container/pages/&lt;route&gt;/</code></td></tr><tr><td>What is the shell?</td><td><code>kb/pages/_shell.html</code></td></tr><tr><td>Which components, with which props?</td><td><code>kb/design/components/&lt;id&gt;.html</code></td></tr><tr><td>What are the real strings?</td><td><code>kb/product/copy/&lt;area&gt;.html</code></td></tr><tr><td>What spacing and size steps exist?</td><td><code>kb/design/scales.html</code></td></tr><tr><td>What colour depends on state?</td><td><code>kb/design/colours.html</code></td></tr><tr><td>What are the table's columns and rules?</td><td><code>kb/design/listing-table.html</code></td></tr><tr><td>Which weights actually ship?</td><td><code>kb/design/fonts.html</code></td></tr><tr><td>Is this value an antd default?</td><td><code>kb/design/antd-css.html</code></td></tr><tr><td>Is the surface behind a flag?</td><td><code>kb/product/flags.html</code></td></tr></table>
+<p><strong>Read the page container first and all the way through.</strong> It is the only thing that tells you what is conditional. On the dashboard, three widgets in the original build do not render for the captured account at all — they are gated on <code>tru_broker_start_date</code> and on a non-empty <code>banners</code> array.</p>
+<h3>Four layers that are easy to miss</h3>
+<p>They are easy to miss because they are not components:</p>
+<ul><li><code>src/tenant/&lt;t&gt;/data/</code> — colour maps keyed on API strings</li><li><code>src/static/less/utils.less</code> — the real scales</li><li><code>src/tenant/&lt;t&gt;/utils/</code> + <code>src/components/table/</code> — columns, states, enable rules</li><li><code>src/hooks/useAppInit.js</code> — what the browser is actually given</li></ul>
+<p><code>scripts/extract-layers.mjs</code> distils these into <code>kb/design/</code>. If a page needs something none of them covers, extend that script rather than reading the source by hand — otherwise the next page pays the same cost again.</p>
+<hr>
+<h2>2 · Icons, never by hand</h2>
+<pre class="code"><code>npm run icons</code></pre>
+<p>Add the component names the page uses to <code>WANTED</code> / <code>REACT_ICONS</code> in <code>scripts/icons.mjs</code>. They are named in the transformer or the component that renders them — search for <code>icon:</code> near the data you are rendering.</p>
+<p>Hand-drawn glyphs are the single most visible way a page stops looking like the product. The extractor reports anything it cannot resolve rather than dropping it silently, so an empty result is loud.</p>
+<p>Two traps it now handles, both of which produced blank or wrong glyphs:</p>
+<ul><li>react-icons paints through <code>IconBase</code>, which puts <code>fill</code>, <code>stroke</code> and</li></ul>
+<p>  <code>stroke-width</code> on the <code>&lt;svg&gt;</code>; each set adds its own there too. Carry them.</p>
+<ul><li>A colour prop with a literal default is intent, not a placeholder. Baking</li></ul>
+<p>  <code>currentColor</code> over it makes the glyph inherit whatever it lands in.</p>
+<p>Art with a <code>&lt;mask&gt;</code> goes to <code>inline-art.html</code> instead of the sprite, because a mask stops resolving once the art is instanced.</p>
+<hr>
+<h2>3 · Compose</h2>
+<p>Only classes that exist in <code>components.html</code>. If the page needs something new:</p>
+<ol><li>add it to <code>profolio.css</code> with a comment naming the file it came from</li><li>add it to <code>components.html</code> with its variants and states side by side</li><li>then use it</li></ol>
+<p>Doing it in the other order is how a stylesheet grows values nobody can trace.</p>
+<p>Anything you cannot source gets a <code>TBC</code> marker with what you need and where it lives — <strong>never a plausible number</strong>. A visible gap is worth more than a confident guess, because a guess is indistinguishable from a fact six weeks later.</p>
+<hr>
+<h2>4 · Sync and check</h2>
+<pre class="code"><code>npm run sync &amp;&amp; npm run check</code></pre>
+<p><code>sync</code> pushes the sprite and inline art into the pages that embed them. This step exists because skipping it silently cost four rounds of icon fixes: they landed in <a href="../../deliverables/sprite.svg"><code>deliverables/sprite.svg</code></a> and the page kept rendering the old copy.</p>
+<p><code>check</code> enforces: every routed path exists, every <code>var()</code> resolves, no raw colour or style attributes outside <code>:root</code>, every icon reference present, every class defined, no embedded asset stale.</p>
+<hr>
+<h2>5 · Measure against live</h2>
+<pre class="code"><code># on the live screen:      paste scripts/probe.js into the console
+# on deliverables/&lt;page&gt;:  paste the same script
+# save both to data/live/&lt;route&gt;.&lt;side&gt;.probe.json
+npm run diff</code></pre>
+<p>You get every property where the two disagree, worst first, and one weighted number. Shell and type count triple because getting those wrong moves everything else; the third-party widget counts a quarter because it is not ours.</p>
+<p>Then:</p>
+<pre class="code"><code>node scripts/reconcile.mjs      # fold the live values into profolio.css</code></pre>
+<p>Each rewritten token is stamped with where the number came from and when. Anything the probe cannot speak to keeps its <code>TBC</code>.</p>
+<h3>Add the page's own targets</h3>
+<p><code>TARGETS</code> in <code>scripts/probe.js</code> carries two selectors per entry — antd's on live, ours on the reproduction. Add the components your page introduces. Without the second selector the probe finds nothing on our side and the diff is empty, which looks like success.</p>
+<hr>
+<h2>6 · Look at it last</h2>
+<p>Screenshot the page and compare regions against live. By this point most defects are already caught, and the eye is only useful for the ones no measurement covers: something in the wrong place, something missing, something that reads wrong.</p>
+<p>Write the findings into <code>deliverables/qa-&lt;route&gt;.md</code> with the same three headings: fixed, still open, known approximations.</p>
+<hr>
+<h2>The order matters</h2>
+<p>Each step exists because skipping it cost real rework on the dashboard:</p>
+<table><tr><th>Skipping</th><th>Cost</th></tr><tr><td>reading all four layers</td><td>12 values marked "cannot tell" that were declared</td></tr><tr><td>reading the page container fully</td><td>three widgets built that never render</td></tr><tr><td>extracting icons</td><td>every glyph hand-drawn and visibly wrong</td></tr><tr><td><code>sync</code></td><td>four rounds of icon fixes that never reached the page</td></tr><tr><td><code>check</code></td><td><code>SKILL.md</code> routing the agent at a directory that does not exist</td></tr><tr><td>the probe</td><td>no way to tell 75% from 95% except by argument</td></tr></table>
+<hr>
+<h2>What "done" means</h2>
+<ul><li><code>npm run check</code> passes</li><li><code>npm run diff</code> reports a score, and every row above the third-party noise is</li></ul>
+<p>  either fixed or written down</p>
+<ul><li>every <code>TBC</code> names what is needed and where it lives</li><li><code>deliverables/qa-&lt;route&gt;.md</code> exists</li><li>the page composes only catalogued classes, and the catalogue gained whatever</li></ul>
+<p>  the page needed</p>
+<hr>
+<h2>Appendix · capture, in practice</h2>
+<pre class="code"><code>tools/profolio-capture/        load once at chrome://extensions
+data/fixtures/&lt;route&gt;.json       invent the data, keep the shapes
+data/live/&lt;route&gt;.capture.json       what the extension writes</code></pre>
+<p><strong>Never commit a page built from a real account.</strong> Compose from a fixture whose strings are the same length as the real ones — a two-word agency name where the real one is two words, an eight-digit Bayut id where the real one is eight digits — so the layout you are checking is the layout that ships. The dashboard's fixture is the worked example.</p>
+<p>The capture itself carries no account data by construction, and <code>npm run test-capture</code> asserts that. The screenshot does; capture on a test account if it matters, or send the JSON alone.</p>
+</main>
+</body>
+</html>

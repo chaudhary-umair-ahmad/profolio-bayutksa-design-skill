@@ -10,14 +10,19 @@
  * Usage:  node scripts/build.mjs --repo ../profolio-reactjs-copy
  */
 
-import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, rmSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
-const REFS = join(ROOT, 'references');
+/* Markdown is staging, not the deliverable: scripts/kb.mjs renders it to kb/.
+   Hand-written prose lives in authoring/ and is copied in so cross-references
+   resolve the same way generated ones do. */
+const REFS = join(ROOT, '.build', 'references');
+mkdirSync(join(REFS, 'tenants'), { recursive: true });
+if (existsSync(join(ROOT, 'authoring', 'ksa.md'))) copyFileSync(join(ROOT, 'authoring', 'ksa.md'), join(REFS, 'tenants', 'ksa.md'));
 const CANVAS = join(ROOT, 'canvas');
 
 const argRepo = process.argv.indexOf('--repo');
@@ -462,8 +467,8 @@ for (const route of routes) {
                 || pageFiles[0];
   const skeleton = skeletonOf(read(mainFile));
 
-  const shotFile = `screens/${slug(route)}.png`;
-  const hasShot = existsSync(join(REFS, shotFile));
+  const shotFile = `data/live/${slug(route)}.png`;
+  const hasShot = existsSync(join(ROOT, shotFile));
 
   const body = `# ${designName}
 
@@ -481,13 +486,13 @@ flags     ${[...gateFlags.map((f) => f + ' (gates the route)'), ...usedFlags].jo
 states    ${states.length ? states.join(' · ') : 'none detected — confirm with the designer'}
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
-shot      ${hasShot ? '`references/' + shotFile + '` — OPEN IT BEFORE DESIGNING' : 'not captured — run scripts/capture.mjs'}
-board     \`references/pages/${slug(route)}.board.html\` — the screen as an artboard
+shot      ${hasShot ? '`' + shotFile + '` — the harness render, OPEN IT BEFORE DESIGNING' : 'not captured — run node harness/capture.mjs'}
+board     \`kb/pages/${slug(route)}.board.html\` — the screen as an artboard
 \`\`\`
 ${hasShot ? `
 ## Reference screenshot
 
-\`references/${shotFile}\` — the live screen. **Open it before you design.** The skeleton gives
+\`${shotFile}\` — the product rendered by the harness. **Open it before you design.** The skeleton gives
 structure, the component specs give values, this gives the truth. If your output disagrees
 with it, your output is wrong.
 ` : `

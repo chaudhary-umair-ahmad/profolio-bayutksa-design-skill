@@ -30,7 +30,7 @@ const ROOT = join(HERE, '..');
 const arg = (n, d) => { const i = process.argv.indexOf(n); return i > -1 ? process.argv[i + 1] : d; };
 const REPO = join(ROOT, arg('--repo', '../profolio-reactjs-copy'));
 const TENANT = arg('--tenant', 'bayut');
-const OUT = join(ROOT, 'references', 'data');
+const OUT = join(ROOT, '.build', 'references', 'data');
 
 const read = (p) => (existsSync(join(REPO, p)) ? readFileSync(join(REPO, p), 'utf8') : '');
 const rel = (p) => p.replace(REPO + '/', '');
@@ -278,5 +278,5 @@ LTR row without any bidi handling.
 }
 
 /* ── report ────────────────────────────────────────────────────────────── */
-for (const [name, bytes] of written) console.log(`  references/data/${name.padEnd(20)} ${(bytes / 1024).toFixed(1)}KB`);
+for (const [name, bytes] of written) console.log(`  data/${name.padEnd(20)} ${(bytes / 1024).toFixed(1)}KB`);
 console.log(`  ${written.length} files, ~${Math.round(written.reduce((a, [, b]) => a + b, 0) / 4)} tokens if all were read at once`);

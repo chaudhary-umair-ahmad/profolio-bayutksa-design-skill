@@ -43,6 +43,18 @@ const icons = JSON.stringify(cap).match(/"icon":"pf-/g) || [];
 icons.length ? ok(`${icons.length} icon references kept`) : bad('no icon references — glyphs would be unidentifiable');
 
 /* ── and nothing it promised not to ────────────────────────────────────── */
+function leakCheck(label, json) {
+  const noIcons = json.replace(/"icon":"[^"]*"/g, '');
+  let clean = true;
+  for (const [what, re] of leaks) {
+    const m = noIcons.match(re);
+    if (m) { bad(`${label} contains ${what} — ${JSON.stringify(m[0]).slice(0, 60)}`); clean = false; }
+  }
+  const classes = [...json.matchAll(/"class":\[([^\]]*)\]/g)].flatMap((m) => m[1].split(',')).map((c) => c.replace(/"/g, ''));
+  const hashy = classes.filter((c) => /^(css-|jsx-|sc-)|[0-9a-f]{6,}/i.test(c));
+  if (hashy.length) { bad(`${label}: hashed class names survived: ${hashy.slice(0, 3).join(', ')}`); clean = false; }
+  return clean;
+}
 const leaks = [
   ['visible text', /Alfalw|Overview|Platinum|Riyadh|Listings|Credits/],
   ['a Bayut or REGA id', /\b(88\d{6}|7201\d{6})\b/],
@@ -64,6 +76,17 @@ const classes = [...json.matchAll(/"class":\[([^\]]*)\]/g)].flatMap((m) => m[1].
 const hashy = classes.filter((c) => /^(css-|jsx-|sc-)|[0-9a-f]{6,}/i.test(c));
 hashy.length ? bad(`hashed class names survived: ${hashy.slice(0, 3).join(', ')}`)
              : ok(`${new Set(classes).size} distinct class names, none hashed`);
+
+/* the harness writes the same shape from the real product; hold it to the same promise */
+import { readdirSync, existsSync } from 'node:fs';
+const LIVE = join(ROOT, 'data', 'live');
+if (existsSync(LIVE)) {
+  const files = readdirSync(LIVE).filter((f) => f.endsWith('.capture.json'));
+  let clean = 0;
+  for (const f of files) if (leakCheck(`data/live/${f}`, readFileSync(join(LIVE, f), 'utf8'))) clean++;
+  clean === files.length ? ok(`${files.length} harness capture(s) in data/live carry no text, href, src, value or data-*`)
+                         : bad(`${files.length - clean} of ${files.length} harness captures leak`);
+}
 
 writeFileSync('/tmp/sample.capture.json', JSON.stringify(cap, null, 2));
 console.log(`\n  sample written to /tmp/sample.capture.json (${(json.length / 1024).toFixed(0)}KB)`);

@@ -1,0 +1,29 @@
+{
+  "url": "http://127.0.0.1:3000/en/listings",
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "spinning": false,
+  "pageHeight": 1929,
+  "answered": [
+    "GET /api/surge/users/current",
+    "GET /api/surge/users/88010234",
+    "GET /api/surge/languages",
+    "GET /api/surge/area_units",
+    "GET /api/surge/experience_list",
+    "GET /api/surge/lms/leads/stats",
+    "GET /api/surge/notifications/stats",
+    "GET /api/surge/products",
+    "GET /api/surge/agencies/880042",
+    "GET /api/surge/statuses",
+    "GET /api/surge/listings/summary",
+    "GET /api/surge/listings",
+    "GET /api/surge/ad_license_requests"
+  ],
+  "unanswered": [],
+  "errors": [
+    "Tag type 'ad-license-requests' was used, but not specified in `tagTypes`!"
+  ],
+  "blocked": 4,
+  "ms": 7878
+}

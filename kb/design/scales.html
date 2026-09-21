@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The utility scales — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#design-system">Design system</a> › The utility scales</nav>
+<main>
+<h1>The utility scales</h1>
+<p>Read from:</p>
+<ul><li><code>src/static/less/utils.less</code></li></ul>
+<p>These are the only steps the product can express with a class. A value that is not here has to be written as a literal in a component, and most are not.</p>
+<h2>Spacing — <code>.p-</code> <code>.px-</code> <code>.py-</code> <code>.m-</code> <code>.mt-</code> <code>.mb-</code> <code>.my-</code></h2>
+<pre class="code"><code>0 2 4 8 12 16 20 24 32 40 48 54</code></pre>
+<p>Plus, for <code>.mt-</code> <code>.mb-</code> <code>.pb-</code> only:</p>
+<pre class="code"><code>0 20 25 30</code></pre>
+<p>Every one emits <code>!important</code>. <code>0</code> emits a bare <code>0</code>, the rest <code>n * 1px</code>.</p>
+<h2>Font size — <code>.fz-</code> and <code>.fs</code></h2>
+<pre class="code"><code>10 12 13 14 16 18 20 24</code></pre>
+<p>No <code>!important</code>. <code>.fz-16</code> is <code>font-size: 16px</code>.</p>
+<h2>Font weight</h2>
+<table><tr><th>class</th><th>emits</th></tr><tr><td><code>.fw-400</code></td><td>400</td></tr><tr><td><code>.fw-500, .fw-medium</code></td><td>500</td></tr><tr><td><code>.fw-600, .semiBold</code></td><td>600</td></tr><tr><td><code>.fw-700, .bold</code></td><td>700</td></tr><tr><td><code>.fw-800, .heavy</code></td><td>800</td></tr><tr><td><code>.fw-900</code></td><td>800 — <strong>the class name and the value disagree; mirror it, do not correct it</strong></td></tr></table>
+</main>
+</body>
+</html>

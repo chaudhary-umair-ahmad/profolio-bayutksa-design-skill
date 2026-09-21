@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bayut Profolio KSA — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#product">Product</a> › Bayut Profolio KSA</nav>
+<main>
+<h1>Bayut Profolio KSA</h1>
+<p>Hand-written. Not regenerated — the codebase cannot tell you most of this.</p>
+<p>Sources: <code>product-agent</code> v4.3.0 (<code>references/products/bayut-ksa.md</code>, <code>product-knowledge.md</code>), confirmed by Product 2026-08-13 and 2026-08-21; plus the Profolio codebase where noted.</p>
+<h2>Identity</h2>
+<ul><li>Market <strong>KSA</strong> · business <strong>Bayut</strong> · vertical <strong>Property</strong></li><li>Tenant key <code>bayut</code> (<code>REACT_APP_TENANT</code>), cookie domain <code>.bayut.sa</code></li><li>Surface <strong>profolio.bayut.sa</strong>, repo <code>profolio-reactjs</code></li><li>Users: <strong>agency owners · agency staff · individual sellers</strong></li></ul>
+<h2>What makes KSA different: REGA</h2>
+<p>REGA — the Saudi real-estate licensing regime — exists <strong>only here</strong>. Anything touching listing creation, identity or posting eligibility behaves differently than on any other Bayut. Never port a posting design from another market without walking through these.</p>
+<ul><li><strong>Ad-licence flow</strong> — individual vs agency licences (<code>ENABLE_FAL_LICENSE</code>)</li><li><strong>Two-step draft</strong> — a listing does not go live in one action. Post-listing is a multi-state</li></ul>
+<p>  flow, not a form; every spec needs a draft state.</p>
+<ul><li><strong>OTP step</strong> (<code>ENABLE_FAL_LICENSE_OTP_VERIFICATION</code>)</li><li><strong>Nafath</strong> identity verification (<code>ENABLE_NAFATH</code>)</li><li><strong>Daily-rental permits</strong> (<code>DAILY_RENTAL_ENABLED</code>) — a listing subtype with its own</li></ul>
+<p>  compliance fields</p>
+<ul><li><strong>Non-Saudi national limits</strong> — posting restrictions by nationality</li><li>Regulator surfaces: <code>SHOW_REGA_DETAIL</code> · <code>SHOW_REPORT_TO_REGA</code> · <code>SHOW_REGA_FOOTER</code> ·</li></ul>
+<p>  <code>SHOW_NATIONAL_ADDRESS</code></p>
+<p>Settle any compliance question with the PM <strong>before</strong> the design is final. A design that leaves a compliance question open reads to the team as not-ready.</p>
+<h2>House display rules</h2>
+<p>These are checks a design either passes or fails.</p>
+<table><tr><th>Rule</th><th>Detail</th></tr><tr><td>Currency</td><td>Renders <strong>ر.س</strong>. Flag any spec or design showing "SAR".</td></tr><tr><td>Area</td><td><strong>Sq. M.</strong></td></tr><tr><td>VAT</td><td><strong>15%</strong>, and never on the same line as another tax. A layout constraint on cart and checkout, not a copy rule.</td></tr><tr><td>Language</td><td>Arabic is the user's first language, but <strong>English is designed and approved first</strong>; Arabic follows.</td></tr></table>
+<h2>Monetisation</h2>
+<p>Bayut is a <strong>credits</strong> model — not Zameen's quotas, not a free-tier-plus-premium. Packages, credit pools, top-ups, wallet, add-ons and agency tiers all sit on it.</p>
+<p>When a feature touches products, packages, credits or tiers, pin down: which products and tiers are affected, expiry behaviour, and which payment methods.</p>
+<p>Payment methods configured for KSA (<code>PAYMENT_METHODS</code>): credit/debit via Checkout, <strong>Tamara</strong>, <strong>Tabby</strong>, <strong>Apple Pay</strong> (hidden off mobile/Safari). BNPL is KSA-only and has no design coverage yet.</p>
+<p>Purchases and contracts have a <strong>Jarvis</strong> connection. Note it; do not design it.</p>
+<h2>Surfaces, and where the boundaries are</h2>
+<ul><li><strong>Profolio</strong> — this system. Agent- and seller-facing. Bilingual EN/AR with RTL mirroring.</li><li><strong>Profolio-lite / member area</strong> — a real second surface. Own favicon, manifest, logo set and</li></ul>
+<p>  font stack (<code>FONT_FAMILY_LITE: 'Lato, Droid Arabic Kufi, sans-serif'</code>), referenced across 12   files, and KSA has <code>HAS_MEMBER_AREA: true</code>. <strong>v2 — not yet specified.</strong> Say so rather than   applying Profolio chrome to it.</p>
+<ul><li><strong>Internal Console / Control Panel</strong> — different surface, different users (ops, moderation,</li></ul>
+<p>  finance), English-only chrome. The knowledge base writes "Profolio (CP)" loosely in places;   do not take "CP" as proof a screen is the Console — check who the users are.</p>
+<ul><li><strong>Discovery pages</strong> — home, search, listing detail, public agency and seller profiles.</li></ul>
+<p>  <strong>Strat owns these.</strong> Not a Profolio design task.</p>
+<h2>Known gaps</h2>
+<p>Look these up rather than assuming:</p>
+<ul><li>Moderation reject reasons and their labels</li><li>Agency tier definitions and what each unlocks</li><li>Which listing states exist and what moves a listing between them</li></ul>
+<h2>Known defects in the codebase</h2>
+<p>Found while building this system. Neither is fixed.</p>
+<ul><li><strong><code>TIMEZONE: 'Asia/Karachi'</code></strong> on the KSA tenant — should be <code>Asia/Riyadh</code> (UTC+3, not UTC+5).</li></ul>
+<p>  Copy-pasted across bayut, oman, qatar, bahrain, jordan and zameen. Currently harmless because   nothing outside the constants files reads it; a two-hour error for the first feature that does.</p>
+<ul><li><strong>The design export's flag pointer is wrong.</strong> Its README says feature flags live in</li></ul>
+<p>  <code>src/utility/env.js</code>. They resolve from <code>tenantConstants</code> in   <code>src/tenant/bayut/constants/constants.js</code>. Use <a href="../product/flags.html"><code>flags.html</code></a>.</p>
+</main>
+</body>
+</html>

@@ -3909,7 +3909,7 @@ row 5   Recent Listings (heading outside the card)          full width</code></p
 <h3 id="r-2-account-switcher">2 · account-switcher</h3>
 <ul>
 <li><code>CardMetaStyled</code> gap 8px, <code>--card-height: 33px</code>, <code>titleFontWeight 700</code>, avatar <code>iconSize 24</code>. Dropdown: <code>padding 8px</code>, <code>suffixIcon "MdKeyboardArrowDown"</code> tinted <code>primary-color</code>, <code>iconSize 14px</code>. All <strong>[read]</strong>.</li>
-<li>The agency name is API copy [read]. Renders only for <code>is_agency_admin</code> or a multi-platform user. The deliverables show a fixture name — see <code>references/fixtures/dashboard.json</code>.</li>
+<li>The agency name is API copy [read]. Renders only for <code>is_agency_admin</code> or a multi-platform user. The deliverables show a fixture name — see <code>data/fixtures/dashboard.json</code>.</li>
 <li>The <code>TruBrokerTag</code> slot next to the name is empty here — <code>TRU_BROKER_ENABLED &amp;&amp; is_tru_broker</code> is false. [inf]</li>
 <li>Dropdown panel geometry — <strong>[?]</strong></li>
 </ul>
@@ -4004,7 +4004,7 @@ row 5   Recent Listings (heading outside the card)          full width</code></p
 </ol>
 <hr>
 <h2 id="r-one-housekeeping-note">One housekeeping note</h2>
-<p><code>dashboard.html</code> used to carry the real account off your screenshot. It no longer does: every listing row, id and the agency name now come from <code>references/fixtures/dashboard.json</code> — invented data at the same shapes and string lengths, so layout stays honest and nothing real is committed.</p>
+<p><code>dashboard.html</code> used to carry the real account off your screenshot. It no longer does: every listing row, id and the agency name now come from <code>data/fixtures/dashboard.json</code> — invented data at the same shapes and string lengths, so layout stays honest and nothing real is committed.</p>
 <p>The chart series is still traced from the screenshot rather than sourced. It is a shape, not data, and it is marked as such in the fixture.</p>
   </article>
 </div>

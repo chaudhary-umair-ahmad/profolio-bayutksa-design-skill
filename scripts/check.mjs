@@ -32,7 +32,7 @@ const rows = [...skill.matchAll(/^\|\s*`([^`]+)`\s*\|(.+)\|$/gm)];
 let checked = 0;
 
 for (const [, path, blurb] of rows) {
-  if (!path.startsWith('references/') && !path.startsWith('deliverables/') && !path.startsWith('canvas/')) continue;
+  if (!/^(kb|deliverables|data|harness|authoring|canvas)\//.test(path)) continue;
   checked++;
   // a <placeholder> means "one per route"; check the directory instead
   const probe = path.includes('<') ? dirname(path) : path;
@@ -91,13 +91,28 @@ for (const page of ['dashboard.html', 'components.html']) {
                                         : ok(`${page} — no network dependencies`);
 }
 
+/* ── 2b · the skill measures with the antd the product ships ───────────────
+   The reference CSS was extracted from antd 5.20.6 for a week while the
+   product's lockfile pinned 5.22.1. Same major, plausible output, wrong
+   ground truth. The product's yarn.lock is the authority; if it is not next
+   to this repo the rule is skipped, not passed. */
+const lockPath = join(ROOT, '..', 'profolio-reactjs-copy', 'yarn.lock');
+if (existsSync(lockPath)) {
+  const m = /^antd@[^\n]*:\n  version "([^"]+)"/m.exec(readFileSync(lockPath, 'utf8'));
+  const ours = JSON.parse(readFileSync(join(ROOT, 'node_modules/antd/package.json'), 'utf8')).version;
+  if (m && m[1] !== ours) bad(`skill has antd ${ours}, the product's yarn.lock pins ${m[1]} — npm i antd@${m[1]} --save-exact`);
+  else if (m) ok(`antd ${ours} matches the product's lockfile`);
+} else {
+  warn('product yarn.lock not found beside this repo — antd version parity not checked');
+}
+
 /* ── 3 · profolio.css against the CSS antd actually emits ───────────────────
    The badge shipped at 16px for a week because `controlHeightXS` is 16 and a
    16px badge looks fine. antd emits 20. This compares the two and asks for a
    note wherever the product deliberately differs — most of the time it does,
    because styled-components override antd, and that is the point: an
    unexplained difference is the one worth looking at. */
-const antdPath = join(ROOT, 'references', 'tokens', 'antd-css.json');
+const antdPath = join(ROOT, 'data', 'antd-css.json');
 if (existsSync(antdPath)) {
   const antd = JSON.parse(readFileSync(antdPath, 'utf8')).selectors;
 
@@ -139,7 +154,7 @@ if (existsSync(antdPath)) {
   }
   if (!mismatches) ok(`profolio.css agrees with antd (${compared} properties, ${noted} explained)`);
 } else {
-  warn('references/tokens/antd-css.json absent — run npm run antd-css');
+  warn('data/antd-css.json absent — run npm run antd-css');
 }
 
 /* every class the page styles must be defined in the one stylesheet */
@@ -150,6 +165,26 @@ const instance = new Set(['pct-90', 'pct-40', 'pct-100', 'fill-97', 'fill-50', '
 const orphan = [...pageCls].filter((c) => !cssCls.has(c) && !instance.has(c));
 orphan.length ? bad(`dashboard.html uses classes the stylesheet does not define: ${orphan.join(', ')}`)
               : ok(`dashboard.html — all ${pageCls.size} classes defined`);
+
+/* ── 3b · the knowledge base is content, not chrome ────────────────────────
+   The old reference layer inlined a <style> block into 320 pages and cost the
+   agent three times the prose. kb/ links one stylesheet. A page that carries
+   its own <style> or <script> is the shell leaking back in; artboards are
+   exempt because they are pictures of the product, not prose. */
+const KB = join(ROOT, 'kb');
+if (existsSync(KB)) {
+  const walkKb = (d) => readdirSync(d).flatMap((n) => { const p = join(d, n); return statSync(p).isDirectory() ? walkKb(p) : [p]; });
+  const pages = walkKb(KB).filter((f) => f.endsWith('.html') && !f.endsWith('.board.html'));
+  const leaking = pages.filter((f) => /<style[\s>]|<script[\s>]/i.test(readFileSync(f, 'utf8')));
+  leaking.length ? bad(`${leaking.length} kb page(s) carry inline style or script: ${leaking.slice(0, 3).map((f) => f.slice(KB.length + 1)).join(', ')}`)
+                 : ok(`kb/ — ${pages.length} pages, none inline a style or script`);
+  existsSync(join(KB, 'kb.css')) ? ok('kb/kb.css present') : bad('kb/kb.css missing — every page links it');
+  const unlinked = pages.filter((f) => !/<link rel="stylesheet" href="(\.\.\/)*kb\.css">/.test(readFileSync(f, 'utf8')));
+  unlinked.length ? bad(`${unlinked.length} kb page(s) do not link kb.css`) : ok('kb/ — every page links kb.css');
+  if (existsSync(join(ROOT, 'references'))) bad('references/ still exists — kb/ replaced it; delete it');
+} else {
+  bad('kb/ missing — run npm run kb');
+}
 
 /* ── 4 · verdict ───────────────────────────────────────────────────────── */
 console.log('');

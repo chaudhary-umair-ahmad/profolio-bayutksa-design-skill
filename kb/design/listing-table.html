@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The listings table — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#design-system">Design system</a> › The listings table</nav>
+<main>
+<h1>The listings table</h1>
+<p>Read from:</p>
+<ul><li><code>src/tenant/bayut/utils/listingUtilities.js</code></li><li><code>src/components/table/table-actions/table-actions.js</code></li><li><code>src/components/table/table-components/listing-purpose.js</code></li></ul>
+<h2>Columns — disposition <code>active</code></h2>
+<p><code>listingTableColumnMapper(user, 'active')</code>. <strong>Timeline</strong> appears only for an <code>isCurrencyUser</code>.</p>
+<table><tr><th>#</th><th>header</th><th>component</th><th>width</th><th>fixed</th></tr><tr><td>1</td><td><strong>Property</strong></td><td><code>ListingPurpose</code></td><td>—</td><td>—</td></tr><tr><td>2</td><td><strong>Timeline</strong></td><td><code>ExpiryRenewal</code></td><td>—</td><td>—</td></tr><tr><td>3</td><td><strong>Performance</strong></td><td><code>ListingStats</code></td><td>—</td><td>—</td></tr><tr><td>4</td><td><strong>Status</strong></td><td><code>PlatformStatus</code></td><td>—</td><td>—</td></tr><tr><td>5</td><td><strong>Upgrades</strong></td><td><code>PlatformListingActions</code></td><td>—</td><td>—</td></tr><tr><td>6</td><td><strong>Actions</strong></td><td><code>TableListingActions</code></td><td>180px</td><td>right</td></tr></table>
+<h2>Status — disposition to Tag colour</h2>
+<p><code>listingDispositionMapper</code>. The <strong>label is API copy</strong>; only the colour is local, and it is a colour <em>name</em>, never a hex — the Tag presets in <code>components/common/tag/styled.js</code> resolve it.</p>
+<table><tr><th>disposition</th><th>Tag colour</th></tr><tr><td><code>active</code></td><td><code>green</code></td></tr><tr><td><code>draft</code></td><td>_(neutral grey)_</td></tr><tr><td><code>removed</code></td><td><code>red</code></td></tr><tr><td><code>pending</code></td><td><code>warning</code></td></tr><tr><td><code>live</code></td><td><code>green</code></td></tr><tr><td><code>not-posted</code></td><td>_(neutral grey)_</td></tr><tr><td><code>ad-in-review</code></td><td>_(neutral grey)_</td></tr><tr><td><code>changes-in-review</code></td><td>_(neutral grey)_</td></tr><tr><td><code>completed</code></td><td>_(neutral grey)_</td></tr><tr><td><code>payment-pending</code></td><td>_(neutral grey)_</td></tr><tr><td><code>ready-for-moderation</code></td><td>_(neutral grey)_</td></tr><tr><td><code>deleted</code></td><td>_(neutral grey)_</td></tr><tr><td><code>rejected</code></td><td><code>red</code></td></tr><tr><td><code>service-suspended</code></td><td><code>red</code></td></tr><tr><td><code>expired</code></td><td><code>red</code></td></tr><tr><td><code>rega-expired</code></td><td><code>red</code></td></tr><tr><td><code>invalid-license</code></td><td><code>red</code></td></tr><tr><td><code>sold</code></td><td><code>red</code></td></tr><tr><td><code>deleted-by-ops</code></td><td><code>red</code></td></tr><tr><td><code>pending-nafaz-verification</code></td><td>_(neutral grey)_</td></tr><tr><td><code>pending-otp-verification</code></td><td>_(neutral grey)_</td></tr><tr><td><code>insufficient-credits</code></td><td>_(neutral grey)_</td></tr><tr><td><code>info-completed</code></td><td>_(neutral grey)_</td></tr><tr><td><code>enable_listing</code></td><td><code>red</code></td></tr><tr><td><code>unhide_listing</code></td><td><code>red</code></td></tr></table>
+<h2>Which upgrade is enabled when</h2>
+<p><code>dispositionDependentPlatformActions</code>.</p>
+<table><tr><th>action</th><th>enabled for</th></tr><tr><td>—</td><td>not found</td></tr></table>
+<h2>Which row action is enabled when</h2>
+<p><code>dispositionDependentRowActions</code>.</p>
+<table><tr><th>action</th><th>enabled for</th></tr><tr><td>—</td><td>not found</td></tr></table>
+<h2>The Property cell</h2>
+<p><code>&lt;Group template="106px 1fr" gap=".571rem"&gt;</code> — a <strong>106px square</strong> thumbnail at radius 6 with <code>object-fit: cover</code>, then the text column. The numbered green badge <strong>counts the listing's images</strong>: antd <code>Badge</code>, <code>shape="square"</code>, <code>overflowCount={90}</code>, ground <code>#00a651</code> hardcoded.</p>
+</main>
+</body>
+</html>

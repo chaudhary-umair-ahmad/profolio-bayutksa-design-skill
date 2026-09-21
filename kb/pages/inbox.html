@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inbox — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#pages">Pages</a> › Inbox</nav>
+<main>
+<p class="open"><a href="inbox.board.html">Open the artboard →</a> <a href="../../data/live/inbox.png">Open the harness render →</a></p><h1>Inbox</h1>
+<blockquote><strong>Derived, not designed.</strong> Fields below were read out of the page directory. Purpose, layout intent and the artboard are still to be written — that is the designer's work, and this header is the proposal to get approved first.</blockquote>
+<pre class="code"><code>shell     default
+route     /inbox/*
+source    src/container/pages/inbox
+purpose   TODO — one sentence, user-side
+roles     role-aware — agency owner / agency staff / individual seller differ; confirm which
+flags     HIDE_INBOX (gates the route)
+states    loading · empty · error · no-permission
+lang      en pending · ar pending
+ga4       — product supplies in the PRD
+shot      `data/live/inbox.png` — the harness render, OPEN IT BEFORE DESIGNING
+board     `kb/pages/inbox.board.html` — the screen as an artboard</code></pre>
+<h2>Reference screenshot</h2>
+<p><code>data/live/inbox.png</code> — the product rendered by the harness. <strong>Open it before you design.</strong> The skeleton gives structure, the component specs give values, this gives the truth. If your output disagrees with it, your output is wrong.</p>
+<h2>Composition</h2>
+<p>Documented components this page already imports:</p>
+<ul><li><a href="../design/components/card.html"><code>card.html</code></a> (Card frame)</li><li><a href="../design/components/icon.html"><code>icon.html</code></a> (Icon container)</li><li><a href="../design/components/navitem.html"><code>navitem.html</code></a> (Nav item)</li><li><a href="../design/components/select.html"><code>select.html</code></a> (Select)</li><li><a href="../design/components/button.html"><code>button.html</code></a> (Button)</li><li><a href="../design/components/empty.html"><code>empty.html</code></a> (Empty states)</li><li><a href="../design/components/feedback.html"><code>feedback.html</code></a> (Spinner, skeleton &amp; progress)</li><li><a href="../design/components/input.html"><code>input.html</code></a> (Text input)</li><li><a href="../design/components/textwithicon.html"><code>textwithicon.html</code></a> (Text with icon)</li></ul>
+<p>Imported but <strong>not in the component register</strong> — undocumented surface:</p>
+<ul><li><code>Heading</code></li><li><code>Group</code></li><li><code>Number</code></li><li><code>radio-button</code></li><li><code>inbox</code></li><li><code>cards</code></li><li><code>heading</code></li></ul>
+<h2>Layout skeleton</h2>
+<p>Nesting and layout props read out of <code>src/container/pages/inbox/inbox-container.js</code>. This is the shipped structure — <strong>match it rather than inventing a new one</strong>, unless the PRD changes it.</p>
+<pre class="code"><code>      Main
+        NavWrapper
+            Space
+              Heading
+              /Heading
+              Space
+                Heading
+                /Heading
+                Select
+              /Space
+            /Space
+          Row
+            Col
+              Card
+                Navbar
+              /Card
+            /Col
+            Col
+              EmailWrapper
+                Routes
+                Suspense
+                Spin
+                Route
+                PageComponent
+                Route
+                SubComponent
+                /Suspense
+                /Routes
+              /EmailWrapper
+            /Col
+          /Row
+        /NavWrapper
+      /Main
+      Main
+        EmailWrapper
+          Row
+            Radio
+                RadioButtonStyled
+                Space size={6}
+                Icon size={14}
+                /Space
+                /RadioButtonStyled
+            /Radio
+          /Row
+          Card
+                Select
+            Row
+              Col
+                Routes
+                Suspense
+                Spin
+                Route
+                PageComponent
+                Route
+                SubComponent
+                /Suspense
+                /Routes
+              /Col
+            /Row
+          /Card
+        /EmailWrapper
+      /Main</code></pre>
+<h2>Before designing</h2>
+<ol><li>Fill in <code>purpose</code> and confirm <code>roles</code>.</li><li>Check every flag above in <a href="../product/flags.html"><code>flags.html</code></a> — a false flag removes the surface.</li><li>Start from <a href="../pages/_shell.html"><code>_shell.html</code></a> default unless the PRD says otherwise.</li><li>Get this header approved, then design.</li></ol>
+</main>
+</body>
+</html>

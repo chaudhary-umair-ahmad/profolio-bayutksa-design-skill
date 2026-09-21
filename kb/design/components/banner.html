@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banner — Profolio KSA</title>
+<link rel="stylesheet" href="../../kb.css">
+</head>
+<body>
+<nav><a href="../../index.html">Profolio KSA</a> › <a href="../../index.html#design-system">Design system</a> › Banner</nav>
+<main>
+<h1>Banner</h1>
+<ul><li><strong>layer</strong> organism</li><li><strong>source</strong> <code>banner/index.js</code></li><li><strong>status</strong> used</li></ul>
+<p><code>common/banner</code> — a <code>primary-light-3</code> surface with a layered gradient (<code>90deg, #e1f6edfe → #e1f6edae</code>, becoming a centre-weighted wash above 768px), radius <code>border-radius-lg</code>, padding 16px rising to 24px, and a mirrored <code>scale: -1 1</code> in RTL. Title is 14px / 700 primary on mobile and 24px on desktop (<code>.cardTitle</code> 14 → 21px when not rendered as an h1); secondary text is 12px, rising to 1em above 768px.</p>
+<blockquote>Real composition (<code>banner/index.js</code>): a <code>Group</code> with an 8px (mobile) / 16px gap holding title + subtitle, an optional bullet list built from TextWithIcon with the <code>GoDotFill</code> glyph in <code>warning-color</code> (list items 45% wide at 12px on mobile, auto at 14px above 768px), and a small white <code>.btn-package</code> "Buy Package" button with no border. The art layer is <code>/profolio-assets/{TENANT_KEY}/lite/banner-faces.png</code> positioned on the end edge at 60% width above 768px — shown below. The package variant (<code>BannerContainer</code>) swaps in a solid <code>#006169</code> gradient with white text; <code>ListingBanner</code> uses a 15 / 18px title and 12px / 700 links.</blockquote>
+</main>
+</body>
+</html>

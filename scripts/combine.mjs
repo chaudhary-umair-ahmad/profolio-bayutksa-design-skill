@@ -24,7 +24,7 @@ const css   = read('profolio.css');
 const fonts = read('fonts.css');
 const cat   = read('components.html');
 const dash  = read('dashboard.html');
-const md    = read('extraction-report.md');
+const md    = readFileSync(join(D, '..', 'authoring', 'extraction-report.md'), 'utf8');
 
 /* ── slice out the parts ──────────────────────────────────────────────── */
 const between = (s, a, b, label) => {

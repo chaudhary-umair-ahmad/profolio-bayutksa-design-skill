@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The harness: rendering the product here — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#guide">Guide</a> › The harness: rendering the product here</nav>
+<main>
+<h1>The harness: rendering the product here</h1>
+<p>The live site and your browser are both unreachable from the sandbox, so the harness runs <strong>the product itself</strong>: it installs the app's own dependency tree from the committed lockfile, boots its Vite dev server, signs a headless Chromium in with a fixture account, answers every API call from invented data, and runs the capture extension's page script on each route.</p>
+<pre class="code"><code>npm run harness:install      # once — rewrites the lockfile host to public npm, stubs the one private package
+npm run harness:capture      # every route → data/live/&lt;route&gt;.capture.json + &lt;route&gt;.png
+node harness/capture.mjs --routes dashboard,listings --rtl
+node harness/serve.mjs       # keep the app up to look at a page by hand: http://127.0.0.1:3000/en/dashboard</code></pre>
+<p>Three things had to be true for this to work, and each is checked rather than assumed: the installed antd is the version the product's lockfile pins; <code>REACT_APP_ENVIRONMENT=development</code> so the Keycloak branch never runs; and <code>REACT_APP_BASE_URL</code> names the local origin, or <code>onLanding</code> redirects the page to itself every three seconds.</p>
+<p><strong>What a harness render is not:</strong> production. Dev-mode React, no CDN, every server flag at its default, fixture numbers. It answers what only a browser can — painted heights, stroke widths, row heights — and where the source declares a value, the source still wins.</p>
+<h2>What the product asks the network for, and what it needs back</h2>
+<p>Traced through the source, not observed on live. Every URL is relative because <code>REACT_APP_API_ENDPOINT</code> is empty in the harness, so Playwright's <code>page.route</code> answers all of them on the same origin. The trap that runs through the whole API: <strong>URLs and redux keys say <code>ksa</code>, response bodies say <code>bayut</code>.</strong></p>
+<h2>Bootstrap — every authenticated route</h2>
+<table><tr><th>call</th><th>need</th><th>if missing</th></tr><tr><td><code>GET /api/surge/users/current</code> ×2</td><td><code>{ user: {…}, banners: [] }</code> — see below</td><td><strong>full-page spinner forever</strong> (router.js:31) or the Error/Retry card</td></tr><tr><td><code>GET /api/surge/products</code></td><td><code>{ products: [] }</code></td><td>falls back to static <code>tenantData.products</code> — harmless</td></tr><tr><td><code>GET /api/surge/agencies/{id}</code></td><td><code>{}</code></td><td>only when <code>agency_admin &amp;&amp; agency.id</code></td></tr><tr><td><code>GET /api/surge/notifications/stats</code></td><td><code>{ stats: { unseen: 46 } }</code></td><td>badge shows 0</td></tr><tr><td><code>GET /api/surge/lms/leads/stats</code></td><td><code>{ stats: { unseen_leads_count: 0 } }</code></td><td>tolerant</td></tr><tr><td><code>GET /api/surge/users/{id}</code>, <code>/languages</code>, <code>/area_units</code>, <code>/experience_list</code></td><td><code>{}</code></td><td>header avatar menu, tolerant</td></tr></table>
+<h3>The user object — fields the app branches on</h3>
+<ul><li><code>id</code> — gates every downstream query (<code>skip: !user?.id</code>)</li><li><code>is_package_user: true</code> — else member-area mode and a hard redirect off localhost</li><li><code>platform_mapping: { bayut: { mapped: true, external_id, platform_id: 1 } }</code> —</li></ul>
+<p>  <strong>without <code>mapped: true</code> the performance chart never renders and every listing   row has empty Performance / Status / Actions cells, with no error anywhere</strong></p>
+<ul><li><code>credit_user: true</code> → <code>/credits/summary</code> instead of <code>/dashboard/qc_summary</code>; adds the Timeline column</li><li><code>agency_admin</code> + <code>agency: { id, name }</code> → agency dropdown, <code>/agencies/{id}</code> call</li><li><code>is_lms_enabled</code>, <code>is_call_tracking_enabled</code>, <code>is_whatsapp_tracking_enabled</code> → two extra LMS calls</li><li><code>profile_completion: { score }</code>, <code>credits.bayut.{allocated,available,used,expiring,current_package}</code></li></ul>
+<h2><code>/dashboard</code></h2>
+<table><tr><th>call</th><th>shape</th><th>if wrong</th></tr><tr><td><code>GET /api/surge/listings/summary?…</code></td><td><code>{ summary: { active: 12, draft: 2, … } }</code></td><td><strong>throws</strong> on <code>Object.keys(undefined)</code> → red Error empty state</td></tr><tr><td><code>GET /api/surge/listings?…</code></td><td><code>{ listings: […], pagination: {…}, statuses_and_dispositions: [{ id, slug, name }] }</code></td><td><code>[]</code> is fine — illustrated empty state</td></tr><tr><td><code>GET /api/surge/ovation/stats?…</code></td><td><code>{ stats: { items: [{ ad_external_id, sum_view_count, … }] } }</code></td><td>Performance cells spin forever; only fires when the list is non-empty</td></tr><tr><td><code>GET /api/surge/dashboard/listing_stats?…</code></td><td><code>{ stats: { ksa: { active, sale, rent, daily_rental, 'hot-listing', 'basic-listing' } } }</code></td><td><strong><code>stats.ksa</code>, not <code>stats.platforms.bayut</code></strong> — bayut's transformer overrides common's</td></tr><tr><td><code>GET /api/surge/credits/summary?…</code></td><td><code>{ credits_summary: { bayut: { available, used, allocated, expiring, product_wise: [], current_package } } }</code></td><td>keyed <code>bayut</code></td></tr><tr><td><code>GET /api/surge/ovation/stats/trends?…</code></td><td><code>{ stats: { aggregates: { sum_search_count, sum_view_count, sum_lead_count, … }, trends: {…} } }</code></td><td>all optional, render 0</td></tr><tr><td><code>GET /api/surge/ovation/stats/product_stats?…</code></td><td><code>{ stats: { items: { 'YYYY-MM-DD': { sum_search_count, … } } } }</code></td><td><strong>object keyed by date, not an array</strong> — an array throws inside <code>fillMissingDates</code>; all-zero hides the canvas behind a placeholder</td></tr></table>
+<p>The report window is the last 30 days from <code>Date.now()</code>. Fixture dates are generated relative to today, or the chart is empty.</p>
+<h2><code>/listings</code></h2>
+<p><code>/statuses?search_class=trucheck</code> → <code>{ statuses: [] }</code>; then the same <code>listings/summary</code> + <code>listings</code> + <code>ovation/stats</code> as above; plus <code>/ad_license_requests?…</code> → <code>{}</code> (always fired, ignored off the ad-license tab).</p>
+<h2>Listing row — practical minimum</h2>
+<p><code>id</code>, <code>price</code>, <code>location: { title, breadcrumbs: [{ level, title }] }</code>, <code>images: [{ main: 1, sizes: { thumbnail, medium, large, full } }]</code>, <code>listing_category: { id, name, purpose_hash: { id, slug, name } }</code>, <code>area_unit: { value, name, id }</code>, <code>platform_listings: [{ status: { slug, name }, disposition, posted_at, expiry_date, products_information: [{ slug, is_applied }] }]</code>, <code>expiry_days</code>, <code>posted_by</code>.</p>
+<h2>Not HTTP</h2>
+<ul><li>localStorage <code>tapTargets = { lms: { introModal: { hide: true } } }</code> — or a</li></ul>
+<p>  full-screen LMS intro modal covers the first dashboard paint</p>
+<ul><li>cookie <code>byt_cd=&lt;anything&gt;</code> — in development <code>KC_ENABLED</code> is false and the</li></ul>
+<p>  cookie alone satisfies the guard</p>
+<ul><li>MoEngage registers a service worker and asks for notification permission on</li></ul>
+<p>  any environment — block <code>**/<em>moengage</em></code></p>
+<ul><li><code>index.html</code> loads checkout.com and a cdnjs stylesheet; <code>useAppInit</code> loads</li></ul>
+<p>  Google Fonts for the member area — all blocked, none feed page data</p>
+<ul><li>No websocket, no SSE, no remote config. Sentry and GA are production-only.</li><li>There is no FEEDBACK widget in this codebase. Whatever the live screenshot</li></ul>
+<p>  showed at the right edge is injected outside this repo.</p>
+<h2>Failure modes, so partial mocking is safe</h2>
+<p>Only <code>users/current</code> is all-or-nothing. Every widget has its own error state (<code>EmptyState</code> with the error string) and its own empty state. An <strong>aborted or hanging</strong> request pins a skeleton indefinitely; a <strong>200 with <code>{}</code></strong> lands in a localised empty state. So the harness answers everything, never aborts an <code>/api/</code> call.</p>
+</main>
+</body>
+</html>

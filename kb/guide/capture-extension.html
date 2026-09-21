@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Profolio Capture — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#guide">Guide</a> › Profolio Capture</nav>
+<main>
+<h1>Profolio Capture</h1>
+<p>One click on a live Profolio screen writes everything the design system needs to measure itself against that page.</p>
+<h2>Install — once</h2>
+<ol><li>Open <code>chrome://extensions</code></li><li>Turn on <strong>Developer mode</strong> (top right)</li><li><strong>Load unpacked</strong> → pick this folder</li></ol>
+<p>A green circle appears in the toolbar. Pin it.</p>
+<h2>Use — once per page</h2>
+<ol><li>Navigate to the screen on live. Wait for it to finish loading.</li><li>Click the extension, check the route, press <strong>Capture</strong>.</li></ol>
+<p>Two files land in your Downloads:</p>
+<pre class="code"><code>profolio-capture/&lt;route&gt;.capture.json
+profolio-capture/&lt;route&gt;.png</code></pre>
+<p>Drop both into <code>data/live/</code> in this repo.</p>
+<h2>What it records</h2>
+<p>Layout only:</p>
+<ul><li>the element tree — tag, classes, box, depth — down to a sensible depth</li><li>the computed styles that decide how something looks: box model, colour,</li></ul>
+<p>  border, type, flex and grid</p>
+<ul><li>which fonts the browser resolved, and which weights it is faking</li><li>the viewport it was captured at</li></ul>
+<h2>What it never records</h2>
+<ul><li>text content of any kind</li><li><code>value</code>, <code>placeholder</code>, <code>title</code>, <code>alt</code>, <code>aria-label</code></li><li><code>href</code>, <code>src</code>, <code>srcset</code>, <code>action</code></li><li>any <code>data-*</code> attribute</li><li>any <code>id</code>, and any class that looks like a hash or an id</li></ul>
+<p>The filter runs <strong>inside the page, before anything is handed back</strong>, so nothing identifying reaches the download. Open the JSON before you send it — it is readable, and you will see there is nothing personal in it.</p>
+<p>The screenshot is a different matter: it is a picture of the screen and it shows whatever is on it. If the account data matters, capture on a test account, or send the JSON alone — the JSON is what the tooling actually reads.</p>
+<h2>If the extension is awkward</h2>
+<p><code>scripts/probe.js</code> does a smaller version of the same thing as a devtools console paste, with nothing to install.</p>
+</main>
+</body>
+</html>

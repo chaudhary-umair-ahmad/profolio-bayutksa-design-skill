@@ -5,7 +5,7 @@
    Paste this whole file into the devtools console on a live Profolio screen.
    It copies a JSON blob to your clipboard. Save that as
 
-       references/live/<route>.live.probe.json
+       data/live/<route>.live.probe.json
 
    and run  `node scripts/reconcile.mjs`  to fold it into the design system.
 
@@ -134,7 +134,7 @@
     const absent = Object.entries(payload.targets).filter(([, v]) => v.missing).map(([k]) => k);
     if (absent.length) console.log('not on this screen:', absent.join(', '));
     const slug = location.pathname.replace(/\W+/g, '-').replace(/^-|-$/g, '') || 'root';
-    console.log(`save as references/live/${slug}.${side}.probe.json`);
+    console.log(`save as data/live/${slug}.${side}.probe.json`);
   };
 
   if (navigator.clipboard?.writeText) {

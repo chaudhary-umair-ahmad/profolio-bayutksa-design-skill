@@ -29,7 +29,7 @@ import { fileURLToPath } from 'node:url';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
 const CSS = join(ROOT, 'deliverables', 'profolio.css');
-const LIVE = join(ROOT, 'references', 'live');
+const LIVE = join(ROOT, 'data', 'live');
 const arg = (n, d) => { const i = process.argv.indexOf(n); return i > -1 ? process.argv[i + 1] : d; };
 const DRY = process.argv.includes('--dry');
 const DIFF = process.argv.includes('--diff');
@@ -171,10 +171,10 @@ if (DIFF) {
   console.log(`            third-party feedback widget counts a quarter)\n`);
 
   if (!DRY) {
-    mkdirSync(join(ROOT, 'references', 'live'), { recursive: true });
+    mkdirSync(join(ROOT, 'data', 'live'), { recursive: true });
     writeFileSync(join(LIVE, 'fidelity.json'),
       JSON.stringify({ at: new Date().toISOString(), score: +score.toFixed(2), rows }, null, 2));
-    console.log('  references/live/fidelity.json written.\n');
+    console.log('  data/live/fidelity.json written.\n');
   }
   process.exit(0);
 }
