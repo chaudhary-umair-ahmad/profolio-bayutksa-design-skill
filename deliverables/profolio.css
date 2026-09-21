@@ -151,6 +151,7 @@
   --fs-btn-lg:16px;
   --fs-13:13px;                        /* listing-breakdown stat fontSize="13px" */
   --fs-12:12px;                        /* .fz-12 banner message, tooltip-title */
+  --fs-18:18px;                        /* utils.less @fontSizes */
   --fs-tag:11px;                        /* theme tag-font-size */
   --fs-chart-tick:13px;                /* chart yAxes ticks fontSize */
   --fs-chart-tick-x:10px;              /* [px] x labels — 30 daily ticks only fit at ~10px */
@@ -203,6 +204,8 @@
   --rail-item-w:70%;                   /* collapsed menu item width */
   --rail-item-pad-inline:10px;         /* collapsed, ltr */
   --rail-icon:20px;
+  --wordmark-w:205px;           /* ProfolioLogo viewBox, svg.js */
+  --wordmark-h:33px;
   --rail-bottom-gap:8px;
   --footer-pad-block:12px;
   --footer-pad-inline:16px;
@@ -318,8 +321,13 @@ table{border-collapse:collapse}
 .pf-rail-brand{
   height:var(--header-h);
   display:grid;
-  place-content:center;
+  align-content:center;
+  justify-content:start;
   width:100%;
+  /* the wordmark is 205px wide and the rail is 60px: on the live screen you
+     see its leading mark and nothing else, because the rail clips it */
+  overflow:hidden;
+  padding-inline-start:var(--sp-8);
 }
 .pf-rail-logo{
   display:grid;
@@ -1147,7 +1155,15 @@ table{border-collapse:collapse}
    ═══════════════════════════════════════════════════════════════════════ */
 .pf-sprite{position:absolute;width:var(--sp-0);height:var(--sp-0);overflow:hidden}
 .i{width:1.2em;height:1.2em;fill:none;stroke:currentColor;flex:none}
-.i-14{width:var(--sp-14);height:var(--sp-14)}
+.i-14{width:var(--fs-base);height:var(--fs-base)}
+.i-18{width:var(--fs-18);height:var(--fs-18)}
+.i-32{width:var(--sp-32);height:var(--sp-32)}
+/* the brand wordmark is 205x33, and the collapsed 60px rail clips it —
+   which is exactly what the live screen shows */
+.pf-wordmark{width:var(--wordmark-w);height:var(--wordmark-h);flex:none}
+/* icons that ship their own tile (ActiveListingIcon) must not be wrapped in
+   .pf-icon-tile as well, or the ground is drawn twice */
+.pf-glyph-tile{align-self:start;flex:none}
 .i-16{width:var(--sp-16);height:var(--sp-16)}
 .i-20{width:var(--sp-20);height:var(--sp-20)}
 .i-24{width:var(--sp-24);height:var(--sp-24)}

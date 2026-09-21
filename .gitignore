@@ -6,3 +6,4 @@ references/screens/*.png
 
 site/
 canvas/live/
+node_modules/

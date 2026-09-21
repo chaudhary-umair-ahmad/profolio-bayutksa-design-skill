@@ -1,0 +1,17 @@
+{
+  "name": "profolio-ksa-design-skill",
+  "private": true,
+  "type": "module",
+  "description": "Design system for Profolio KSA, generated from the product's own source.",
+  "scripts": {
+    "icons": "node scripts/icons.mjs --repo ../profolio-reactjs-copy",
+    "build": "node scripts/build.mjs --repo ../profolio-reactjs-copy",
+    "site": "node scripts/site.mjs",
+    "combine": "node scripts/combine.mjs",
+    "bundle": "node scripts/bundle.mjs",
+    "all": "npm run icons && npm run build && npm run site && npm run combine && npm run bundle"
+  },
+  "devDependencies": {
+    "react-icons": "^5.7.0"
+  }
+}
