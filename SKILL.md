@@ -51,6 +51,9 @@ rather than inventing what it would have said.
 about 92,000 tokens between them. Everything in them that you need is already in
 `references/components/`. Reading one costs more than sixteen correct tasks.
 
+**Building a whole page?** Follow `PAGE-RECIPE.md` — the order exists because
+each step it names cost real rework on the dashboard when it was skipped.
+
 ## How you work
 
 Two steps, always in this order.
