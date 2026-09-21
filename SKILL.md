@@ -1,6 +1,6 @@
 ---
 name: profolio-ksa-design
-version: 0.7.0
+version: 0.8.0
 source_commit: b83e805
 description: "Design system for Bayut Profolio KSA — the agent and seller portal at profolio.bayut.sa. Use when designing, changing or reviewing any Profolio KSA screen, component or flow: turning a PRD into artboards, checking an existing screen against the system, finding which tokens, components or flags a surface uses, or locating where a feature lives in the codebase. Triggers on 'design this screen for Profolio', 'what does the listings page use', 'add X to Profolio KSA', 'is there a component for Y', 'make a mockup of the dashboard'. Covers tenant bayut (KSA) only — not Oman, Bahrain, Qatar, Jordan, Egypt or Zameen, and not the consumer side of bayut.sa, which Strat owns."
 ---
@@ -21,7 +21,7 @@ Load what the task needs. Never load more.
 | File | When |
 |---|---|
 | `references/tenants/ksa.md` | Always. The rules that make KSA different. |
-| `references/pages/_shell.md` | Always. Real measurements, the exact 14 nav labels, and copy-paste starting markup. |
+| `references/pages/_shell.md` | Always. Real measurements, the nav in order, and copy-paste starting markup. |
 | `references/pages/index.md` | To find which screen the request is about. |
 | `references/pages/<route>.md` | The one screen you are working on. 30 of 31 routes have one. |
 | `references/components/index.md` | To find a component by design name. |
@@ -31,10 +31,17 @@ Load what the task needs. Never load more.
 | `references/copy/<area>.md` | **The real shipped strings**, English beside Arabic. Load the area you are designing. |
 | `references/flags.md` | When a surface may be switched off or altered. |
 | `references/pages/<route>.board.html` | **The screen as an artboard** — real shell chrome with content blocked out from the layout skeleton. Open it in a browser; start from it rather than a blank page. |
-| `references/screens/<route>.png` | **The live screen.** Open it whenever the page template names one — it is the only visual truth in this system. |
+| `references/tokens/antd.md` | When a value looks like an antd default — Table padding, Badge, Progress, dividers, disabled states. Those are computed at runtime, not declared, and this is them resolved. |
+| `deliverables/sprite.svg` | **The product's real icons**, 64 of them, each named as the codebase names it. Reference one with `<use href="#pf-SideMenuDashboard">`. Never draw a glyph yourself. |
+| `references/screens/<route>.png` | **The live screen, if one has been captured.** Check it exists before you rely on it — `references/screens/` is empty until someone runs a capture, and most routes have none. When there is no screenshot, the artboard plus the page template is what you have. |
 
 Every `.md` also has an `.html` beside it for people to read in a browser. **You read the
-`.md`** — the HTML is the same content and costs more.
+`.md`** — the HTML is the same content and costs roughly three times as much.
+
+**Before you open a path, check it exists.** Two entries above are conditional:
+`references/screens/` is populated only by a capture, and `references/flows/` is empty
+until someone writes one. If a file you expected is not there, say so in your proposal
+rather than inventing what it would have said.
 
 **Never read `canvas/`.** Those three `.dc.html` files are the human browsing surface —
 about 92,000 tokens between them. Everything in them that you need is already in
@@ -53,17 +60,22 @@ Cite token names, never raw hex.
 
 ## Pre-flight — run this before you output a single artboard
 
-Seven checks. Each one has been failed in a real session; each takes seconds.
+Eight checks. Each one has been failed in a real session; each takes seconds.
 
 1. **Nav.** Count your sidebar items against the table in `_shell.md`. Labels must match
    character for character — **TruLeads**, not "Leads"; **Credits & Packages**, not "Packages".
    Do not invent an entry; there is no top-level "Licenses".
-2. **Widths.** Sider is **220px** expanded, 60px collapsed. Header is 74px. If you typed a
-   round number you guessed — go back and read `_shell.md`.
+2. **Shell.** The sider **ships collapsed at 60px** — `withAdminLayout.js` opens with
+   `useState(true)`, so an icon rail is the default state and 220px is what you get on hover.
+   The header is **60px**, not the 74px in `theme['layout-header-height']`: `renderHeader()`
+   overrides it inline and inline wins. Content starts at 85px (`sidebarOffset + 25`). If you
+   typed a round number you guessed — go back and read `_shell.md`.
 3. **Classified pill.** A bordered link out to the classified site, min-width 148.71px. Not a
    solid primary button, and not "Post a Listing".
 4. **Type.** Lato with Droid Arabic Kufi, base 14px / line-height 1.571 — it is in
-   `foundations.md`. Never report the font stack as missing.
+   `foundations.md`. Never report the font stack as missing, and never say Figtree: the antd
+   token names it but nothing loads it. Only **300, 400 and 700** ship, so a 500 or 600 in
+   your design is a weight the browser fakes. Do not ask for a real one.
 5. **Copy.** Every label, button, empty state and error in your design must come from
    `copy/<area>.md`. **Never invent a string.** If the word you need is not there, name the
    file you checked and ask — invented copy is how "Post a Listing" ended up on the classified
@@ -73,6 +85,10 @@ Seven checks. Each one has been failed in a real session; each takes seconds.
 7. **Content.** Did you invent a widget or card the page template does not list? If the
    template has a layout skeleton, your structure must match it. If you needed something that
    is not there, say so — do not draw it silently.
+8. **Icons.** Every glyph comes from `deliverables/sprite.svg`, by the name the codebase uses
+   (`SideMenuDashboard`, `IconForSale`, `MdPhone`). **Never draw one.** If the icon you need is
+   not in the sprite, name the one you looked for and ask — a hand-drawn glyph is the single
+   most visible way a design stops looking like the product.
 
 If a check fails, fix it before producing. If the information genuinely is not in
 `references/`, say which file you looked in and stop — a guess that looks confident is worse
@@ -116,6 +132,7 @@ Violating any of these makes the design wrong, not merely off-style.
 
 `references/` is generated by `scripts/build.mjs` from the Profolio codebase and the canvas
 prose. `pages/_shell.md` is generated too, so its nav and measurements cannot drift from
-`menuList.js` and `withAdminLayout.js`. Hand-written: `tenants/` and `flows/`.
+`menuList.js` and `withAdminLayout.js`. Hand-written: `tenants/`. Empty until someone
+writes one: `flows/`.
 Every generated file carries the commit it was built from. If a generated file disagrees with
 the code, the code is right and the generator needs re-running.

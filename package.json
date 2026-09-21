@@ -5,11 +5,15 @@
   "description": "Design system for Profolio KSA, generated from the product's own source.",
   "scripts": {
     "icons": "node scripts/icons.mjs --repo ../profolio-reactjs-copy",
+    "fonts": "node scripts/fonts.mjs --repo ../profolio-reactjs-copy --tenant bayut",
+    "antd": "node scripts/antd-tokens.mjs --repo ../profolio-reactjs-copy",
     "build": "node scripts/build.mjs --repo ../profolio-reactjs-copy",
     "site": "node scripts/site.mjs",
     "combine": "node scripts/combine.mjs",
     "bundle": "node scripts/bundle.mjs",
-    "all": "npm run icons && npm run build && npm run site && npm run combine && npm run bundle"
+    "check": "node scripts/check.mjs",
+    "diff": "node scripts/reconcile.mjs --diff",
+    "all": "npm run icons && npm run fonts && npm run antd && npm run build && npm run site && npm run bundle && npm run combine && npm run check"
   },
   "devDependencies": {
     "antd": "5.20",
