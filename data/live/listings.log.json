@@ -4,15 +4,15 @@
   "shell": true,
   "errorCard": false,
   "spinning": false,
-  "pageHeight": 1929,
+  "pageHeight": 1918,
   "answered": [
     "GET /api/surge/users/current",
+    "GET /api/surge/notifications/stats",
     "GET /api/surge/users/88010234",
     "GET /api/surge/languages",
     "GET /api/surge/area_units",
     "GET /api/surge/experience_list",
     "GET /api/surge/lms/leads/stats",
-    "GET /api/surge/notifications/stats",
     "GET /api/surge/products",
     "GET /api/surge/agencies/880042",
     "GET /api/surge/statuses",
@@ -24,6 +24,7 @@
   "errors": [
     "Tag type 'ad-license-requests' was used, but not specified in `tagTypes`!"
   ],
-  "blocked": 4,
-  "ms": 8661
+  "blocked": 3,
+  "fonts": "served from deliverables/fonts.css",
+  "ms": 9041
 }

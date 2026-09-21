@@ -186,6 +186,8 @@ export function answer(method, pathname) {
 /* a 320×240 grey SVG for every listing thumbnail: the box is what matters, and
    an <img> takes its natural size from the SVG's width/height, so a tiny image
    would render tiny */
+export const AVATAR_SVG = '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'96\' height=\'96\' viewBox=\'0 0 96 96\'><rect width=\'96\' height=\'96\' fill=\'#d9dde3\'/><circle cx=\'48\' cy=\'36\' r=\'16\' fill=\'#aeb6c0\'/><path d=\'M16 96c0-17.7 14.3-32 32-32s32 14.3 32 32z\' fill=\'#aeb6c0\'/></svg>';
+
 export const THUMB = {
   contentType: 'image/svg+xml',
   body: '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240"><rect width="320" height="240" fill="#d9dde3"/><path d="M0 240 L110 130 L180 200 L230 150 L320 240Z" fill="#c4c9d1"/><circle cx="250" cy="70" r="26" fill="#eef0f3"/></svg>',

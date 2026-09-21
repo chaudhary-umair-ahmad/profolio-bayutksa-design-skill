@@ -1,7 +1,8 @@
 # QA — `/listings` against the harness render
 
-**Score: 91.7%** — 15 disagreements out of 351 weighted checks, 28 regions found
-in the product and 27 in ours. `data/layout/listings.score.json` carries the
+**Score: 94.9%** — 10 disagreements out of 351 weighted checks, 28 regions found
+in the product and 27 in ours. It was 91.7% until the design QA found that the
+whole system was painting in the wrong typeface; see below. `data/layout/listings.score.json` carries the
 full list; re-run it with
 
 ```
@@ -36,12 +37,12 @@ too, and are now fixed there by the same stylesheet.
 All fifteen remaining rows are one of two cascades, and neither is a value I can
 source:
 
-**Text metrics (9 rows).** `shell.title` 110 vs 103, `filter.clear` 72 vs 78,
-`filter.showmore` 122 vs 125, `tabs.nav` 526 vs 521. Our text is laid out by the
-same Lato faces at the same sizes, but the product's buttons carry antd's
-`<span>` wrappers and ours do not, so a word wraps a fraction differently. The
-knock-on is the filter fields: our actions column is ~7px wider, so each of the
-four fields is 241.2 instead of 242.9.
+**Text metrics — mostly gone, and my explanation for them was wrong.** I wrote
+that the product's antd `<span>` wrappers made words wrap differently. They did
+not. **We were rendering in Lato and the product renders in Figtree.** Six of
+the nine rows disappeared the moment that was fixed. What is left is
+`filter.clear` 69 vs 71 and `filter.showmore` 120 vs 122 — two pixels each, on
+the two buttons whose label is set in the browser's own metrics.
 
 **Table column widths (4 rows).** Product `452 250 138 103 197 190`, ours
 `465 240 143 99 192 190`. Both are auto-layout over the same content; only
@@ -104,3 +105,74 @@ metric tabs as though they were the listings table's, then counts our page
 (breakdown, credits meter, chart, account switcher) before its score means
 anything. What the run does prove is that the two shared fixes — the row divider
 and the button icon gap — landed on both pages.
+
+
+---
+
+## What the design QA found that the score could not
+
+The region score was 91.7% and every number in it was right. It still missed the
+largest defect in the system, because it compares the regions somebody listed
+and says nothing about how they are painted.
+
+**The whole design system was rendering in Lato. Profolio KSA paints in Figtree.**
+
+`scripts/qa-design.mjs` crops the product's render and ours to each region and
+compares them pixel by pixel. The page title came back 42.7% different — far too
+much for a box that measured within 7px. The crops, side by side, showed two
+different typefaces. The capture settled it: **1,698 of the 1,708 elements** in
+the product compute `Figtree, "Droid Arabic Kufi", sans-serif`, and none
+computes Lato.
+
+| | |
+|---|---|
+| `theme/index.js:306` | antd token `fontFamily: 'Figtree, Droid Arabic Kufi, sans-serif'` |
+| `useAppInit.js` | fetches Figtree + Mukta from Google Fonts whenever `!isMemberArea` |
+| `useAppInit.js` | also injects `lato-font.css` for every bayut session — and nothing references Lato except `FONT_FAMILY_LITE` and the lite footer |
+
+`kb/design/fonts.html` stated the opposite outright — *"Nothing anywhere loads
+Figtree. Lato is what paints."* — and `SKILL.md` instructed the design agent
+never to say Figtree. Both are corrected. So is the claim, repeated several
+times, that `.fw-500` and `.fw-600` are synthesised: **Figtree is variable
+300–900**, so they are real weights. That was true of Lato and never true of
+what ships.
+
+Two harness faults came out of the same thread:
+
+- The capture **blocked Google Fonts**, so the product rendered in the system
+  fallback while our page rendered in a real face. Every text width differed for
+  a reason that had nothing to do with our markup. The capture now serves the
+  same embedded faces `deliverables/fonts.css` carries.
+- The fixture user had `settings: []`, so `push_notifications` defaulted to
+  `disabled` and **the header bell never rendered in the product**. I nearly
+  deleted our bell as invented. It is real and conditional
+  (`header-components.js:53`); the fixture was wrong.
+
+## The QA's own checks were vacuous, and a negative test proved it
+
+The stylesheet checks — px literals outside `:root`, physical `left`/`right`
+properties — were line-anchored regexes. Most rules in `profolio.css` are
+written on one line, so `^\s*padding:` never matched them. Appending
+`.pf-negative-test{padding:7px;margin-left:5px;font-size:15px}` produced **zero
+findings**.
+
+They tokenise declarations now, and the same negative test catches all three.
+A check that has never failed is not evidence.
+
+## Where it stands
+
+| | |
+|---|---|
+| shell.sider | 5.0% — inside threshold |
+| shell.footer | 2.0% — inside threshold |
+| shell.header | 10.1% — **over**, and the remainder is the title inside it |
+| shell.title | 23.3% — **over**; 106px vs 110px on one 11-character string |
+| table.thumb | 95.5% — expected: the product renders an image, we render the grey placeholder a design system should |
+| off-scale values | 0 |
+| physical properties | 0 |
+| RTL | no overflow |
+| contrast below 4.5:1 | 74 — **not yet triaged against the product's own values** |
+
+The two open items are honest: the title is four pixels narrow at 20/700, and
+the contrast list has not been compared against the product. Neither is fixed by
+guessing.

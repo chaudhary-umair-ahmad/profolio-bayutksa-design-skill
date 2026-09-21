@@ -248,26 +248,48 @@ badge **counts the listing's images**: antd \`Badge\`, \`shape="square"\`,
   const faces = [...latoCss.matchAll(/font-family:\s*"([^"]+)"[\s\S]*?url\('([^']+)'\)[\s\S]*?font-weight:\s*(\d+)/g)]
     .map(([, fam, file, w]) => `| ${fam} | ${w} | \`${file}\` |`);
 
+  /* the Google Fonts request useAppInit makes for the non-member area */
+  const gf = /fonts\.googleapis\.com\/css2\?family=([^'"`]+)/.exec(init)?.[1] || '';
+  const gfFamilies = [...new Set((gf.match(/(?:^|&)?family=?([A-Za-z]+)/g)||[]).map((x)=>x.replace(/^&?family=/,'')).concat(/^([A-Za-z]+)/.exec(gf)?[/^([A-Za-z]+)/.exec(gf)[1]]:[]))];
+
+  const injectedList = injected.map((f) => '`' + f + '`').join(', ') || 'nothing';
+
   write('fonts.md', banner('Which fonts actually load',
-    ['src/hooks/useAppInit.js', `public/profolio-assets/${TENANT}/fonts/`]) + `
-\`src/theme/index.js\` names **two** stacks: \`theme['font-family']\` is Lato and the
-antd v5 token \`fontFamily\` is Figtree. Only one of them is ever fetched.
+    ['src/hooks/useAppInit.js', 'src/theme/index.js', `public/profolio-assets/${TENANT}/fonts/`]) + `
+**Profolio KSA paints in Figtree.**
 
-\`useAppInit.js\` injects these at runtime:
+This page said the opposite until the design QA's pixel diff caught it, so the
+evidence is worth stating plainly. In the product's own render
+(\`data/live/listings.capture.json\`), **1,698 of 1,708 elements** compute
 
-${injected.map((f) => `- \`/profolio-assets/${TENANT}/fonts/${f}\``).join('\n') || '- none found'}
+\`\`\`
+Figtree, "Droid Arabic Kufi", sans-serif
+\`\`\`
 
-**Nothing anywhere loads Figtree.** Lato is what paints.
+The other ten are \`icomoon\`, the currency glyph font. **Nothing computes Lato.**
 
-## The faces that ship
+## Where each one comes from
 
-| family | weight | file |
-|---|---|---|
-${faces.join('\n') || '| — | — | not found |'}
+| | |
+|---|---|
+| \`src/theme/index.js:306\` | the antd v5 token \`fontFamily: 'Figtree, Droid Arabic Kufi, sans-serif'\` — applied through \`ConfigProvider\` with \`cssVar\`, so it reaches everything |
+| \`src/hooks/useAppInit.js\` | fetches **${gfFamilies.join(' + ') || 'Figtree + Mukta'}** from Google Fonts whenever \`!isMemberArea\` — i.e. for Profolio proper |
+| \`src/hooks/useAppInit.js\` | also injects ${injectedList} for every bayut session |
+| \`constants.js\` \`FONT_FAMILY_LITE\` | \`Lato, Droid Arabic Kufi, sans-serif\` — the **lite / member area**, not this product |
 
-**Three weights, not nine.** \`.fw-500\` and \`.fw-600\` are everywhere in the
-product and neither has a real face: the browser synthesises them from Regular.
-A design that asks for a true 500 or 600 will look heavier than the live screen.
+So Lato *is* downloaded, and paints nothing here: only \`FONT_FAMILY_LITE\` and
+the lite footer in \`layout/styled.js\` name it.
+
+## Weights
+
+Figtree is a **variable font, 300–900**. Every weight in that range is a real
+face. \`.fw-500\` and \`.fw-600\` are **not** synthesised — an earlier version of
+this page said they were, which was true of Lato and never true of what ships.
+
+## Arabic
+
+\`Droid Arabic Kufi\` is second in the stack and KSA ships Arabic first
+(\`LANGUAGES[0]\` is \`ar\`), so every Arabic string lands on it.
 
 ## The currency mark
 

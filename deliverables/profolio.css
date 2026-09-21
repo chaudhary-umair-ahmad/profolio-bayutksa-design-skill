@@ -179,14 +179,17 @@
   --shadow-tab-active:0px 16px 0 -1px #fff, 2px 0px 21px -10px #41414164;
 
   /* ── TYPE ──────────────────────────────────────────────────────────── */
-  /* RESOLVED. theme['font-family'] says Lato and the antd v5 token says
-     Figtree, but only one of them is ever fetched: useAppInit.js injects
-     /profolio-assets/<tenant>/fonts/lato-font.css at runtime and nothing
-     anywhere loads Figtree, so Lato is what paints. Faces are embedded in
-     fonts.css, straight from the tenant's own directory.
-     Three weights exist — 300, 400, 700. .fw-500 and .fw-600 are synthesised
-     by the browser in production, and must be here too. */
-  --font-body:Lato,'Droid Arabic Kufi',Arial,sans-serif;
+  /* CORRECTED — this said Lato until the design QA's pixel diff caught it.
+     Profolio KSA paints in FIGTREE. The antd v5 token at theme/index.js:306 is
+     'Figtree, Droid Arabic Kufi, sans-serif' and useAppInit.js fetches Figtree
+     + Mukta from Google Fonts whenever !isMemberArea. In the product's own
+     render, 1,698 of 1,708 elements compute that stack; the other ten are
+     icomoon. Nothing computes Lato.
+     Lato IS loaded (lato-font.css, for every bayut session) and paints
+     nothing: only FONT_FAMILY_LITE and the lite footer name it.
+     Figtree is VARIABLE 300-900, so --fw-500 and --fw-600 are real weights.
+     The old note calling them synthesised was true of Lato, not of this. */
+  --font-body:Figtree,'Droid Arabic Kufi',sans-serif;
   /* widgets/styled.js asks for Inter on the chart tooltip. Nothing loads Inter
      either, so in production this falls through to the generic sans — which is
      what the stack below reproduces. Not a typo: it is the shipped behaviour. */

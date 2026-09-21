@@ -82,12 +82,28 @@
         }
       }
     },
-    "settings": [],
+    "settings": [
+      {
+        "slug": "push_notifications",
+        "value": "enabled",
+        "id": 1,
+        "setting_id": 1,
+        "name": "Push Notifications"
+      },
+      {
+        "slug": "email_notification",
+        "value": "1",
+        "id": 2,
+        "setting_id": 2,
+        "name": "Email Notifications"
+      }
+    ],
     "profile_completion": {
       "score": 90
     },
     "quality_lister": "high",
-    "unread_notifications_count": 46
+    "unread_notifications_count": 46,
+    "_avatar": "no profile_image on purpose: the avatar fallback is what the design system documents, and a photo would only compare a picture against a glyph"
   },
   "banners": []
 }

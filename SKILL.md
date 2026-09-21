@@ -79,10 +79,13 @@ Eight checks. Each one has been failed in a real session; each takes seconds.
    typed a round number you guessed — go back and read `kb/pages/_shell.html`.
 3. **Classified pill.** A bordered link out to the classified site, min-width 148.71px. Not a
    solid primary button, and not "Post a Listing".
-4. **Type.** Lato with Droid Arabic Kufi, base 14px / line-height 1.571 — it is in
-   `kb/design/foundations.html`. Never report the font stack as missing, and never say Figtree: the antd
-   token names it but nothing loads it. Only **300, 400 and 700** ship, so a 500 or 600 in
-   your design is a weight the browser fakes. Do not ask for a real one.
+4. **Type.** **Figtree** with Droid Arabic Kufi, base 14px / line-height 1.571 — it is in
+   `kb/design/fonts.html`. This check said *Lato* and told you never to say Figtree; that was
+   wrong and it painted every artboard in the wrong typeface. The antd token at
+   `theme/index.js:306` is `Figtree, Droid Arabic Kufi, sans-serif`, `useAppInit.js` fetches
+   Figtree from Google Fonts, and **1,698 of the 1,708 elements** in the product's own render
+   compute it. Lato is downloaded but paints nothing outside the lite experience.
+   Figtree is **variable 300–900**, so 500 and 600 are real weights — ask for them freely.
 5. **Copy.** Every label, button, empty state and error in your design must come from
    `kb/product/copy/<area>.html`. **Never invent a string.** If the word you need is not there, name the
    file you checked and ask — invented copy is how "Post a Listing" ended up on the classified

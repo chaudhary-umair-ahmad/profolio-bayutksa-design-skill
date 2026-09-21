@@ -27,7 +27,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { serve, REPO } from './serve.mjs';
-import { answer, THUMB } from './fixtures.mjs';
+import { answer, THUMB, AVATAR_SVG } from './fixtures.mjs';
 
 const { chromium } = pkg;
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -61,6 +61,7 @@ if (flag('--list')) { console.log(ALL.map((p) => `  ${slug(p).padEnd(28)} ${p}`)
 
 const user = JSON.parse(readFileSync(join(HERE, 'fixtures/user.json'), 'utf8'));
 const captureSrc = readFileSync(join(ROOT, 'tools/profolio-capture/capture.js'), 'utf8');
+const FONTS_CSS = readFileSync(join(ROOT, 'deliverables/fonts.css'), 'utf8');
 const locales = flag('--rtl') ? ['en', 'ar'] : ['en'];
 
 /* ── one page per route ────────────────────────────────────────────────── */
@@ -81,8 +82,21 @@ async function captureRoute(browser, base, route, locale) {
   const appHost = new URL(base).host;
   await page.route('**/*', async (r) => {
     const u = new URL(r.request().url());
-    if (u.host !== appHost) { log.blocked++; return r.abort(); }         /* nothing leaves the sandbox */
-    if (u.pathname.startsWith('/harness-img/')) return r.fulfill({ status: 200, contentType: THUMB.contentType, body: THUMB.body });
+    /* Google Fonts is the one off-origin request worth answering rather than
+       blocking: useAppInit.js fetches Figtree there, and Figtree is what the
+       product paints with. Blocking it made the product render in the system
+       fallback while our page rendered in a real face, so every text width
+       differed for a reason that had nothing to do with our markup. Serve the
+       same embedded faces deliverables/fonts.css carries. */
+    if (/^fonts\.(googleapis|gstatic)\.com$/.test(u.host)) {
+      if (u.host === 'fonts.googleapis.com') {
+        log.fonts = 'served from deliverables/fonts.css';
+        return r.fulfill({ status: 200, contentType: 'text/css', body: FONTS_CSS });
+      }
+      return r.abort();          /* the faces are already inlined in that CSS */
+    }
+    if (u.host !== appHost) { log.blocked++; return r.abort(); }         /* nothing else leaves the sandbox */
+    if (u.pathname.startsWith('/harness-img/')) return r.fulfill({ status: 200, contentType: THUMB.contentType, body: u.pathname.includes('avatar') ? AVATAR_SVG : THUMB.body });
     if (u.pathname.startsWith('/api/')) {
       const body = answer(r.request().method(), u.pathname);
       (body === undefined ? log.unanswered : log.answered).push(`${r.request().method()} ${u.pathname}`);

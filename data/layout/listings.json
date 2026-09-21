@@ -408,10 +408,15 @@
         "x": 85,
         "y": 284,
         "w": 452,
-        "h": 0
+        "h": 151
       },
       "style": {
-        "borderBottomColor": "rgba(0, 0, 0, 0.88)"
+        "height": "150.984px",
+        "paddingTop": "16px",
+        "paddingBottom": "16px",
+        "paddingInlineStart": "16px",
+        "paddingInlineEnd": "16px",
+        "fontSize": "14px"
       }
     },
     "table.thumb": {
@@ -494,8 +499,7 @@
         "width": "32px",
         "height": "32px",
         "borderTopLeftRadius": "6px",
-        "marginTop": "4px",
-        "fontSize": "14px"
+        "marginTop": "4px"
       }
     }
   }

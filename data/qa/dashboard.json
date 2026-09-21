@@ -1,0 +1,70 @@
+{
+  "route": "dashboard",
+  "at": "2026-09-21T16:55:58.148Z",
+  "shellFails": [
+    {
+      "id": "shell.title",
+      "diff": 20.9
+    },
+    {
+      "id": "shell.header",
+      "diff": 9.9
+    }
+  ],
+  "diffs": [
+    {
+      "id": "table.cell",
+      "diff": 26.7
+    },
+    {
+      "id": "shell.title",
+      "diff": 20.9
+    },
+    {
+      "id": "table",
+      "diff": 14.4
+    },
+    {
+      "id": "table.row",
+      "diff": 13.6
+    },
+    {
+      "id": "shell.content",
+      "diff": 11.9
+    },
+    {
+      "id": "shell.header",
+      "diff": 9.9
+    },
+    {
+      "id": "shell.sider",
+      "diff": 5
+    },
+    {
+      "id": "shell.footer",
+      "diff": 2
+    },
+    {
+      "id": "table.head",
+      "diff": 1
+    }
+  ],
+  "offScale": {
+    "size": [],
+    "weight": [],
+    "space": []
+  },
+  "literals": [],
+  "lowContrast": 68,
+  "notModelled": [
+    "filter.bar",
+    "table.card",
+    "table.card.head",
+    "tabs.nav",
+    "tabs.tab",
+    "tabs.active",
+    "tabs.ink"
+  ],
+  "rtlOverflow": false,
+  "physical": 0
+}

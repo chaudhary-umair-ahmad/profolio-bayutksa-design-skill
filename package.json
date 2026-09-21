@@ -20,7 +20,9 @@
     "harness:install": "node harness/install.mjs",
     "harness:capture": "node harness/capture.mjs",
     "pages": "node scripts/pages/listings.mjs",
-    "layout": "node scripts/derive-layout.mjs"
+    "layout": "node scripts/derive-layout.mjs",
+    "qa": "node scripts/qa-design.mjs",
+    "sync": "node scripts/sync.mjs"
   },
   "devDependencies": {
     "antd": "5.22.1",

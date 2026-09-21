@@ -52,7 +52,7 @@ const PAD = ['paddingTop', 'paddingBottom', 'paddingInlineStart', 'paddingInline
 const TYPE = ['fontSize', 'fontWeight', 'lineHeight', 'color'];
 const BOXY = ['backgroundColor', 'borderTopColor', 'borderTopWidth', 'borderTopLeftRadius'];
 
-const REGIONS = [
+export const REGIONS = [
   { id: 'shell.sider',    ours: '.pf-rail',          w: 3, live: (n) => cls(n, 'ant-layout-sider'),      mine: (n) => cls(n, 'pf-rail'),          props: [...GEOM, 'backgroundColor'] },
   { id: 'shell.header',   ours: '.pf-header',        w: 3, live: (n) => cls(n, 'ant-layout-header'),     mine: (n) => cls(n, 'pf-header'),        props: [...GEOM, 'paddingInlineStart', 'backgroundColor'] },
   { id: 'shell.title',    ours: '.pf-page-title',    w: 3, live: (n) => cls(n, 'navbar-page-title'),     mine: (n) => cls(n, 'pf-page-title'),    props: TYPE },
@@ -94,6 +94,8 @@ const POSITIONAL = new Set(['shell.sider', 'shell.header', 'shell.content', 'fil
 
 /* a region with a scope is searched only inside the node its scope resolved to,
    so a dashboard's card tabs are not mistaken for a listings page's status tabs */
+export function pickRegions(capture, side) { return pick(capture, side); }
+
 function pick(capture, side) {
   const found = {};
   for (const r of REGIONS) {
@@ -116,7 +118,11 @@ const manifestOf = (capture, side) => {
   }));
 };
 
-/* ── modes ─────────────────────────────────────────────────────────────── */
+/* ── modes ───────────────────────────────────────────────────────────────
+   Only when run directly: scripts/qa-design.mjs imports REGIONS and
+   pickRegions from here, and an import must not run a CLI. */
+const DIRECT = process.argv[1] && process.argv[1].endsWith('derive-layout.mjs');
+if (!DIRECT) { /* imported as a library */ } else {
 const routeOf = (file) => basename(file).replace(/\.capture\.json$/, '').replace(/\.rtl$/, '');
 
 if (flag('--ours')) {
@@ -197,3 +203,4 @@ console.log(`  ${out.slice(ROOT.length + 1)} — ${ids.length}/${REGIONS.length}
 const missing = REGIONS.filter((r) => !manifest.regions[r.id]).map((r) => r.id);
 if (missing.length) console.log(`  not on this page: ${missing.join(', ')}`);
 for (const id of ids) { const r = manifest.regions[id]; console.log(`    ${id.padEnd(18)} ${String(r.box.x).padStart(5)},${String(r.box.y).padStart(5)} ${String(r.box.w).padStart(5)}×${String(r.box.h).padStart(4)}  → ${r.ours}`); }
+}

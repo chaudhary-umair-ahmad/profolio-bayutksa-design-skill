@@ -1,112 +1,77 @@
 {
-  "score": 91.7,
+  "score": 94.9,
   "checks": 351,
   "disagreements": [
     {
-      "id": "filter.label",
-      "prop": "width",
-      "live": "242.891px",
-      "ours": "241.203px",
-      "w": 3
-    },
-    {
       "id": "shell.content",
       "prop": "height",
-      "live": "1828.5px",
+      "live": "1817.62px",
       "ours": "1799.02px",
       "w": 3
     },
     {
-      "id": "shell.title",
-      "prop": "box.w",
-      "live": 110,
-      "ours": 103,
-      "w": 3
-    },
-    {
-      "id": "filter.input",
-      "prop": "width",
-      "live": "242.891px",
-      "ours": "241.203px",
-      "w": 2
-    },
-    {
-      "id": "filter.search",
-      "prop": "width",
-      "live": "114.562px",
-      "ours": "112.188px",
-      "w": 2
-    },
-    {
-      "id": "filter.select",
-      "prop": "width",
-      "live": "242.891px",
-      "ours": "241.203px",
-      "w": 2
-    },
-    {
       "id": "table",
       "prop": "height",
-      "live": "1583.67px",
+      "live": "1572.8px",
       "ours": "1553.17px",
       "w": 2
     },
     {
       "id": "table.card",
       "prop": "height",
-      "live": "1629.66px",
+      "live": "1618.78px",
       "ours": "1600.17px",
       "w": 2
     },
     {
       "id": "table.cell",
       "prop": "box.w",
-      "live": 452,
-      "ours": 465,
+      "live": 457,
+      "ours": 471,
+      "w": 2
+    },
+    {
+      "id": "table.cell",
+      "prop": "height",
+      "live": "151.781px",
+      "ours": "150.219px",
       "w": 2
     },
     {
       "id": "table.head",
       "prop": "box.w",
-      "live": 452,
-      "ours": 465,
+      "live": 457,
+      "ours": 471,
       "w": 2
     },
     {
-      "id": "tabs.nav",
-      "prop": "width",
-      "live": "525.547px",
-      "ours": "521px",
+      "id": "table.row",
+      "prop": "height",
+      "live": "151.781px",
+      "ours": "150.219px",
       "w": 2
     },
     {
       "id": "filter.clear",
       "prop": "width",
-      "live": "71.9219px",
-      "ours": "78px",
-      "w": 1
-    },
-    {
-      "id": "filter.field",
-      "prop": "width",
-      "live": "242.891px",
-      "ours": "241.203px",
+      "live": "69px",
+      "ours": "71px",
       "w": 1
     },
     {
       "id": "filter.showmore",
       "prop": "width",
-      "live": "121.922px",
-      "ours": "125px",
+      "live": "120.188px",
+      "ours": "122px",
       "w": 1
     },
     {
       "id": "pager",
       "prop": "box.y",
-      "live": 1829,
+      "live": 1818,
       "ours": 1799,
       "w": 1
     }
   ],
-  "at": "2026-09-21T16:13:53.085Z"
+  "at": "2026-09-21T16:52:19.107Z"
 }

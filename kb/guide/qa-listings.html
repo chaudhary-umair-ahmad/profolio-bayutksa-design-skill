@@ -10,7 +10,7 @@
 <nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#guide">Guide</a> › QA — `/listings` against the harness render</nav>
 <main>
 <h1>QA — <code>/listings</code> against the harness render</h1>
-<p><strong>Score: 91.7%</strong> — 15 disagreements out of 351 weighted checks, 28 regions found in the product and 27 in ours. <code>data/layout/listings.score.json</code> carries the full list; re-run it with</p>
+<p><strong>Score: 94.9%</strong> — 10 disagreements out of 351 weighted checks, 28 regions found in the product and 27 in ours. It was 91.7% until the design QA found that the whole system was painting in the wrong typeface; see below. <code>data/layout/listings.score.json</code> carries the full list; re-run it with</p>
 <pre class="code"><code>node harness/capture.mjs --routes listings          # the product, in a real browser
 node scripts/derive-layout.mjs --ours deliverables/listings.html
 node scripts/derive-layout.mjs --compare data/live/listings.capture.json data/ours/listings.capture.json</code></pre>
@@ -21,7 +21,7 @@ node scripts/derive-layout.mjs --compare data/live/listings.capture.json data/ou
 <p>Two of those — the divider and the icon gap — were wrong on the <strong>dashboard</strong> too, and are now fixed there by the same stylesheet.</p>
 <h2>Still open</h2>
 <p>All fifteen remaining rows are one of two cascades, and neither is a value I can source:</p>
-<p><strong>Text metrics (9 rows).</strong> <code>shell.title</code> 110 vs 103, <code>filter.clear</code> 72 vs 78, <code>filter.showmore</code> 122 vs 125, <code>tabs.nav</code> 526 vs 521. Our text is laid out by the same Lato faces at the same sizes, but the product's buttons carry antd's <code>&lt;span&gt;</code> wrappers and ours do not, so a word wraps a fraction differently. The knock-on is the filter fields: our actions column is ~7px wider, so each of the four fields is 241.2 instead of 242.9.</p>
+<p><strong>Text metrics — mostly gone, and my explanation for them was wrong.</strong> I wrote that the product's antd <code>&lt;span&gt;</code> wrappers made words wrap differently. They did not. <strong>We were rendering in Lato and the product renders in Figtree.</strong> Six of the nine rows disappeared the moment that was fixed. What is left is <code>filter.clear</code> 69 vs 71 and <code>filter.showmore</code> 120 vs 122 — two pixels each, on the two buttons whose label is set in the browser's own metrics.</p>
 <p><strong>Table column widths (4 rows).</strong> Product <code>452 250 138 103 197 190</code>, ours <code>465 240 143 99 192 190</code>. Both are auto-layout over the same content; only <code>col-actions</code> (180, declared in <code>listingUtilities.js</code>) is a real number. The product's cells wrap their content in <code>.mb-8</code> divs that claim more width in the Timeline column. <strong>I have not forced these with a <code>&lt;colgroup&gt;</code></strong> — transcribing the measured widths would make the page match this one render and teach the design system nothing.</p>
 <p><strong>Page height, 1900 vs 1929 (2 rows).</strong> The product has one row at 170px where the location wraps to two lines (<code>Riyadh, North Riyadh, Al Mughrizat</code>); at our column width it fits on one. Same cause as above.</p>
 <h2>Known approximations</h2>
@@ -41,6 +41,24 @@ node scripts/derive-layout.mjs --compare data/live/listings.capture.json data/ou
 <hr>
 <h2>A caveat about running this against the dashboard</h2>
 <p><code>derive-layout.mjs --compare</code> will happily score <code>dashboard.html</code> and reports <strong>55.8%</strong>. That number is not meaningful yet and should not be quoted. The region table is the listings page's vocabulary — filter bar, status tabs, table card, pager — and on the dashboard it matches the Performance widget's card and metric tabs as though they were the listings table's, then counts our page "missing" six regions it never had. The dashboard needs its own regions (breakdown, credits meter, chart, account switcher) before its score means anything. What the run does prove is that the two shared fixes — the row divider and the button icon gap — landed on both pages.</p>
+<hr>
+<h2>What the design QA found that the score could not</h2>
+<p>The region score was 91.7% and every number in it was right. It still missed the largest defect in the system, because it compares the regions somebody listed and says nothing about how they are painted.</p>
+<p><strong>The whole design system was rendering in Lato. Profolio KSA paints in Figtree.</strong></p>
+<p><code>scripts/qa-design.mjs</code> crops the product's render and ours to each region and compares them pixel by pixel. The page title came back 42.7% different — far too much for a box that measured within 7px. The crops, side by side, showed two different typefaces. The capture settled it: <strong>1,698 of the 1,708 elements</strong> in the product compute <code>Figtree, "Droid Arabic Kufi", sans-serif</code>, and none computes Lato.</p>
+<table><tr><th></th><th></th></tr><tr><td><code>theme/index.js:306</code></td><td>antd token <code>fontFamily: 'Figtree, Droid Arabic Kufi, sans-serif'</code></td></tr><tr><td><code>useAppInit.js</code></td><td>fetches Figtree + Mukta from Google Fonts whenever <code>!isMemberArea</code></td></tr><tr><td><code>useAppInit.js</code></td><td>also injects <code>lato-font.css</code> for every bayut session — and nothing references Lato except <code>FONT_FAMILY_LITE</code> and the lite footer</td></tr></table>
+<p><code>kb/design/fonts.html</code> stated the opposite outright — <em>"Nothing anywhere loads Figtree. Lato is what paints."</em> — and <code>SKILL.md</code> instructed the design agent never to say Figtree. Both are corrected. So is the claim, repeated several times, that <code>.fw-500</code> and <code>.fw-600</code> are synthesised: <strong>Figtree is variable 300–900</strong>, so they are real weights. That was true of Lato and never true of what ships.</p>
+<p>Two harness faults came out of the same thread:</p>
+<ul><li>The capture <strong>blocked Google Fonts</strong>, so the product rendered in the system</li></ul>
+<p>  fallback while our page rendered in a real face. Every text width differed for   a reason that had nothing to do with our markup. The capture now serves the   same embedded faces <code>deliverables/fonts.css</code> carries.</p>
+<ul><li>The fixture user had <code>settings: []</code>, so <code>push_notifications</code> defaulted to</li></ul>
+<p>  <code>disabled</code> and <strong>the header bell never rendered in the product</strong>. I nearly   deleted our bell as invented. It is real and conditional   (<code>header-components.js:53</code>); the fixture was wrong.</p>
+<h2>The QA's own checks were vacuous, and a negative test proved it</h2>
+<p>The stylesheet checks — px literals outside <code>:root</code>, physical <code>left</code>/<code>right</code> properties — were line-anchored regexes. Most rules in <code>profolio.css</code> are written on one line, so <code>^\s*padding:</code> never matched them. Appending <code>.pf-negative-test{padding:7px;margin-left:5px;font-size:15px}</code> produced <strong>zero findings</strong>.</p>
+<p>They tokenise declarations now, and the same negative test catches all three. A check that has never failed is not evidence.</p>
+<h2>Where it stands</h2>
+<table><tr><th></th><th></th></tr><tr><td>shell.sider</td><td>5.0% — inside threshold</td></tr><tr><td>shell.footer</td><td>2.0% — inside threshold</td></tr><tr><td>shell.header</td><td>10.1% — <strong>over</strong>, and the remainder is the title inside it</td></tr><tr><td>shell.title</td><td>23.3% — <strong>over</strong>; 106px vs 110px on one 11-character string</td></tr><tr><td>table.thumb</td><td>95.5% — expected: the product renders an image, we render the grey placeholder a design system should</td></tr><tr><td>off-scale values</td><td>0</td></tr><tr><td>physical properties</td><td>0</td></tr><tr><td>RTL</td><td>no overflow</td></tr><tr><td>contrast below 4.5:1</td><td>74 — <strong>not yet triaged against the product's own values</strong></td></tr></table>
+<p>The two open items are honest: the title is four pixels narrow at 20/700, and the contrast list has not been compared against the product. Neither is fixed by guessing.</p>
 </main>
 </body>
 </html>
