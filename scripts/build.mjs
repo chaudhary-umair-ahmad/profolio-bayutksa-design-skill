@@ -482,6 +482,7 @@ states    ${states.length ? states.join(' · ') : 'none detected — confirm wit
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
 shot      ${hasShot ? '`references/' + shotFile + '` — OPEN IT BEFORE DESIGNING' : 'not captured — run scripts/capture.mjs'}
+board     \`references/pages/${slug(route)}.html\` — open in a browser to see this screen
 \`\`\`
 ${hasShot ? `
 ## Reference screenshot
@@ -912,6 +913,101 @@ ${usesFlags.length ? `## Flags\n\n${usesFlags.map((f) => `\`${f}\``).join(' · '
   featureCount++;
 }
 console.log(`feature comps    ${featureCount}`);
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   9. PAGE ARTBOARDS — a viewable .html beside every page's .md
+   The markdown says what a screen is; this shows it. Shell chrome is real,
+   the content area is blocked out from the layout skeleton so a designer
+   starts from the right structure rather than an empty box.
+   ───────────────────────────────────────────────────────────────────────── */
+const shellMd = read(join(REFS, 'pages/_shell.md'));
+const shellHtml = (shellMd.match(/```html\n([\s\S]*?)```/) || [, ''])[1];
+
+/* Turn a skeleton line into a blocked-out region. */
+const blockFor = (tag, props) => {
+  const t = tag.toLowerCase();
+  if (/card|widget|container|section|quota|breakdown|status/.test(t)) return 'card';
+  if (/table|list/.test(t)) return 'table';
+  if (/chart|graph|traffic/.test(t)) return 'chart';
+  if (/stat|points|metric|credit/.test(t)) return 'stat';
+  if (/button|btn|cta/.test(t)) return 'btn';
+  if (/select|dropdown|filter/.test(t)) return 'field';
+  if (/group|flex|row|col|main/.test(t)) return props.includes('template') ? 'grid' : 'flow';
+  return 'blk';
+};
+
+let boards = 0;
+for (const route of routes) {
+  const dir = pageFor(route);
+  if (!dir || !shellHtml) continue;
+  const mdPath = join(REFS, `pages/${slug(route)}.md`);
+  if (!existsSync(mdPath)) continue;
+
+  const pageMd = read(mdPath);
+  const skel = (pageMd.match(/## Layout skeleton[\s\S]*?```\n([\s\S]*?)```/) || [, ''])[1];
+  const title = (pageMd.match(/^#\s+(.+)$/m) || [, route])[1];
+  const flags = (pageMd.match(/^flags\s+(.+)$/m) || [, '—'])[1];
+  const roles = (pageMd.match(/^roles\s+(.+)$/m) || [, '—'])[1];
+
+  /* Build content blocks from the skeleton's top-level structure. */
+  const seen = new Set();
+  const regions = skel.split('\n')
+    .map((l) => l.match(/^(\s*)([A-Z][A-Za-z0-9]*)(.*)$/))
+    .filter(Boolean)
+    .filter((m) => m[1].length <= 14)
+    /* wrappers and loading plumbing are not content — skip them */
+    .filter((m) => !/^(Flex|Main|Spinner|Skeleton|LoaderWrapper|Row|Col|Trans|Fragment|Group)$/.test(m[2])
+                || /template=/.test(m[3] || ''))
+    .map((m) => ({ depth: m[1].length, tag: m[2], props: m[3] || '' }))
+    .filter((r) => { if (seen.has(r.tag)) return false; seen.add(r.tag); return true; })
+    .slice(0, 9);
+
+  const content = regions.length ? regions.map((r) => {
+    const kind = blockFor(r.tag, r.props);
+    const gridProp = (r.props.match(/template="([^"]+)"/) || [, ''])[1];
+    return `      <div class="ab ab-${kind}"${gridProp ? ` style="--tpl:${gridProp}"` : ''}>
+        <span class="ab-tag">${r.tag}</span>${gridProp ? `<span class="ab-note">${gridProp}</span>` : ''}
+      </div>`;
+  }).join('\n') : '      <div class="ab ab-blk"><span class="ab-tag">content</span></div>';
+
+  const board = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title} — Profolio KSA artboard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap">
+<style>
+body{margin:0;background:#e9edee;font-family:Lato,Arial,sans-serif}
+.meta{max-width:1440px;margin:0 auto;padding:18px 20px 0;font:12px ui-monospace,monospace;color:#5c716e;line-height:1.9}
+.meta b{color:#006169;font-weight:600}
+.frame{max-width:1440px;margin:12px auto 40px;border:1px solid #ccd8d5;background:#fff;overflow:hidden}
+.ab{border:1.5px dashed #b9c9c6;border-radius:8px;background:
+ repeating-linear-gradient(-45deg,#fbfcfc 0 10px,#f4f7f7 10px 20px);
+ min-height:96px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:16px}
+.ab-tag{font:600 11px ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase;color:#6f817d}
+.ab-note{font:11px ui-monospace,monospace;color:#9aa8a5}
+.ab-card{min-height:150px}.ab-table{min-height:230px}.ab-chart{min-height:210px}
+.ab-stat{min-height:86px}.ab-btn{min-height:48px;max-width:190px}.ab-field{min-height:44px;max-width:230px}
+.ab-grid{min-height:150px}
+</style></head><body>
+<div class="meta">
+  <b>${title}</b> · ${route}<br>
+  roles ${roles}<br>
+  flags ${flags}<br>
+  <i>Artboard — real shell chrome, content blocked out from the layout skeleton. Replace the blocks.</i>
+</div>
+<div class="frame">
+${shellHtml.replace('<main class="pf-content"><!-- the screen goes here --></main>', `<main class="pf-content">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <h3 style="margin:0;font-size:20px;font-weight:700;color:#222">${title}</h3>
+      </div>
+${content}
+    </main>`)}
+</div>
+</body></html>`;
+
+  writeFileSync(join(REFS, `pages/${slug(route)}.html`), board);
+  boards++;
+}
+console.log(`artboards        ${boards}`);
 
 /* report ------------------------------------------------------------------- */
 const total = Object.values(sizes).reduce((a, b) => a + b, 0);

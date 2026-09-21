@@ -17,6 +17,7 @@ states    loading · error · flag-off
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
 shot      not captured — run scripts/capture.mjs
+board     `references/pages/signin.html` — open in a browser to see this screen
 ```
 
 ## Reference screenshot

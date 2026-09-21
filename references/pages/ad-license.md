@@ -17,6 +17,7 @@ states    loading · empty · error
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
 shot      not captured — run scripts/capture.mjs
+board     `references/pages/ad-license.html` — open in a browser to see this screen
 ```
 
 ## Reference screenshot

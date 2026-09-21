@@ -1,6 +1,6 @@
 ---
 name: profolio-ksa-design
-version: 0.5.0
+version: 0.6.0
 source_commit: b83e805
 description: "Design system for Bayut Profolio KSA — the agent and seller portal at profolio.bayut.sa. Use when designing, changing or reviewing any Profolio KSA screen, component or flow: turning a PRD into artboards, checking an existing screen against the system, finding which tokens, components or flags a surface uses, or locating where a feature lives in the codebase. Triggers on 'design this screen for Profolio', 'what does the listings page use', 'add X to Profolio KSA', 'is there a component for Y', 'make a mockup of the dashboard'. Covers tenant bayut (KSA) only — not Oman, Bahrain, Qatar, Jordan, Egypt or Zameen, and not the consumer side of bayut.sa, which Strat owns."
 ---
@@ -30,6 +30,7 @@ Load what the task needs. Never load more.
 | `references/copy/index.md` | To find which copy file covers your area. |
 | `references/copy/<area>.md` | **The real shipped strings**, English beside Arabic. Load the area you are designing. |
 | `references/flags.md` | When a surface may be switched off or altered. |
+| `references/pages/<route>.html` | **The screen as an artboard** — real shell chrome with content blocked out from the layout skeleton. Open it in a browser; start from it rather than a blank page. |
 | `references/screens/<route>.png` | **The live screen.** Open it whenever the page template names one — it is the only visual truth in this system. |
 
 **Never read `canvas/`.** Those three `.dc.html` files are the human browsing surface —

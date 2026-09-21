@@ -171,7 +171,7 @@ const shellMarkup = shell ? (readFileSync(join(REFS, 'pages/_shell.md'), 'utf8')
 const nav = sections.map((s) => `
   <div class="navsec">
     <h3>${s.name} <span>${s.docs.length}</span></h3>
-    ${s.docs.map((d) => `<a href="#${d.id}" data-t="${esc(d.title.toLowerCase())} ${esc(d.rel)}">${esc(d.title)}</a>`).join('')}
+    ${s.docs.map((d) => `<button type="button" data-go="${d.id}" data-t="${esc(d.title.toLowerCase())} ${esc(d.rel)}">${esc(d.title)}</button>`).join('')}
   </div>`).join('');
 
 const body = sections.map((s) => `
@@ -208,10 +208,11 @@ aside .brand span{font-size:11.5px;color:var(--mute)}
 .navsec h3{font:600 10.5px/1 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;
  color:var(--mute);margin:16px 20px 7px;display:flex;justify-content:space-between}
 .navsec h3 span{color:var(--accent);font-weight:500}
-.navsec a{display:block;padding:5px 20px;color:var(--ink2);text-decoration:none;font-size:13.5px;
- border-inline-start:2px solid transparent;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.navsec a:hover{background:var(--soft);color:var(--accent)}
-.navsec a.on{border-inline-start-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600}
+.navsec button{display:block;width:100%;text-align:start;padding:5px 20px;color:var(--ink2);font:inherit;
+ font-size:13.5px;background:none;border:0;border-inline-start:2px solid transparent;cursor:pointer;
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.navsec button:hover{background:var(--soft);color:var(--accent)}
+.navsec button.on{border-inline-start-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600}
 main{padding:40px 48px 120px;min-width:0;max-width:1100px}
 .sectitle{font-size:12px;font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;
  color:var(--mute);font-weight:600;margin:52px 0 18px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
@@ -244,7 +245,8 @@ td{color:var(--ink2)}
 .preview{background:var(--paper);border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:18px}
 .preview>.cap{font:600 10.5px ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;
  color:var(--mute);padding:12px 16px;border-bottom:1px solid var(--rule)}
-.preview iframe{width:100%;height:520px;border:0;display:block;background:#fff}
+.shellhost{background:#fff;overflow:auto;max-height:560px}
+.shellhost .pf-content{min-height:300px}
 .hidden{display:none!important}
 #empty{color:var(--mute);font-size:14px;padding:20px 0}
 @media(max-width:900px){body{grid-template-columns:1fr}aside{position:static;height:auto;border-right:0;
@@ -259,8 +261,8 @@ td{color:var(--ink2)}
 
 <main>
   <div class="preview">
-    <div class="cap">Live shell — pages/_shell.md, rendered</div>
-    <iframe title="Profolio shell" srcdoc="${esc(shellMarkup).replace(/"/g, '&quot;')}"></iframe>
+    <div class="cap">Live shell — pages/_shell.md, rendered inline</div>
+    <div class="shellhost">${shellMarkup}</div>
   </div>
   <p id="empty" class="hidden">Nothing matches.</p>
   ${body}
@@ -269,7 +271,7 @@ td{color:var(--ink2)}
 <script>
 const q = document.getElementById('q');
 const docsEls = [...document.querySelectorAll('.doc')];
-const navEls = [...document.querySelectorAll('#nav a')];
+const navEls = [...document.querySelectorAll('#nav button')];
 const secEls = [...document.querySelectorAll('.sec')];
 const empty = document.getElementById('empty');
 
@@ -283,8 +285,19 @@ q.addEventListener('input', () => {
   navEls.forEach(a => a.classList.toggle('hidden', !(!t || a.dataset.t.includes(t))));
   secEls.forEach(s => s.classList.toggle('hidden', !s.querySelector('.doc:not(.hidden)')));
   document.querySelectorAll('.navsec').forEach(n =>
-    n.classList.toggle('hidden', !n.querySelector('a:not(.hidden)')));
+    n.classList.toggle('hidden', !n.querySelector('button:not(.hidden)')));
   empty.classList.toggle('hidden', shown > 0);
+});
+
+document.getElementById('nav').addEventListener('click', e => {
+  const b = e.target.closest('button[data-go]');
+  if (!b) return;
+  document.getElementById(b.dataset.go)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// links inside the shell preview are illustrative — never navigate
+document.querySelector('.shellhost')?.addEventListener('click', e => {
+  if (e.target.closest('a')) e.preventDefault();
 });
 
 addEventListener('keydown', e => {
@@ -295,7 +308,7 @@ addEventListener('keydown', e => {
 const io = new IntersectionObserver(es => {
   es.forEach(e => {
     if (!e.isIntersecting) return;
-    navEls.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+    navEls.forEach(a => a.classList.toggle('on', a.dataset.go === e.target.id));
   });
 }, { rootMargin: '-10% 0px -80% 0px' });
 docsEls.forEach(d => io.observe(d));
