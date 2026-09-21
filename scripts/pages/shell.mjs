@@ -111,7 +111,7 @@ ${NAV.map(([label, ic, page]) => `      <a class="pf-rail-item"${label === curre
         <a class="pf-classified-pill" href="#">${icon('SidebarClassifiedLinkIcon', 18)}Go to Bayut.sa</a>
         <button class="pf-btn" data-variant="primary" type="button">${icon('PostListingIcon')}<span>Post Listing</span></button>
         <button class="pf-bell" type="button" aria-label="Notifications" data-open="popover-notifications">${icon('GrNotification', 20)}<span class="pf-badge">${badge}</span></button>
-        <button class="pf-progress-ring pct-${pct}" type="button" aria-label="Account" data-open="popover-account"><span class="pf-avatar">${icon('FiUser')}</span></button>
+        <button class="pf-avatar-button" type="button" aria-label="Account" data-open="popover-account"><span class="pf-progress-ring pct-${pct}"><span class="pf-avatar">${icon('FiUser')}</span></span></button>
       </div>
     </header>
     <main class="pf-content"${contentGap ? ` data-gap="${contentGap}"` : ''}>
@@ -190,7 +190,7 @@ export function shellOverlays() {
 <div class="pf-popover" data-kind="account" id="popover-account" data-anchor="header-end" role="dialog" aria-label="Account" hidden>
   <div class="pf-user-info">
     <div class="pf-user-row">
-      <span class="pf-avatar">${icon('FiUser', 20)}</span>
+      <span class="pf-user-avatar">${icon('FiUser', 20)}</span>
       <div class="pf-user-meta">
         <div class="pf-user-name">Faisal Al-Harbi</div>
         <div class="pf-user-sub">

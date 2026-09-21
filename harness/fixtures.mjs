@@ -19,8 +19,12 @@ const user = read('./fixtures/user.json');
 const page = read('../data/fixtures/dashboard.json');   /* the same invented data the HTML composes from */
 
 const U = user.user;
-/* profileDataMapper reads profile_image.sizes.thumbnail unguarded */
-const AVATAR = { sizes: { thumbnail: '/harness-img/avatar.svg', small: '/harness-img/avatar.svg' } };
+/* profileDataMapper reads profile_image.sizes.thumbnail unguarded, so the
+   shape has to exist — but the STRING is empty, so antd's Avatar falls back to
+   its icon. That is what the design system documents (user.json:107), and
+   serving a picture made the header compare a photo against a glyph: 8.3% on
+   a shell region with a 6% threshold, none of it a real disagreement. */
+const AVATAR = { sizes: { thumbnail: '', small: '' } };
 const AGENCY = U.agency;
 
 /* ── dates: the report window is the last 30 days from now ─────────────── */

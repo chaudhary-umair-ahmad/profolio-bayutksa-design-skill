@@ -99,7 +99,8 @@
       }
     ],
     "profile_completion": {
-      "score": 90
+      "score": 90,
+      "classification": "high"
     },
     "quality_lister": "high",
     "unread_notifications_count": 46,

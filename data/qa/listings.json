@@ -1,12 +1,7 @@
 {
   "route": "listings",
-  "at": "2026-09-21T18:34:36.399Z",
-  "shellFails": [
-    {
-      "id": "shell.header",
-      "diff": 9
-    }
-  ],
+  "at": "2026-09-21T18:44:11.864Z",
+  "shellFails": [],
   "diffs": [
     {
       "id": "table.cell",
@@ -41,16 +36,16 @@
       "diff": 10
     },
     {
-      "id": "shell.header",
-      "diff": 9
-    },
-    {
       "id": "shell.sider",
       "diff": 4.9
     },
     {
       "id": "filter.bar",
       "diff": 3.5
+    },
+    {
+      "id": "shell.header",
+      "diff": 2.7
     },
     {
       "id": "shell.title",
@@ -128,7 +123,7 @@
   "productLow": [
     {
       "col": "rgb(255,255,255)",
-      "n": 94,
+      "n": 92,
       "ratio": 1
     },
     {
@@ -286,7 +281,7 @@
         },
         {
           "id": "shell.header",
-          "diff": 3.3
+          "diff": 2.8
         },
         {
           "id": "table.card.head",
@@ -299,9 +294,7 @@
     },
     {
       "state": "modal-delete",
-      "shellFails": [
-        "shell.header"
-      ],
+      "shellFails": [],
       "diffs": [
         {
           "id": "table.cell",
@@ -312,20 +305,16 @@
           "diff": 8.2
         },
         {
-          "id": "shell.header",
-          "diff": 7.4
-        },
-        {
           "id": "filter.clear",
           "diff": 7.2
         },
         {
-          "id": "modal.mask",
-          "diff": 5.3
-        },
-        {
           "id": "modal.body",
           "diff": 5.2
+        },
+        {
+          "id": "modal.mask",
+          "diff": 5
         },
         {
           "id": "shell.sider",
@@ -350,6 +339,10 @@
         {
           "id": "shell.content",
           "diff": 2.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
         },
         {
           "id": "filter.bar",
@@ -442,9 +435,7 @@
     },
     {
       "state": "modal-download-app",
-      "shellFails": [
-        "shell.header"
-      ],
+      "shellFails": [],
       "diffs": [
         {
           "id": "modal.body",
@@ -460,7 +451,7 @@
         },
         {
           "id": "modal.mask",
-          "diff": 10.2
+          "diff": 9.8
         },
         {
           "id": "table.row",
@@ -469,10 +460,6 @@
         {
           "id": "filter.showmore",
           "diff": 8.2
-        },
-        {
-          "id": "shell.header",
-          "diff": 7.4
         },
         {
           "id": "filter.clear",
@@ -493,6 +480,10 @@
         {
           "id": "shell.sider",
           "diff": 4.8
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
         },
         {
           "id": "filter.bar",
@@ -581,9 +572,7 @@
     },
     {
       "state": "modal-trucheck",
-      "shellFails": [
-        "shell.header"
-      ],
+      "shellFails": [],
       "diffs": [
         {
           "id": "modal.body",
@@ -595,7 +584,7 @@
         },
         {
           "id": "modal.mask",
-          "diff": 12.8
+          "diff": 12.5
         },
         {
           "id": "modal",
@@ -614,10 +603,6 @@
           "diff": 7.5
         },
         {
-          "id": "shell.header",
-          "diff": 7.4
-        },
-        {
           "id": "table.card",
           "diff": 7.3
         },
@@ -632,6 +617,10 @@
         {
           "id": "shell.sider",
           "diff": 4.8
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
         },
         {
           "id": "filter.bar",
@@ -712,9 +701,7 @@
     },
     {
       "state": "popover-account",
-      "shellFails": [
-        "shell.header"
-      ],
+      "shellFails": [],
       "diffs": [
         {
           "id": "table.cell",
@@ -731,10 +718,6 @@
         {
           "id": "table.row",
           "diff": 11.6
-        },
-        {
-          "id": "shell.header",
-          "diff": 9
         },
         {
           "id": "filter.bar",
@@ -759,6 +742,10 @@
         {
           "id": "table.card.head",
           "diff": 4.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.9
         },
         {
           "id": "shell.title",
@@ -835,9 +822,7 @@
     },
     {
       "state": "popover-notifications",
-      "shellFails": [
-        "shell.header"
-      ],
+      "shellFails": [],
       "diffs": [
         {
           "id": "table.cell",
@@ -846,10 +831,6 @@
         {
           "id": "tabs.active",
           "diff": 13
-        },
-        {
-          "id": "shell.header",
-          "diff": 8.9
         },
         {
           "id": "popover",
@@ -874,6 +855,10 @@
         {
           "id": "filter.select",
           "diff": 2.8
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
         },
         {
           "id": "shell.title",
@@ -958,9 +943,7 @@
     },
     {
       "state": "tab-ad-license-requests",
-      "shellFails": [
-        "shell.header"
-      ],
+      "shellFails": [],
       "diffs": [
         {
           "id": "filter.clear",
@@ -969,10 +952,6 @@
         {
           "id": "tabs.active",
           "diff": 12.5
-        },
-        {
-          "id": "shell.header",
-          "diff": 8.9
         },
         {
           "id": "filter.label",
@@ -1008,6 +987,10 @@
         },
         {
           "id": "shell.content",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.header",
           "diff": 2.7
         },
         {
@@ -1049,9 +1032,7 @@
     },
     {
       "state": "tab-draft",
-      "shellFails": [
-        "shell.header"
-      ],
+      "shellFails": [],
       "diffs": [
         {
           "id": "table.cell",
@@ -1074,10 +1055,6 @@
           "diff": 10.4
         },
         {
-          "id": "shell.header",
-          "diff": 8.9
-        },
-        {
           "id": "table",
           "diff": 8.9
         },
@@ -1096,6 +1073,10 @@
         {
           "id": "filter.bar",
           "diff": 3.5
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
         },
         {
           "id": "shell.title",
@@ -1152,9 +1133,7 @@
     },
     {
       "state": "tab-pending",
-      "shellFails": [
-        "shell.header"
-      ],
+      "shellFails": [],
       "diffs": [
         {
           "id": "table.cell",
@@ -1177,10 +1156,6 @@
           "diff": 9.8
         },
         {
-          "id": "shell.header",
-          "diff": 8.9
-        },
-        {
           "id": "table",
           "diff": 7.3
         },
@@ -1195,6 +1170,10 @@
         {
           "id": "filter.bar",
           "diff": 3.5
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
         },
         {
           "id": "shell.title",
@@ -1255,9 +1234,7 @@
     },
     {
       "state": "tab-removed",
-      "shellFails": [
-        "shell.header"
-      ],
+      "shellFails": [],
       "diffs": [
         {
           "id": "tabs.active",
@@ -1270,10 +1247,6 @@
         {
           "id": "filter.showmore",
           "diff": 10.8
-        },
-        {
-          "id": "shell.header",
-          "diff": 8.9
         },
         {
           "id": "shell.sider",
@@ -1294,6 +1267,10 @@
         {
           "id": "filter.bar",
           "diff": 3.5
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
         },
         {
           "id": "shell.title",

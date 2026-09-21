@@ -91,6 +91,9 @@
   --secondary:#28b16d;
   --success:#28b16d;
   --warning:#f0a742;
+  --badge-bg:#F5222D;          /* .ant-badge-count — antd colorError, measured */
+  --badge-rise:-10px;          /* the sup hangs above the button */
+  --badge-inset:-11px;
   --danger:#f73131;
   --error:#f73131;
   --info:#2C99FF;
@@ -517,6 +520,7 @@
   --classified-pill-pad-x:16px;
   --classified-pill-gap:4px;
 
+  --avatar-button:36px;                /* the round button the ring sits in */
   --avatar-ring:34px;                  /* AuthInfo ProgressStyled size */
   --avatar-img:30px;
   --avatar-icon:24px;
@@ -698,8 +702,13 @@ table{border-collapse:collapse}
 .pf-header-actions{
   display:flex;
   align-items:center;
-  gap:var(--sp-8);
-  margin-inline-end:calc(var(--sp-8) * -1);
+  /* 16, not 8 — auth-info-style.js InfoWraper sets it, and the measured group
+     is 536 wide against our 501 */
+  gap:var(--sp-16);
+  /* the product's row ends 28px from the viewport edge — the header's own 20
+     plus 8. It read -8 here, which put every action 16px too far out once the
+     gap was corrected; the five right edges now land on the product's. */
+  margin-inline-end:var(--sp-8);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -795,23 +804,52 @@ table{border-collapse:collapse}
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · notification-badge + avatar + progress-ring
    ═══════════════════════════════════════════════════════════════════════ */
-.pf-bell{position:relative;display:inline-grid;place-content:center;padding:var(--sp-4)}
+/* MEASURED — the bell is a 36x36 white button with a 6px radius, not a bare
+   28px icon: data/live/listings.capture.json button.ant-btn at (1324,12,36,36),
+   colour #5A5F7D, glyph 19 (1.2em of 16). The badge hangs above it, clear of
+   the glyph — ours overlapped it at -2. */
+.pf-bell{
+  position:relative;
+  display:inline-grid;place-content:center;
+  inline-size:var(--ctl-h);block-size:var(--ctl-h);
+  background:var(--white);
+  border-radius:var(--radius-control);
+  color:var(--gray-color);
+}
 .pf-badge{
   position:absolute;
-  inset-block-start:calc(var(--sp-2) * -1);
-  inset-inline-end:calc(var(--sp-2) * -1);
+  /* the product's sup sits at y=2 against a button top of 12 — ten pixels
+     above it — and starts 7px in from the button's start edge */
+  inset-block-start:var(--badge-rise);
+  inset-inline-end:var(--badge-inset);
   /* .ant-badge-count — references/tokens/antd-css.md */
   min-width:var(--badge-h);
   height:var(--badge-h);
-  padding-inline:var(--sp-4);
+  padding-inline:var(--sp-8);          /* measured 8, not 4 */
   border-radius:var(--badge-radius);
   box-shadow:var(--badge-ring);
-  background:var(--danger);
+  background:var(--badge-bg);          /* #F5222D — antd colorError, not our #f73131 */
   color:var(--white);
   font-size:var(--fs-12);
   font-weight:var(--fw-400);         /* antd emits font-weight: normal */
   line-height:var(--badge-h);
   text-align:center;
+}
+/* data/live/listings.capture.json — the header avatar is three boxes:
+     button.ant-btn-round   36x36, white, 1px #f0f0f0, radius 36
+     .ant-progress-circle   34x34   (antd draws an SVG ring; a conic gradient
+                                     is the same picture without the markup)
+     .ant-avatar            30x30
+   The ring colour is DATA, not a constant: info.js:174 passes
+   getClassificationColor(profile_completion.classification) — high success,
+   medium/undefined warning, low error (staticLists.js:299). */
+.pf-avatar-button{
+  inline-size:var(--avatar-button);block-size:var(--avatar-button);
+  border-radius:var(--radius-round);
+  background:var(--white);
+  border:var(--border-w) solid var(--gray-100);
+  display:grid;place-content:center;
+  padding:var(--sp-0);
 }
 .pf-progress-ring{
   --ring-size:var(--avatar-ring);
@@ -1828,15 +1866,17 @@ table{border-collapse:collapse}
    ═══════════════════════════════════════════════════════════════════════ */
 .pf-user-info{padding-inline:var(--sp-16);padding-block:var(--sp-12) var(--sp-0)}
 .pf-user-row{display:flex;align-items:center;gap:var(--menu-item-gap)}
-.pf-avatar{
+/* NOT .pf-avatar — that name is the header's 30px one, and a 40px rule under
+   the same name covered the profile-completion ring on every page */
+.pf-user-avatar{
   inline-size:var(--avatar-40);block-size:var(--avatar-40);
-  border-radius:50%;
+  border-radius:var(--radius-round);
   background:var(--gray-300);              /* #E6E6E6, measured */
   display:grid;place-items:center;
   color:var(--gray-700);
   flex-shrink:0;
 }
-.pf-avatar svg{inline-size:var(--icon-20);block-size:var(--icon-20)}
+.pf-user-avatar svg{inline-size:var(--icon-20);block-size:var(--icon-20)}
 .pf-user-meta{min-inline-size:var(--sp-0);overflow:hidden}
 .pf-user-name{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--dark)}
 .pf-user-sub{
@@ -2749,7 +2789,7 @@ table{border-collapse:collapse}
         <a class="pf-classified-pill" href="#"><svg class="i i-18"><use href="#pf-SidebarClassifiedLinkIcon"/></svg>Go to Bayut.sa</a>
         <button class="pf-btn" data-variant="primary" type="button"><svg class="i i-16"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></button>
         <button class="pf-bell" type="button" aria-label="Notifications" data-open="popover-notifications"><svg class="i i-20"><use href="#pf-GrNotification"/></svg><span class="pf-badge">46</span></button>
-        <button class="pf-progress-ring pct-90" type="button" aria-label="Account" data-open="popover-account"><span class="pf-avatar"><svg class="i i-16"><use href="#pf-FiUser"/></svg></span></button>
+        <button class="pf-avatar-button" type="button" aria-label="Account" data-open="popover-account"><span class="pf-progress-ring pct-90"><span class="pf-avatar"><svg class="i i-16"><use href="#pf-FiUser"/></svg></span></span></button>
       </div>
     </header>
     <main class="pf-content" data-gap="8">
@@ -3609,7 +3649,7 @@ table{border-collapse:collapse}
 <div class="pf-popover" data-kind="account" id="popover-account" data-anchor="header-end" role="dialog" aria-label="Account" hidden>
   <div class="pf-user-info">
     <div class="pf-user-row">
-      <span class="pf-avatar"><svg class="i i-20"><use href="#pf-FiUser"/></svg></span>
+      <span class="pf-user-avatar"><svg class="i i-20"><use href="#pf-FiUser"/></svg></span>
       <div class="pf-user-meta">
         <div class="pf-user-name">Faisal Al-Harbi</div>
         <div class="pf-user-sub">
