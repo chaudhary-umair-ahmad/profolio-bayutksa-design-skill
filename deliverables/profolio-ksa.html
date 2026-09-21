@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Profolio KSA — Component Catalogue</title>
+<title>Profolio KSA — Overview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Inter:wght@400;500;600&display=swap">
-<!-- THE shared stylesheet. Every component below is defined there, once.
-     dashboard.html links the same file and composes these classes only. -->
 <style>
-/* inlined from profolio.css — see scripts/bundle.mjs */
+/* ═══════════════════════════════════════════════════════════════════════
+   1 · THE SHARED STYLESHEET  (profolio.css, inlined verbatim)
+   Every component on both the catalogue and the page is defined here, once.
+   ═══════════════════════════════════════════════════════════════════════ */
 /* ═══════════════════════════════════════════════════════════════════════════
    PROFOLIO KSA — ONE STYLESHEET
    Shared by components.html (the catalogue) and dashboard.html (the page).
@@ -1164,64 +1165,174 @@ table{border-collapse:collapse}
 .i-20{width:var(--sp-20);height:var(--sp-20)}
 .i-24{width:var(--sp-24);height:var(--sp-24)}
 
-</style>
-<style>
+
+/* ═══════════════════════════════════════════════════════════════════════
+   2 · INSTANCE DATA
+   Custom-property values that carry DATA (a percentage), not presentation.
+   Here so neither view needs a single style attribute in its markup.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pct-90{--ring-pct:90}
+.pct-40{--ring-pct:40}
+.pct-100{--ring-pct:100;--ring-color:var(--success)}
+.fill-97{--meter-pct:97.17}
+.fill-50{--meter-pct:50}
+.fill-8{--meter-pct:8}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   3 · CATALOGUE CHROME  (scoped to #view-catalogue so it cannot reach the page)
+   ═══════════════════════════════════════════════════════════════════════ */
 /* ── CATALOGUE CHROME ONLY ──────────────────────────────────────────────
    Nothing here styles a product component. These rules lay out the
    catalogue itself: the rail of links, the section frames, the spec
    tables. They are prefixed .cat- so they can never leak into a
    component definition.
    ──────────────────────────────────────────────────────────────────── */
-body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1fr}
-.cat-nav{
+
+#view-catalogue .cat-nav{
   position:sticky;top:0;align-self:start;height:100vh;overflow:auto;
   background:var(--white);border-inline-end:var(--border-w) solid var(--gray-300);
   padding:var(--sp-20) var(--sp-16);font-size:var(--fs-13);
 }
-.cat-nav h1{font-size:var(--fs-card-title);margin:0 0 var(--sp-4);color:var(--primary)}
-.cat-nav p{margin:0 0 var(--sp-16);color:var(--gray-700);font-size:var(--fs-12)}
-.cat-nav a{display:block;padding:var(--sp-4) var(--sp-8);border-radius:var(--radius-tag);color:var(--gray-700)}
-.cat-nav a:hover{background:var(--primary-light-4);color:var(--primary)}
-.cat-main{padding:var(--sp-24) var(--sp-24) var(--sp-54);min-width:0}
-.cat-sec{
+#view-catalogue .cat-nav h1{font-size:var(--fs-card-title);margin:0 0 var(--sp-4);color:var(--primary)}
+#view-catalogue .cat-nav p{margin:0 0 var(--sp-16);color:var(--gray-700);font-size:var(--fs-12)}
+#view-catalogue .cat-nav a{display:block;padding:var(--sp-4) var(--sp-8);border-radius:var(--radius-tag);color:var(--gray-700)}
+#view-catalogue .cat-nav a:hover{background:var(--primary-light-4);color:var(--primary)}
+#view-catalogue .cat-main{padding:var(--sp-24) var(--sp-24) var(--sp-54);min-width:0}
+#view-catalogue .cat-sec{
   background:var(--white);border:var(--border-w) solid var(--gray-300);
   border-radius:var(--radius-card);margin-block-end:var(--sp-24);overflow:hidden;
 }
-.cat-sec > header{
+#view-catalogue .cat-sec > header{
   padding:var(--sp-16) var(--sp-20);border-block-end:var(--border-w) solid var(--gray-300);
   background:var(--bg-gray-light);
 }
-.cat-sec h2{margin:0;font-size:var(--fs-card-title);color:var(--base)}
-.cat-sec header code{font-size:var(--fs-12);color:var(--primary);background:var(--primary-light-4);padding:var(--sp-2) var(--sp-6);border-radius:var(--radius-tag)}
-.cat-sec header .src{display:block;margin-block-start:var(--sp-4);font-size:var(--fs-12);color:var(--gray-700)}
-.cat-body{padding:var(--sp-20)}
-.cat-row{display:flex;flex-wrap:wrap;gap:var(--sp-20);align-items:flex-start;margin-block-end:var(--sp-20)}
-.cat-row:last-child{margin-block-end:0}
-.cat-item{display:flex;flex-direction:column;gap:var(--sp-8)}
-.cat-label{font-size:var(--fs-tag);text-transform:uppercase;letter-spacing:.06em;color:var(--gray-600);font-weight:var(--fw-700)}
-.cat-stage{
+#view-catalogue .cat-sec h2{margin:0;font-size:var(--fs-card-title);color:var(--base)}
+#view-catalogue .cat-sec header code{font-size:var(--fs-12);color:var(--primary);background:var(--primary-light-4);padding:var(--sp-2) var(--sp-6);border-radius:var(--radius-tag)}
+#view-catalogue .cat-sec header .src{display:block;margin-block-start:var(--sp-4);font-size:var(--fs-12);color:var(--gray-700)}
+#view-catalogue .cat-body{padding:var(--sp-20)}
+#view-catalogue .cat-row{display:flex;flex-wrap:wrap;gap:var(--sp-20);align-items:flex-start;margin-block-end:var(--sp-20)}
+#view-catalogue .cat-row:last-child{margin-block-end:0}
+#view-catalogue .cat-item{display:flex;flex-direction:column;gap:var(--sp-8)}
+#view-catalogue .cat-label{font-size:var(--fs-tag);text-transform:uppercase;letter-spacing:.06em;color:var(--gray-600);font-weight:var(--fw-700)}
+#view-catalogue .cat-stage{
   background:var(--bg-content);border:var(--border-w) dashed var(--gray-400);
   border-radius:var(--radius-tag);padding:var(--sp-16);
   display:flex;align-items:center;gap:var(--sp-12);min-height:var(--sp-54);
 }
-.cat-stage[data-ground="white"]{background:var(--white)}
-.cat-stage[data-ground="dark"]{background:var(--dark)}
-.cat-stage[data-stack="true"]{flex-direction:column;align-items:stretch}
-.cat-spec{width:100%;font-size:var(--fs-12);margin-block-start:var(--sp-12);border-collapse:collapse}
-.cat-spec th,.cat-spec td{text-align:start;padding:var(--sp-4) var(--sp-8);border-block-end:var(--border-w) solid var(--gray-200);vertical-align:top}
-.cat-spec th{color:var(--gray-600);font-weight:var(--fw-700);width:132px;white-space:nowrap}
-.cat-spec code{color:var(--primary);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-.cat-note{
+#view-catalogue .cat-stage[data-ground="white"]{background:var(--white)}
+#view-catalogue .cat-stage[data-ground="dark"]{background:var(--dark)}
+#view-catalogue .cat-stage[data-stack="true"]{flex-direction:column;align-items:stretch}
+#view-catalogue .cat-spec{width:100%;font-size:var(--fs-12);margin-block-start:var(--sp-12);border-collapse:collapse}
+#view-catalogue .cat-spec th,.cat-spec td{text-align:start;padding:var(--sp-4) var(--sp-8);border-block-end:var(--border-w) solid var(--gray-200);vertical-align:top}
+#view-catalogue .cat-spec th{color:var(--gray-600);font-weight:var(--fw-700);width:132px;white-space:nowrap}
+#view-catalogue .cat-spec code{color:var(--primary);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+#view-catalogue .cat-note{
   font-size:var(--fs-12);color:var(--gray-700);background:var(--primary-light-4);
   border-inline-start:3px solid var(--primary-light-1);padding:var(--sp-8) var(--sp-12);
   border-radius:var(--radius-tag);margin-block-start:var(--sp-12);
 }
-.cat-note[data-kind="tbc"]{background:rgb(240 167 66 / .10);border-inline-start-color:var(--warning)}
-.cat-fill{width:520px;max-width:100%}
+#view-catalogue .cat-note[data-kind="tbc"]{background:rgb(240 167 66 / .10);border-inline-start-color:var(--warning)}
+#view-catalogue .cat-fill{width:520px;max-width:100%}
 /* .pf-sprite and .i-* live in profolio.css — shared with the page. */
+
+#view-catalogue{display:grid;grid-template-columns:230px 1fr;background:var(--bg-content)}
+#view-catalogue .cat-nav{height:calc(100vh - var(--cmb-tabbar-h));top:var(--cmb-tabbar-h)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   4 · COMBINER CHROME — the tab bar and the report view. Nothing here
+       styles a product component.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root{--cmb-tabbar-h:52px}
+body{margin:var(--sp-0)}
+.cmb-tabbar{
+  position:sticky;top:var(--sp-0);z-index:2000;
+  height:var(--cmb-tabbar-h);
+  display:flex;align-items:center;gap:var(--sp-4);
+  padding-inline:var(--sp-16);
+  background:var(--white);
+  border-block-end:var(--border-w) solid var(--gray-300);
+  box-shadow:var(--shadow-card);
+}
+.cmb-brand{
+  font-weight:var(--fw-900);color:var(--primary);
+  font-size:var(--fs-card-title);margin-inline-end:var(--sp-16);white-space:nowrap;
+}
+.cmb-brand span{
+  font-weight:var(--fw-400);color:var(--gray-600);
+  font-size:var(--fs-12);margin-inline-start:var(--sp-8);
+}
+.cmb-tab{
+  height:var(--ctl-h);padding-inline:var(--sp-16);
+  border-radius:var(--radius-control);
+  color:var(--gray-700);font-weight:var(--fw-600);font-size:var(--fs-base);
+  white-space:nowrap;
+}
+.cmb-tab:hover{background:var(--primary-light-4);color:var(--primary)}
+.cmb-tab[aria-selected="true"]{background:var(--primary);color:var(--white)}
+.cmb-meta{margin-inline-start:auto;color:var(--gray-600);font-size:var(--fs-12);white-space:nowrap}
+
+/* report view */
+#view-report{display:grid;grid-template-columns:270px 1fr;background:var(--bg-content)}
+.cmb-toc{
+  position:sticky;top:var(--cmb-tabbar-h);align-self:start;
+  height:calc(100vh - var(--cmb-tabbar-h));overflow:auto;
+  background:var(--white);border-inline-end:var(--border-w) solid var(--gray-300);
+  padding:var(--sp-20) var(--sp-12);
+}
+.cmb-toc-item{
+  display:block;width:100%;text-align:start;
+  padding:var(--sp-4) var(--sp-8);border-radius:var(--radius-tag);
+  color:var(--gray-700);font-size:var(--fs-12);line-height:var(--lh-base);
+}
+.cmb-toc-item[data-lvl="3"]{padding-inline-start:var(--sp-20);color:var(--gray-600)}
+.cmb-toc-item:hover{background:var(--primary-light-4);color:var(--primary)}
+.cmb-doc{padding:var(--sp-32) var(--sp-32) var(--sp-54);max-width:96ch;min-width:var(--sp-0)}
+.cmb-doc h1{font-size:var(--sp-28);margin:var(--sp-0) var(--sp-0) var(--sp-16);color:var(--base)}
+.cmb-doc h2{
+  font-size:var(--sp-20);margin:var(--sp-40) var(--sp-0) var(--sp-12);color:var(--primary);
+  padding-block-end:var(--sp-8);border-block-end:var(--border-w) solid var(--gray-300);
+}
+.cmb-doc h3{font-size:var(--fs-card-title);margin:var(--sp-24) var(--sp-0) var(--sp-8);color:var(--base)}
+.cmb-doc h4{font-size:var(--fs-base);margin:var(--sp-16) var(--sp-0) var(--sp-8);color:var(--gray-800)}
+.cmb-doc p{margin:var(--sp-0) var(--sp-0) var(--sp-12);color:var(--gray-900);line-height:1.65}
+.cmb-doc ul,.cmb-doc ol{margin:var(--sp-0) var(--sp-0) var(--sp-12);padding-inline-start:var(--sp-24)}
+.cmb-doc li{margin-block-end:var(--sp-4);color:var(--gray-900);line-height:1.65}
+.cmb-doc hr{border:0;border-block-start:var(--border-w) solid var(--gray-300);margin:var(--sp-32) var(--sp-0)}
+.cmb-doc code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:var(--fs-12);
+  background:var(--primary-light-4);color:var(--primary);
+  padding:var(--sp-2) var(--sp-6);border-radius:var(--radius-tag);
+}
+.cmb-doc pre{
+  background:var(--white);border:var(--border-w) solid var(--gray-300);
+  border-radius:var(--radius-card);padding:var(--sp-16);overflow:auto;
+}
+.cmb-doc pre code{background:none;color:var(--base);padding:var(--sp-0);font-size:var(--fs-13)}
+.cmb-doc table{
+  width:100%;border-collapse:collapse;margin:var(--sp-0) var(--sp-0) var(--sp-20);
+  background:var(--white);border:var(--border-w) solid var(--gray-300);
+  border-radius:var(--radius-card);overflow:hidden;font-size:var(--fs-13);
+}
+.cmb-doc th,.cmb-doc td{
+  text-align:start;padding:var(--sp-8) var(--sp-12);
+  border-block-end:var(--border-w) solid var(--gray-200);vertical-align:top;
+}
+.cmb-doc th{background:var(--bg-gray-light);color:var(--gray-700);font-weight:var(--fw-700);white-space:nowrap}
+.cmb-doc tbody tr:last-child td{border-block-end:0}
+.cmb-doc strong{color:var(--base)}
+
+/* the dashboard view keeps its own full-bleed shell */
+#view-dashboard .pf-rail-fixed{inset-block-start:var(--cmb-tabbar-h)}
+#view-dashboard .pf-header-fixed{inset-block-start:var(--cmb-tabbar-h)}
+
+@media (max-width:991px){
+  #view-report,#view-catalogue{grid-template-columns:1fr}
+  .cmb-toc,#view-catalogue .cat-nav{display:none}
+}
 </style>
 </head>
-<body class="cat">
+<body>
+
 <svg class="pf-sprite" aria-hidden="true" focusable="false"><defs>
 <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
 <symbol id="i-post" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M12 9v6M9 12h6"/></symbol>
@@ -1273,19 +1384,707 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
 <symbol id="i-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><path d="M15 9.5a3.5 3.5 0 1 0 0 5V8"/></symbol>
 <symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 3.5L16 11H5"/></symbol>
 </defs></svg>
-<style>
-/* ── INSTANCE DATA ──────────────────────────────────────────────────────
-   Custom-property values that carry DATA (a percentage, a chart point),
-   not presentation. Kept here so the body has zero style attributes.
-   ──────────────────────────────────────────────────────────────────── */
-.pct-90{--ring-pct:90}
-.pct-40{--ring-pct:40}
-.pct-100{--ring-pct:100;--ring-color:var(--success)}
-.fill-97{--meter-pct:97.17}
-.fill-50{--meter-pct:50}
-.fill-8{--meter-pct:8}
-</style>
 
+<nav class="cmb-tabbar" role="tablist" aria-label="Deliverables">
+  <span class="cmb-brand">Profolio KSA<span>design system · /dashboard</span></span>
+  <button class="cmb-tab" role="tab" data-view="dashboard" aria-selected="true" type="button">Dashboard</button>
+  <button class="cmb-tab" role="tab" data-view="catalogue" aria-selected="false" type="button">Catalogue</button>
+  <button class="cmb-tab" role="tab" data-view="report" aria-selected="false" type="button">Extraction report</button>
+  <span class="cmb-meta">sourced from profolio-reactjs @ b83e805</span>
+</nav>
+
+<!-- ═════ DASHBOARD ═════════════════════════════════════════════════════ -->
+<div id="view-dashboard">
+<div class="pf-shell">
+
+  <!-- ── icon rail · collapsed (60px), the shipped default state ────── -->
+  <div class="pf-rail pf-rail-fixed">
+    <div class="pf-rail-brand"><span class="pf-rail-logo"><svg class="i i-24"><use href="#i-logo"/></svg></span></div>
+    <nav class="pf-rail-list" aria-label="Main">
+      <a class="pf-rail-item" aria-current="page" href="#" title="Overview"><svg class="i i-20"><use href="#i-grid"/></svg></a>
+      <a class="pf-rail-item" href="#" title="Post Listing"><svg class="i i-20"><use href="#i-post"/></svg></a>
+      <a class="pf-rail-item" href="#" title="My Listings"><svg class="i i-20"><use href="#i-list"/></svg></a>
+      <a class="pf-rail-item" href="#" title="Credits Usage"><svg class="i i-20"><use href="#i-quota"/></svg></a>
+      <a class="pf-rail-item" href="#" title="Inbox"><svg class="i i-20"><use href="#i-inbox"/></svg></a>
+      <a class="pf-rail-item" href="#" title="TruLeads"><svg class="i i-20"><use href="#i-truleads"/></svg></a>
+      <a class="pf-rail-item" href="#" title="Agent Performance"><svg class="i i-20"><use href="#i-agentperf"/></svg></a>
+      <a class="pf-rail-item" href="#" title="Reports"><svg class="i i-20"><use href="#i-reports"/></svg></a>
+      <a class="pf-rail-item" href="#" title="Agency Staff"><svg class="i i-20"><use href="#i-agency"/></svg></a>
+      <a class="pf-rail-item" href="#" title="Settings"><svg class="i i-20"><use href="#i-settings"/></svg></a>
+      <a class="pf-rail-item" href="#" title="Credits &amp; Packages"><svg class="i i-20"><use href="#i-packages"/></svg></a>
+    </nav>
+    <div class="pf-rail-bottom">
+      <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="العربية"><svg class="i i-20"><use href="#i-translate"/></svg></button>
+      <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="Help &amp; Support"><svg class="i i-20"><use href="#i-help"/></svg></button>
+    </div>
+  </div>
+
+  <div class="pf-main">
+
+    <!-- ── header ──────────────────────────────────────────────────── -->
+    <header class="pf-header pf-header-fixed">
+      <div class="pf-header-brand"><span class="pf-page-title">Overview</span></div>
+      <div class="pf-header-actions">
+        <button class="pf-btn" data-variant="link" type="button"><svg class="i i-16"><use href="#i-phone"/></svg><span>Download App</span></button>
+        <a class="pf-classified-pill" href="#"><svg class="i i-16"><use href="#i-external"/></svg>Go to Bayut.sa</a>
+        <button class="pf-btn" data-variant="primary" type="button"><svg class="i i-16"><use href="#i-plus-square"/></svg><span>Post Listing</span></button>
+        <button class="pf-bell" type="button" aria-label="Notifications"><svg class="i i-20"><use href="#i-bell"/></svg><span class="pf-badge">46</span></button>
+        <span class="pf-progress-ring pct-90"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span>
+      </div>
+    </header>
+
+    <main class="pf-content">
+
+      <!-- ── TruBrokerAndProfileCard → ProfileCompletionBanner ──────── -->
+      <div class="pf-alert">
+        <span class="pf-progress-ring pct-90">
+          <span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span>
+          <span class="pf-ring-label">90%</span>
+        </span>
+        <div class="pf-alert-body">
+          <div class="pf-alert-text">
+            <div class="pf-alert-title">Your profile is incomplete</div>
+            Agents with a complete profile are likely to attract more leads.<a class="pf-alert-link" href="#">Why is this important?</a>
+          </div>
+          <button class="pf-btn" data-variant="primary" type="button"><span>Complete your Profile</span></button>
+        </div>
+      </div>
+
+      <!-- ── ContainerWidgets ───────────────────────────────────────── -->
+      <div class="pf-stack">
+
+        <!-- renderMultiPlatformsLabel() → .mb-24 -->
+        <div class="pf-stack" data-gap="row">
+          <div class="pf-switcher">
+            <span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span>
+            <span class="pf-switcher-name">Alfalw Company LTD</span>
+            <button class="pf-switcher-toggle" type="button" aria-label="Switch account"><svg class="i i-14"><use href="#i-chevron-down"/></svg></button>
+          </div>
+        </div>
+
+        <!-- renderListingBreakDownWidget() → Group template="repeat(2, minmax(0,1fr))" gap="16px" -->
+        <div class="pf-two-col">
+
+          <!-- ListingBreakdown · linear={false} -->
+          <section class="pf-card">
+            <div class="pf-card-head">
+              <span class="pf-card-title">Listings</span>
+              <a class="pf-card-action" href="#">View All Listings</a>
+            </div>
+            <div class="pf-card-body" data-pad="breakdown">
+              <div class="pf-breakdown">
+                <div class="pf-stat" data-emphasis="leader">
+                  <span class="pf-icon-tile" data-tone="basic"><svg class="i i-16"><use href="#i-home"/></svg></span>
+                  <div><div class="pf-stat-title">Active</div><div class="pf-stat-value">20</div></div>
+                </div>
+                <hr class="pf-divider" data-orientation="vertical" data-stretch="true">
+                <div class="pf-breakdown-rows">
+                  <div class="pf-stat-grid">
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="for-sale"><svg class="i i-16"><use href="#i-home"/></svg></span><div><div class="pf-stat-title">For Sale</div><div class="pf-stat-value">20</div></div></div>
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="for-rent"><svg class="i i-16"><use href="#i-key"/></svg></span><div><div class="pf-stat-title">To Rent</div><div class="pf-stat-value">0</div></div></div>
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="primary"><svg class="i i-16"><use href="#i-calendar-day"/></svg></span><div><div class="pf-stat-title">Daily Rentals</div><div class="pf-stat-value">0</div></div></div>
+                  </div>
+                  <div class="pf-stat-grid">
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="signature"><svg class="i i-16"><use href="#i-bolt"/></svg></span><div><div class="pf-stat-title">Signature</div><div class="pf-stat-value">12</div></div></div>
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="hot"><svg class="i i-16"><use href="#i-flame"/></svg></span><div><div class="pf-stat-title">Hot</div><div class="pf-stat-value">5</div></div></div>
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="basic"><svg class="i i-16"><use href="#i-layers"/></svg></span><div><div class="pf-stat-title">Basic</div><div class="pf-stat-value">3</div></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- CreditsQuota -->
+          <section class="pf-card">
+            <div class="pf-card-head">
+              <span class="pf-card-title">Credits Balance</span>
+              <button class="pf-btn" data-variant="icon-circle" type="button" aria-label="About credits"><svg class="i i-14"><use href="#i-info"/></svg></button>
+            </div>
+            <div class="pf-card-body">
+              <div class="pf-credit-stats">
+                <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Available Credits</div><div class="pf-stat-value">72,880</div></div></div>
+                <hr class="pf-divider" data-orientation="vertical">
+                <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Used</div><div class="pf-stat-value">2,120</div></div></div>
+                <hr class="pf-divider" data-orientation="vertical">
+                <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Total</div><div class="pf-stat-value">75,000</div></div></div>
+                <hr class="pf-divider" data-orientation="vertical">
+                <div class="pf-plan">
+                  <div class="pf-plan-label">Current Plan</div>
+                  <div class="pf-plan-badge"><span class="pf-icon-tile" data-size="xs" data-tone="plan"><svg class="i i-14"><use href="#i-diamond"/></svg></span>Platinum Plus</div>
+                </div>
+              </div>
+              <span class="pf-credit-meter fill-97"></span>
+              <div class="pf-credit-actions">
+                <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#i-plus-circle"/></svg><span>Top-Up your Credits</span></button>
+                <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#i-history"/></svg><span>Credits Usage</span></button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ReportsLeadsTrafficSection → LeadsStatsGraphWidget -->
+        <section class="pf-card">
+          <div class="pf-card-head" data-pad="16">
+            <span class="pf-card-title">Performance</span>
+            <div class="pf-card-toolbar">
+              <div class="pf-segmented" role="tablist">
+                <button class="pf-segmented-item" role="tab" aria-selected="true" type="button">All</button>
+                <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">For Sale</button>
+                <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">For Rent</button>
+                <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">Daily Rentals</button>
+              </div>
+              <span class="pf-datepicker">Last 30 Days<svg class="i i-16"><use href="#i-calendar-day"/></svg></span>
+            </div>
+          </div>
+
+          <div class="pf-metric-bar" role="tablist">
+            <button class="pf-metric-tab" role="tab" aria-selected="true" type="button">
+              <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="primary"><svg class="i i-20"><use href="#i-eye"/></svg></span><span><span class="pf-stat-title">Views</span><span class="pf-stat-value">24,853</span></span></span>
+            </button>
+            <button class="pf-metric-tab" role="tab" aria-selected="false" type="button">
+              <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="clicks"><svg class="i i-20"><use href="#i-cursor"/></svg></span><span><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">387</span></span></span>
+            </button>
+            <button class="pf-metric-tab" role="tab" aria-selected="false" type="button">
+              <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="leads"><svg class="i i-20"><use href="#i-phone-call"/></svg></span><span><span class="pf-stat-title">Leads</span><span class="pf-stat-value">12</span></span></span>
+            </button>
+            <div class="pf-metric-extra">
+              <span class="pf-inline-metric"><svg class="i i-16"><use href="#i-phone-call"/></svg><span class="pf-stat-title">Calls</span><span class="pf-stat-value">3</span></span>
+              <hr class="pf-divider" data-orientation="vertical">
+              <span class="pf-inline-metric"><svg class="i i-16"><use href="#i-whatsapp"/></svg><span class="pf-stat-title">WhatsApp</span><span class="pf-stat-value">9</span></span>
+              <hr class="pf-divider" data-orientation="vertical">
+              <span class="pf-inline-metric"><svg class="i i-16"><use href="#i-sms"/></svg><span class="pf-stat-title">SMS</span><span class="pf-stat-value">0</span></span>
+              <hr class="pf-divider" data-orientation="vertical">
+              <span class="pf-inline-metric"><svg class="i i-16"><use href="#i-mail"/></svg><span class="pf-stat-title">Emails</span><span class="pf-stat-value">0</span></span>
+            </div>
+          </div>
+
+          <div class="pf-card-body">
+            <div class="pf-chart-toolbar">
+              <div class="pf-chip-group" role="radiogroup">
+                <button class="pf-chip" role="radio" aria-checked="true" type="button"><span class="pf-dot" data-tone="all"></span>All</button>
+                <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="basic"></span>Basic</button>
+                <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="hot"></span>Hot</button>
+                <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="signature"></span>Signature</button>
+              </div>
+            </div>
+            <div class="pf-chart">
+              <svg viewBox="0 0 1200 340" role="img" aria-label="Views by date, Aug 23 to Sep 21">
+                <line class="grid-h" x1="58" y1="227.2" x2="1188" y2="227.2"/>
+                <text class="tick" x="50" y="231.2" text-anchor="end">500</text>
+                <line class="grid-h" x1="58" y1="174.4" x2="1188" y2="174.4"/>
+                <text class="tick" x="50" y="178.4" text-anchor="end">1000</text>
+                <line class="grid-h" x1="58" y1="121.6" x2="1188" y2="121.6"/>
+                <text class="tick" x="50" y="125.6" text-anchor="end">1500</text>
+                <line class="grid-h" x1="58" y1="68.8" x2="1188" y2="68.8"/>
+                <text class="tick" x="50" y="72.8" text-anchor="end">2000</text>
+                <line class="grid-h" x1="58" y1="16.0" x2="1188" y2="16.0"/>
+                <text class="tick" x="50" y="20.0" text-anchor="end">2500</text>
+                <line class="axis-x" x1="58" y1="280" x2="1188" y2="280"/>
+                <text class="tick tick-x" x="58.0" y="302" text-anchor="middle">Aug 23</text>
+                <text class="tick tick-x" x="97.0" y="302" text-anchor="middle">Aug 24</text>
+                <text class="tick tick-x" x="135.9" y="302" text-anchor="middle">Aug 25</text>
+                <text class="tick tick-x" x="174.9" y="302" text-anchor="middle">Aug 26</text>
+                <text class="tick tick-x" x="213.9" y="302" text-anchor="middle">Aug 27</text>
+                <text class="tick tick-x" x="252.8" y="302" text-anchor="middle">Aug 28</text>
+                <text class="tick tick-x" x="291.8" y="302" text-anchor="middle">Aug 29</text>
+                <text class="tick tick-x" x="330.8" y="302" text-anchor="middle">Aug 30</text>
+                <text class="tick tick-x" x="369.7" y="302" text-anchor="middle">Aug 31</text>
+                <text class="tick tick-x" x="408.7" y="302" text-anchor="middle">Sep 01</text>
+                <text class="tick tick-x" x="447.7" y="302" text-anchor="middle">Sep 02</text>
+                <text class="tick tick-x" x="486.6" y="302" text-anchor="middle">Sep 03</text>
+                <text class="tick tick-x" x="525.6" y="302" text-anchor="middle">Sep 04</text>
+                <text class="tick tick-x" x="564.6" y="302" text-anchor="middle">Sep 05</text>
+                <text class="tick tick-x" x="603.5" y="302" text-anchor="middle">Sep 06</text>
+                <text class="tick tick-x" x="642.5" y="302" text-anchor="middle">Sep 07</text>
+                <text class="tick tick-x" x="681.4" y="302" text-anchor="middle">Sep 08</text>
+                <text class="tick tick-x" x="720.4" y="302" text-anchor="middle">Sep 09</text>
+                <text class="tick tick-x" x="759.4" y="302" text-anchor="middle">Sep 10</text>
+                <text class="tick tick-x" x="798.3" y="302" text-anchor="middle">Sep 11</text>
+                <text class="tick tick-x" x="837.3" y="302" text-anchor="middle">Sep 12</text>
+                <text class="tick tick-x" x="876.3" y="302" text-anchor="middle">Sep 13</text>
+                <text class="tick tick-x" x="915.2" y="302" text-anchor="middle">Sep 14</text>
+                <text class="tick tick-x" x="954.2" y="302" text-anchor="middle">Sep 15</text>
+                <text class="tick tick-x" x="993.2" y="302" text-anchor="middle">Sep 16</text>
+                <text class="tick tick-x" x="1032.1" y="302" text-anchor="middle">Sep 17</text>
+                <text class="tick tick-x" x="1071.1" y="302" text-anchor="middle">Sep 18</text>
+                <text class="tick tick-x" x="1110.1" y="302" text-anchor="middle">Sep 19</text>
+                <text class="tick tick-x" x="1149.0" y="302" text-anchor="middle">Sep 20</text>
+                <text class="tick tick-x" x="1188.0" y="302" text-anchor="middle">Sep 21</text>
+                <polyline class="series" points="58.0,280.0 97.0,280.0 135.9,276.8 174.9,275.8 213.9,275.8 252.8,274.7 291.8,267.3 330.8,212.4 369.7,245.2 408.7,228.3 447.7,192.4 486.6,191.3 525.6,196.6 564.6,173.3 603.5,130.0 642.5,94.1 681.4,98.4 720.4,130.0 759.4,152.2 798.3,121.6 837.3,38.2 876.3,115.3 915.2,142.7 954.2,180.7 993.2,185.0 1032.1,178.6 1071.1,153.3 1110.1,161.7 1149.0,173.3 1188.0,220.9"/>
+                <circle class="marker" cx="58.0" cy="280.0" r="2.6"/>
+                <circle class="marker" cx="97.0" cy="280.0" r="2.6"/>
+                <circle class="marker" cx="135.9" cy="276.8" r="2.6"/>
+                <circle class="marker" cx="174.9" cy="275.8" r="2.6"/>
+                <circle class="marker" cx="213.9" cy="275.8" r="2.6"/>
+                <circle class="marker" cx="252.8" cy="274.7" r="2.6"/>
+                <circle class="marker" cx="291.8" cy="267.3" r="2.6"/>
+                <circle class="marker" cx="330.8" cy="212.4" r="2.6"/>
+                <circle class="marker" cx="369.7" cy="245.2" r="2.6"/>
+                <circle class="marker" cx="408.7" cy="228.3" r="2.6"/>
+                <circle class="marker" cx="447.7" cy="192.4" r="2.6"/>
+                <circle class="marker" cx="486.6" cy="191.3" r="2.6"/>
+                <circle class="marker" cx="525.6" cy="196.6" r="2.6"/>
+                <circle class="marker" cx="564.6" cy="173.3" r="2.6"/>
+                <circle class="marker" cx="603.5" cy="130.0" r="2.6"/>
+                <circle class="marker" cx="642.5" cy="94.1" r="2.6"/>
+                <circle class="marker" cx="681.4" cy="98.4" r="2.6"/>
+                <circle class="marker" cx="720.4" cy="130.0" r="2.6"/>
+                <circle class="marker" cx="759.4" cy="152.2" r="2.6"/>
+                <circle class="marker" cx="798.3" cy="121.6" r="2.6"/>
+                <circle class="marker" cx="837.3" cy="38.2" r="2.6"/>
+                <circle class="marker" cx="876.3" cy="115.3" r="2.6"/>
+                <circle class="marker" cx="915.2" cy="142.7" r="2.6"/>
+                <circle class="marker" cx="954.2" cy="180.7" r="2.6"/>
+                <circle class="marker" cx="993.2" cy="185.0" r="2.6"/>
+                <circle class="marker" cx="1032.1" cy="178.6" r="2.6"/>
+                <circle class="marker" cx="1071.1" cy="153.3" r="2.6"/>
+                <circle class="marker" cx="1110.1" cy="161.7" r="2.6"/>
+                <circle class="marker" cx="1149.0" cy="173.3" r="2.6"/>
+                <circle class="marker" cx="1188.0" cy="220.9" r="2.6"/>
+              </svg>
+            </div>          </div>
+        </section>
+
+        <!-- renderListings() — the heading Row sits OUTSIDE the card -->
+        <div>
+          <div class="pf-section-head">
+            <span class="pf-section-title">Recent Listings</span>
+            <a class="pf-card-action" data-tone="muted" href="#">View All Listings <svg class="i i-14"><use href="#i-external"/></svg></a>
+          </div>
+          <section class="pf-card">
+            <div class="pf-card-body" data-pad="none">
+              <table class="pf-table">
+                <thead>
+                  <tr><th>Property</th><th>Timeline</th><th>Performance</th><th>Status</th><th>Upgrades</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+
+          <tr>
+            <td>
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">21</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,250,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#i-layers"/></svg>Basic</span> <span class="pf-score" data-band="mid">62%</span></div>
+                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 3</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 3</span><span><svg class="i i-14"><use href="#i-area"/></svg> 64 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, North Riyadh, Al Wurud</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88126259</span><span>REGA ID: 7201105004</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 09, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">896</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">35</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">2</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+              </div>
+            </td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">18</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,399,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#i-layers"/></svg>Basic</span> <span class="pf-score" data-band="mid">62%</span></div>
+                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 3</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 3</span><span><svg class="i i-14"><use href="#i-area"/></svg> 73 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, North Riyadh, Al Masif</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88126254</span><span>REGA ID: 7201104978</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 09, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">796</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">17</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">1</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+              </div>
+            </td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">26</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,999,000 <span class="pf-tag" data-tone="hot"><svg class="i i-14"><use href="#i-flame"/></svg>Hot</span> <span class="pf-score" data-band="mid">54%</span></div>
+                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 4</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 5</span><span><svg class="i i-14"><use href="#i-area"/></svg> 79 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, North Riyadh, Al Mughrizat</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88124563</span><span>REGA ID: 7201105009</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 07, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,600</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">18</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+                <button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+              </div>
+            </td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">31</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,049,000 <span class="pf-tag" data-tone="hot"><svg class="i i-14"><use href="#i-flame"/></svg>Hot</span> <span class="pf-score" data-band="mid">50%</span></div>
+                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 3</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 3</span><span><svg class="i i-14"><use href="#i-area"/></svg> 79 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Rawabi</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88122190</span><span>REGA ID: 7201104990</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 06, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">2,015</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">18</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+                <button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+              </div>
+            </td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">38</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 2,330,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#i-bolt"/></svg>Signature</span> <span class="pf-score" data-band="mid">43%</span></div>
+                  <a class="pf-listing-title" href="#">Villa for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 5</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 6</span><span><svg class="i i-14"><use href="#i-area"/></svg> 79 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Nahdah</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88121852</span><span>REGA ID: 7201104997</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 05, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">2,669</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">36</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">2</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+              </div>
+            </td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">47</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 4,900,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#i-bolt"/></svg>Signature</span> <span class="pf-score" data-band="mid">46%</span></div>
+                  <a class="pf-listing-title" href="#">Villa for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 6</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 7</span><span><svg class="i i-14"><use href="#i-area"/></svg> 399 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Al Diriyah, As Sulaymaniyah</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88120979</span><span>REGA ID: 7201115140</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 02, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">2,386</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">66</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">1</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+              </div>
+            </td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">18</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 870,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#i-bolt"/></svg>Signature</span> <span class="pf-score" data-band="mid">31%</span></div>
+                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 3</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 3</span><span><svg class="i i-14"><use href="#i-area"/></svg> 131 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88118999</span><span>REGA ID: 7201111780</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,192</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">13</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+              </div>
+            </td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">19</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 920,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#i-bolt"/></svg>Signature</span> <span class="pf-score" data-band="mid">34%</span></div>
+                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 3</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 3</span><span><svg class="i i-14"><use href="#i-area"/></svg> 140 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88116631</span><span>REGA ID: 7201111769</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,050</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">6</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+              </div>
+            </td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">20</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 995,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#i-bolt"/></svg>Signature</span> <span class="pf-score" data-band="mid">39%</span></div>
+                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 3</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 3</span><span><svg class="i i-14"><use href="#i-area"/></svg> 150 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88116621</span><span>REGA ID: 7201111733</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,007</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">3</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+              </div>
+            </td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">24</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,050,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#i-bolt"/></svg>Signature</span> <span class="pf-score" data-band="mid">33%</span></div>
+                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 3</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 3</span><span><svg class="i i-14"><use href="#i-area"/></svg> 156 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88116620</span><span>REGA ID: 7201111715</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">749</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">5</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+              </div>
+            </td>
+            <td>
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+              </div>
+            </td>
+          </tr>                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+      </div><!-- /.pf-stack ContainerWidgets -->
+    </main>
+
+    <footer class="pf-footer">© 2026 – All Rights Reserved</footer>
+  </div><!-- /.pf-main -->
+</div><!-- /.pf-shell -->
+<div class="pf-feedback-tab"><span>FEEDBACK</span></div>
+</div>
+
+<!-- ═════ CATALOGUE ═════════════════════════════════════════════════════ -->
+<div id="view-catalogue" hidden>
 <nav class="cat-nav">
   <h1>Profolio KSA</h1>
   <p>Component catalogue · extracted from the live Overview screen and
@@ -2313,5 +3112,208 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
 </section>
 
 </main>
+</div>
+
+<!-- ═════ REPORT ════════════════════════════════════════════════════════ -->
+<div id="view-report" hidden>
+  <aside class="cmb-toc">
+      <button class="cmb-toc-item" data-lvl="2" data-go="r-the-single-biggest-correction" type="button">The single biggest correction</button>
+      <button class="cmb-toc-item" data-lvl="2" data-go="r-layout" type="button">LAYOUT</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-rail" type="button">Rail</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-header" type="button">Header</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-content-column" type="button">Content column</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-grid-which-cards-share-a-row" type="button">Grid — which cards share a row</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-footer" type="button">Footer</button>
+      <button class="cmb-toc-item" data-lvl="2" data-go="r-per-card-in-dom-order" type="button">PER CARD, in DOM order</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-1-alert-banner-profilecompletionbanner" type="button">1 · alert-banner — ProfileCompletionBanner</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-2-account-switcher" type="button">2 · account-switcher</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-3-listings-listingbreakdown-linear-false" type="button">3 · Listings — ListingBreakdown linear={false}</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-4-credits-balance-creditsquota" type="button">4 · Credits Balance — CreditsQuota</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-5-performance-reportsleadstrafficsection-leadsstatsgraphwidget" type="button">5 · Performance — ReportsLeadsTrafficSection → LeadsStatsGraphWidget</button>
+      <button class="cmb-toc-item" data-lvl="3" data-go="r-6-recent-listings-renderlistings" type="button">6 · Recent Listings — renderListings()</button>
+      <button class="cmb-toc-item" data-lvl="2" data-go="r-type" type="button">TYPE</button>
+      <button class="cmb-toc-item" data-lvl="2" data-go="r-colour" type="button">COLOUR</button>
+      <button class="cmb-toc-item" data-lvl="2" data-go="r-chart" type="button">CHART</button>
+      <button class="cmb-toc-item" data-lvl="2" data-go="r-everything-i-cannot-tell-the-questions" type="button">Everything I cannot tell — the questions</button>
+      <button class="cmb-toc-item" data-lvl="2" data-go="r-one-housekeeping-note" type="button">One housekeeping note</button>
+  </aside>
+  <article class="cmb-doc">
+<h1 id="r-step-1-extraction-report-dashboard-overview-tenant-bayut-ksa">STEP 1 — Extraction report · <code>/dashboard</code> (Overview), tenant <code>bayut</code> (KSA)</h1>
+<p>Two sources, used for different things.</p>
+<ul>
+<li><strong>The screenshot</strong> is the authority on <em>structure, order and copy</em>: what is on the screen, in what order, saying what.</li>
+<li><strong><code>profolio-reactjs @ b83e805</code></strong> is the authority on <em>values</em>: colours, spacing, radii, type sizes. Eyeballing a hex off a downscaled PNG is guessing; reading it out of <code>src/theme/index.js</code> is not.</li>
+</ul>
+<p>Where the two disagree I say so. Where neither answers, the item is <strong>cannot tell</strong> and it is listed at the end as a question, never as a number.</p>
+<p>Confidence is marked per item: <strong>[read]</strong> direct from source or screenshot · <strong>[inf]</strong> inferred · <strong>[?]</strong> cannot tell.</p>
+<hr>
+<h2 id="r-the-single-biggest-correction">The single biggest correction</h2>
+<p>The previous <code>dashboard.html</code> was built from a flattened component skeleton and got three structural facts wrong. All three are now sourced:</p>
+<table><thead><tr><th></th><th>scrap said</th><th>actually</th></tr></thead><tbody><tr><td>sider</td><td>220px expanded, 14 labelled rows</td><td><strong>60px collapsed icon rail, 11 items.</strong> <code>withAdminLayout.js</code> opens with <code>useState(true)</code> — collapsed <em>is</em> the default state</td></tr><tr><td>header</td><td>74px</td><td><strong>60px.</strong> <code>theme['layout-header-height']</code> is 74px but <code>renderHeader()</code> sets <code>minHeight:60, maxHeight:60</code> inline, and inline wins</td></tr><tr><td>widgets</td><td>TruBrokerStatus, TruPointsWidget, DashboardPromoBanner, profile row…</td><td><strong>none of those render here.</strong> The TruBroker pair is gated on <code>user.tru_broker_start_date</code>; the promo banner on a non-empty <code>loginUser.banners</code></td></tr></tbody></table>
+<hr>
+<h2 id="r-layout">LAYOUT</h2>
+<h3 id="r-rail">Rail</h3>
+<table><thead><tr><th>item</th><th>value</th><th>conf</th></tr></thead><tbody><tr><td>width</td><td><strong>60px</strong> (<code>SIDEBAR_COLLAPSED_WIDTH</code>)</td><td>[read] <code>withAdminLayout.js</code></td></tr><tr><td>expanded width</td><td>220px (<code>SIDEBAR_EXPANDED_WIDTH</code>), not the shipped default</td><td>[read]</td></tr><tr><td>ground / border / shadow</td><td><code>#fff</code> · <code>1px solid gray400 #DEDEDE</code> inline-end · <code>0 0 30px #9299B810</code></td><td>[read] <code>layout/style.js</code></td></tr><tr><td>item count</td><td><strong>11</strong> nav items + 2 bottom actions</td><td>[read] <code>menuList.js</code> + [read] screenshot (11 + 2 counted)</td></tr><tr><td>item order</td><td>Overview · Post Listing · My Listings · Credits Usage · Inbox · TruLeads · Agent Performance · Reports · Agency Staff · Settings · Credits &amp; Packages</td><td>[read]</td></tr><tr><td>item box</td><td>height 36px, width 70% of the rail, <code>padding-inline 10px</code>, <code>margin-inline auto</code></td><td>[read]</td></tr><tr><td>icon</td><td>20 × 20, colour <code>gray700 #707070</code></td><td>[read]</td></tr><tr><td><strong>active treatment</strong></td><td>ground <code>primary-light-4 #F2FAFA</code>, colour + icon <code>primary #006169</code>, weight 600</td><td>[read]</td></tr><tr><td>active item</td><td>Overview (<code>/dashboard</code>)</td><td>[read] screenshot</td></tr><tr><td>bottom actions</td><td>language switcher, then Help &amp; Support — both <code>outlined</code> buttons, transparent ground, content <code>#707070</code>, border <code>#e6e6e6</code>, <code>block</code>, wrapped in <code>px-8</code></td><td>[read] <code>MenueItems.js</code></td></tr><tr><td>icon glyphs</td><td>named (<code>SideMenuDashboard</code>, <code>SideMenuQuota</code>, <code>DashboardLmsIcon</code>…) but they are local SVG components I did not open</td><td><strong>[?]</strong></td></tr><tr><td>item radius, gap between items</td><td>not declared</td><td><strong>[?]</strong></td></tr></tbody></table>
+<h3 id="r-header">Header</h3>
+<table><thead><tr><th>item</th><th>value</th><th>conf</th></tr></thead><tbody><tr><td>height</td><td><strong>60px</strong>, <code>padding-block 12px</code></td><td>[read] inline style</td></tr><tr><td>padding-inline-start</td><td><strong>85px</strong> = <code>sidebarOffset (60) + 25</code></td><td>[read]</td></tr><tr><td>padding-inline-end</td><td>20px</td><td>[read]</td></tr><tr><td>ground</td><td><code>#fff</code></td><td>[read]</td></tr><tr><td>elements, left → right</td><td><code>Overview</code> · Download App · Go to Bayut.sa · Post Listing · bell + badge · avatar ring</td><td>[read] both</td></tr><tr><td>page title</td><td>weight 700, <strong>20px</strong>, <code>#000</code>, line-height 1.2, <code>white-space: nowrap</code></td><td>[read]</td></tr><tr><td>title string</td><td><strong>“Overview”</strong> — the matched menu entry's own title, not “Dashboard”</td><td>[read]</td></tr><tr><td>“Download App”</td><td><code>Button type="link" icon="MdPhoneIphone" iconSize="1.3em" className="px-0"</code>, gated on <code>PITCH_MOBILE_APP</code></td><td>[read]</td></tr><tr><td>“Go to Bayut.sa”</td><td><code>Go to {{link}}</code> with <code>capitalizeFirstLetter(LINK_TITLE)</code></td><td>[read]</td></tr><tr><td>“Post Listing”</td><td><code>Button type="primary" icon="PostListingIcon"</code></td><td>[read]</td></tr><tr><td>bell</td><td>gated on <code>NOTIFICATION_CENTER_ENABLED &amp;&amp; push_notifications.value == 'enabled'</code></td><td>[read]</td></tr><tr><td>badge count</td><td><strong>46</strong></td><td>[read] screenshot</td></tr><tr><td>avatar</td><td>antd circular <code>Progress</code> at <strong>size 34</strong>, stroke = <code>getClassificationColor(classification)</code>, containing the profile image at <strong>size 30 / icon 24 / container 26</strong></td><td>[read] <code>auth-info/info.js</code></td></tr><tr><td>Row gutter</td><td>16</td><td>[read]</td></tr><tr><td>badge offset / overflow rule</td><td>antd <code>Badge</code> defaults</td><td><strong>[?]</strong></td></tr><tr><td>classification → colour map</td><td>not in the files I read</td><td><strong>[?]</strong></td></tr></tbody></table>
+<h3 id="r-content-column">Content column</h3>
+<table><thead><tr><th>item</th><th>value</th><th>conf</th></tr></thead><tbody><tr><td>widget gap</td><td><strong>16px</strong> (<code>&lt;Group gap="16px"&gt;</code>)</td><td>[read] <code>dashboard.js</code></td></tr><tr><td>gap under the account switcher</td><td><strong>24px</strong> (<code>.mb-24</code>)</td><td>[read]</td></tr><tr><td>the one sourced grid</td><td><code>repeat(2, minmax(0, 1fr))</code>, gap 16 — <code>&lt;Group className="c-listing-credits"&gt;</code></td><td>[read]</td></tr><tr><td>outer gutter of the content area</td><td>not declared anywhere in <code>withAdminLayout.js</code> or <code>Main</code></td><td><strong>[?]</strong> — 16px used, measured</td></tr><tr><td>max-width</td><td>there is none; the layout is fluid</td><td>[read]</td></tr></tbody></table>
+<h3 id="r-grid-which-cards-share-a-row">Grid — which cards share a row</h3>
+<pre><code>row 1   alert banner                                        full width
+row 2   account switcher                                    full width
+row 3   Listings              │ Credits Balance             1fr │ 1fr   ← sourced
+row 4   Performance                                         full width
+row 5   Recent Listings (heading outside the card)          full width</code></pre>
+<p>[read] — the order is the literal child order of <code>&lt;ContainerWidgets&gt;</code> in <code>dashboard.js</code>.</p>
+<h3 id="r-footer">Footer</h3>
+<p><code>padding 12px 16px</code> · colour <code>rgba(0,0,0,0.65)</code> · 14px · ground <code>rgba(255,255,255,.90)</code> · <code>box-shadow 0 -5px 10px rgba(146,153,184,0.05)</code> · centred · text <strong>“© 2026 – All Rights Reserved”</strong> (an en dash, and the year is <code>getFullYear()</code>). All <strong>[read]</strong>.</p>
+<hr>
+<h2 id="r-per-card-in-dom-order">PER CARD, in DOM order</h2>
+<h3 id="r-1-alert-banner-profilecompletionbanner">1 · alert-banner — <code>ProfileCompletionBanner</code></h3>
+<ul>
+<li>Ground <code>primary-light-4</code>, border <code>1px primary-light-2</code>, radius <strong>12px</strong> above 767px, shadow <code>0px 1px 6px 0px #0000001C</code>, padding <strong>16px</strong>. All <strong>[read]</strong>.</li>
+<li>Structure: 38px progress ring (34px avatar + square score badge) → text block → CTA, the text block and CTA at <code>justify: space-between</code>. <strong>[read]</strong></li>
+<li>Copy — <strong>“Your profile is incomplete”</strong> (bold, 14px, <code>base-color</code>) / <strong>“Agents with a complete profile are likely to attract more leads.”</strong> (12px, <code>color-gray-dark</code>) / inline link <strong>“Why is this important?”</strong> / CTA <strong>“Complete your Profile”</strong>. The first two are <strong>API strings</strong> (<code>profile_completion.title</code> / <code>.message</code>), so they are [read] from the screenshot, not from the repo. The link and CTA are [read] from the repo.</li>
+<li>Score badge padding, radius and type size — <strong>[?]</strong></li>
+</ul>
+<h3 id="r-2-account-switcher">2 · account-switcher</h3>
+<ul>
+<li><code>CardMetaStyled</code> gap 8px, <code>--card-height: 33px</code>, <code>titleFontWeight 700</code>, avatar <code>iconSize 24</code>. Dropdown: <code>padding 8px</code>, <code>suffixIcon "MdKeyboardArrowDown"</code> tinted <code>primary-color</code>, <code>iconSize 14px</code>. All <strong>[read]</strong>.</li>
+<li>Name <strong>“Alfalw Company LTD”</strong> [read]. Renders only for <code>is_agency_admin</code> or a multi-platform user.</li>
+<li>The <code>TruBrokerTag</code> slot next to the name is empty here — <code>TRU_BROKER_ENABLED &amp;&amp; is_tru_broker</code> is false. [inf]</li>
+<li>Dropdown panel geometry — <strong>[?]</strong></li>
+</ul>
+<h3 id="r-3-listings-listingbreakdown-linear-false">3 · Listings — <code>ListingBreakdown linear={false}</code></h3>
+<ul>
+<li>Card body padding <strong><code>30px 24px</code></strong>, head <code>borderBottom: none</code>, title <code>.fz-16</code> weight 700. [read]</li>
+<li>Header right: <code>Button type="link"</code> from <code>link_data.text</code> → <strong>“View All Listings”</strong>. [read] repo + screenshot</li>
+<li>Body: <code>&lt;Flex align="center" gap="50px"&gt;</code> → leader statistic · full-height vertical divider · <code>&lt;Flex vertical gap="40px"&gt;</code> containing two <code>&lt;Group template="repeat(3, 1fr)" gap="30px 30px"&gt;</code>. [read]</li>
+<li><strong>3 columns</strong> — <code>templateVar = round((purposes 3 + products 3) / 2) = 3</code>. [read], and it matches the screenshot.</li>
+<li>Leader: <strong>Active / 20</strong>, <code>leader</code> size <code>1.5714em</code>. Purposes: <strong>For Sale 20 · To Rent 0 · Daily Rentals 0</strong>. Products: <strong>Signature 12 · Hot 5 · Basic 3</strong>. Stat title 13px. [read] screenshot + [read] <code>fontSize="13px"</code></li>
+<li>Which icon and tone each row uses — they come from the API per row, so the pairing is <strong>[inf]</strong> from the screenshot's hues.</li>
+</ul>
+<h3 id="r-4-credits-balance-creditsquota">4 · Credits Balance — <code>CreditsQuota</code></h3>
+<ul>
+<li>Card body padding <strong>24</strong>, head <code>borderBottom: none</code>, title <code>.fz-16</code> weight 700, plus a circular <code>type="primary-light"</code> info button at <strong>18 × 18</strong> with ground <code>primary-light-3</code>. [read]</li>
+<li>Stats row: <code>&lt;Group template="repeat(6, auto) 1fr" gap="32px"&gt;</code> — statistic, 40px divider, statistic, divider, statistic, divider, plan block pushed to the end. [read]</li>
+<li><strong>Available Credits 72,880 · Used 2,120 · Total 75,000</strong>, all <code>lead</code> (<code>1.4285em</code>), weight 700. [read]</li>
+<li>Plan block: <strong>“Current Plan”</strong> (<code>fw-400</code>, secondary, right-aligned) over an 18px package icon and <strong>“Platinum Plus”</strong> at weight 700, <code>--icon-styled-width: 30px</code>. [read]</li>
+<li>Progress: <code>percent = available / total × 100</code> = <strong>97.17%</strong>, <code>showInfo={false}</code>, <code>strokeColor = platform.brandColor</code>. [read]</li>
+<li>Actions: <code>&lt;Flex justify="center" gap="10px"&gt;</code> with two <code>primaryOutlined</code> buttons at <code>w-100</code>: <strong>“Top-Up your Credits”</strong> (<code>IoAddCircleOutline</code>) and <strong>“Credits Usage”</strong> (<code>PiClockClockwiseFill</code>). [read]</li>
+<li>Progress bar height, track colour, and <code>brandColor</code> itself — <strong>[?]</strong></li>
+<li><code>packageColor</code> and the per-tier package icon (<code>tenantData.packages[slugType]</code>) — <strong>[?]</strong></li>
+</ul>
+<h3 id="r-5-performance-reportsleadstrafficsection-leadsstatsgraphwidget">5 · Performance — <code>ReportsLeadsTrafficSection</code> → <code>LeadsStatsGraphWidget</code></h3>
+<ul>
+<li>Card title row: <code>className="px-16 mb-16"</code>, <code>justify="space-between"</code>, <code>alignItems: start</code>. [read]</li>
+<li>Title <strong>“Performance”</strong> — this is <code>item.title</code> off the API. Note <code>dashboard.js</code> passes <code>chartTitle={t('Breakdown By Date')}</code>, but that prop is <strong>not what renders here</strong>. [read]</li>
+<li>Right: <code>&lt;Group template="repeat(2, 1fr)" gap 16 align center&gt;</code> = <code>Segmented</code> + <code>DateFilter</code>. [read]</li>
+<li>Segmented options <strong>All · For Sale · For Rent · Daily Rentals</strong> — the fourth exists only when <code>DAILY_RENTAL_ENABLED</code>, and it is on screen, so KSA has it on. [read]</li>
+<li>Date filter label <strong>“Last 30 Days”</strong>, default window <code>getVariousDates(29)</code>. [read]</li>
+<li>Metric tabs (<code>item.reach_data</code>): <strong>Views 24,853 · Clicks 387 · Leads 12</strong>, each a <code>lead</code> statistic with a 40px icon tile at <code>size 1.6em</code>. Tab box <code>padding 16px 1.6em</code>, <code>min-width 200px</code>, ground white, radius 0, gutter 0. [read]</li>
+<li>Active tab: <code>linear-gradient(color-mix(in srgb, var(--primary-color) 6%, #fff) 0%, #fff 80%)</code>, <code>box-shadow 0px 16px 0 -1px #fff, 2px 0px 21px -10px #41414164</code>, **ink bar moved to <code>top: 0</code>, height 3px**. [read]</li>
+<li>Tab-bar extra (<code>item.data_summary</code>, minus the row keyed <code>leads</code>): **Calls 3 · WhatsApp 9 · SMS 0 · Emails 0**, <code>Space size="large"</code>, 40px vertical dividers, <code>padding-inline 1.7143em</code>, preceded by a <code>4px</code> wide <code>blur(4px)</code> <code>#0007</code> rule. [read]</li>
+<li>Chip row: <code>RadioPill shape="round" size="small"</code> → <strong>All · Basic · Hot · Signature</strong>, each an antd <code>Badge</code> dot + label, <code>marginBottom 10px</code>. Rest ground <code>gray200</code>, checked ground <code>primary-light-3</code>, border <code>primary-light-1</code>, text <code>primary-color</code>, weight 700. [read]</li>
+<li>Body padding <strong>24</strong>. [read]</li>
+<li>The divider placement inside the extra strip: source writes <code>{i &gt; 1 &amp;&amp; &lt;Divider/&gt;}</code> over an array whose <code>leads</code> row is skipped in render but still counted in the index, so the first gap may carry no rule. The screenshot is too soft to settle it. <strong>[?]</strong></li>
+</ul>
+<h3 id="r-6-recent-listings-renderlistings">6 · Recent Listings — <code>renderListings()</code></h3>
+<ul>
+<li>Heading row is <strong>outside</strong> the card: `&lt;Row className="px-4 mb-8" justify="space-between" alignItems="baseline" gap 24&gt;<code> → <strong>“Recent Listings”</strong> (</code>.fz-16<code>, weight 700, </code>base-color`) and <strong>“View All Listings”</strong> (<code>LinkWithIcon</code>, colour <code>gray700</code>, trailing <code>FiArrowUpRight</code>). [read]</li>
+<li>Table card is <code>&lt;ListingContainer className="p-0"&gt;</code> — <strong>no body padding</strong>. [read]</li>
+<li>Columns, in order: <strong>Property · Timeline · Performance · Status · Upgrades · Actions</strong>. <code>Timeline</code> appears only for an <code>isCurrencyUser</code>; <code>Actions</code> is <code>fixed: 'right', width: 180</code>. [read] <code>listingUtilities.js</code> <code>listingTableColumnMapper(user,'active')</code> — and it matches the screenshot exactly.</li>
+<li>Per row, [read] from the screenshot: a numbered green badge on the thumbnail · price in <strong>ر.س</strong> · product tag (Basic / Hot / Signature) · a percentage · title as a teal link · bed / bath / area · location · <strong>Bayut ID</strong> and <strong>REGA ID</strong> · “Posted on «date»” + info icon · Views / Clicks / Leads · a <strong>Live</strong> pill · two 3 × 2 grids of circular icon buttons.</li>
+<li>Thumbnail size, row padding, row divider colour, header row height, the count badge's meaning and size, column widths other than <code>Actions: 180</code> — <strong>all [?]</strong></li>
+<li>Which glyph maps to which upgrade / action, and the enabled vs. disabled rule — <strong>[?]</strong></li>
+</ul>
+<hr>
+<h2 id="r-type">TYPE</h2>
+<p>Every distinct pair on the screen, with where it is used and its token.</p>
+<table><thead><tr><th>token</th><th>size / weight</th><th>used on</th><th>conf</th></tr></thead><tbody><tr><td><code>--fs-page-title</code></td><td><strong>20 / 700</strong></td><td>header “Overview”</td><td>[read] inline</td></tr><tr><td><code>--fs-card-title</code></td><td><strong>16 / 700</strong></td><td>every card title (<code>.fz-16</code>)</td><td>[read]</td></tr><tr><td><code>--fs-card-h4</code></td><td>18 / —</td><td><code>.ant-card-head-title h4</code>, overridden to 16 everywhere on this page</td><td>[read]</td></tr><tr><td><code>--fs-base</code></td><td><strong>14 / 400</strong></td><td>body, buttons, pill</td><td>[read]</td></tr><tr><td><code>--fs-stat-title</code></td><td><strong>1em = 14 / 400</strong></td><td>“Available Credits”, “Views”, “Calls”</td><td>[read]</td></tr><tr><td><code>--fs-13</code></td><td><strong>13 / 400</strong></td><td>the six breakdown stat titles (<code>fontSize="13px"</code>)</td><td>[read]</td></tr><tr><td><code>--fs-stat-value</code></td><td><strong>1.1428em ≈ 16 / 700</strong></td><td>inline metrics</td><td>[read]</td></tr><tr><td><code>--fs-stat-lead</code></td><td><strong>1.4285em = 20 / 700</strong></td><td>Views 24,853 · Available Credits 72,880</td><td>[read]</td></tr><tr><td><code>--fs-stat-leader</code></td><td><strong>1.5714em ≈ 22 / 700</strong></td><td>Active 20</td><td>[read]</td></tr><tr><td><code>--fs-12</code></td><td><strong>12 / 400</strong></td><td>banner message, tooltip title, chips</td><td>[read]</td></tr><tr><td><code>--fs-tag</code></td><td><strong>11 / 700</strong></td><td>product tags, IDs line, badge</td><td>[read] <code>tag-font-size</code></td></tr><tr><td><code>--fs-btn-sm</code></td><td>13 / 600</td><td><code>size="small"</code> buttons</td><td>[read]</td></tr><tr><td><code>--fs-chart-tick</code></td><td><strong>13</strong>, colour <code>#182b49</code></td><td>y-axis ticks</td><td>[read]</td></tr><tr><td><code>--fs-chart-tick-x</code></td><td>10</td><td>x-axis ticks</td><td><strong>[?]</strong> measured, not declared</td></tr><tr><td>weights</td><td>400 / 500 / 600 / 700 / 900</td><td><code>.fw-*</code> utilities</td><td>[read]</td></tr><tr><td>line-height</td><td>body <strong>1.571</strong> · statistic <strong>1.4</strong> · page title <strong>1.2</strong> · pill <strong>1</strong></td><td>[read]</td></tr></tbody></table>
+<p><strong>A real conflict, unresolved.</strong> The styled-components theme sets <code>'font-family': 'Lato, Droid Arabic Kufi, sans-serif'</code> while the antd v5 token block in the <em>same file</em> sets <code>fontFamily: 'Figtree, Droid Arabic Kufi, sans-serif'</code>. Both ship. Which one paints a given node depends on which layer wins there. I used <strong>Lato</strong>. <strong>[?]</strong></p>
+<hr>
+<h2 id="r-colour">COLOUR</h2>
+<p>Named by role, every value from <code>src/theme/index.js</code>. <strong>All [read]</strong> unless marked.</p>
+<table><thead><tr><th>role</th><th>token</th><th>value</th></tr></thead><tbody><tr><td>brand</td><td><code>--primary</code></td><td><code>#006169</code></td></tr><tr><td>brand tints</td><td><code>--primary-light-1 … -4</code></td><td><code>#A6C8CA</code> <code>#CCDFE1</code> <code>#E1F2F0</code> <code>#F2FAFA</code></td></tr><tr><td>page ground</td><td><code>--bg-content</code></td><td><code>#F6F7FB</code></td></tr><tr><td>surface</td><td><code>--card-bg</code>, <code>--header-bg</code>, <code>--sider-bg</code></td><td><code>#fff</code></td></tr><tr><td>card border</td><td><code>--gray-100</code></td><td><code>#f0f0f0</code></td></tr><tr><td>sider border</td><td><code>--gray-400</code></td><td><code>#DEDEDE</code></td></tr><tr><td>input border</td><td><code>--border-normal</code></td><td><code>#DEDEDE</code></td></tr><tr><td>hairline</td><td><code>--border-light</code></td><td><code>#F1F2F6</code></td></tr><tr><td>text — body</td><td><code>--base</code> / <code>--heading</code></td><td><code>#222</code></td></tr><tr><td>text — antd default</td><td><code>--dark</code></td><td><code>#272B41</code></td></tr><tr><td>text — muted / label</td><td><code>--gray-700</code></td><td><code>#707070</code></td></tr><tr><td>text — meta</td><td><code>--light-gray</code></td><td><code>#868EAE</code></td></tr><tr><td>text — placeholder</td><td><code>--gray-600</code></td><td><code>#9D9D9D</code></td></tr><tr><td>default button fg</td><td><code>--gray-color</code></td><td><code>#5A5F7D</code></td></tr><tr><td>success</td><td><code>--success</code></td><td><code>#28b16d</code></td></tr><tr><td>warning</td><td><code>--warning</code></td><td><code>#f0a742</code></td></tr><tr><td>danger / badge-danger</td><td><code>--danger</code></td><td><code>#f73131</code></td></tr><tr><td>info</td><td><code>--info</code> / <code>--info-alt</code></td><td><code>#2C99FF</code> / <code>#479eeb</code></td></tr><tr><td>chip rest ground</td><td><code>--gray-200</code></td><td><code>#f5f5f5</code></td></tr><tr><td>tile default ground</td><td><code>--bg-gray-normal</code></td><td><code>#F4F5F7</code></td></tr><tr><td>tag default ground</td><td><code>--bg-gray-deep</code></td><td><code>#EFF0F3</code></td></tr><tr><td>product · signature</td><td><code>--color-signature</code></td><td><code>#af6fff</code></td></tr><tr><td>product · hot</td><td><code>--color-hot</code></td><td><code>#f73131</code></td></tr><tr><td>product · basic</td><td><code>--color-basic</code></td><td><code>#28b16d</code></td></tr><tr><td>purpose · for sale</td><td><code>--color-for-sale</code></td><td><code>#2d3e9b</code></td></tr><tr><td>purpose · for rent</td><td><code>--color-for-rent</code></td><td><code>#479eeb</code></td></tr><tr><td>metric · clicks</td><td><code>--color-clicks</code></td><td><code>#f0a742</code></td></tr><tr><td>pill text</td><td><code>--pill-text</code></td><td><code>#767676</code></td></tr><tr><td>pill border</td><td><code>--pill-border</code></td><td><code>rgb(240,240,240)</code></td></tr><tr><td>classified icon</td><td><code>--pill-icon</code></td><td><code>rgba(40,177,109,1)</code></td></tr><tr><td>chart gridline</td><td><code>--chart-grid</code></td><td><code>rgba(0,0,0,0.1)</code></td></tr><tr><td>chart zero line</td><td><code>--chart-zero-line</code></td><td><code>#e5e9f2</code></td></tr><tr><td>chart tick</td><td><code>--chart-tick</code></td><td><code>#182b49</code></td></tr><tr><td>footer ground / text</td><td><code>--footer-bg</code> / <code>--footer-text</code></td><td><code>rgba(255,255,255,.90)</code> / <code>rgba(0,0,0,0.65)</code></td></tr></tbody></table>
+<p>Tile grounds are the icon's own colour at <strong>alpha 0.08</strong> — <code>IconStyled</code> builds them with <code>chroma(color).alpha(0.08)</code>. [read]</p>
+<p><strong>Cannot tell:</strong> the chart line colour and the credit-meter fill. Both are <code>platform.brandColor</code>, which arrives from the <code>/platforms</code> API and is not in the repo. I used <code>--primary</code>. <strong>[?]</strong></p>
+<hr>
+<h2 id="r-chart">CHART</h2>
+<table><thead><tr><th>item</th><th>value</th><th>conf</th></tr></thead><tbody><tr><td>type</td><td>Chart.js line (<code>ChartjsAreaChart</code>), <code>fill: false</code></td><td>[read]</td></tr><tr><td>series</td><td>one, <code>borderWidth 2</code>, <code>pointBorderColor '#fff'</code></td><td>[read]</td></tr><tr><td>y range</td><td><strong>0 → 2500</strong>, ticks every 500, <code>beginAtZero</code>, <code>min: 0</code></td><td>[read] screenshot; <code>beginAtZero/min</code> [read] repo</td></tr><tr><td>y tick type</td><td>13px, <code>#182b49</code></td><td>[read]</td></tr><tr><td>y gridlines</td><td><code>rgba(0,0,0,0.1)</code>, <code>borderDash [3,3]</code></td><td>[read]</td></tr><tr><td>zero line</td><td><code>#e5e9f2</code>, width 1 (y) / width 2 (x)</td><td>[read]</td></tr><tr><td>x gridlines</td><td><code>color: 'transparent'</code>, <code>tickMarkLength: 0</code></td><td>[read]</td></tr><tr><td>x ticks</td><td><code>padding: 10</code>; <strong>Aug 23 → Sep 21, 30 daily labels</strong></td><td>[read] repo; range [read] screenshot</td></tr><tr><td>tooltip</td><td>ground <code>#fff</code>, <code>box-shadow 0 8px 10px #9299B815</code>, <code>padding 10px 12px</code>, <code>radius 3px</code>, <code>border 1px #F1F2F6</code>, 5px white caret underneath, <code>min-width 175px</code></td><td>[read]</td></tr><tr><td>tooltip title</td><td>12px / 500 / Inter / capitalised / <code>margin-bottom 4</code>, colour <code>gray-color</code></td><td>[read]</td></tr><tr><td>tooltip row</td><td>13px / 500 / <code>dark-color</code>; label is `<code> </code>${metricLabel}: ${yLabel}<code> </code>`</td><td>[read]</td></tr><tr><td>tooltip on screen</td><td><strong>“Aug 23”</strong> / <strong>“Views: 0”</strong></td><td>[read] screenshot</td></tr><tr><td><strong>point markers</strong></td><td>visible on screen — <strong>but the source sets <code>pointRadius: '0'</code></strong> (a string), so something downstream overrides it</td><td><strong>conflict</strong></td></tr><tr><td>marker radius</td><td>2.6px</td><td><strong>[?]</strong> measured</td></tr><tr><td>painted height</td><td><code>height={64}</code> with <code>maintainAspectRatio: true</code>, so it is a <em>ratio</em>, not a CSS height</td><td><strong>[?]</strong></td></tr><tr><td><strong>the 30 data values</strong></td><td><strong>traced off the screenshot</strong> — treat every point as ±40</td><td><strong>[inf]</strong></td></tr></tbody></table>
+<p>Two dead-code notes found while reading: <code>.chartjs-tooltip-key</code> is declared <code>background: "pink"</code> — a quoted string, so it is invalid CSS and does nothing. And <code>.tooltip-value</code> is <code>#63b963</code> at 22/600, a green that appears nowhere else in the theme and is not what this tooltip variant renders.</p>
+<hr>
+<h2 id="r-everything-i-cannot-tell-the-questions">Everything I cannot tell — the questions</h2>
+<p>Answer these and I will fill them; I will not guess a number for any of them.</p>
+<p><strong>Geometry</strong></p>
+<ol>
+<li>Rail item corner radius, and the vertical gap between rail items.</li>
+<li>The content column's outer gutter (left/right and top).</li>
+<li>Card head padding — theme says 16, antd token says 12, screen looks like 24.</li>
+<li><code>DateFilter</code> field height: the 36px control height or the 44px input height?</li>
+<li>Listing thumbnail box (w × h), listing row vertical padding, table header row height.</li>
+<li>Chart canvas painted height at a 1440 viewport.</li>
+</ol>
+<p><strong>Colour</strong></p>
+<ol>
+<li><code>platform.brandColor</code> for bayut.sa — drives the chart line, the credit meter and the tab ink bar.</li>
+<li><code>getClassificationColor()</code> map — the avatar and banner ring stroke.</li>
+<li><code>tenantData.packages[slugType].packageColor</code> and icon for Platinum Plus.</li>
+<li>The listing score percentage colour, and its bands. The theme's <code>health-color-*</code> are pastels (<code>#FF7258 / #FFDC65 / #98DAB9</code>) and the screen is clearly not those.</li>
+<li>The “All” chip's dot colour (<code>types[0].borderColor</code> off the reports API).</li>
+</ol>
+<p><strong>Type</strong></p>
+<ol>
+<li><strong>Lato or Figtree?</strong> See the conflict above — this one changes every line of text.</li>
+<li>Is the leader statistic really <code>1.5714em</code> (21.9996px), or is live a flat 22px?</li>
+</ol>
+<p><strong>Identity</strong></p>
+<ol>
+<li>The 11 rail icon glyphs and the 12 circular upgrade/action glyphs.</li>
+<li>Whether the divider before “Calls” in the tab-bar extra strip renders.</li>
+<li>The FEEDBACK rail — I found no source for it in <code>profolio-reactjs</code> at all.</li>
+</ol>
+<hr>
+<h2 id="r-one-housekeeping-note">One housekeeping note</h2>
+<p><code>dashboard.html</code> carries the real account data off your screenshot: the agency name, ten Bayut and REGA listing IDs, prices and locations. No phone numbers or email addresses. If this file is going anywhere beyond the team, say the word and I will swap the table for fixtures.</p>
+  </article>
+</div>
+
+<script>
+/* Tabs and in-page jumps are buttons driving scrollIntoView, never <a href="#…">.
+   A hash link counts as a navigation inside a sandboxed viewer and pops an
+   "external link" dialog; this does not. */
+(function () {
+  var views = { dashboard: 'view-dashboard', catalogue: 'view-catalogue', report: 'view-report' };
+  var tabs = document.querySelectorAll('.cmb-tab');
+
+  function show(name) {
+    Object.keys(views).forEach(function (k) {
+      document.getElementById(views[k]).hidden = (k !== name);
+    });
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.view === name)); });
+    window.scrollTo(0, 0);
+    try { localStorage.setItem('profolio-ksa-view', name); } catch (e) {}
+  }
+
+  tabs.forEach(function (t) { t.addEventListener('click', function () { show(t.dataset.view); }); });
+
+  // the catalogue's own nav ships as <a href="#c-…">; intercept so it scrolls
+  // instead of navigating
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('[data-go], a[href^="#"]');
+    if (!el) return;
+    var id = el.dataset.go || el.getAttribute('href').slice(1);
+    e.preventDefault();
+    if (!id) return;
+    var target = document.getElementById(id);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  try {
+    var saved = localStorage.getItem('profolio-ksa-view');
+    if (saved && views[saved]) show(saved);
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>

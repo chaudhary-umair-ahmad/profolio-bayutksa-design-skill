@@ -122,12 +122,12 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
    Custom-property values that carry DATA (a percentage, a chart point),
    not presentation. Kept here so the body has zero style attributes.
    ──────────────────────────────────────────────────────────────────── */
-#ring-90{--ring-pct:90}
-#ring-40{--ring-pct:40}
-#ring-100{--ring-pct:100;--ring-color:var(--success)}
-#meter-97{--meter-pct:97.17}
-#meter-50{--meter-pct:50}
-#meter-8{--meter-pct:8}
+.pct-90{--ring-pct:90}
+.pct-40{--ring-pct:40}
+.pct-100{--ring-pct:100;--ring-color:var(--success)}
+.fill-97{--meter-pct:97.17}
+.fill-50{--meter-pct:50}
+.fill-8{--meter-pct:8}
 </style>
 
 <nav class="cat-nav">
@@ -241,7 +241,7 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
           <a class="pf-classified-pill" href="#c-header"><svg class="i i-16"><use href="#i-external"/></svg>Go to Bayut.sa</a>
           <button class="pf-btn" data-variant="primary" type="button"><svg class="i i-16"><use href="#i-plus-square"/></svg><span>Post Listing</span></button>
           <button class="pf-bell" type="button" aria-label="Notifications"><svg class="i i-20"><use href="#i-bell"/></svg><span class="pf-badge">46</span></button>
-          <span class="pf-progress-ring" id="ring-90"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span>
+          <span class="pf-progress-ring pct-90"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span>
         </div>
       </div>
     </div>
@@ -360,10 +360,10 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
       stroke colour is <code>getClassificationColor(profile_completion.classification)</code>.</span></header>
   <div class="cat-body">
     <div class="cat-row">
-      <div class="cat-item"><span class="cat-label">90% · header</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring" id="ring-90"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span></div></div>
-      <div class="cat-item"><span class="cat-label">40%</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring" id="ring-40"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span></div></div>
-      <div class="cat-item"><span class="cat-label">100%</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring" id="ring-100"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span></div></div>
-      <div class="cat-item"><span class="cat-label">with square score badge (banner)</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring" id="ring-90"><span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span><span class="pf-ring-label">90%</span></span></div></div>
+      <div class="cat-item"><span class="cat-label">90% · header</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring pct-90"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span></div></div>
+      <div class="cat-item"><span class="cat-label">40%</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring pct-40"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span></div></div>
+      <div class="cat-item"><span class="cat-label">100%</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring pct-100"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span></div></div>
+      <div class="cat-item"><span class="cat-label">with square score badge (banner)</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring pct-90"><span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span><span class="pf-ring-label">90%</span></span></div></div>
     </div>
     <table class="cat-spec">
       <tr><th>tokens</th><td><code>--avatar-ring</code> 34px header · <code>--banner-ring</code> 38px banner · <code>--ring-pct</code> (data) · <code>--ring-color</code></td></tr>
@@ -385,7 +385,7 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
   <div class="cat-body">
     <div class="cat-row"><div class="cat-item cat-fill"><span class="cat-label">default · score &lt; 100</span>
       <div class="cat-stage"><div class="pf-alert">
-        <span class="pf-progress-ring" id="ring-90"><span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span><span class="pf-ring-label">90%</span></span>
+        <span class="pf-progress-ring pct-90"><span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span><span class="pf-ring-label">90%</span></span>
         <div class="pf-alert-body">
           <div class="pf-alert-text">
             <div class="pf-alert-title">Your profile is incomplete</div>
@@ -396,7 +396,7 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
       </div></div></div></div>
     <div class="cat-row"><div class="cat-item cat-fill"><span class="cat-label">score = 100 · close affordance replaces the CTA</span>
       <div class="cat-stage"><div class="pf-alert">
-        <span class="pf-progress-ring" id="ring-100"><span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span><span class="pf-ring-label">100%</span></span>
+        <span class="pf-progress-ring pct-100"><span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span><span class="pf-ring-label">100%</span></span>
         <div class="pf-alert-body">
           <div class="pf-alert-text"><div class="pf-alert-title">Your profile is complete</div>Keep your details up to date.</div>
           <button class="pf-btn" data-variant="link" type="button" aria-label="Dismiss"><svg class="i i-20"><use href="#i-plus-square"/></svg></button>
@@ -569,9 +569,9 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
       72,880 / 75,000 = <strong>97.17%</strong>, which matches the near-full bar.</span></header>
   <div class="cat-body">
     <div class="cat-row">
-      <div class="cat-item cat-fill"><span class="cat-label">97.17% (live)</span><div class="cat-stage" data-ground="white"><span class="pf-credit-meter" id="meter-97"></span></div></div>
-      <div class="cat-item cat-fill"><span class="cat-label">50%</span><div class="cat-stage" data-ground="white"><span class="pf-credit-meter" id="meter-50"></span></div></div>
-      <div class="cat-item cat-fill"><span class="cat-label">8% · near-empty</span><div class="cat-stage" data-ground="white"><span class="pf-credit-meter" id="meter-8"></span></div></div>
+      <div class="cat-item cat-fill"><span class="cat-label">97.17% (live)</span><div class="cat-stage" data-ground="white"><span class="pf-credit-meter fill-97"></span></div></div>
+      <div class="cat-item cat-fill"><span class="cat-label">50%</span><div class="cat-stage" data-ground="white"><span class="pf-credit-meter fill-50"></span></div></div>
+      <div class="cat-item cat-fill"><span class="cat-label">8% · near-empty</span><div class="cat-stage" data-ground="white"><span class="pf-credit-meter fill-8"></span></div></div>
     </div>
     <div class="cat-row"><div class="cat-item cat-fill"><span class="cat-label">in context · <code>.pf-credit-stats</code> (Group template="repeat(6, auto) 1fr" gap 32)</span>
       <div class="cat-stage" data-ground="white" data-stack="true">
@@ -585,7 +585,7 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
           <div class="pf-plan"><div class="pf-plan-label">Current Plan</div>
             <div class="pf-plan-badge"><span class="pf-icon-tile" data-size="xs" data-tone="plan"><svg class="i i-14"><use href="#i-diamond"/></svg></span>Platinum Plus</div></div>
         </div>
-        <span class="pf-credit-meter" id="meter-97"></span>
+        <span class="pf-credit-meter fill-97"></span>
         <div class="pf-credit-actions">
           <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#i-plus-circle"/></svg><span>Top-Up your Credits</span></button>
           <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#i-history"/></svg><span>Credits Usage</span></button>

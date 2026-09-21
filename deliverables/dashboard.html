@@ -15,9 +15,8 @@
    Custom-property values carrying DATA (a percentage), not presentation.
    Kept out of the body so there is not one style attribute in the markup.
    ──────────────────────────────────────────────────────────────────── */
-#ring-header{--ring-pct:90}
-#ring-banner{--ring-pct:90}
-#meter-credits{--meter-pct:97.17}   /* 72,880 / 75,000 — QuotaCreditsStatWidget */
+.pct-90{--ring-pct:90}                /* profile completion score */
+.fill-97{--meter-pct:97.17}           /* 72,880 / 75,000 — QuotaCreditsStatWidget */
 </style>
 </head>
 <body>
@@ -122,7 +121,7 @@
         <a class="pf-classified-pill" href="#"><svg class="i i-16"><use href="#i-external"/></svg>Go to Bayut.sa</a>
         <button class="pf-btn" data-variant="primary" type="button"><svg class="i i-16"><use href="#i-plus-square"/></svg><span>Post Listing</span></button>
         <button class="pf-bell" type="button" aria-label="Notifications"><svg class="i i-20"><use href="#i-bell"/></svg><span class="pf-badge">46</span></button>
-        <span class="pf-progress-ring" id="ring-header"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span>
+        <span class="pf-progress-ring pct-90"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span>
       </div>
     </header>
 
@@ -130,7 +129,7 @@
 
       <!-- ── TruBrokerAndProfileCard → ProfileCompletionBanner ──────── -->
       <div class="pf-alert">
-        <span class="pf-progress-ring" id="ring-banner">
+        <span class="pf-progress-ring pct-90">
           <span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span>
           <span class="pf-ring-label">90%</span>
         </span>
@@ -206,7 +205,7 @@
                   <div class="pf-plan-badge"><span class="pf-icon-tile" data-size="xs" data-tone="plan"><svg class="i i-14"><use href="#i-diamond"/></svg></span>Platinum Plus</div>
                 </div>
               </div>
-              <span class="pf-credit-meter" id="meter-credits"></span>
+              <span class="pf-credit-meter fill-97"></span>
               <div class="pf-credit-actions">
                 <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#i-plus-circle"/></svg><span>Top-Up your Credits</span></button>
                 <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#i-history"/></svg><span>Credits Usage</span></button>
