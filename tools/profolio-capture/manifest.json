@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Profolio Capture",
+  "version": "1.0.0",
+  "description": "Records a Profolio screen's layout and computed styles so the design system can be measured against it. Never records text, values or ids.",
+  "permissions": ["activeTab", "scripting", "downloads"],
+  "action": {
+    "default_title": "Capture this Profolio screen",
+    "default_popup": "popup.html"
+  },
+  "background": { "service_worker": "background.js" },
+  "icons": { "128": "icon.png" }
+}

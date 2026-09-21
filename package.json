@@ -11,11 +11,12 @@
     "site": "node scripts/site.mjs",
     "combine": "node scripts/combine.mjs",
     "bundle": "node scripts/bundle.mjs",
-    "check": "node scripts/check.mjs",
+    "check": "node scripts/sync.mjs --check && node scripts/check.mjs && node scripts/test-capture.mjs",
     "diff": "node scripts/reconcile.mjs --diff",
     "all": "npm run icons && npm run fonts && npm run antd && npm run antd-css && npm run layers && npm run build && npm run site && npm run bundle && npm run combine && npm run check",
     "layers": "node scripts/extract-layers.mjs --repo ../profolio-reactjs-copy --tenant bayut",
-    "antd-css": "node scripts/antd-css.mjs --repo ../profolio-reactjs-copy"
+    "antd-css": "node scripts/antd-css.mjs --repo ../profolio-reactjs-copy",
+    "test-capture": "node scripts/test-capture.mjs"
   },
   "devDependencies": {
     "antd": "5.20",
