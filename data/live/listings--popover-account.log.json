@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": true,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1918,
+  "note": "header avatar — 400×233 popover: name, role, email, verified badges, Account Settings, Sign Out",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

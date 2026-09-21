@@ -50,6 +50,7 @@
   --gray-color:#5A5F7D;        /* default button content */
   --extra-light:#ADB4D2;       /* extraLightColor — iconCircled's default fg */
   --light-gray:#868EAE;        /* lightGrayColor — meta text */
+  --disabled-opacity:0.54;     /* utils.less:142 [disabled] */
   --black:#000;                /* page title colour, set explicitly in withAdminLayout */
   --white:#fff;
 
@@ -211,6 +212,7 @@
   --fs-10:10px;                        /* utils.less @fontSizes floor */
   --fs-12:12px;                        /* .fz-12 banner message, tooltip-title */
   --fs-18:18px;                        /* utils.less @fontSizes */
+  --fs-20:20px;                        /* .fs20 — the Download App modal title */
   --fs-tag:11px;                        /* theme tag-font-size */
   --fs-chart-tick:13px;                /* chart yAxes ticks fontSize */
   --fs-chart-tick-x:10px;              /* [px] x labels — 30 daily ticks only fit at ~10px */
@@ -385,6 +387,77 @@
   --pager-text:var(--gray-color);      /* #5A5F7D */
   --pager-nav-fs:12px;                 /* antd fontSizeSM on the chevrons */
 
+  /* ── OVERLAYS ── measured from the product's own render, state by state:
+     data/live/listings--modal-delete, --drawer-filters, --popover-account.
+     antd portals these onto <body>, which is why capture.js had to stop
+     walking from .ant-layout before any of it could be measured. */
+  --mask-bg:rgba(0, 0, 0, 0.45);       /* .ant-modal-mask and .ant-drawer-mask, identical */
+  --modal-w:620px;                     /* the listing modals; antd's default is 520 */
+  --modal-w-sm:360px;                  /* Download App */
+  --modal-radius:8px;                  /* .ant-modal-content */
+  --modal-shadow:0 2px 8px rgba(0, 0, 0, 0.15);
+  --modal-top:250px;                   /* measured y of a 400-tall modal in a 900 viewport */
+  --modal-head-pad:16px 24px;         /* head measures 57 tall, padding-inline 24 */
+  --modal-body-pad:24px;
+  --modal-foot-pad:16px 24px;         /* MEASURED 16, not the 20 I had: the foot
+                                         is 73 tall, and 16+41+16 is what makes 73
+                                         — data/live/listings--modal-delete */
+  --drawer-w:450px;                    /* .ant-drawer-content */
+  --drawer-head-h:91px;
+  --drawer-head-pad:16px;
+  --drawer-body-pad:16px;
+  --drawer-foot-pad:24px 16px;
+  --drawer-border:rgba(5, 5, 5, 0.06); /* colorSplit — the header/footer rules */
+  --lh-modal-title:1.5;                /* antd lineHeightHeading5 — measured 24px at 16px */
+  /* the two shell popovers, measured. They are different widths AND different
+     radii — the account menu rounds 10, the notification centre 8.
+       data/live/listings--popover-account.capture.json        400x233, radius 10
+       data/live/listings--popover-notifications.capture.json  590x776, radius 8 */
+  --popover-w-account:400px;
+  --popover-w-notifications:590px;
+  --popover-radius-noti:8px;           /* antd's own borderRadiusLG on .ant-popover-inner */
+  --avatar-40:40px;                    /* .user-info avatar — measured 40x40, radius 50% */
+  --icon-20:20px;                      /* the 20px glyph inside it */
+  --tag-pad-inline:10.2px;             /* .ant-tag padding-inline — antd's 0.85em at 12px */
+  --tag-h:26px;                        /* measured height of the verified pills */
+  --tag-gap:6px;                       /* .ant-space-compact gap inside the pill */
+  --menu-item-gap:10px;                /* auth-info-style.js:293 .dropdwon-links a gap */
+  --menu-item-pad:12px 4px;            /* auth-info-style.js:294 */
+  --noti-row-gap:20px;                 /* .ant-card-body inner flex gap */
+  --qr-size:166px;                     /* .ant-image in the Download App modal */
+  --store-badge-w:111px;               /* App Store badge svg — Google Play is 113 */
+  --store-badge-h:33px;
+  --popover-radius:10px;               /* .ant-popover-inner */
+  --popover-arrow:16px;
+  --popover-shadow:0 6px 16px rgba(0,0,0,.08), 0 3px 6px -4px rgba(0,0,0,.12), 0 9px 28px 8px rgba(0,0,0,.05);
+  /* MEASURED, and it corrects an assumption. Both masks compute z-index 1000
+     (antd's zIndexPopupBase) — and the rail is 1002, so THE RAIL STAYS BRIGHT
+     ABOVE THE MASK. At 1050 ours dimmed it, and the design QA put shell.sider
+     at 99.4% different in every masked state.
+       data/live/listings--modal-delete.capture.json   .ant-modal-mask  z 1000
+       data/live/listings--drawer-filters.capture.json .ant-drawer-mask z 1000
+     A popover is not masked and the product lifts it clear of everything:
+       data/live/listings--popover-account.capture.json .ant-popover   z 99999 */
+  --overlay-z:1000;
+  --popover-z:99999;
+  /* MEASURED now, from the product's own empty tab — these were [TBC] guesses.
+     data/live/listings--tab-removed.capture.json: the wrapper is a grid with
+     32px gaps and a 300px minimum, the illustration is 164x89 intrinsic and
+     the title is an antd h5 at 18/600 in #000. */
+  --empty-gap:32px;
+  --empty-min-h:300px;
+  --empty-title-mb:9px;                /* antd Title marginBottom 0.5em at 18px */
+  --empty-text-w:360px;                /* [TBC] no message renders on this tab */
+  /* the prototype bar is not a product component; its two values live here so
+     the no-raw-colour rule holds across the whole stylesheet */
+  --proto-bar-shadow:0 6px 16px rgba(0, 0, 0, 0.24);
+  --proto-bar-btn-bg:rgba(255, 255, 255, 0.14);
+  /* radio — measured in data/live/listings--modal-delete: the wrapper is a
+     baseline-aligned flex row, the dot 16px with a 50% radius on #d9d9d9 */
+  --radio-size:16px;
+  --radio-border:#d9d9d9;              /* antd colorBorder */
+  --radio-label-color:var(--gray-700);
+
   --classified-pill-h:36px;
   --classified-pill-minw:148.71px;
   --classified-pill-pad-x:16px;
@@ -464,6 +537,10 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 [hidden]{display:none!important}
+/* utils.less:142 — a GLOBAL rule, and the design QA found it by measuring the
+   product's Clear filters button at opacity 0.54 while ours sat at 1. Anything
+   disabled anywhere in Profolio is dimmed and inert. */
+[disabled]{opacity:var(--disabled-opacity);pointer-events:none}
 a{text-decoration:none;color:inherit}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 svg{display:block}
@@ -628,7 +705,7 @@ table{border-collapse:collapse}
 .pf-btn:focus-visible,
 .pf-btn[data-state="focus"]{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
 .pf-btn[disabled],
-.pf-btn[data-state="disabled"]{opacity:.45;cursor:not-allowed}
+.pf-btn[data-state="disabled"]{opacity:var(--disabled-opacity);cursor:not-allowed}
 .pf-btn[data-state="loading"]{opacity:.65;pointer-events:none}
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -974,7 +1051,7 @@ table{border-collapse:collapse}
   font-weight:var(--fw-700);
 }
 .pf-chip[disabled],
-.pf-chip[data-state="disabled"]{opacity:.45;cursor:not-allowed}
+.pf-chip[data-state="disabled"]{opacity:var(--disabled-opacity);cursor:not-allowed}
 .pf-dot{width:var(--sp-8);height:var(--sp-8);border-radius:var(--radius-round);background:var(--gray-500);flex:none}
 .pf-dot[data-tone="all"]      {background:var(--dark)}
 .pf-dot[data-tone="basic"]    {background:var(--color-basic)}
@@ -1292,7 +1369,7 @@ table{border-collapse:collapse}
 .pf-round-action[data-tone="video"]    {--ra-fg:var(--svc-videography);  --ra-bg:var(--tint-videography)}
 .pf-round-action[data-tone="drone"]    {--ra-fg:var(--svc-drone);        --ra-bg:var(--tint-drone)}
 .pf-round-action[data-tone="muted"]    {--ra-fg:var(--extra-light);      --ra-bg:var(--bg-gray-normal)}
-.pf-round-action[data-state="disabled"]{opacity:.45;cursor:not-allowed}
+.pf-round-action[data-state="disabled"]{opacity:var(--disabled-opacity);cursor:not-allowed}
 .pf-round-action:hover,
 .pf-round-action[data-state="hover"]{filter:brightness(.96)}
 
@@ -1491,6 +1568,9 @@ table{border-collapse:collapse}
 }
 .pf-tabs{display:flex;gap:var(--tab-gap);margin-block-end:calc(-1 * var(--border-w))}
                                                                   /* the ink bar sits on the head border */
+/* antd wraps the label in .ant-tabs-tab-btn, a BLOCK 22px tall (14 x 1.571);
+   inline made ours 17 and the QA read a 5px-shorter crop as a difference */
+.pf-tab-label{display:block}
 .pf-tab{
   padding:var(--tab-pad-block) var(--sp-0);
   border:0;
@@ -1558,3 +1638,326 @@ table{border-collapse:collapse}
 .pf-page-item[aria-disabled="true"]{color:var(--text-disabled)}
 .pf-page-item[aria-disabled="true"] button{cursor:not-allowed}
 .i-12{width:var(--fs-12);height:var(--fs-12)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · overlays — modal, drawer, popover
+   Measured from the product with the harness driving it:
+     data/live/listings--modal-delete.capture.json     620 wide, radius 8
+     data/live/listings--drawer-filters.capture.json   450 wide, 91 head, 91 foot
+     data/live/listings--popover-account.capture.json  400x233, radius 10
+   All three are portalled onto <body> by antd. Here they are siblings of
+   .pf-shell, hidden until prototype.js shows them.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-mask{
+  position:fixed;
+  inset:0;
+  z-index:var(--overlay-z);
+  background:var(--mask-bg);
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+}
+.pf-mask[hidden]{display:none}
+
+.pf-modal{
+  width:var(--modal-w);
+  max-width:calc(100vw - var(--sp-32));
+  margin-block-start:var(--modal-top);
+  background:var(--card-bg);
+  border-radius:var(--modal-radius);
+  box-shadow:var(--modal-shadow);
+  display:flex;
+  flex-direction:column;
+  max-height:calc(100vh - var(--sp-48));
+}
+.pf-modal[data-size="small"]{width:var(--modal-w-sm)}
+.pf-modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--sp-16);
+  padding:var(--modal-head-pad);
+  /* #f0f0f0, measured — NOT the colorSplit rgba(5,5,5,.06) the drawer uses */
+  border-block-end:var(--border-w) solid var(--gray-100);
+}
+/* the title is BOLD and its line-height is antd's lineHeightHeading5 (1.5 →
+   24px at 16px). It read 600/25.14 here and the state QA put the region 30.6%
+   different — data/live/listings--modal-delete.capture.json .ant-modal-title */
+.pf-modal-title{font-size:var(--fs-card-title);font-weight:var(--fw-700);line-height:var(--lh-modal-title);color:var(--base)}
+/* a modal may pass its own title node — Download App passes .fs20.fw-600, so
+   the title reads 20/600 there and 16/700 everywhere else. Measured, both. */
+.pf-modal-title[data-size="lg"]{font-size:var(--fs-20);font-weight:var(--fw-600)}
+.pf-modal-lead{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--base)}
+.pf-modal-body{padding:var(--modal-body-pad);overflow:auto;flex:1;min-height:var(--sp-0)}
+.pf-modal-foot{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:var(--sp-8);
+  padding:var(--modal-foot-pad);
+  border-block-start:var(--border-w) solid var(--gray-100);   /* #f0f0f0, measured */
+}
+.pf-overlay-close{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:var(--sp-24);height:var(--sp-24);
+  border:0;background:none;color:var(--gray-700);cursor:pointer;padding:var(--sp-0);
+}
+.pf-overlay-close:hover{color:var(--base)}
+
+/* the drawer slides from the inline end; .ant-drawer-content is 450 wide, full height */
+.pf-drawer{
+  position:fixed;
+  inset-block:0;
+  inset-inline-end:0;
+  z-index:var(--overlay-z);
+  width:var(--drawer-w);
+  max-width:100vw;
+  background:var(--card-bg);
+  display:flex;
+  flex-direction:column;
+}
+.pf-drawer[hidden]{display:none}
+.pf-drawer-head{
+  min-height:var(--drawer-head-h);
+  padding:var(--drawer-head-pad);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--sp-16);
+  font-size:var(--fs-card-title);
+}
+.pf-drawer-body{padding:var(--drawer-body-pad);overflow:auto;flex:1;min-height:var(--sp-0)}
+.pf-drawer-foot{
+  padding:var(--drawer-foot-pad);
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:var(--sp-8);
+}
+
+/* a popover is anchored, not masked — the notification centre and the account
+   menu are both .ant-popover, not the drawer and dropdown I had assumed */
+.pf-popover{
+  position:absolute;
+  z-index:var(--popover-z);
+  background:var(--card-bg);
+  border-radius:var(--popover-radius);
+  box-shadow:var(--popover-shadow);
+  overflow:hidden;
+}
+.pf-popover[hidden]{display:none}
+.pf-popover[data-anchor="header-end"]{inset-block-start:var(--header-h);inset-inline-end:var(--sp-16)}
+.pf-popover-title{
+  padding:var(--sp-12) var(--sp-16);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+  font-weight:var(--fw-600);
+}
+.pf-popover-body{padding:var(--sp-12) var(--sp-16)}
+.pf-popover-item{
+  display:flex;align-items:center;gap:var(--sp-12);
+  padding:var(--sp-12) var(--sp-16);
+  border-block-start:var(--border-w) solid var(--drawer-border);
+  color:var(--base);cursor:pointer;background:none;border-inline:0;border-block-end:0;width:100%;
+  font:inherit;text-align:start;
+}
+.pf-popover-item:hover{background:var(--primary-light-4)}
+
+/* the two shell popovers are fixed widths, not content-sized */
+.pf-popover[data-kind="account"]{width:var(--popover-w-account)}
+.pf-popover[data-kind="notifications"]{width:var(--popover-w-notifications);border-radius:var(--popover-radius-noti)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · account menu — the popover behind the header avatar
+   auth-info-style.js:250 .user-info · :280 .dropdwon-links
+   data/live/listings--popover-account.capture.json
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-user-info{padding-inline:var(--sp-16);padding-block:var(--sp-12) var(--sp-0)}
+.pf-user-row{display:flex;align-items:center;gap:var(--menu-item-gap)}
+.pf-avatar{
+  inline-size:var(--avatar-40);block-size:var(--avatar-40);
+  border-radius:50%;
+  background:var(--gray-300);              /* #E6E6E6, measured */
+  display:grid;place-items:center;
+  color:var(--gray-700);
+  flex-shrink:0;
+}
+.pf-avatar svg{inline-size:var(--icon-20);block-size:var(--icon-20)}
+.pf-user-meta{min-inline-size:var(--sp-0);overflow:hidden}
+.pf-user-name{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--dark)}
+.pf-user-sub{
+  display:flex;align-items:center;gap:var(--sp-4);flex-wrap:nowrap;
+  min-inline-size:var(--sp-0);
+  font-size:var(--fs-base);font-weight:var(--fw-500);color:var(--gray-700);
+}
+.pf-user-sub .pf-user-email{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf-user-role{flex-shrink:0}
+.pf-user-sub svg{color:var(--gray-500);flex-shrink:0}     /* GoDotFill at 8, #C2C2C2 */
+.pf-verified{
+  display:inline-flex;align-items:center;gap:var(--tag-gap);
+  block-size:var(--tag-h);
+  padding-inline:var(--tag-pad-inline);
+  margin-block-start:var(--sp-12);
+  margin-inline-end:var(--sp-8);
+  border-radius:var(--radius-chip);        /* 24, measured — not the 6 of a header pill */
+  background:var(--primary-light-3);       /* #E1F2F0, measured */
+  font-size:var(--fs-12);color:var(--base);
+}
+.pf-verified svg{color:var(--info-alt)}    /* #479eeb seal-check */
+.pf-menu-list{list-style:none;margin:var(--sp-0);padding:var(--sp-0)}
+.pf-menu-list > li{border-block-start:var(--border-w) solid var(--gray-400)}  /* auth-info-style.js:283 gray400 */
+.pf-menu-list a,.pf-menu-list button{
+  display:flex;align-items:center;gap:var(--menu-item-gap);
+  padding:var(--menu-item-pad);
+  inline-size:100%;
+  font-size:var(--fs-card-title);font-weight:var(--fw-600);
+  color:var(--gray-700);
+  background:none;border:0;cursor:pointer;text-align:start;text-decoration:none;
+}
+.pf-menu-list a:hover,.pf-menu-list button:hover{background:var(--primary-light-4);color:var(--primary)}
+.pf-menu-list svg{margin-inline-start:var(--sp-12)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · notification centre — the popover behind the header bell
+   data/live/listings--popover-notifications.capture.json
+   Each row is an .ant-card: radius 10, #f0f0f0 border, 12 padding, 4 below.
+   UNREAD is #F7FCFC; read is white. The 20px glyph is the primary colour and
+   the timestamp is 12px #9D9D9D.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-noti{padding:var(--sp-16)}
+.pf-noti-head{display:flex;align-items:center;justify-content:space-between;gap:var(--noti-row-gap);margin-block-end:var(--sp-8)}
+.pf-noti-head-start{display:flex;align-items:center}
+.pf-noti-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--base);margin:var(--sp-0)}
+.pf-noti-card{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--noti-row-gap);
+  padding:var(--sp-12);
+  margin-block-end:var(--sp-4);
+  background:var(--card-bg);
+  border:var(--border-w) solid var(--gray-100);
+  border-radius:var(--radius-card-lg);     /* 10, and it is antd's borderRadiusLG */
+}
+.pf-noti-card[data-unread]{background:var(--primary-light)}   /* #F7FCFC */
+.pf-noti-card-meta{display:flex;align-items:center;gap:var(--sp-16)}
+.pf-noti-card-meta svg{color:var(--primary);inline-size:var(--icon-20);block-size:var(--icon-20);flex-shrink:0}
+.pf-noti-card-title{font-size:var(--fs-base);font-weight:var(--fw-600);color:var(--dark)}
+.pf-noti-time{font-size:var(--fs-12);color:var(--gray-600)}   /* #9D9D9D, measured */
+.pf-noti-rule{block-size:var(--border-w);background:var(--drawer-border);margin-block-start:var(--sp-12)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · Download App modal body
+   data/live/listings--modal-download-app.capture.json — a centred column,
+   166px QR, an .ant-divider with the inner text “OR”, two store badges.
+   The QR and the badges are ART WE DO NOT SHIP: the product embeds a
+   generated QR and two vendor badge SVGs. They are drawn as labelled
+   placeholders at the measured size, and qa-listings.md says so.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-center-column{display:flex;flex-direction:column;align-items:center;gap:var(--sp-8);text-align:center}
+.pf-qr{inline-size:var(--qr-size);block-size:var(--qr-size)}
+.pf-divider-text{
+  display:flex;align-items:center;gap:var(--sp-16);
+  margin-block:var(--sp-16);
+  font-size:var(--fs-card-title);font-weight:var(--fw-500);
+}
+.pf-divider-text::before,.pf-divider-text::after{content:"";flex:1;block-size:var(--border-w);background:var(--drawer-border)}
+.pf-store-badges{display:flex;align-items:center;justify-content:center;gap:var(--menu-item-gap)}
+.pf-store-badge{
+  inline-size:var(--store-badge-w);block-size:var(--store-badge-h);
+  display:grid;place-items:center;
+  border:var(--border-w) solid var(--gray-400);
+  border-radius:var(--radius-control);
+  font-size:var(--fs-12);color:var(--gray-700);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · empty state
+   EmptyState — an illustration over a title, a subtitle and an optional CTA.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-empty{
+  display:grid;justify-items:center;align-content:center;
+  gap:var(--empty-gap);
+  min-block-size:var(--empty-min-h);
+  padding:var(--sp-16) var(--sp-24);
+  text-align:center;
+}
+/* the illustration ships its own 164x89 and its own fills — EmptyState.js:31
+   passes primary-light-2, which is already baked into the extracted art */
+.pf-empty-art{display:block}
+.pf-empty-title{
+  font-size:var(--fs-18);font-weight:var(--fw-600);color:var(--black);
+  margin-block-end:var(--empty-title-mb);
+}
+.pf-empty-text{color:var(--gray-700);max-width:var(--empty-text-w)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · skeleton — the loading state antd paints while a query is open
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-skeleton{
+  display:block;
+  background:var(--border-light);
+  border-radius:var(--radius-tag);
+  height:var(--sp-16);
+}
+.pf-skeleton[data-shape="title"]{height:var(--sp-24);width:38%}
+.pf-skeleton[data-shape="line"]{width:100%}
+.pf-skeleton[data-shape="line"]:last-child{width:61%}
+.pf-skeleton[data-shape="block"]{height:var(--listing-thumb);width:var(--listing-thumb);border-radius:var(--radius-control)}
+.pf-skeleton-group{display:grid;gap:var(--sp-12)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PROTOTYPE ONLY — the state switcher.
+   Not part of the product. It is how a reviewer flips a page between its
+   default, loading, empty and error states without another file, and it is
+   marked so nobody mistakes it for a Profolio component.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-proto-bar{
+  position:fixed;inset-block-end:var(--sp-16);inset-inline-start:50%;
+  transform:translateX(-50%);
+  z-index:calc(var(--overlay-z) + 10);
+  display:flex;align-items:center;gap:var(--sp-8);
+  padding:var(--sp-8) var(--sp-12);
+  background:var(--dark);
+  border-radius:var(--radius-pill-full);
+  box-shadow:var(--proto-bar-shadow);
+  font-size:var(--fs-12);
+}
+.pf-proto-bar b{color:var(--white);font-weight:var(--fw-600);margin-inline-end:var(--sp-4)}
+.pf-proto-bar button{
+  border:0;background:var(--proto-bar-btn-bg);color:var(--white);
+  padding:var(--sp-4) var(--sp-12);border-radius:var(--radius-pill-full);
+  cursor:pointer;font:inherit;
+}
+.pf-proto-bar button[aria-pressed="true"]{background:var(--white);color:var(--dark);font-weight:var(--fw-600)}
+[data-state-panel][hidden]{display:none}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · radio
+   .ant-radio-wrapper in data/live/listings--modal-delete — a baseline-aligned
+   flex row, label in --gray-700, the dot 16px at 50% radius on #d9d9d9.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-radio{
+  display:flex;
+  align-items:baseline;
+  gap:var(--sp-8);
+  font-size:var(--fs-base);
+  line-height:var(--lh-base);
+  color:var(--radio-label-color);
+  cursor:pointer;
+}
+.pf-radio input{
+  appearance:none;
+  width:var(--radio-size);
+  height:var(--radio-size);
+  margin:var(--sp-0);
+  flex:none;
+  border:var(--border-w) solid var(--radio-border);
+  border-radius:var(--radius-round);
+  background:var(--white);
+  cursor:pointer;
+  align-self:center;
+}
+.pf-radio input:checked{
+  border-color:var(--primary);
+  /* antd draws the dot as an inner scaled square, which resolves to a disc */
+  box-shadow:inset 0 0 0 4px var(--primary);
+}
+.pf-radio input:focus-visible{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}

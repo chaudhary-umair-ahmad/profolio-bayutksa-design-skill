@@ -56,6 +56,8 @@ const SHELL_MAX = 6;      /* % of pixels that may differ in a shell region */
 
 const pct = (n) => `${n.toFixed(1)}%`;
 const rgbOf = (s) => (String(s).match(/[\d.]+/g) || []).map(Number);
+/* normalise a colour string so rgb(0,0,0) and rgba(0,0,0,1) are one key */
+const rgb = (v) => String(v).replace(/\s+/g, '').replace(/^rgba\((\d+),(\d+),(\d+),1\)$/, 'rgb($1,$2,$3)');
 
 /* ── relative luminance / contrast, WCAG ──────────────────────────────── */
 const lum = ([r, g, b]) => {
@@ -103,10 +105,22 @@ window.__diff = async (aSrc, bSrc, boxes) => {
     xb.drawImage(B, b.x, b.y, w, h, 0, 0, w, h);
     const da = xa.getImageData(0, 0, w, h).data, db = xb.getImageData(0, 0, w, h).data;
     let differing = 0;
-    /* a per-channel tolerance of 24 absorbs antialiasing and the weight the
-       browser synthesises, without hiding a wrong colour or a missing glyph */
+    /* Compare LUMINANCE, not channels.
+       The product's text rasterises greyscale and ours subpixel: magnified,
+       our glyphs carry orange and blue fringes and the product's do not. Same
+       font, same size, same weight, same box, same colour — a per-channel
+       tolerance still called every glyph edge different, and put shell.title
+       at 23.8% on a region with no measurable disagreement at all.
+       It is the compositor, not the design: -webkit-font-smoothing:antialiased
+       is a no-op in this Chromium (781 vs 725 coloured pixels in a controlled
+       render) while transform:translateZ(0) takes it to 0, and something in
+       the product's tree composites.
+       Luminance keeps every real difference — a wrong weight, a shifted
+       baseline, a missing glyph, a different colour all move it — and drops
+       the fringe. Colour itself is held to account by the token audit. */
+    const L = (d, i) => 0.2126 * d[i] + 0.7152 * d[i+1] + 0.0722 * d[i+2];
     for (let i = 0; i < da.length; i += 4) {
-      if (Math.abs(da[i] - db[i]) > 24 || Math.abs(da[i+1] - db[i+1]) > 24 || Math.abs(da[i+2] - db[i+2]) > 24) differing++;
+      if (Math.abs(L(da, i) - L(db, i)) > 24) differing++;
     }
     out.push({ id, w, h, diff: (differing / (w * h)) * 100,
                cropA: ca.toDataURL('image/png'), cropB: cb.toDataURL('image/png') });
@@ -118,11 +132,32 @@ window.__diff = async (aSrc, bSrc, boxes) => {
 /* ── the run ──────────────────────────────────────────────────────────── */
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-async function qa(route, browser) {
-  const liveCap = join(ROOT, 'data', 'live', `${route}.capture.json`);
-  const livePng = join(ROOT, 'data', 'live', `${route}.png`);
+/** Every state the harness captured for this route, in capture order. */
+function statesOf(route) {
+  const dir = join(ROOT, 'data', 'live');
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .map((f) => new RegExp(`^${route}--(.+)\\.capture\\.json$`).exec(f))
+    .filter(Boolean).map((m) => m[1]).sort();
+}
+
+/**
+ * One pass over one state of one route.
+ *
+ * `state` null is the default screen and gets every check. A named state is an
+ * overlay or a tab — the stylesheet checks (literals, physical properties) and
+ * the RTL pass are properties of the page, not of the state, so they run once
+ * on the default and are not repeated. Everything that can differ per state —
+ * the region diff, what the page computes, contrast inside the overlay — runs
+ * every time.
+ */
+async function qa(route, browser, state = null) {
+  const suffix = state ? `--${state}` : '';
+  const full = !state;
+  const liveCap = join(ROOT, 'data', 'live', `${route}${suffix}.capture.json`);
+  const livePng = join(ROOT, 'data', 'live', `${route}${suffix}.png`);
   const page = join(ROOT, 'deliverables', `${route}.html`);
-  for (const f of [liveCap, livePng, page]) if (!existsSync(f)) return { route, error: `missing ${f.slice(ROOT.length + 1)}` };
+  for (const f of [liveCap, livePng, page]) if (!existsSync(f)) return { route, state, error: `missing ${f.slice(ROOT.length + 1)}` };
 
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const p = await ctx.newPage();
@@ -131,11 +166,30 @@ async function qa(route, browser) {
   const script = readFileSync(join(ROOT, 'tools/profolio-capture/capture.js'), 'utf8');
   await p.goto('file://' + page);
   await p.waitForTimeout(500);
-  const oursPng = join(ROOT, 'data', 'ours', `${route}.png`);
+
+  /* Reach the state the same way a reviewer does — through the page's own
+     deep-link resolver. If the name does not resolve, the state is not built
+     yet, and saying so is the finding. */
+  if (state) {
+    const applied = await p.evaluate((s) => (window.pfGoTo ? window.pfGoTo(s) : false), state);
+    if (!applied) {
+      await ctx.close();
+      return { route, state, error: `not built — nothing in the page answers to “${state}”` };
+    }
+    await p.waitForTimeout(300);
+  }
+
+  /* An open overlay is positioned in the viewport, so the harness shot the
+     viewport rather than the full page. Match it, or the two images are in
+     different coordinate systems and every crop is wrong. */
+  const overlayOpen = await p.evaluate(() => [...document.querySelectorAll('.pf-mask,.pf-drawer,.pf-popover')]
+    .some((el) => !el.hidden && el.getClientRects().length));
+
+  const oursPng = join(ROOT, 'data', 'ours', `${route}${suffix}.png`);
   mkdirSync(dirname(oursPng), { recursive: true });
-  await p.screenshot({ path: oursPng, fullPage: true });
+  await p.screenshot({ path: oursPng, fullPage: !overlayOpen });
   const oursCap = await p.evaluate(script);
-  writeFileSync(join(ROOT, 'data', 'ours', `${route}.capture.json`), JSON.stringify(oursCap));
+  writeFileSync(join(ROOT, 'data', 'ours', `${route}${suffix}.capture.json`), JSON.stringify(oursCap));
 
   /* 3 · scale adherence, 2 · token audit, 4 · contrast — all from the live DOM */
   const dom = await p.evaluate(({ SPACE, FONT, WEIGHT, ALLOWED }) => {
@@ -184,10 +238,11 @@ async function qa(route, browser) {
     return { off, text: texts, docHeight: document.documentElement.scrollHeight };
   }, { SPACE, FONT, WEIGHT, ALLOWED: [...ALLOWED_LITERAL] });
 
-  /* 5 · RTL — KSA ships Arabic first */
-  await p.evaluate(() => { document.documentElement.dir = 'rtl'; });
-  await p.waitForTimeout(350);
-  const rtl = await p.evaluate(() => {
+  /* 5 · RTL — KSA ships Arabic first. A property of the page, so the default
+     pass carries it and a state pass inherits the verdict. */
+  if (full) await p.evaluate(() => { document.documentElement.dir = 'rtl'; });
+  await p.waitForTimeout(full ? 350 : 0);
+  const rtl = !full ? null : await p.evaluate(() => {
     const over = [];
     for (const el of document.querySelectorAll('body *')) {
       const r = el.getBoundingClientRect();
@@ -202,7 +257,7 @@ async function qa(route, browser) {
   await ctx.close();
 
   /* physical properties that should be logical — a stylesheet-level RTL defect */
-  const css = readFileSync(join(ROOT, 'deliverables', 'profolio.css'), 'utf8');
+  const css = full ? readFileSync(join(ROOT, 'deliverables', 'profolio.css'), 'utf8') : ':root{\n}';
   let off_literals = [];
   /* Every px literal outside :root, and every physical property.
      These were line-anchored regexes until a negative test proved them
@@ -259,16 +314,60 @@ async function qa(route, browser) {
     [toDataUrl(livePng), toDataUrl(oursPng), boxes]);
   await dp.context().close();
 
-  diffs.sort((x, y) => (y.diff ?? -1) - (x.diff ?? -1));
+  /* Regions where a difference is the correct outcome, not a defect. Recorded
+     with the reason rather than dropped, so the exclusion is visible. */
+  const EXPECTED = {
+    'table.thumb': 'the product renders a photo; a design system renders the placeholder it ships with',
+  };
+  for (const d of diffs) if (EXPECTED[d.id]) d.expected = EXPECTED[d.id];
+
+  /* A region an open overlay sits on top of is not being compared — the crop is
+     mostly the overlay. Mark those rather than rank them: in the account-popover
+     state the filter buttons read 49.5% different, and every pixel of it is the
+     popover covering them. The translucent mask is NOT an occluder; it dims both
+     sides equally and what is under it still compares. */
+  const OCCLUDERS = ['modal', 'drawer', 'popover'];
+  const covers = (o, b) => {
+    const w = Math.max(0, Math.min(o.x + o.w, b.x + b.w) - Math.max(o.x, b.x));
+    const h = Math.max(0, Math.min(o.y + o.h, b.y + b.h) - Math.max(o.y, b.y));
+    return b.w && b.h ? (w * h) / (b.w * b.h) : 0;
+  };
+  const occ = OCCLUDERS.flatMap((id) => [L[id]?.box, O[id]?.box].filter(Boolean));
+  for (const d of diffs) {
+    if (OCCLUDERS.includes(d.id.split('.')[0])) continue;
+    const box = L[d.id]?.box;
+    if (box && occ.some((o) => covers(o, box) > 0.3)) d.behind = true;
+  }
+  const aside = (d) => (d.expected || d.behind ? 1 : 0);
+  diffs.sort((x, y) => aside(x) - aside(y) || (y.diff ?? -1) - (x.diff ?? -1));
 
   /* ── findings ──────────────────────────────────────────────────────── */
-  const shellFails = diffs.filter((d) => SHELL.has(d.id) && d.diff > SHELL_MAX);
-  const lowContrast = dom.text
-    .map((t) => ({ ...t, ratio: contrast(rgbOf(t.fg), rgbOf(t.bg)) }))
-    .filter((t) => t.ratio < 4.5)
+  const shellFails = diffs.filter((d) => SHELL.has(d.id) && !d.behind && d.diff > SHELL_MAX);
+  /* Contrast is a COMPARISON, not an absolute. The product itself puts eight
+     text colours below 4.5:1 across ~490 elements — rgb(173,180,210) at 2.05:1
+     on 208 of them. Reporting those as our defects told you 74 things that were
+     mostly not true. We report only where WE are worse than the product, and
+     list the product's own sub-4.5 colours separately as its choice to own. */
+  const productColours = new Map();
+  each(live.tree, (n) => {
+    if (!n.style.color) return;
+    const key = rgb(n.style.color);
+    productColours.set(key, (productColours.get(key) || 0) + 1);
+  });
+  const productLow = [...productColours.entries()]
+    .map(([col, n]) => ({ col, n, ratio: contrast(rgbOf(col), [255, 255, 255]) }))
+    .filter((c) => c.ratio < 4.5)
     .sort((a, b) => a.ratio - b.ratio);
 
-  return { route, diffs, notModelled, off: dom.off, literals: off_literals, lowContrast, rtl, physical, shellFails,
+  const rated = dom.text.map((t) => ({ ...t, ratio: contrast(rgbOf(t.fg), rgbOf(t.bg)) }));
+  /* ours is a real finding only when the colour is below 4.5 AND the product
+     does not paint text in that colour at all */
+  const lowContrast = rated
+    .filter((t) => t.ratio < 4.5 && !productColours.has(rgb(t.fg)))
+    .sort((a, b) => a.ratio - b.ratio);
+  const matchedProduct = rated.filter((t) => t.ratio < 4.5 && productColours.has(rgb(t.fg))).length;
+
+  return { route, state, full, diffs, notModelled, off: dom.off, literals: off_literals, lowContrast, productLow, matchedProduct, rtl, physical, shellFails,
            heights: { product: live.viewport.page.h, ours: dom.docHeight } };
 }
 
@@ -315,7 +414,9 @@ ${r.shellFails.length ? `<br><span class="bad">${r.shellFails.length} shell regi
 
 <h2>1 · Region pixel diff</h2>
 ${rows.map((d) => `<div class="card">
-  <div class="hd"><code>${esc(d.id)}</code><span class="n" data-band="${band(d.diff)}">${pct(d.diff)} of pixels differ</span></div>
+  <div class="hd"><code>${esc(d.id)}</code><span class="n" data-band="${d.expected || d.behind ? 'low' : band(d.diff)}">${pct(d.diff)} of pixels differ${d.expected ? ' · expected' : d.behind ? ' · behind the overlay' : ''}</span></div>
+  ${d.expected ? `<p class="sub" style="margin:4px 0 0">Expected: ${esc(d.expected)}</p>` : ''}
+  ${d.behind ? '<p class="sub" style="margin:4px 0 0">An open overlay covers this region — the crop is the overlay, not a comparison.</p>' : ''}
   <div class="pair">
     <figure><figcaption>product · ${d.w}×${d.h}</figcaption><img src="${d.cropA}" alt=""></figure>
     <figure><figcaption>ours</figcaption><img src="${d.cropB}" alt=""></figure>
@@ -332,11 +433,16 @@ looks identical to a literal. A value written as px in a rule can be, and every 
 with its source beside it.</p>
 ${list(r.literals, (l) => `<li><code>${esc(l)}</code></li>`)}
 
-<h2>3 · Contrast below 4.5:1</h2>
-<p class="sub">Checked against the product's own value: where the product is also below, we match it
-rather than quietly diverging. A design system that corrects the product stops describing it.</p>
+<h2>3 · Contrast</h2>
+<p class="sub">A comparison, not an absolute. ${r.matchedProduct} of our low-contrast texts use a colour the
+product paints text in too — we match it rather than quietly diverging, because a design system that
+corrects the product stops describing it. Only colours the product never uses are listed as ours.</p>
+<h3 style="font-size:14px;margin:18px 0 4px">Ours, below 4.5:1 and not the product's</h3>
 ${list(r.lowContrast.slice(0, 20), (t) => `<li><strong>${t.ratio.toFixed(2)}:1</strong> — <code>${esc(t.at)}</code>
   ${esc(t.fg)} on ${esc(t.bg)} at ${t.size}/${t.weight} · “${esc(t.text)}”</li>`)}
+<h3 style="font-size:14px;margin:18px 0 4px">The product's own, for the record</h3>
+<p class="sub">Its choice to own, not ours to fix. Listed so nobody reports them as our defects.</p>
+${list(r.productLow, (c) => `<li><strong>${c.ratio.toFixed(2)}:1</strong> — <code>${esc(c.col)}</code> on ${c.n} element${c.n > 1 ? 's' : ''}</li>`)}
 
 <h2>4 · RTL</h2>
 <p class="sub">KSA ships Arabic first — <code>LANGUAGES[0]</code> is <code>ar</code>, so a bare route is RTL.</p>
@@ -344,7 +450,25 @@ ${r.rtl.overflow ? `<p class="bad">Horizontal overflow at dir=rtl: document is $
 ${list(r.rtl.offscreen, (o) => `<li><code>${esc(o.at)}</code> sits at ${o.left}…${o.right}</li>`)}
 ${r.physical.length ? `<p class="bad">${r.physical.length} physical propert${r.physical.length > 1 ? 'ies' : 'y'} in profolio.css that should be logical:</p>${list(r.physical.slice(0, 10), (p) => `<li><code>${esc(p)}</code></li>`)}` : '<p class="ok">No physical left/right properties in the stylesheet.</p>'}
 
-<h2>5 · Coverage</h2>
+<h2>5 · States</h2>
+<p class="sub">A page is not done when its default screen scores. Every state the harness captured —
+each overlay, each tab — is rendered here through the page's own <code>#state=</code> deep link and
+diffed against <code>data/live/${esc(r.route)}--&lt;state&gt;.png</code>. A state the page cannot reach
+says so rather than being left out.</p>
+${(r.states || []).length ? (r.states || []).map((st) => `<div class="card">
+  <div class="hd"><code>${esc(st.state)}</code>${st.error
+    ? `<span class="bad">${esc(st.error)}</span>`
+    : `<span class="n" data-band="${st.shellFails.length ? 'high' : 'low'}">${st.diffs.filter((d) => d.diff !== undefined && !d.behind).length} region(s) compared${st.shellFails.length ? ` · shell FAIL` : ''}</span>`}</div>
+  ${st.error ? '' : `${st.diffs.filter((d) => d.diff !== undefined).map((d) => `<div class="hd" style="margin-top:10px">
+      <code>${esc(d.id)}</code><span class="n" data-band="${d.behind || d.expected ? 'low' : band(d.diff)}">${pct(d.diff)}${d.behind ? ' · behind the overlay' : d.expected ? ' · expected' : ''}</span></div>
+    <div class="pair">
+      <figure><figcaption>product · ${d.w}×${d.h}</figcaption><img src="${d.cropA}" alt=""></figure>
+      <figure><figcaption>ours</figcaption><img src="${d.cropB}" alt=""></figure>
+    </div>`).join('')}
+    ${st.notModelled.length ? `<p class="sub" style="margin-top:8px">Not modelled in this state: ${st.notModelled.map((id) => `<code>${esc(id)}</code>`).join(' ')}</p>` : ''}`}
+  </div>`).join('') : '<p class="sub">No states captured for this route yet — <code>node harness/capture.mjs --routes ' + esc(r.route) + ' --states</code>.</p>'}
+
+<h2>6 · Coverage</h2>
 <p class="sub">Regions the product's render has that our page never modelled. Not a score — a list of
 what we chose not to build, so a percentage can never quietly mean “of the part I listed”.</p>
 ${list(r.notModelled, (id) => `<li><code>${esc(id)}</code></li>`)}
@@ -363,23 +487,39 @@ if (!routes.length) { console.error('usage: qa-design.mjs <route>… | --all'); 
 const browser = await chromium.launch();
 mkdirSync(join(ROOT, 'data', 'qa'), { recursive: true });
 let worst = 0;
+const withStates = !args.includes('--no-states');
 for (const route of routes) {
   const r = await qa(route, browser);
   if (r.error) { console.log(`  ${route.padEnd(16)} skipped — ${r.error}`); continue; }
+
+  /* every state the harness captured, scored the same way */
+  r.states = [];
+  for (const st of withStates ? statesOf(route) : []) r.states.push(await qa(route, browser, st));
   writeFileSync(join(ROOT, 'deliverables', `qa-${route}.html`), report(r));
   writeFileSync(join(ROOT, 'data', 'qa', `${route}.json`), JSON.stringify({
     route, at: new Date().toISOString(), shellFails: r.shellFails.map((d) => ({ id: d.id, diff: +d.diff.toFixed(1) })),
     diffs: r.diffs.filter((d) => d.diff !== undefined).map((d) => ({ id: d.id, diff: +d.diff.toFixed(1) })),
-    offScale: r.off, literals: r.literals, lowContrast: r.lowContrast.length, notModelled: r.notModelled,
+    offScale: r.off, literals: r.literals, lowContrast: r.lowContrast.length, contrastMatchingProduct: r.matchedProduct, productLow: r.productLow.map((c) => ({ col: c.col, n: c.n, ratio: +c.ratio.toFixed(2) })), notModelled: r.notModelled,
     rtlOverflow: r.rtl.overflow, physical: r.physical.length,
+    states: r.states.map((st) => (st.error
+      ? { state: st.state, error: st.error }
+      : { state: st.state, shellFails: st.shellFails.map((d) => d.id),
+          diffs: st.diffs.filter((d) => d.diff !== undefined).map((d) => ({ id: d.id, diff: +d.diff.toFixed(1) })),
+          notModelled: st.notModelled })),
   }, null, 2));
 
   const top = r.diffs.filter((d) => d.diff !== undefined).slice(0, 3);
   const offCount = r.off.size.length + r.off.weight.length + r.literals.length;
   console.log(`  ${route.padEnd(16)} shell ${r.shellFails.length ? `FAIL(${r.shellFails.map((d) => d.id).join(',')})` : 'ok'} · ` +
-    `off-scale ${offCount} · contrast<4.5 ${r.lowContrast.length} · rtl ${r.rtl.overflow ? 'OVERFLOW' : 'ok'} · ` +
+    `off-scale ${offCount} · contrast ${r.lowContrast.length} ours/${r.matchedProduct} the product's · rtl ${r.rtl.overflow ? 'OVERFLOW' : 'ok'} · ` +
     `physical ${r.physical.length} · not modelled ${r.notModelled.length}`);
   console.log(`  ${' '.repeat(16)} worst regions: ${top.map((d) => `${d.id} ${pct(d.diff)}`).join(' · ')}`);
+  for (const st of r.states) {
+    console.log(`  ${' '.repeat(16)} ${st.state.padEnd(22)} ${st.error ? st.error
+      : `${st.diffs.filter((d) => d.diff !== undefined && !d.behind).length} region(s) · ` +
+        st.diffs.filter((d) => d.diff !== undefined && !d.behind && !d.expected).slice(0, 3).map((d) => `${d.id} ${pct(d.diff)}`).join(' · ')}`);
+    worst += st.error ? 0 : st.shellFails.length;
+  }
   console.log(`  ${' '.repeat(16)} → deliverables/qa-${route}.html`);
   worst += r.shellFails.length;
 }

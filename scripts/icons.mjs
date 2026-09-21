@@ -73,6 +73,9 @@ const WANTED = {
   RequestedStateIcon: 'upgrade requested',
   // upgrade services — tenant/bayut/data/products.js
   DroneIcon: 'Drone Footage (#79cdd1)',
+  // empty state — components/common/EmptyState/EmptyState.js:31 renders
+  // <EmptyListing color={tenantTheme['primary-light-2']}/> for type="table"
+  EmptyListing: 'No Record Found illustration',
 };
 
 /* react-icons names the product uses on this screen. Resolution order in

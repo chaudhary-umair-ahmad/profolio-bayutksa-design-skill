@@ -1,6 +1,6 @@
 {
   "route": "dashboard",
-  "at": "2026-09-21T16:55:58.148Z",
+  "at": "2026-09-21T17:46:03.452Z",
   "shellFails": [
     {
       "id": "shell.title",
@@ -55,7 +55,50 @@
     "space": []
   },
   "literals": [],
-  "lowContrast": 68,
+  "lowContrast": 0,
+  "contrastMatchingProduct": 68,
+  "productLow": [
+    {
+      "col": "rgb(255,255,255)",
+      "n": 70,
+      "ratio": 1
+    },
+    {
+      "col": "rgb(240,167,66)",
+      "n": 11,
+      "ratio": 2.04
+    },
+    {
+      "col": "rgb(173,180,210)",
+      "n": 159,
+      "ratio": 2.05
+    },
+    {
+      "col": "rgb(157,157,157)",
+      "n": 77,
+      "ratio": 2.71
+    },
+    {
+      "col": "rgb(40,177,109)",
+      "n": 14,
+      "ratio": 2.76
+    },
+    {
+      "col": "rgb(71,158,235)",
+      "n": 3,
+      "ratio": 2.85
+    },
+    {
+      "col": "rgb(175,111,255)",
+      "n": 19,
+      "ratio": 3.21
+    },
+    {
+      "col": "rgb(247,49,49)",
+      "n": 8,
+      "ratio": 3.86
+    }
+  ],
   "notModelled": [
     "filter.bar",
     "table.card",

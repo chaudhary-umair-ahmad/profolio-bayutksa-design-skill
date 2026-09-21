@@ -17,6 +17,7 @@ import { fileURLToPath } from 'node:url';
 const D = join(dirname(fileURLToPath(import.meta.url)), '..', 'deliverables');
 const css = readFileSync(join(D, 'profolio.css'), 'utf8');
 const fonts = readFileSync(join(D, 'fonts.css'), 'utf8');
+const proto = readFileSync(join(D, 'prototype.js'), 'utf8');
 
 for (const [src, out] of [['dashboard.html', 'dashboard.bundled.html'],
                           ['listings.html', 'listings.bundled.html'],
@@ -27,6 +28,9 @@ for (const [src, out] of [['dashboard.html', 'dashboard.bundled.html'],
   if (!html.includes(link)) throw new Error(`no stylesheet link in ${src}`);
   writeFileSync(join(D, out), html
     .replace(fontLink, `<style>\n/* inlined from fonts.css — see scripts/bundle.mjs */\n${fonts}\n</style>`)
-    .replace(link, `<style>\n/* inlined from profolio.css — see scripts/bundle.mjs */\n${css}\n</style>`));
+    .replace(link, `<style>\n/* inlined from profolio.css — see scripts/bundle.mjs */\n${css}\n</style>`)
+    /* the interaction layer has to travel with the page or a single file opens dead */
+    .replace('<script src="prototype.js" defer></script>',
+             `<script>\n/* inlined from prototype.js — see scripts/bundle.mjs */\n${proto}\n</script>`));
   console.log(`  ${out}`);
 }

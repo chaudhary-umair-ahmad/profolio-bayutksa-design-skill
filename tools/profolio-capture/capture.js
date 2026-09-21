@@ -107,7 +107,14 @@
       .filter((w) => !document.fonts.check(`${w} 14px "${family}"`)),
   };
 
-  const root = document.querySelector('.ant-layout') || document.body;
+  /* Always walk <body>.
+     This started at `.ant-layout` to skip chrome, and that quietly broke two
+     things. antd renders a Modal, Drawer, Popover and Dropdown through a PORTAL
+     appended to <body> — outside .ant-layout — so an overlay capture contained
+     only the page behind it. And our own pages have no .ant-layout, so they
+     already fell through to <body>: the two sides of every comparison were
+     walking different roots. */
+  const root = document.body;
 
   /* walk first: an object literal evaluates its properties in order, so reading
      `nodes` alongside `tree` reports the count from before the walk ran */

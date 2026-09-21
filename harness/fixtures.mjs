@@ -157,11 +157,23 @@ const ROUTES = [
   [/^\/api\/surge\/statuses$/,                       () => ({ statuses: [] })],
   [/^\/api\/surge\/ad_license_requests$/,            () => ({ ad_license_requests: [], pagination: {} })],
   [/^\/api\/surge\/listings\/summary$/,              () => ({ summary: SUMMARY })],
-  [/^\/api\/surge\/listings$/,                       () => ({
-      listings: listings.map(clean),
-      pagination: { current_page: 1, total_pages: 2, total_count: SUMMARY.active, per_page: 10, from: 1, to: 10 },
-      statuses_and_dispositions: STATUSES,
-  })],
+  /* The tab IS a query param — listings.js:99 reads
+     `f[nested.platform_listings.status.slug]` and passes the slug to
+     listingTableColumnMapper, so each tab asks for a different set. Answering
+     every tab with the same ten rows made the Draft and Removed captures a
+     lie: Removed (0) rendered ten rows. The set follows the summary counts. */
+  [/^\/api\/surge\/listings$/, (search) => {
+      const slug = new URLSearchParams(search || '').get('f[nested.platform_listings.status.slug]') || 'active';
+      const set = { active: listings, draft: listings.slice(0, SUMMARY.draft),
+                    pending: listings.slice(0, SUMMARY.pending), removed: [] }[slug] || listings;
+      const total = SUMMARY[slug] ?? SUMMARY.active;
+      return {
+        listings: set.map(clean),
+        pagination: { current_page: 1, total_pages: Math.max(1, Math.ceil(total / 10)), total_count: total,
+                      per_page: 10, from: set.length ? 1 : 0, to: set.length },
+        statuses_and_dispositions: STATUSES,
+      };
+  }],
   [/^\/api\/surge\/ovation\/stats$/,                 () => ({ stats: { items: statsItems } })],
   [/^\/api\/surge\/ovation\/stats\/trends$/,         () => ({ stats: { aggregates, trends: { sum_search_count: 12.5, sum_view_count: -3.1, sum_lead_count: 8.0 } } })],
   [/^\/api\/surge\/ovation\/stats\/product_stats$/,  () => ({ stats: { items } })],
@@ -176,10 +188,24 @@ const ROUTES = [
       product_wise: [], current_package: { name: C.plan, slug: C.plan.toLowerCase().replace(/\s+/g, '_') },
   } } })],
   [/^\/api\/surge\/dashboard\/qc_summary$/,          () => ({})],
+  /* the Delete Listing modal's radio list — surfaced by the state capture */
+  [/^\/api\/surge\/reasons$/,                        () => ({ reasons: [
+      { id: 1, title: 'Property is no longer available', name: 'Property is no longer available' },
+      { id: 2, title: 'Rented out through Bayut',        name: 'Rented out through Bayut' },
+      { id: 3, title: 'Sold through Bayut',              name: 'Sold through Bayut' },
+      { id: 4, title: 'Rented out through another source', name: 'Rented out through another source' },
+      { id: 5, title: 'Other',                           name: 'Other' },
+  ] })],
+  /* the notification centre popover */
+  [/^\/api\/surge\/notifications$/,                  () => ({ notifications: [
+      { id: 9001, title: 'Your listing is live', body: 'Apartment for Sale in Al Yarmuk is now live on Bayut.', is_read: false, created_at: new Date(Date.now() - 36e5).toISOString() },
+      { id: 9002, title: 'Credits expiring soon', body: '2,120 credits expire at the end of this month.', is_read: false, created_at: new Date(Date.now() - 864e5).toISOString() },
+      { id: 9003, title: 'TruCheck visit scheduled', body: 'A TruCheck visit is scheduled for Villa for Sale in Al Nahdah.', is_read: true, created_at: new Date(Date.now() - 3 * 864e5).toISOString() },
+  ], pagination: { current_page: 1, total_pages: 1, total_count: 3, per_page: 10 } })],
 ];
 
-export function answer(method, pathname) {
-  for (const [re, fn] of ROUTES) if (re.test(pathname)) return fn();
+export function answer(method, pathname, search = '') {
+  for (const [re, fn] of ROUTES) if (re.test(pathname)) return fn(search);
   return undefined;
 }
 

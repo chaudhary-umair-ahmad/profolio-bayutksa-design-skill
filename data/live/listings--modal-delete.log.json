@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": true,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1918,
+  "note": "Actions[4] — 620×226 “Delete Listing / Why are you deleting your listing?”",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

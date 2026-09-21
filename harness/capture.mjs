@@ -23,7 +23,7 @@
  * source still wins.
  */
 import pkg from '/opt/node22/lib/node_modules/playwright/index.js';
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { serve, REPO } from './serve.mjs';
@@ -63,8 +63,49 @@ const user = JSON.parse(readFileSync(join(HERE, 'fixtures/user.json'), 'utf8'));
 const captureSrc = readFileSync(join(ROOT, 'tools/profolio-capture/capture.js'), 'utf8');
 const FONTS_CSS = readFileSync(join(ROOT, 'deliverables/fonts.css'), 'utf8');
 const locales = flag('--rtl') ? ['en', 'ar'] : ['en'];
+const WITH_STATES = flag('--states');
 
 /* ── one page per route ────────────────────────────────────────────────── */
+/* wait for the page to stop moving — the same settle every capture uses, so a
+   state capture is not held to a looser standard than the default one */
+async function settle(page) {
+  try { await page.waitForLoadState('networkidle', { timeout: 20_000 }); } catch {}
+  try {
+    /* the Credits card keeps two zero-size spinners mounted; only a spinner with area is waiting on something */
+    await page.waitForFunction(() => ![...document.querySelectorAll('.ant-spin-spinning, .ant-skeleton-active')]
+      .some((el) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; }), null, { timeout: 15_000 });
+  } catch {}
+  await page.waitForTimeout(1200);
+}
+
+/** Capture whatever is on screen right now under `name`. */
+async function snap(page, name, captureSrc, locale, extra = {}) {
+  const state = await page.evaluate(() => ({
+    finalPath: location.pathname,
+    shell: !!document.querySelector('.ant-layout-header') && !!document.querySelector('.ant-layout-sider'),
+    errorCard: !!document.querySelector('.ant-result-error'),
+    overlay: {
+      modal: !!document.querySelector('.ant-modal'),
+      drawer: !!document.querySelector('.ant-drawer-content'),
+      popover: !!document.querySelector('.ant-popover'),
+      dropdown: !!document.querySelector('.ant-dropdown'),
+    },
+    spinning: [...document.querySelectorAll('.ant-spin-spinning, .ant-skeleton-active')].some((el) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; }),
+    pageHeight: document.documentElement.scrollHeight,
+  }));
+  const capture = await page.evaluate(captureSrc);
+  capture.source = 'harness';
+  capture.locale = locale;
+  capture.state = name;
+  mkdirSync(OUT, { recursive: true });
+  writeFileSync(join(OUT, `${name}.capture.json`), JSON.stringify(capture));
+  /* an overlay is positioned in the viewport, so a full-page shot would put it
+     at the top of a 1929px image and crop nothing usefully — shoot the viewport */
+  await page.screenshot({ path: join(OUT, `${name}.png`), fullPage: !state.overlay.modal && !state.overlay.drawer && !state.overlay.popover });
+  writeFileSync(join(OUT, `${name}.log.json`), JSON.stringify({ ...state, ...extra }, null, 2));
+  return { state, nodes: capture.nodes };
+}
+
 async function captureRoute(browser, base, route, locale) {
   const ctx = await browser.newContext({
     viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1, locale: locale === 'ar' ? 'ar-SA' : 'en',
@@ -98,7 +139,7 @@ async function captureRoute(browser, base, route, locale) {
     if (u.host !== appHost) { log.blocked++; return r.abort(); }         /* nothing else leaves the sandbox */
     if (u.pathname.startsWith('/harness-img/')) return r.fulfill({ status: 200, contentType: THUMB.contentType, body: u.pathname.includes('avatar') ? AVATAR_SVG : THUMB.body });
     if (u.pathname.startsWith('/api/')) {
-      const body = answer(r.request().method(), u.pathname);
+      const body = answer(r.request().method(), u.pathname, u.search);
       (body === undefined ? log.unanswered : log.answered).push(`${r.request().method()} ${u.pathname}`);
       /* never abort an API call: an aborted request pins a skeleton forever, a 200 lands in an empty state */
       return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body ?? {}) });
@@ -137,8 +178,33 @@ async function captureRoute(browser, base, route, locale) {
   await page.screenshot({ path: join(OUT, `${name}.png`), fullPage: true });
   writeFileSync(join(OUT, `${name}.log.json`), JSON.stringify({ url, ...state, ...log, answered: [...new Set(log.answered)], ms: Date.now() - t0 }, null, 2));
 
+  /* ── the states ──────────────────────────────────────────────────────
+     Each step runs on a page reloaded to the default first, so one state can
+     never leak into the next. */
+  const states = [];
+  if (WITH_STATES) {
+    const file = join(HERE, 'interactions', `${slug(route)}.mjs`);
+    if (existsSync(file)) {
+      const steps = (await import(file)).default;
+      for (const step of steps) {
+        try {
+          await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+          await page.waitForSelector('.ant-layout', { timeout: 30_000 });
+          await settle(page);
+          await step.do(page);
+          await page.waitForTimeout(600);
+          const r = await snap(page, `${name}--${step.name}`, captureSrc, locale, { note: step.note, url });
+          const kinds = Object.entries(r.state.overlay).filter(([, v]) => v).map(([k]) => k);
+          states.push({ name: step.name, ok: true, nodes: r.nodes, overlay: kinds.join('+') || 'inline' });
+        } catch (e) {
+          states.push({ name: step.name, ok: false, why: String(e).split('\n')[0].slice(0, 90) });
+        }
+      }
+    }
+  }
+
   await ctx.close();
-  return { name, ...state, nodes: capture.nodes, unanswered: [...new Set(log.unanswered)], errors: [...new Set(log.errors)], ms: Date.now() - t0 };
+  return { name, ...state, nodes: capture.nodes, states, unanswered: [...new Set(log.unanswered)], errors: [...new Set(log.errors)], ms: Date.now() - t0 };
 }
 
 /* ── run ───────────────────────────────────────────────────────────────── */
@@ -151,7 +217,8 @@ for (const route of routes) for (const locale of locales) {
   const verdict = r.errorCard ? 'ERROR CARD' : !r.shell ? 'NO SHELL' : r.spinning ? 'still spinning' : 'ok';
   console.log(`  ${r.name.padEnd(30)} ${verdict.padEnd(15)} ${String(r.nodes).padStart(5)} nodes  ${String(r.pageHeight).padStart(5)}px  ${String(r.ms).padStart(6)}ms` +
     (r.unanswered.length ? `\n${' '.repeat(32)}unanswered: ${r.unanswered.join(', ')}` : '') +
-    (r.errors.length ? `\n${' '.repeat(32)}errors: ${r.errors.slice(0, 3).join(' | ')}` : ''));
+    (r.errors.length ? `\n${' '.repeat(32)}errors: ${r.errors.slice(0, 3).join(' | ')}` : '') +
+    ((r.states || []).length ? `\n${' '.repeat(32)}states: ${r.states.map((x) => x.ok ? `${x.name} (${x.overlay})` : `${x.name} FAILED — ${x.why}`).join('\n' + ' '.repeat(40))}` : ''));
 }
 await browser.close();
 if (!process.env.KEEP_SERVER) await app.stop();

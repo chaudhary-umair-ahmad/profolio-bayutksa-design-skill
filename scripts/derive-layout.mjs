@@ -72,7 +72,7 @@ export const REGIONS = [
   { id: 'table.card.head',ours: '.pf-table-card-head', w: 1, scope: 'table.card', live: (n) => cls(n, 'ant-card-head'),       mine: (n) => cls(n, 'pf-table-card-head'), props: [...GEOM, 'paddingInlineStart', 'borderBottomColor'] },
   { id: 'tabs.nav',       ours: '.pf-tabs',          w: 2, scope: 'table.card', live: (n) => cls(n, 'ant-tabs-nav-list'),     mine: (n) => cls(n, 'pf-tabs'),          props: [...GEOM, 'gap'] },
   { id: 'tabs.tab',       ours: '.pf-tab',           w: 3, scope: 'table.card', live: (n) => cls(n, 'ant-tabs-tab') && !cls(n, 'ant-tabs-tab-active'), mine: (n) => cls(n, 'pf-tab') && n.style.fontWeight !== '700', props: [...GEOM, 'paddingTop', 'paddingBottom', ...TYPE] },
-  { id: 'tabs.active',    ours: '.pf-tab[aria-selected="true"]', w: 3, scope: 'table.card', noBox: true, live: (n) => cls(n, 'ant-tabs-tab-btn') && n.style.fontWeight === '700', mine: (n) => cls(n, 'pf-tab') && n.style.fontWeight === '700', props: ['fontWeight', 'color', 'fontSize'] },
+  { id: 'tabs.active',    ours: '.pf-tab[aria-selected="true"] .pf-tab-label', w: 3, scope: 'table.card', noBox: true, live: (n) => cls(n, 'ant-tabs-tab-btn') && n.style.fontWeight === '700', mine: (n) => cls(n, 'pf-tab-label') && n.style.fontWeight === '700', props: ['fontWeight', 'color', 'fontSize'] },
   { id: 'tabs.ink',       ours: '.pf-tab[aria-selected] ink', w: 1, scope: 'table.card', live: (n) => cls(n, 'ant-tabs-ink-bar'), mine: null, props: ['height', 'backgroundColor'] },
 
   { id: 'table',          ours: '.pf-table',         w: 2, live: (n) => n.tag === 'table',               mine: (n) => n.tag === 'table',          props: [...GEOM, 'fontSize'] },
@@ -85,6 +85,33 @@ export const REGIONS = [
   { id: 'pager.item',     ours: '.pf-page-item',     w: 1, live: (n) => cls(n, 'ant-pagination-item') && !cls(n, 'ant-pagination-item-active'), mine: (n) => cls(n, 'pf-page-item') && n.children?.[0]?.tag === 'a' && rgb(n.style.borderTopColor) !== 'rgb(0,97,105)', props: [...GEOM, 'minWidth', 'marginTop', 'marginInlineStart', ...BOXY, 'fontSize', 'lineHeight'] },
   { id: 'pager.active',   ours: '.pf-page-item[aria-current="page"]', w: 1, live: (n) => cls(n, 'ant-pagination-item-active'), mine: (n) => cls(n, 'pf-page-item') && rgb(n.style.borderTopColor) === 'rgb(0,97,105)', props: ['backgroundColor', 'borderTopColor', 'fontWeight'] },
   { id: 'pager.nav',      ours: '.pf-page-item[data-nav]', w: 1, live: (n) => cls(n, 'ant-pagination-prev'), mine: (n) => cls(n, 'pf-page-item') && n.children?.[0]?.tag === 'button', props: [...GEOM, 'borderTopLeftRadius', 'marginTop'] },
+
+  /* ── overlays ─────────────────────────────────────────────────────────
+     Only ever found in a state capture (`capture.mjs --states`), because the
+     default screen has none. They cost nothing on the default pass: a region
+     whose `live` predicate finds nothing is simply absent from both sides.
+
+     antd splits a modal into a transparent scroll wrap, a dark mask and a
+     white `.ant-modal-content`; ours is one `.pf-mask` carrying the dark
+     layer and one `.pf-modal` carrying the box. So the mask is matched to
+     `.ant-modal-mask` and the box to `.ant-modal-content` — the elements
+     that actually paint, not the ones that happen to share a name. */
+  { id: 'modal.mask',     ours: '.pf-mask',          w: 2, live: (n) => cls(n, 'ant-modal-mask'),        mine: (n) => cls(n, 'pf-mask'),          props: ['backgroundColor'] },
+  { id: 'modal',          ours: '.pf-modal',         w: 3, live: (n) => cls(n, 'ant-modal-content'),     mine: (n) => cls(n, 'pf-modal'),         props: [...GEOM, ...BOXY, 'boxShadow'] },
+  { id: 'modal.head',     ours: '.pf-modal-head',    w: 2, scope: 'modal', live: (n) => cls(n, 'ant-modal-header'), mine: (n) => cls(n, 'pf-modal-head'), props: [...GEOM, ...PAD, 'backgroundColor'] },
+  { id: 'modal.title',    ours: '.pf-modal-title',   w: 2, scope: 'modal', noBox: true, live: (n) => cls(n, 'ant-modal-title'), mine: (n) => cls(n, 'pf-modal-title'), props: TYPE },
+  { id: 'modal.body',     ours: '.pf-modal-body',    w: 2, scope: 'modal', live: (n) => cls(n, 'ant-modal-body'),   mine: (n) => cls(n, 'pf-modal-body'), props: [...GEOM, ...PAD, 'fontSize'] },
+  { id: 'modal.foot',     ours: '.pf-modal-foot',    w: 2, scope: 'modal', live: (n) => cls(n, 'ant-modal-footer'), mine: (n) => cls(n, 'pf-modal-foot'), props: [...GEOM, ...PAD, 'textAlign'] },
+
+  { id: 'drawer',         ours: '.pf-drawer',        w: 3, live: (n) => cls(n, 'ant-drawer-content'),    mine: (n) => cls(n, 'pf-drawer'),        props: [...GEOM, 'backgroundColor'] },
+  { id: 'drawer.head',    ours: '.pf-drawer-head',   w: 2, scope: 'drawer', live: (n) => cls(n, 'ant-drawer-header'), mine: (n) => cls(n, 'pf-drawer-head'), props: [...GEOM, ...PAD, 'borderBottomColor'] },
+  { id: 'drawer.body',    ours: '.pf-drawer-body',   w: 2, scope: 'drawer', live: (n) => cls(n, 'ant-drawer-body'),   mine: (n) => cls(n, 'pf-drawer-body'), props: [...GEOM, ...PAD] },
+
+  { id: 'popover',        ours: '.pf-popover',       w: 3, live: (n) => cls(n, 'ant-popover-inner'),     mine: (n) => cls(n, 'pf-popover'),       props: [...GEOM, ...BOXY, 'boxShadow'] },
+  { id: 'popover.title',  ours: '.pf-popover-title', w: 2, scope: 'popover', live: (n) => cls(n, 'ant-popover-title'), mine: (n) => cls(n, 'pf-popover-title'), props: [...GEOM, ...PAD, ...TYPE] },
+
+  { id: 'empty',          ours: '.pf-empty',         w: 2, live: (n) => cls(n, 'ant-empty'),             mine: (n) => cls(n, 'pf-empty'),         props: [...GEOM, 'marginTop', 'marginBottom'] },
+  { id: 'empty.text',     ours: '.pf-empty-text',    w: 1, scope: 'empty', live: (n) => cls(n, 'ant-empty-description'), mine: (n) => cls(n, 'pf-empty-text'), props: TYPE },
 ];
 
 /* the shell's fixed rail and sticky header put x/y in the same place on both

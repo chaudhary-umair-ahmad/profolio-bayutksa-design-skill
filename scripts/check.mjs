@@ -191,6 +191,33 @@ if (existsSync(KB)) {
   bad('kb/ missing — run npm run kb');
 }
 
+/* ── 3c · the prototype's triggers must all lead somewhere ─────────────────
+   A page can carry every overlay and still be dead: a data-open naming an id
+   nothing has, a tab whose panel was never written. scripts/test-prototype.mjs
+   clicks them; this catches it without a browser. */
+for (const page of ['dashboard.html', 'listings.html']) {
+  if (!existsSync(join(D, page))) continue;
+  const html = readFileSync(join(D, page), 'utf8').replace(/<!--[\s\S]*?-->/g, '');
+  const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
+  const opens = [...new Set([...html.matchAll(/data-open="([^"]+)"/g)].map((m) => m[1]))];
+  const deadOpen = opens.filter((o) => !ids.has(o));
+  deadOpen.length ? bad(`${page}: data-open with no target — ${deadOpen.join(', ')}`)
+                  : ok(`${page} — ${opens.length} overlay trigger(s), all resolve`);
+
+  const masks = [...new Set([...html.matchAll(/data-mask="([^"]+)"/g)].map((m) => m[1]))];
+  const deadMask = masks.filter((o) => !ids.has(o));
+  if (deadMask.length) bad(`${page}: data-mask with no target — ${deadMask.join(', ')}`);
+
+  /* a tab may legitimately have no panel yet; a panel with no tab cannot happen */
+  const panelIds = new Set([...html.matchAll(/data-panel-id="([^"]+)"/g)].map((m) => m[1]));
+  const tabs = new Set([...html.matchAll(/data-panel="([^"]+)"/g)].map((m) => m[1]));
+  const orphanPanels = [...panelIds].filter((p) => !tabs.has(p));
+  if (orphanPanels.length) bad(`${page}: panel with no tab — ${orphanPanels.join(', ')}`);
+
+  if (/prototype\.js/.test(readFileSync(join(D, page), 'utf8')) === false && opens.length)
+    bad(`${page} has overlay triggers but never loads prototype.js`);
+}
+
 /* ── 4 · verdict ───────────────────────────────────────────────────────── */
 console.log('');
 if (fails.length) {

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Not built yet — Profolio KSA</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="profolio.css">
+</head>
+<body>
+<main class="pf-notbuilt">
+  <h1>This screen is not built yet</h1>
+  <p class="pf-notbuilt-lede">You followed a link in the prototype to a route that has no page behind it.
+     That is deliberate: a dead link would hide the gap, this makes it countable.</p>
+  <h2>What exists</h2>
+  <ul class="pf-notbuilt-list">
+    <li><a href="dashboard.html">Overview</a><em>built</em></li>
+    <li><span>Post Listing</span><em>not built yet</em></li>
+    <li><a href="listings.html">My Listings</a><em>built</em></li>
+    <li><span>Credits Usage</span><em>not built yet</em></li>
+    <li><span>Inbox</span><em>not built yet</em></li>
+    <li><span>TruLeads</span><em>not built yet</em></li>
+    <li><span>Agent Performance</span><em>not built yet</em></li>
+    <li><span>Reports</span><em>not built yet</em></li>
+    <li><span>Agency Staff</span><em>not built yet</em></li>
+    <li><span>Settings</span><em>not built yet</em></li>
+    <li><span>Credits & Packages</span><em>not built yet</em></li>
+  </ul>
+  <p class="pf-notbuilt-lede">Each built page is measured against the product's own render and carries a
+     <code>qa-&lt;route&gt;.html</code> report beside it.</p>
+</main>
+<script>
+/* name the screen the visitor was heading for, from ?screen= */
+var s = new URLSearchParams(location.search).get('screen');
+if (s) document.querySelector('h1').textContent = s + ' is not built yet';
+</script>
+</body>
+</html>

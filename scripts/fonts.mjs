@@ -64,8 +64,20 @@ async function figtree() {
   /* latin and latin-ext only: the deliverables are English with Arabic falling
      through to Droid Arabic Kufi, and the other subsets are dead weight */
   const blocks = [...css.matchAll(/\/\*\s*(latin|latin-ext)\s*\*\/\s*@font-face\s*\{([^}]*)\}/g)];
+  const seen = new Set();
   for (const [, subset, body] of blocks) {
     if (!/font-family:\s*'Figtree'/.test(body)) continue;
+    /* THE URL ASKS FOR `ital,wght@0,300..900;1,300..900`, so Google answers
+       with the ITALIC faces first. This loop took the first latin block it
+       saw, cached it as figtree-latin.woff2 and wrote `font-style:normal`
+       over it — every page in the design system was painting in Figtree
+       Italic, and because the harness serves this same file to the product,
+       both sides of every comparison were italic and the QA could not see it.
+       Take the upright faces, and never write a style we did not read. */
+    const style = /font-style:\s*([^;]+);/.exec(body)?.[1]?.trim() || 'normal';
+    if (style !== 'normal') continue;
+    if (seen.has(subset)) continue;
+    seen.add(subset);
     const url = /src:\s*url\(([^)]+)\)/.exec(body)?.[1];
     const range = /unicode-range:\s*([^;]+);/.exec(body)?.[1];
     const weight = /font-weight:\s*([^;]+);/.exec(body)?.[1]?.trim() || '300 900';
@@ -86,7 +98,7 @@ async function figtree() {
       `  font-family:"Figtree";\n` +
       `  src:url(data:font/woff2;base64,${buf.toString('base64')}) format("woff2");\n` +
       `  font-weight:${weight};\n` +
-      `  font-style:normal;\n  font-display:swap;\n` +
+      `  font-style:${style};\n  font-display:swap;\n` +
       (range ? `  unicode-range:${range};\n` : '') +
       `}`
     );
