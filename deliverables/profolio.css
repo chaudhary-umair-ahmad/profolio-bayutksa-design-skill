@@ -1,0 +1,1153 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   PROFOLIO KSA — ONE STYLESHEET
+   Shared by components.html (the catalogue) and dashboard.html (the page).
+   A component is DEFINED here and in the catalogue; the page only composes it.
+
+   Provenance tags used below:
+     [src]  read directly out of profolio-reactjs @ b83e805 (file cited)
+     [px]   read off the live screenshot (pixel measurement, ±2px)
+     [TBC]  could not be sourced — a visible gap, not a guess
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root{
+
+  /* ── COLOUR ── src/theme/index.js `themeColors` ─────────────────────── */
+  /* neutrals */
+  --gray-900:#4f4f4f;
+  --gray-800:#626262;
+  --gray-700:#707070;          /* label / muted text, rail icon rest */
+  --gray-600:#9D9D9D;          /* placeholder */
+  --gray-550:#BABABA;
+  --gray-500:#C2C2C2;
+  --gray-400:#DEDEDE;          /* sider border-inline-end */
+  --gray-300:#E6E6E6;
+  --gray-200:#f5f5f5;          /* chip rest bg */
+  --gray-100:#f0f0f0;          /* card border, statistic separator */
+
+  /* brand */
+  --primary:#006169;           /* primaryColor */
+  --primary-hover:#006169;
+  --primary-light:#F7FCFC;
+  --primary-light-1:#A6C8CA;   /* primaryOutlined border, chip checked border */
+  --primary-light-2:#CCDFE1;   /* segmented border, profile card border */
+  --primary-light-3:#E1F2F0;   /* chip checked bg */
+  --primary-light-4:#F2FAFA;   /* nav selected bg, primaryOutlined bg, profile card bg */
+
+  /* semantic */
+  --secondary:#28b16d;
+  --success:#28b16d;
+  --warning:#f0a742;
+  --danger:#f73131;
+  --error:#f73131;
+  --info:#2C99FF;
+  --info-alt:#479eeb;
+  --link:#1890ff;
+
+  /* text */
+  --base:#222;                 /* baseColor + headingColor */
+  --heading:#222;
+  --dark:#272B41;              /* darkColor — antd text-color */
+  --gray-color:#5A5F7D;        /* default button content */
+  --light-gray:#868EAE;        /* lightGrayColor — meta text */
+  --black:#000;                /* page title colour, set explicitly in withAdminLayout */
+  --white:#fff;
+
+  /* surfaces + borders */
+  --border-light:#F1F2F6;      /* borderColorLight */
+  --border-normal:#DEDEDE;     /* borderColorNormal — input border */
+  --border-deep:#C6D0DC;
+  --bg-content:#F6F7FB;        /* layout-body-background */
+  --bg-footer-solid:#fafafa;
+  --bg-gray-light:#F8F9FB;
+  --bg-gray-normal:#F4F5F7;    /* icon tile default bg */
+  --bg-gray-deep:#EFF0F3;      /* tag-default-bg */
+  --sider-bg:#fff;
+  --header-bg:#fff;
+  --card-bg:#fff;
+  --footer-bg:rgba(255,255,255,.90);   /* withAdminLayout footerStyle */
+  --footer-text:rgba(0,0,0,0.65);      /* withAdminLayout footerStyle */
+
+  /* classification / product colours — theme/index.js getTheme() */
+  --color-signature:#af6fff;
+  --color-hot:#f73131;
+  --color-basic:#28b16d;
+  --color-for-sale:#2d3e9b;
+  --color-for-rent:#479eeb;
+  --color-clicks:#f0a742;
+  --color-leads:#479eeb;
+
+  /* classified pill — link-with-icon/styled.js headerClassifiedPillStyles */
+  --pill-border:rgb(240,240,240);
+  --pill-text:#767676;
+  --pill-text-hover:#595959;
+  --pill-border-hover:#e0e0e0;
+  --pill-bg-hover:#fafafa;
+  --pill-icon:rgba(40,177,109,1);      /* SidebarClassifiedLinkIcon color */
+
+  /* sidebar bottom actions — MenueItems.js inline tokens */
+  --ghost-btn-content:#707070;
+  --ghost-btn-border:#e6e6e6;
+  --ghost-btn-hover-bg:#f5f5f5;
+
+  /* chart — LeadsStatsGraphWidget.js scales{} */
+  --chart-grid:rgba(0,0,0,0.1);
+  --chart-zero-line:#e5e9f2;
+  --chart-tick:#182b49;
+  --chart-line:#006169;                /* accentColor = platform brandColor [TBC: */
+                                       /* the exact bayut.sa brandColor comes from the */
+                                       /* /platforms API, not the repo. Measure on live. */
+  --tooltip-value:#63b963;             /* widgets/styled.js .tooltip-value */
+
+  /* tint ramp — IconStyled builds a tile ground as `chroma(color).alpha(0.08)`.
+     Hoisted here so no raw colour value appears outside this block. */
+  --tint-for-sale:rgb(45 62 155 / .08);
+  --tint-for-rent:rgb(71 158 235 / .08);
+  --tint-signature:rgb(175 111 255 / .08);
+  --tint-hot:rgb(247 49 49 / .08);
+  --tint-basic:rgb(40 177 109 / .08);
+  --tint-primary:rgb(0 97 105 / .08);
+  --tint-clicks:rgb(240 167 66 / .08);
+  --tint-leads:rgb(71 158 235 / .08);
+  --tint-plan:rgb(240 167 66 / .08);
+  /* round action grounds sit a touch stronger — [px], measured, not declared */
+  --tint-signature-10:rgb(175 111 255 / .10);
+  --tint-hot-10:rgb(247 49 49 / .10);
+  --tint-for-rent-10:rgb(71 158 235 / .10);
+  --tint-clicks-10:rgb(240 167 66 / .10);
+  /* status pill grounds — [TBC] only "Live" is on screen */
+  --tint-warning-12:rgb(240 167 66 / .12);
+  --tint-danger-12:rgb(247 49 49 / .12);
+  /* antd renders the tab-bar separator as a blurred #0007 rule */
+  --rule-blur:rgb(0 0 0 / .47);
+
+  /* ── ELEVATION ─────────────────────────────────────────────────────── */
+  --shadow-card:0 5px 20px rgba(146,153,184,0.03);      /* theme card-shadow */
+  --shadow-sider:0 0 30px #9299B810;                    /* layout/style.js */
+  --shadow-profile-card:0px 1px 6px 0px #0000001C;      /* profile-completion/style.js */
+  --shadow-footer:0 -5px 10px rgba(146,153,184,0.05);   /* withAdminLayout */
+  --shadow-tooltip:0 8px 10px #9299B815;                /* widgets/styled.js */
+  --shadow-menu:0 5px 20px #9299b820;
+  --shadow-tab-active:0px 16px 0 -1px #fff, 2px 0px 21px -10px #41414164;
+
+  /* ── TYPE ──────────────────────────────────────────────────────────── */
+  /* CONFLICT, unresolved: theme['font-family'] = Lato (styled-components layer)
+     but antd token fontFamily = Figtree (antd v5 layer). Both ship. Which one
+     paints a given node depends on which layer wins. [TBC] */
+  --font-body:Lato,'Droid Arabic Kufi',Arial,sans-serif;
+  --font-alt:Figtree,'Droid Arabic Kufi',Arial,sans-serif;
+  --font-chart:'Inter',sans-serif;     /* widgets/styled.js tooltip-title/-value */
+
+  --fs-base:14px;                      /* theme font-size-base + antd fontSize */
+  --lh-base:1.571;                     /* antd token lineHeight */
+  --lh-stat:1.4;                       /* statistic/styled.js .ant-statistic */
+  --lh-tight:1.2;                      /* navbar-page-title */
+  --lh-1:1;                            /* pill line-height */
+
+  --fs-page-title:20px;                /* withAdminLayout navbar-page-title */
+  --fs-card-title:16px;                /* .fz-16 on every dashboard card title */
+  --fs-card-h4:18px;                   /* cards/styled.js .ant-card-head-title h4 */
+  --fs-btn:14px;                       /* inherit */
+  --fs-btn-sm:13px;                    /* button/styled.js size=small */
+  --fs-btn-lg:16px;
+  --fs-13:13px;                        /* listing-breakdown stat fontSize="13px" */
+  --fs-12:12px;                        /* .fz-12 banner message, tooltip-title */
+  --fs-tag:11px;                        /* theme tag-font-size */
+  --fs-chart-tick:13px;                /* chart yAxes ticks fontSize */
+  --fs-chart-tick-x:10px;              /* [px] x labels — 30 daily ticks only fit at ~10px */
+
+  /* statistic sizes are em against the 14px base — statistic/styled.js */
+  --fs-stat-title:1em;
+  --fs-stat-value:1.1428em;            /* default */
+  --fs-stat-lead:1.4285em;             /* lead */
+  --fs-stat-leader:1.5714em;           /* leader */
+  --gap-stat-title:0.1428em;           /* margin-block-end on .ant-statistic-title */
+
+  --fw-400:400;
+  --fw-500:500;                        /* TextWithIcon default, rail item */
+  --fw-600:600;                        /* buttons, TextWithIcon lead, nav selected */
+  --fw-700:700;                        /* card titles, stat values, segmented item */
+  --fw-900:900;
+
+  /* ── SPACING ── utils.less generated scale ─────────────────────────── */
+  --sp-0:0px;  --sp-2:2px;  --sp-4:4px;  --sp-6:6px;  --sp-8:8px;
+  --sp-10:10px; --sp-12:12px; --sp-14:14px; --sp-16:16px; --sp-20:20px;
+  --sp-24:24px; --sp-25:25px; --sp-28:28px; --sp-30:30px; --sp-32:32px;
+  --sp-40:40px; --sp-48:48px; --sp-50:50px; --sp-54:54px;
+
+  /* ── RADIUS + BORDER ───────────────────────────────────────────────── */
+  --border-w:1px;
+  --radius-control:6px;                /* theme border-radius-base */
+  --radius-card:8px;                   /* cards/styled.js clamp(...) resolves to 8px */
+  --radius-card-lg:10px;               /* antd Card borderRadiusLG */
+  --radius-seg-item:4px;               /* segmented/styled.js item-selected */
+  --radius-tag:4px;
+  --radius-chip:24px;                  /* radio-button/styled.js shape=round */
+  --radius-pill:6px;                   /* header classified pill */
+  --radius-icon-tile:30%;              /* IconStyled --icon-radius */
+  --radius-round:50%;
+  --radius-tooltip:3px;                /* widgets/styled.js .chartjs-tooltip */
+  --radius-profile-card:12px;          /* profile-completion/style.js ≥767px */
+
+  /* ── SHELL ── withAdminLayout.js ───────────────────────────────────── */
+  --rail-w:60px;                       /* SIDEBAR_COLLAPSED_WIDTH — default state */
+  --rail-w-expanded:220px;             /* SIDEBAR_EXPANDED_WIDTH */
+  --header-h:60px;                     /* inline minHeight/maxHeight, NOT the 74px */
+                                       /* in theme['layout-header-height'] */
+  --header-pad-block:12px;
+  --header-pad-end:20px;
+  --header-pad-start:85px;             /* sidebarOffset(60) + 25 */
+  --header-gutter:16px;                /* Row gutter={16} */
+  --header-brand-gap:12px;
+  --rail-pad-block:4px;
+  --rail-item-h:36px;                  /* --ant-menu-item-height */
+  --rail-item-w:70%;                   /* collapsed menu item width */
+  --rail-item-pad-inline:10px;         /* collapsed, ltr */
+  --rail-icon:20px;
+  --rail-bottom-gap:8px;
+  --footer-pad-block:12px;
+  --footer-pad-inline:16px;
+
+  /* ── CONTROLS ── antd tokens + button/styled.js ────────────────────── */
+  --ctl-h:36px;                        /* Button controlHeight */
+  --ctl-h-lg:40px;                     /* controlHeightLG */
+  --ctl-h-sm:32px;                     /* controlHeightSM */
+  --btn-pad-y:0.428571em;
+  --btn-pad-x:1em;
+  --btn-icon-gap:6px;                  /* svg + span margin-inline-start */
+  --input-h:44px;                      /* theme input-height-base */
+  --input-h-sm:40px;
+
+  --classified-pill-h:36px;
+  --classified-pill-minw:148.71px;
+  --classified-pill-pad-x:16px;
+  --classified-pill-gap:4px;
+
+  --avatar-ring:34px;                  /* AuthInfo ProgressStyled size */
+  --avatar-img:30px;
+  --avatar-icon:24px;
+  --banner-ring:38px;                  /* ProfileCompletionBanner ProgressStyled */
+  --banner-avatar:34px;
+
+  --icon-tile:32px;                    /* IconStyled default --icon-styled-width */
+  --icon-tile-lg:40px;                 /* metric tab iconContainerSize */
+  --icon-tile-sm:30px;
+  --icon-tile-xs:18px;                 /* CreditsQuota plan badge icon size */
+
+  --seg-pad-block:4px;
+  --seg-pad-inline:6px;
+  --seg-label-pad-x:14px;
+  --seg-label-h:32px;
+
+  --chip-h:24px;                       /* size=small line-height */
+  --chip-minw:36px;
+  --chip-pad-x:0.7rem;
+  --chip-gap:4px;
+  --chip-group-gap:8px;
+
+  --metric-tab-pad-block:16px;
+  --metric-tab-pad-inline:1.6em;
+  --metric-tab-minw:200px;
+  --metric-tab-extra-pad:1.7143em;
+  --ink-bar-h:3px;
+
+  --divider-40:40px;                   /* Divider type=vertical height 40 */
+
+  /* ── CARDS ─────────────────────────────────────────────────────────── */
+  --card-head-min-h:47px;              /* cards/styled.js */
+  --card-head-pad-x:24px;              /* [px] — antd Card paddingLG resolves here */
+  --card-body-pad:24px;                /* CreditsQuota bodyStyle padding: 24 */
+  --card-body-pad-breakdown-y:30px;    /* ListingBreakdown bodyStyle '30px 24px' */
+  --card-body-pad-breakdown-x:24px;
+  --profile-card-pad:16px;             /* ProfileCard --ant-padding-lg */
+
+  /* ── GRID ── dashboard.js ──────────────────────────────────────────── */
+  --grid-two-col:repeat(2, minmax(0, 1fr));   /* Group template=, c-listing-credits */
+  --gap-widget:16px;                          /* Group gap= */
+  --gap-row:24px;                             /* mb-24 under the account switcher */
+  --gap-breakdown-cols:50px;                  /* Flex gap between total and stats */
+  --gap-breakdown-rows:40px;                  /* Flex vertical gap */
+  --gap-stat-grid:30px;                       /* Group gap '30px 30px' */
+  --gap-credits-stats:32px;                   /* QuotaCreditsStatWidget gap */
+
+  --content-pad-inline:16px;           /* [px] main content gutter */
+  --content-pad-block:16px;            /* [px] */
+
+  /* ── UNSOURCED ─────────────────────────────────────────────────────── */
+  --chart-h: /* [TBC] ChartjsAreaChart is height=64 with maintainAspectRatio:true,
+                so the painted height is width/64*ratio — it is not a CSS value.
+                Measure the rendered canvas on live. */ 300px;
+  --listing-thumb-w: /* [TBC] not declared in ListingContainer */ 80px;
+  --listing-thumb-h: /* [TBC] */ 64px;
+  --listing-row-h:   /* [TBC] no row height is declared */ auto;
+  --feedback-tab-w:  /* [TBC] third-party widget, not in this repo */ 28px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESET
+   ═══════════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box}
+html,body{margin:var(--sp-0);padding:var(--sp-0)}
+body{
+  background:var(--bg-content);
+  color:var(--base);
+  font-family:var(--font-body);
+  font-size:var(--fs-base);
+  line-height:var(--lh-base);
+  -webkit-font-smoothing:antialiased;
+}
+[hidden]{display:none!important}
+a{text-decoration:none;color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+svg{display:block}
+table{border-collapse:collapse}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · icon-rail-item
+   src/layout/style.js .ant-layout-sider .ant-menu-item
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-rail{
+  width:var(--rail-w);
+  background:var(--sider-bg);
+  box-shadow:var(--shadow-sider);
+  border-inline-end:var(--border-w) solid var(--gray-400);
+  padding-block:var(--rail-pad-block) var(--sp-10);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.pf-rail-brand{
+  height:var(--header-h);
+  display:grid;
+  place-content:center;
+  width:100%;
+}
+.pf-rail-logo{
+  display:grid;
+  place-content:center;
+  color:var(--primary);          /* [TBC] the brand mark is <TenantComponents.Logo/>,
+                                    an SVG asset. Colour measured, not declared. */
+}
+.pf-rail-list{
+  flex:1;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:var(--sp-0);
+  min-height:var(--sp-0);
+}
+.pf-rail-item{
+  width:var(--rail-item-w);
+  height:var(--rail-item-h);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding-inline:var(--rail-item-pad-inline);
+  margin-inline:auto;
+  border-radius:var(--radius-control);
+  color:var(--gray-700);
+  font-weight:var(--fw-500);
+  text-align:center;
+}
+.pf-rail-item svg{width:var(--rail-icon);height:var(--rail-icon)}
+.pf-rail-item:hover,
+.pf-rail-item[data-state="hover"]{color:var(--primary)}
+.pf-rail-item[aria-current="page"],
+.pf-rail-item[data-state="active"]{
+  background:var(--primary-light-4);
+  color:var(--primary);
+  font-weight:var(--fw-600);
+}
+.pf-rail-bottom{
+  display:flex;
+  flex-direction:column;
+  gap:var(--rail-bottom-gap);
+  width:100%;
+  padding-inline:var(--sp-8);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · page-header + header-action
+   src/layout/withAdminLayout.js renderHeader()
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-header{
+  min-height:var(--header-h);
+  max-height:var(--header-h);
+  background:var(--header-bg);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--header-gutter);
+  padding-block:var(--header-pad-block);
+  padding-inline:var(--header-pad-start) var(--header-pad-end);
+  line-height:normal;
+}
+.pf-header-brand{display:flex;align-items:center;gap:var(--header-brand-gap)}
+.pf-page-title{
+  font-weight:var(--fw-700);
+  font-size:var(--fs-page-title);
+  color:var(--black);
+  line-height:var(--lh-tight);
+  white-space:nowrap;
+}
+.pf-header-actions{
+  display:flex;
+  align-items:center;
+  gap:var(--sp-8);
+  margin-inline-end:calc(var(--sp-8) * -1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · button  (primary / link / primary-outlined / default / ghost /
+                        icon-circle)  src/components/common/button/styled.js
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-btn{
+  --btn-bg:var(--white);
+  --btn-fg:var(--gray-color);
+  --btn-bd:var(--gray-100);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:var(--ctl-h);
+  padding:var(--btn-pad-y) var(--btn-pad-x);
+  border:var(--border-w) solid var(--btn-bd);
+  border-radius:var(--radius-control);
+  background:var(--btn-bg);
+  color:var(--btn-fg);
+  font-size:var(--fs-btn);
+  font-weight:var(--fw-600);
+  line-height:var(--lh-base);
+  white-space:nowrap;
+  box-shadow:0 0;
+}
+.pf-btn svg + span,
+.pf-btn img + span{margin-inline-start:var(--btn-icon-gap)}
+.pf-btn[data-size="small"]{height:var(--ctl-h-sm);font-size:var(--fs-btn-sm)}
+.pf-btn[data-size="large"]{height:var(--ctl-h-lg);font-size:var(--fs-btn-lg)}
+
+.pf-btn[data-variant="primary"]{--btn-bg:var(--primary);--btn-fg:var(--white);--btn-bd:var(--primary)}
+.pf-btn[data-variant="primary"]:hover,
+.pf-btn[data-variant="primary"][data-state="hover"]{--btn-bg:var(--primary-hover);--btn-bd:var(--primary-hover)}
+
+.pf-btn[data-variant="link"]{--btn-bg:transparent;--btn-fg:var(--primary);--btn-bd:transparent;padding-inline:var(--sp-0)}
+.pf-btn[data-variant="link"]:hover,
+.pf-btn[data-variant="link"][data-state="hover"]{--btn-fg:var(--primary)}
+
+.pf-btn[data-variant="primary-outlined"]{--btn-bg:var(--primary-light-4);--btn-fg:var(--primary);--btn-bd:var(--primary-light-1)}
+.pf-btn[data-variant="primary-outlined"]:hover,
+.pf-btn[data-variant="primary-outlined"][data-state="hover"]{--btn-bg:var(--primary);--btn-fg:var(--white);--btn-bd:var(--primary)}
+
+.pf-btn[data-variant="ghost"]{--btn-bg:transparent;--btn-fg:var(--ghost-btn-content);--btn-bd:var(--ghost-btn-border)}
+.pf-btn[data-variant="ghost"]:hover,
+.pf-btn[data-variant="ghost"][data-state="hover"]{--btn-bg:var(--ghost-btn-hover-bg)}
+
+.pf-btn[data-variant="icon-circle"]{
+  --btn-bg:var(--bg-gray-normal);
+  --btn-fg:var(--primary);
+  --btn-bd:transparent;
+  border-radius:var(--radius-round);
+  padding:var(--sp-4);
+  height:auto;
+  aspect-ratio:1;
+}
+.pf-btn[data-block="true"]{width:100%}
+.pf-btn:focus-visible,
+.pf-btn[data-state="focus"]{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
+.pf-btn[disabled],
+.pf-btn[data-state="disabled"]{opacity:.45;cursor:not-allowed}
+.pf-btn[data-state="loading"]{opacity:.65;pointer-events:none}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · header classified pill ("Go to Bayut.sa")
+   src/components/common/link-with-icon/styled.js headerClassifiedPillStyles
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-classified-pill{
+  box-sizing:border-box;
+  display:inline-flex;
+  width:fit-content;
+  min-width:var(--classified-pill-minw);
+  height:var(--classified-pill-h);
+  justify-content:center;
+  align-items:center;
+  gap:var(--classified-pill-gap);
+  padding:var(--sp-0) var(--classified-pill-pad-x);
+  background:var(--white);
+  border:var(--border-w) solid var(--pill-border);
+  border-radius:var(--radius-pill);
+  color:var(--pill-text);
+  font-weight:var(--fw-500);
+  font-size:var(--fs-base);
+  line-height:var(--lh-1);
+  white-space:nowrap;
+}
+.pf-classified-pill:hover,
+.pf-classified-pill[data-state="hover"]{
+  color:var(--pill-text-hover);
+  border-color:var(--pill-border-hover);
+  background:var(--pill-bg-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · notification-badge + avatar + progress-ring
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-bell{position:relative;display:inline-grid;place-content:center;padding:var(--sp-4)}
+.pf-badge{
+  position:absolute;
+  inset-block-start:calc(var(--sp-2) * -1);
+  inset-inline-end:calc(var(--sp-2) * -1);
+  min-width:var(--sp-16);
+  height:var(--sp-16);
+  padding-inline:var(--sp-4);
+  border-radius:var(--radius-chip);
+  background:var(--danger);
+  color:var(--white);
+  font-size:var(--fs-tag);
+  font-weight:var(--fw-700);
+  line-height:var(--sp-16);
+  text-align:center;
+}
+.pf-progress-ring{
+  --ring-size:var(--avatar-ring);
+  --ring-pct:0;
+  width:var(--ring-size);
+  height:var(--ring-size);
+  border-radius:var(--radius-round);
+  display:grid;
+  place-content:center;
+  background:
+    conic-gradient(var(--ring-color, var(--success)) calc(var(--ring-pct) * 1%), var(--gray-100) 0);
+  position:relative;
+}
+.pf-progress-ring::before{
+  content:"";
+  position:absolute;
+  inset:var(--sp-2);
+  border-radius:var(--radius-round);
+  background:var(--white);
+}
+.pf-progress-ring > *{position:relative}
+.pf-avatar{
+  width:var(--avatar-img);
+  height:var(--avatar-img);
+  border-radius:var(--radius-round);
+  background:var(--primary-light-3);
+  color:var(--primary);
+  display:grid;
+  place-content:center;
+  overflow:hidden;
+}
+.pf-avatar[data-size="lg"]{width:var(--banner-avatar);height:var(--banner-avatar)}
+.pf-ring-label{
+  position:absolute;
+  inset-block-end:calc(var(--sp-4) * -1);
+  inset-inline-start:calc(var(--sp-2) * -1);
+  background:var(--success);
+  color:var(--white);
+  font-size:var(--fs-tag);
+  font-weight:var(--fw-700);
+  line-height:var(--lh-1);
+  padding:var(--sp-2) var(--sp-4);
+  border-radius:var(--radius-tag);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · alert-banner (profile completion)
+   src/tenant/common/components/profile-completion/style.js ProfileCard
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-alert{
+  background:var(--primary-light-4);
+  border:var(--border-w) solid var(--primary-light-2);
+  border-radius:var(--radius-profile-card);
+  box-shadow:var(--shadow-profile-card);
+  padding:var(--profile-card-pad);
+  display:flex;
+  align-items:center;
+  gap:var(--sp-12);
+}
+.pf-alert-body{flex:1;display:flex;align-items:center;justify-content:space-between;gap:var(--sp-16)}
+.pf-alert-text{color:var(--gray-700);font-size:var(--fs-12)}
+.pf-alert-title{color:var(--base);font-weight:var(--fw-700);font-size:var(--fs-base)}
+.pf-alert-link{color:var(--primary);font-weight:var(--fw-600);padding-inline:var(--sp-4)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · account-switcher
+   src/container/pages/dashboard/dashboard.js renderUserSelect()
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-switcher{display:flex;align-items:center;gap:var(--sp-8)}
+.pf-switcher-name{font-weight:var(--fw-700);font-size:var(--fs-base);color:var(--base)}
+.pf-switcher-toggle{
+  display:inline-grid;
+  place-content:center;
+  padding:var(--sp-8);
+  color:var(--primary);
+  border-radius:var(--radius-control);
+}
+.pf-switcher-toggle:hover,
+.pf-switcher-toggle[data-state="hover"]{background:var(--primary-light-4)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · card + card-header + card-action-link
+   src/components/common/cards/styled.js CardStyled
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-card{
+  background:var(--card-bg);
+  border:var(--border-w) solid var(--gray-100);
+  border-radius:var(--radius-card);
+  box-shadow:var(--shadow-card);
+  display:flex;
+  flex-direction:column;
+  min-width:var(--sp-0);
+}
+.pf-card-head{
+  min-height:var(--card-head-min-h);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--sp-16);
+  padding-inline:var(--card-head-pad-x);
+  padding-block:var(--sp-16) var(--sp-0);
+}
+.pf-card-head[data-border="true"]{border-block-end:var(--border-w) solid var(--gray-100)}
+.pf-card-title{font-size:var(--fs-card-title);font-weight:var(--fw-700);color:var(--base)}
+.pf-card-title[data-level="h4"]{font-size:var(--fs-card-h4)}
+.pf-card-body{padding:var(--card-body-pad);flex:1;min-width:var(--sp-0)}
+.pf-card-body[data-pad="breakdown"]{padding:var(--card-body-pad-breakdown-y) var(--card-body-pad-breakdown-x)}
+.pf-card-body[data-pad="none"]{padding:var(--sp-0)}
+.pf-card-action{
+  color:var(--primary);
+  font-weight:var(--fw-600);
+  font-size:var(--fs-base);
+  display:inline-flex;
+  align-items:center;
+  gap:var(--sp-4);
+}
+.pf-card-action[data-tone="muted"]{color:var(--gray-700);font-weight:var(--fw-400)}
+.pf-card-action:hover,
+.pf-card-action[data-state="hover"]{text-decoration:underline}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · icon-tile
+   src/components/common/icon/IconStyled.js
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-icon-tile{
+  --tile-fg:var(--gray-700);
+  --tile-bg:var(--bg-gray-normal);
+  width:var(--icon-tile);
+  aspect-ratio:1;
+  border-radius:var(--radius-icon-tile);
+  background:var(--tile-bg);
+  color:var(--tile-fg);
+  display:grid;
+  place-content:center;
+  align-self:start;
+  flex:none;
+}
+.pf-icon-tile[data-size="lg"]{width:var(--icon-tile-lg)}
+.pf-icon-tile[data-size="sm"]{width:var(--icon-tile-sm)}
+.pf-icon-tile[data-size="xs"]{width:var(--icon-tile-xs)}
+/* tone = the icon's own colour at alpha .08 for the tile background — IconStyled */
+.pf-icon-tile[data-tone="for-sale"] {--tile-fg:var(--color-for-sale); --tile-bg:var(--tint-for-sale)}
+.pf-icon-tile[data-tone="for-rent"] {--tile-fg:var(--color-for-rent); --tile-bg:var(--tint-for-rent)}
+.pf-icon-tile[data-tone="signature"]{--tile-fg:var(--color-signature);--tile-bg:var(--tint-signature)}
+.pf-icon-tile[data-tone="hot"]      {--tile-fg:var(--color-hot);      --tile-bg:var(--tint-hot)}
+.pf-icon-tile[data-tone="basic"]    {--tile-fg:var(--color-basic);    --tile-bg:var(--tint-basic)}
+.pf-icon-tile[data-tone="primary"]  {--tile-fg:var(--primary);        --tile-bg:var(--tint-primary)}
+.pf-icon-tile[data-tone="clicks"]   {--tile-fg:var(--color-clicks);   --tile-bg:var(--tint-clicks)}
+.pf-icon-tile[data-tone="leads"]    {--tile-fg:var(--color-leads);    --tile-bg:var(--tint-for-rent)}
+.pf-icon-tile[data-tone="plan"]     {--tile-fg:var(--warning);        --tile-bg:var(--tint-plan)}
+.pf-icon-tile[data-shape="round"]{border-radius:var(--radius-round)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · stat-block
+   src/components/common/statistic/styled.js StatisticStyled
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-stat{display:flex;align-items:flex-start;gap:var(--sp-8);line-height:var(--lh-stat)}
+.pf-stat-title{
+  display:block;
+  color:var(--gray-700);
+  font-size:var(--fs-stat-title);
+  margin-block-end:var(--gap-stat-title);
+}
+.pf-stat-value{display:block;font-size:var(--fs-stat-value);font-weight:var(--fw-700);color:var(--dark)}
+.pf-stat[data-emphasis="lead"]   .pf-stat-value{font-size:var(--fs-stat-lead)}
+.pf-stat[data-emphasis="leader"] .pf-stat-value{font-size:var(--fs-stat-leader)}
+.pf-stat[data-title-size="13"]   .pf-stat-title{font-size:var(--fs-13)}
+.pf-stat[data-inline="true"]{align-items:baseline}
+.pf-stat[data-inline="true"] > div{display:flex;align-items:baseline;gap:var(--sp-8)}
+.pf-stat[data-inline="true"] .pf-stat-title,
+.pf-stat[data-inline="true"] .pf-stat-value{display:inline}
+.pf-stat[data-inline="true"] .pf-stat-title{margin-block-end:var(--sp-0)}
+.pf-stat[data-state="loading"] .pf-stat-value,
+.pf-stat[data-state="loading"] .pf-stat-title{
+  color:transparent;
+  background:var(--border-light);
+  border-radius:var(--radius-tag);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · divider
+   antd Divider type=vertical, height 40 / stretch
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-divider{border:0;border-inline-start:var(--border-w) solid var(--gray-100);margin:var(--sp-0)}
+.pf-divider[data-orientation="vertical"]{width:0;height:var(--divider-40);align-self:center}
+.pf-divider[data-orientation="vertical"][data-stretch="true"]{height:auto;align-self:stretch}
+.pf-divider[data-orientation="horizontal"]{
+  border-inline-start:0;
+  border-block-start:var(--border-w) solid var(--gray-100);
+  width:100%;
+  height:0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · credit-meter + plan-badge
+   src/components/widgets/QuotaCreditsStatWidget.js
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-credit-stats{
+  display:flex;
+  align-items:center;
+  gap:var(--gap-credits-stats);
+  width:100%;
+}
+.pf-credit-meter{
+  --meter-pct:0;
+  display:block;
+  margin-block-start:var(--gap-widget);
+  width:100%;
+  height:var(--sp-8);
+  border-radius:var(--radius-chip);
+  background:var(--gray-100);
+  overflow:hidden;
+}
+.pf-credit-meter::before{
+  content:"";
+  display:block;
+  height:100%;
+  width:calc(var(--meter-pct) * 1%);
+  border-radius:var(--radius-chip);
+  background:var(--chart-line);
+}
+.pf-plan{margin-inline-start:auto;text-align:end}
+.pf-plan-label{color:var(--gray-700);font-weight:var(--fw-400);font-size:var(--fs-base)}
+.pf-plan-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--sp-4);
+  margin-block-start:var(--sp-4);
+  font-weight:var(--fw-700);
+  color:var(--base);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · tab-group (segmented)
+   src/components/common/segmented/styled.js
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-segmented{
+  display:inline-flex;
+  background:var(--primary-light-4);
+  border:var(--border-w) solid var(--primary-light-2);
+  border-radius:var(--radius-control);
+  padding:var(--seg-pad-block) var(--seg-pad-inline);
+}
+.pf-segmented-item{
+  padding-inline:var(--seg-label-pad-x);
+  min-height:var(--seg-label-h);
+  line-height:var(--seg-label-h);
+  font-weight:var(--fw-700);
+  color:var(--gray-700);
+  border-radius:var(--radius-seg-item);
+  white-space:nowrap;
+}
+.pf-segmented-item[aria-selected="true"],
+.pf-segmented-item[data-state="active"]{background:var(--primary-hover);color:var(--white)}
+.pf-segmented[data-size="small"] .pf-segmented-item{
+  min-height:var(--chip-h);
+  line-height:var(--chip-h);
+  font-size:var(--fs-12);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · chip-group (radio pills)
+   src/components/common/radio-button/styled.js RadioPill
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-chip-group{display:flex;align-items:center;gap:var(--chip-group-gap);flex-wrap:wrap}
+.pf-chip{
+  --chip-bg:var(--gray-200);
+  --chip-bd:transparent;
+  --chip-fg:var(--base);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:var(--chip-gap);
+  min-width:var(--chip-minw);
+  line-height:var(--chip-h);
+  padding-inline:var(--chip-pad-x);
+  border:var(--border-w) solid var(--chip-bd);
+  border-radius:var(--radius-chip);
+  background:var(--chip-bg);
+  color:var(--chip-fg);
+  font-size:var(--fs-12);
+}
+.pf-chip[aria-checked="true"],
+.pf-chip[data-state="active"]{
+  --chip-bg:var(--primary-light-3);
+  --chip-bd:var(--primary-light-1);
+  --chip-fg:var(--primary);
+  font-weight:var(--fw-700);
+}
+.pf-chip[disabled],
+.pf-chip[data-state="disabled"]{opacity:.45;cursor:not-allowed}
+.pf-dot{width:var(--sp-8);height:var(--sp-8);border-radius:var(--radius-round);background:var(--gray-500);flex:none}
+.pf-dot[data-tone="all"]      {background:var(--dark)}
+.pf-dot[data-tone="basic"]    {background:var(--color-basic)}
+.pf-dot[data-tone="hot"]      {background:var(--color-hot)}
+.pf-dot[data-tone="signature"]{background:var(--color-signature)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · metric-tab + inline-metric
+   src/components/widgets/styled.js PerformanceChartWrapper
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-metric-bar{
+  display:flex;
+  align-items:stretch;
+  border-block-end:var(--border-w) solid var(--gray-100);
+}
+.pf-metric-tab{
+  position:relative;
+  min-width:var(--metric-tab-minw);
+  padding:var(--metric-tab-pad-block) var(--metric-tab-pad-inline);
+  background:var(--white);
+  border-radius:var(--sp-0);
+  text-align:start;
+}
+.pf-metric-tab[aria-selected="true"],
+.pf-metric-tab[data-state="active"]{
+  background:linear-gradient(color-mix(in srgb, var(--primary) 6%, var(--white)) 0%, var(--white) 80%);
+  box-shadow:var(--shadow-tab-active);
+  z-index:1;
+}
+.pf-metric-tab[aria-selected="true"]::before,
+.pf-metric-tab[data-state="active"]::before{
+  content:"";
+  position:absolute;
+  inset-block-start:0;
+  inset-inline:0;
+  height:var(--ink-bar-h);
+  background:var(--chart-line);
+}
+.pf-metric-tab[aria-selected="true"] .pf-stat-title,
+.pf-metric-tab[data-state="active"] .pf-stat-title{color:var(--chart-line)}
+.pf-metric-tab:hover .pf-stat-title,
+.pf-metric-tab[data-state="hover"] .pf-stat-title{color:var(--primary)}
+
+.pf-metric-extra{
+  flex:1;
+  justify-content:flex-end;
+  display:flex;
+  align-items:center;
+  gap:var(--sp-24);
+  padding-inline:var(--metric-tab-extra-pad);
+  position:relative;
+  overflow:hidden;
+  margin-inline-start:auto;
+}
+/* the 4px blurred rule antd renders before the extra content */
+.pf-metric-extra::after{
+  content:"";
+  position:absolute;
+  inset-inline-start:calc(var(--sp-8) * -1);
+  inset-block:0;
+  width:var(--sp-4);
+  background:var(--rule-blur);
+  filter:blur(var(--sp-4));
+}
+.pf-inline-metric{display:inline-flex;align-items:center;gap:var(--sp-6);white-space:nowrap}
+.pf-inline-metric .pf-stat-title,
+.pf-inline-metric .pf-stat-value{display:inline}
+.pf-inline-metric .pf-stat-title{margin-block-end:var(--sp-0);color:var(--gray-700)}
+.pf-inline-metric .pf-stat-value{font-size:var(--fs-stat-value)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · date-picker
+   src/components/common/date-filter — rendered as a bordered input
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-datepicker{
+  display:inline-flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--sp-8);
+  height:var(--ctl-h);
+  padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--border-normal);
+  border-radius:var(--radius-control);
+  background:var(--white);
+  color:var(--base);
+  font-size:var(--fs-base);
+  white-space:nowrap;
+}
+.pf-datepicker:hover,
+.pf-datepicker[data-state="hover"]{border-color:var(--primary-light-1)}
+.pf-datepicker:focus-within,
+.pf-datepicker[data-state="focus"]{border-color:var(--primary);outline:none}
+.pf-datepicker[data-state="disabled"]{background:var(--gray-200);color:var(--gray-600);cursor:not-allowed}
+.pf-datepicker svg{color:var(--gray-700)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · line-chart + chart-tooltip
+   src/components/widgets/LeadsStatsGraphWidget.js scales{}
+   src/components/widgets/styled.js .chartjs-tooltip
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-chart{position:relative;width:100%}
+.pf-chart svg{width:100%;height:auto;display:block;overflow:visible}
+.pf-chart .grid-h{stroke:var(--chart-grid);stroke-width:1;stroke-dasharray:3 3}
+.pf-chart .axis-zero{stroke:var(--chart-zero-line);stroke-width:1}
+.pf-chart .axis-x{stroke:var(--chart-zero-line);stroke-width:2}
+.pf-chart .series{fill:none;stroke:var(--chart-line);stroke-width:2}
+.pf-chart .marker{fill:var(--chart-line);stroke:var(--white);stroke-width:1}
+.pf-chart .tick{
+  fill:var(--chart-tick);
+  font-family:var(--font-body);
+  font-size:var(--fs-chart-tick);
+}
+.pf-chart .tick-x{fill:var(--gray-700);font-size:var(--fs-chart-tick-x)}
+
+.pf-tooltip{
+  background:var(--white);
+  box-shadow:var(--shadow-tooltip);
+  padding:var(--sp-10) var(--sp-12);
+  border-radius:var(--radius-tooltip);
+  border:var(--border-w) solid var(--border-light);
+  min-width:var(--metric-tab-minw);
+  font-family:var(--font-body);
+  position:relative;
+  width:fit-content;
+}
+.pf-tooltip::before{
+  content:"";
+  position:absolute;
+  inset-block-end:calc(var(--sp-4) * -1 - var(--border-w));
+  inset-inline-start:50%;
+  transform:translateX(-50%);
+  border-block-start:var(--sp-4) solid var(--white);
+  border-inline:var(--sp-4) solid transparent;
+}
+.pf-tooltip-title{
+  color:var(--gray-color);
+  font-size:var(--fs-12);
+  font-weight:var(--fw-500);
+  font-family:var(--font-chart);
+  text-transform:capitalize;
+  margin-block-end:var(--sp-4);
+}
+.pf-tooltip-row{
+  display:flex;
+  align-items:center;
+  gap:var(--sp-6);
+  font-size:var(--fs-13);
+  font-weight:var(--fw-500);
+  color:var(--dark);
+  white-space:nowrap;
+}
+.pf-tooltip-key{width:var(--sp-10);height:var(--sp-10);border-radius:var(--radius-round);background:var(--chart-line);flex:none}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · listing table (Recent Listings)
+   columns: src/tenant/bayut/utils/listingUtilities.js listingTableColumnMapper
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-table{width:100%;background:var(--card-bg);border-radius:var(--radius-card);font-size:var(--fs-13)}
+.pf-table th{
+  text-align:start;
+  font-weight:var(--fw-600);
+  color:var(--gray-700);
+  padding:var(--sp-12) var(--sp-16);
+  border-block-end:var(--border-w) solid var(--gray-100);
+  white-space:nowrap;
+}
+.pf-table td{
+  padding:var(--sp-16);
+  border-block-end:var(--border-w) solid var(--gray-100);
+  vertical-align:top;
+}
+.pf-table tbody tr:hover{background:var(--bg-gray-light)}
+.pf-listing{display:flex;gap:var(--sp-12)}
+.pf-listing-thumb{
+  position:relative;
+  width:var(--listing-thumb-w);
+  height:var(--listing-thumb-h);
+  border-radius:var(--radius-control);
+  background:var(--gray-200);
+  flex:none;
+  overflow:hidden;
+}
+.pf-listing-count{
+  position:absolute;
+  inset-block-start:var(--sp-4);
+  inset-inline-start:var(--sp-4);
+  background:var(--success);
+  color:var(--white);
+  font-size:var(--fs-tag);
+  font-weight:var(--fw-700);
+  line-height:var(--lh-1);
+  padding:var(--sp-2) var(--sp-4);
+  border-radius:var(--radius-tag);
+}
+.pf-listing-price{display:flex;align-items:center;gap:var(--sp-8);font-weight:var(--fw-700);color:var(--base)}
+.pf-listing-title{color:var(--primary);font-weight:var(--fw-700);display:block;margin-block:var(--sp-4)}
+.pf-listing-specs{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
+.pf-listing-loc{color:var(--gray-700)}
+.pf-listing-ids{color:var(--gray-600);font-size:var(--fs-tag);margin-block-start:var(--sp-4)}
+.pf-listing-ids span + span{margin-inline-start:var(--sp-8)}
+
+/* product tag — theme color-basic / color-hot / color-signature */
+.pf-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--sp-4);
+  padding:var(--sp-2) var(--sp-6);
+  border-radius:var(--radius-tag);
+  font-size:var(--fs-tag);
+  font-weight:var(--fw-700);
+  color:var(--white);
+  line-height:var(--lh-base);
+}
+.pf-tag[data-tone="basic"]    {background:var(--color-basic)}
+.pf-tag[data-tone="hot"]      {background:var(--color-hot)}
+.pf-tag[data-tone="signature"]{background:var(--color-signature)}
+.pf-tag[data-tone="default"]  {background:var(--bg-gray-deep);color:var(--dark)}
+
+.pf-score{font-weight:var(--fw-700);font-size:var(--fs-12)}
+.pf-score[data-band="high"]{color:var(--success)}
+.pf-score[data-band="mid"] {color:var(--warning)}
+.pf-score[data-band="low"] {color:var(--danger)}
+
+.pf-status-pill{
+  display:inline-flex;
+  align-items:center;
+  padding:var(--sp-2) var(--sp-12);
+  border-radius:var(--radius-chip);
+  font-size:var(--fs-12);
+  font-weight:var(--fw-600);
+}
+.pf-status-pill[data-status="live"]    {background:var(--primary-light-3);color:var(--primary)}
+.pf-status-pill[data-status="pending"] {background:var(--tint-warning-12);color:var(--warning)}
+.pf-status-pill[data-status="rejected"]{background:var(--tint-danger-12);color:var(--danger)}
+.pf-status-pill[data-status="expired"] {background:var(--bg-gray-deep);color:var(--gray-700)}
+
+.pf-action-grid{display:grid;grid-template-columns:repeat(3, auto);gap:var(--sp-8);width:fit-content}
+.pf-round-action{
+  --ra-fg:var(--primary);
+  --ra-bg:var(--bg-gray-normal);
+  width:var(--icon-tile);
+  aspect-ratio:1;
+  border-radius:var(--radius-round);
+  background:var(--ra-bg);
+  color:var(--ra-fg);
+  display:grid;
+  place-content:center;
+}
+.pf-round-action[data-tone="signature"]{--ra-fg:var(--color-signature);--ra-bg:var(--tint-signature-10)}
+.pf-round-action[data-tone="hot"]      {--ra-fg:var(--color-hot);      --ra-bg:var(--tint-hot-10)}
+.pf-round-action[data-tone="refresh"]  {--ra-fg:var(--color-for-rent); --ra-bg:var(--tint-for-rent-10)}
+.pf-round-action[data-tone="photo"]    {--ra-fg:var(--color-for-rent); --ra-bg:var(--tint-for-rent-10)}
+.pf-round-action[data-tone="video"]    {--ra-fg:var(--color-clicks);   --ra-bg:var(--tint-clicks-10)}
+.pf-round-action[data-tone="muted"]    {--ra-fg:var(--gray-500);       --ra-bg:var(--bg-gray-normal)}
+.pf-round-action[data-state="disabled"]{opacity:.45;cursor:not-allowed}
+.pf-round-action:hover,
+.pf-round-action[data-state="hover"]{filter:brightness(.96)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · feedback-tab  [TBC: third-party widget, no source in this repo]
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-feedback-tab{
+  position:fixed;
+  inset-inline-end:var(--sp-0);
+  inset-block-start:50%;
+  transform:translateY(-50%);
+  background:var(--primary-light-3);
+  color:var(--primary);
+  border-start-start-radius:var(--radius-control);
+  border-end-start-radius:var(--radius-control);
+  padding:var(--sp-12) var(--sp-4);
+  z-index:1000;
+}
+/* the label, not the box, is what rotates — rotating the box makes the
+   browser resolve inset-inline-end against the rotated writing mode */
+.pf-feedback-tab span{
+  writing-mode:vertical-rl;
+  display:block;
+  font-size:var(--fs-tag);
+  font-weight:var(--fw-700);
+  letter-spacing:.08em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LAYOUT PRIMITIVES (page composition only — no new visual decisions)
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-shell{display:flex;min-height:100vh}
+.pf-rail-fixed{position:fixed;inset-block:0;inset-inline-start:0;z-index:1002}
+.pf-main{flex:1;margin-inline-start:var(--rail-w);display:flex;flex-direction:column;min-width:var(--sp-0)}
+.pf-header-fixed{position:sticky;inset-block-start:0;z-index:1000}
+.pf-content{
+  flex:1;
+  padding:var(--content-pad-block) var(--content-pad-inline);
+  display:grid;
+  gap:var(--gap-widget);
+  align-content:start;
+  min-width:var(--sp-0);
+}
+.pf-two-col{display:grid;grid-template-columns:var(--grid-two-col);gap:var(--gap-widget);min-width:var(--sp-0)}
+.pf-footer{
+  background:var(--footer-bg);
+  color:var(--footer-text);
+  font-size:var(--fs-base);
+  padding:var(--footer-pad-block) var(--footer-pad-inline);
+  text-align:center;
+  box-shadow:var(--shadow-footer);
+}
+
+/* sider collapses to a drawer below 992px — cards/styled.js drops the border */
+@media screen and (max-width:991px){
+  .pf-card{border-width:var(--sp-0)}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPOSITION PRIMITIVES
+   Catalogued too (components.html § layout-primitives). These carry no new
+   visual decisions — every value is a token already declared above, and
+   each one names the JSX node in dashboard.js that it stands for.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-stack{display:grid;gap:var(--gap-widget)}                    /* <Group> */
+.pf-stack[data-gap="row"]{gap:var(--gap-row)}                    /* .mb-24 */
+.pf-breakdown{display:flex;align-items:center;gap:var(--gap-breakdown-cols)}
+                                                                  /* <Flex align=center gap=50px> */
+.pf-breakdown-rows{display:flex;flex-direction:column;gap:var(--gap-breakdown-rows);flex:1}
+                                                                  /* <Flex vertical gap=40px flex:1> */
+.pf-stat-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:var(--gap-stat-grid)}
+                                                                  /* <Group template=repeat(3,1fr) gap='30px 30px'> */
+.pf-section-head{                                                 /* <Row px-4 mb-8 space-between baseline gap 24> */
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:var(--gap-row);padding-inline:var(--sp-4);margin-block-end:var(--sp-8);
+}
+.pf-section-title{font-size:var(--fs-card-title);font-weight:var(--fw-700);color:var(--base)}
+.pf-card-toolbar{display:flex;align-items:center;gap:var(--gap-widget)}
+                                                                  /* <Group template=repeat(2,1fr) gap 16> */
+.pf-card-head[data-pad="16"]{padding-inline:var(--sp-16);margin-block-end:var(--sp-16)}
+                                                                  /* renderCardTitle: className="px-16 mb-16" */
+.pf-chart-toolbar{display:flex;align-items:center;gap:var(--sp-8);margin-block-end:var(--sp-10)}
+                                                                  /* <Flex marginBottom 10px space-between> */
+.pf-credit-actions{display:flex;justify-content:center;gap:var(--sp-10);margin-block-start:var(--gap-widget)}
+                                                                  /* <Flex justify=center gap=10px> */
+.pf-credit-actions > .pf-btn{width:100%}                          /* className="w-100" */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ICON SPRITE
+   Both files inline the same <svg><defs> sprite and reference it with
+   <use href="#i-…">. These rules hide the sprite itself and size the
+   glyphs; they are shared so an icon is the same size in the catalogue
+   and on the page.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-sprite{position:absolute;width:var(--sp-0);height:var(--sp-0);overflow:hidden}
+.i{width:1.2em;height:1.2em;fill:none;stroke:currentColor;flex:none}
+.i-14{width:var(--sp-14);height:var(--sp-14)}
+.i-16{width:var(--sp-16);height:var(--sp-16)}
+.i-20{width:var(--sp-20);height:var(--sp-20)}
+.i-24{width:var(--sp-24);height:var(--sp-24)}

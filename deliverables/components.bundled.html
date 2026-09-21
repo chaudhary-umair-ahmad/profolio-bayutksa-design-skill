@@ -1,0 +1,2317 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Profolio KSA — Component Catalogue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Inter:wght@400;500;600&display=swap">
+<!-- THE shared stylesheet. Every component below is defined there, once.
+     dashboard.html links the same file and composes these classes only. -->
+<style>
+/* inlined from profolio.css — see scripts/bundle.mjs */
+/* ═══════════════════════════════════════════════════════════════════════════
+   PROFOLIO KSA — ONE STYLESHEET
+   Shared by components.html (the catalogue) and dashboard.html (the page).
+   A component is DEFINED here and in the catalogue; the page only composes it.
+
+   Provenance tags used below:
+     [src]  read directly out of profolio-reactjs @ b83e805 (file cited)
+     [px]   read off the live screenshot (pixel measurement, ±2px)
+     [TBC]  could not be sourced — a visible gap, not a guess
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root{
+
+  /* ── COLOUR ── src/theme/index.js `themeColors` ─────────────────────── */
+  /* neutrals */
+  --gray-900:#4f4f4f;
+  --gray-800:#626262;
+  --gray-700:#707070;          /* label / muted text, rail icon rest */
+  --gray-600:#9D9D9D;          /* placeholder */
+  --gray-550:#BABABA;
+  --gray-500:#C2C2C2;
+  --gray-400:#DEDEDE;          /* sider border-inline-end */
+  --gray-300:#E6E6E6;
+  --gray-200:#f5f5f5;          /* chip rest bg */
+  --gray-100:#f0f0f0;          /* card border, statistic separator */
+
+  /* brand */
+  --primary:#006169;           /* primaryColor */
+  --primary-hover:#006169;
+  --primary-light:#F7FCFC;
+  --primary-light-1:#A6C8CA;   /* primaryOutlined border, chip checked border */
+  --primary-light-2:#CCDFE1;   /* segmented border, profile card border */
+  --primary-light-3:#E1F2F0;   /* chip checked bg */
+  --primary-light-4:#F2FAFA;   /* nav selected bg, primaryOutlined bg, profile card bg */
+
+  /* semantic */
+  --secondary:#28b16d;
+  --success:#28b16d;
+  --warning:#f0a742;
+  --danger:#f73131;
+  --error:#f73131;
+  --info:#2C99FF;
+  --info-alt:#479eeb;
+  --link:#1890ff;
+
+  /* text */
+  --base:#222;                 /* baseColor + headingColor */
+  --heading:#222;
+  --dark:#272B41;              /* darkColor — antd text-color */
+  --gray-color:#5A5F7D;        /* default button content */
+  --light-gray:#868EAE;        /* lightGrayColor — meta text */
+  --black:#000;                /* page title colour, set explicitly in withAdminLayout */
+  --white:#fff;
+
+  /* surfaces + borders */
+  --border-light:#F1F2F6;      /* borderColorLight */
+  --border-normal:#DEDEDE;     /* borderColorNormal — input border */
+  --border-deep:#C6D0DC;
+  --bg-content:#F6F7FB;        /* layout-body-background */
+  --bg-footer-solid:#fafafa;
+  --bg-gray-light:#F8F9FB;
+  --bg-gray-normal:#F4F5F7;    /* icon tile default bg */
+  --bg-gray-deep:#EFF0F3;      /* tag-default-bg */
+  --sider-bg:#fff;
+  --header-bg:#fff;
+  --card-bg:#fff;
+  --footer-bg:rgba(255,255,255,.90);   /* withAdminLayout footerStyle */
+  --footer-text:rgba(0,0,0,0.65);      /* withAdminLayout footerStyle */
+
+  /* classification / product colours — theme/index.js getTheme() */
+  --color-signature:#af6fff;
+  --color-hot:#f73131;
+  --color-basic:#28b16d;
+  --color-for-sale:#2d3e9b;
+  --color-for-rent:#479eeb;
+  --color-clicks:#f0a742;
+  --color-leads:#479eeb;
+
+  /* classified pill — link-with-icon/styled.js headerClassifiedPillStyles */
+  --pill-border:rgb(240,240,240);
+  --pill-text:#767676;
+  --pill-text-hover:#595959;
+  --pill-border-hover:#e0e0e0;
+  --pill-bg-hover:#fafafa;
+  --pill-icon:rgba(40,177,109,1);      /* SidebarClassifiedLinkIcon color */
+
+  /* sidebar bottom actions — MenueItems.js inline tokens */
+  --ghost-btn-content:#707070;
+  --ghost-btn-border:#e6e6e6;
+  --ghost-btn-hover-bg:#f5f5f5;
+
+  /* chart — LeadsStatsGraphWidget.js scales{} */
+  --chart-grid:rgba(0,0,0,0.1);
+  --chart-zero-line:#e5e9f2;
+  --chart-tick:#182b49;
+  --chart-line:#006169;                /* accentColor = platform brandColor [TBC: */
+                                       /* the exact bayut.sa brandColor comes from the */
+                                       /* /platforms API, not the repo. Measure on live. */
+  --tooltip-value:#63b963;             /* widgets/styled.js .tooltip-value */
+
+  /* tint ramp — IconStyled builds a tile ground as `chroma(color).alpha(0.08)`.
+     Hoisted here so no raw colour value appears outside this block. */
+  --tint-for-sale:rgb(45 62 155 / .08);
+  --tint-for-rent:rgb(71 158 235 / .08);
+  --tint-signature:rgb(175 111 255 / .08);
+  --tint-hot:rgb(247 49 49 / .08);
+  --tint-basic:rgb(40 177 109 / .08);
+  --tint-primary:rgb(0 97 105 / .08);
+  --tint-clicks:rgb(240 167 66 / .08);
+  --tint-leads:rgb(71 158 235 / .08);
+  --tint-plan:rgb(240 167 66 / .08);
+  /* round action grounds sit a touch stronger — [px], measured, not declared */
+  --tint-signature-10:rgb(175 111 255 / .10);
+  --tint-hot-10:rgb(247 49 49 / .10);
+  --tint-for-rent-10:rgb(71 158 235 / .10);
+  --tint-clicks-10:rgb(240 167 66 / .10);
+  /* status pill grounds — [TBC] only "Live" is on screen */
+  --tint-warning-12:rgb(240 167 66 / .12);
+  --tint-danger-12:rgb(247 49 49 / .12);
+  /* antd renders the tab-bar separator as a blurred #0007 rule */
+  --rule-blur:rgb(0 0 0 / .47);
+
+  /* ── ELEVATION ─────────────────────────────────────────────────────── */
+  --shadow-card:0 5px 20px rgba(146,153,184,0.03);      /* theme card-shadow */
+  --shadow-sider:0 0 30px #9299B810;                    /* layout/style.js */
+  --shadow-profile-card:0px 1px 6px 0px #0000001C;      /* profile-completion/style.js */
+  --shadow-footer:0 -5px 10px rgba(146,153,184,0.05);   /* withAdminLayout */
+  --shadow-tooltip:0 8px 10px #9299B815;                /* widgets/styled.js */
+  --shadow-menu:0 5px 20px #9299b820;
+  --shadow-tab-active:0px 16px 0 -1px #fff, 2px 0px 21px -10px #41414164;
+
+  /* ── TYPE ──────────────────────────────────────────────────────────── */
+  /* CONFLICT, unresolved: theme['font-family'] = Lato (styled-components layer)
+     but antd token fontFamily = Figtree (antd v5 layer). Both ship. Which one
+     paints a given node depends on which layer wins. [TBC] */
+  --font-body:Lato,'Droid Arabic Kufi',Arial,sans-serif;
+  --font-alt:Figtree,'Droid Arabic Kufi',Arial,sans-serif;
+  --font-chart:'Inter',sans-serif;     /* widgets/styled.js tooltip-title/-value */
+
+  --fs-base:14px;                      /* theme font-size-base + antd fontSize */
+  --lh-base:1.571;                     /* antd token lineHeight */
+  --lh-stat:1.4;                       /* statistic/styled.js .ant-statistic */
+  --lh-tight:1.2;                      /* navbar-page-title */
+  --lh-1:1;                            /* pill line-height */
+
+  --fs-page-title:20px;                /* withAdminLayout navbar-page-title */
+  --fs-card-title:16px;                /* .fz-16 on every dashboard card title */
+  --fs-card-h4:18px;                   /* cards/styled.js .ant-card-head-title h4 */
+  --fs-btn:14px;                       /* inherit */
+  --fs-btn-sm:13px;                    /* button/styled.js size=small */
+  --fs-btn-lg:16px;
+  --fs-13:13px;                        /* listing-breakdown stat fontSize="13px" */
+  --fs-12:12px;                        /* .fz-12 banner message, tooltip-title */
+  --fs-tag:11px;                        /* theme tag-font-size */
+  --fs-chart-tick:13px;                /* chart yAxes ticks fontSize */
+  --fs-chart-tick-x:10px;              /* [px] x labels — 30 daily ticks only fit at ~10px */
+
+  /* statistic sizes are em against the 14px base — statistic/styled.js */
+  --fs-stat-title:1em;
+  --fs-stat-value:1.1428em;            /* default */
+  --fs-stat-lead:1.4285em;             /* lead */
+  --fs-stat-leader:1.5714em;           /* leader */
+  --gap-stat-title:0.1428em;           /* margin-block-end on .ant-statistic-title */
+
+  --fw-400:400;
+  --fw-500:500;                        /* TextWithIcon default, rail item */
+  --fw-600:600;                        /* buttons, TextWithIcon lead, nav selected */
+  --fw-700:700;                        /* card titles, stat values, segmented item */
+  --fw-900:900;
+
+  /* ── SPACING ── utils.less generated scale ─────────────────────────── */
+  --sp-0:0px;  --sp-2:2px;  --sp-4:4px;  --sp-6:6px;  --sp-8:8px;
+  --sp-10:10px; --sp-12:12px; --sp-14:14px; --sp-16:16px; --sp-20:20px;
+  --sp-24:24px; --sp-25:25px; --sp-28:28px; --sp-30:30px; --sp-32:32px;
+  --sp-40:40px; --sp-48:48px; --sp-50:50px; --sp-54:54px;
+
+  /* ── RADIUS + BORDER ───────────────────────────────────────────────── */
+  --border-w:1px;
+  --radius-control:6px;                /* theme border-radius-base */
+  --radius-card:8px;                   /* cards/styled.js clamp(...) resolves to 8px */
+  --radius-card-lg:10px;               /* antd Card borderRadiusLG */
+  --radius-seg-item:4px;               /* segmented/styled.js item-selected */
+  --radius-tag:4px;
+  --radius-chip:24px;                  /* radio-button/styled.js shape=round */
+  --radius-pill:6px;                   /* header classified pill */
+  --radius-icon-tile:30%;              /* IconStyled --icon-radius */
+  --radius-round:50%;
+  --radius-tooltip:3px;                /* widgets/styled.js .chartjs-tooltip */
+  --radius-profile-card:12px;          /* profile-completion/style.js ≥767px */
+
+  /* ── SHELL ── withAdminLayout.js ───────────────────────────────────── */
+  --rail-w:60px;                       /* SIDEBAR_COLLAPSED_WIDTH — default state */
+  --rail-w-expanded:220px;             /* SIDEBAR_EXPANDED_WIDTH */
+  --header-h:60px;                     /* inline minHeight/maxHeight, NOT the 74px */
+                                       /* in theme['layout-header-height'] */
+  --header-pad-block:12px;
+  --header-pad-end:20px;
+  --header-pad-start:85px;             /* sidebarOffset(60) + 25 */
+  --header-gutter:16px;                /* Row gutter={16} */
+  --header-brand-gap:12px;
+  --rail-pad-block:4px;
+  --rail-item-h:36px;                  /* --ant-menu-item-height */
+  --rail-item-w:70%;                   /* collapsed menu item width */
+  --rail-item-pad-inline:10px;         /* collapsed, ltr */
+  --rail-icon:20px;
+  --rail-bottom-gap:8px;
+  --footer-pad-block:12px;
+  --footer-pad-inline:16px;
+
+  /* ── CONTROLS ── antd tokens + button/styled.js ────────────────────── */
+  --ctl-h:36px;                        /* Button controlHeight */
+  --ctl-h-lg:40px;                     /* controlHeightLG */
+  --ctl-h-sm:32px;                     /* controlHeightSM */
+  --btn-pad-y:0.428571em;
+  --btn-pad-x:1em;
+  --btn-icon-gap:6px;                  /* svg + span margin-inline-start */
+  --input-h:44px;                      /* theme input-height-base */
+  --input-h-sm:40px;
+
+  --classified-pill-h:36px;
+  --classified-pill-minw:148.71px;
+  --classified-pill-pad-x:16px;
+  --classified-pill-gap:4px;
+
+  --avatar-ring:34px;                  /* AuthInfo ProgressStyled size */
+  --avatar-img:30px;
+  --avatar-icon:24px;
+  --banner-ring:38px;                  /* ProfileCompletionBanner ProgressStyled */
+  --banner-avatar:34px;
+
+  --icon-tile:32px;                    /* IconStyled default --icon-styled-width */
+  --icon-tile-lg:40px;                 /* metric tab iconContainerSize */
+  --icon-tile-sm:30px;
+  --icon-tile-xs:18px;                 /* CreditsQuota plan badge icon size */
+
+  --seg-pad-block:4px;
+  --seg-pad-inline:6px;
+  --seg-label-pad-x:14px;
+  --seg-label-h:32px;
+
+  --chip-h:24px;                       /* size=small line-height */
+  --chip-minw:36px;
+  --chip-pad-x:0.7rem;
+  --chip-gap:4px;
+  --chip-group-gap:8px;
+
+  --metric-tab-pad-block:16px;
+  --metric-tab-pad-inline:1.6em;
+  --metric-tab-minw:200px;
+  --metric-tab-extra-pad:1.7143em;
+  --ink-bar-h:3px;
+
+  --divider-40:40px;                   /* Divider type=vertical height 40 */
+
+  /* ── CARDS ─────────────────────────────────────────────────────────── */
+  --card-head-min-h:47px;              /* cards/styled.js */
+  --card-head-pad-x:24px;              /* [px] — antd Card paddingLG resolves here */
+  --card-body-pad:24px;                /* CreditsQuota bodyStyle padding: 24 */
+  --card-body-pad-breakdown-y:30px;    /* ListingBreakdown bodyStyle '30px 24px' */
+  --card-body-pad-breakdown-x:24px;
+  --profile-card-pad:16px;             /* ProfileCard --ant-padding-lg */
+
+  /* ── GRID ── dashboard.js ──────────────────────────────────────────── */
+  --grid-two-col:repeat(2, minmax(0, 1fr));   /* Group template=, c-listing-credits */
+  --gap-widget:16px;                          /* Group gap= */
+  --gap-row:24px;                             /* mb-24 under the account switcher */
+  --gap-breakdown-cols:50px;                  /* Flex gap between total and stats */
+  --gap-breakdown-rows:40px;                  /* Flex vertical gap */
+  --gap-stat-grid:30px;                       /* Group gap '30px 30px' */
+  --gap-credits-stats:32px;                   /* QuotaCreditsStatWidget gap */
+
+  --content-pad-inline:16px;           /* [px] main content gutter */
+  --content-pad-block:16px;            /* [px] */
+
+  /* ── UNSOURCED ─────────────────────────────────────────────────────── */
+  --chart-h: /* [TBC] ChartjsAreaChart is height=64 with maintainAspectRatio:true,
+                so the painted height is width/64*ratio — it is not a CSS value.
+                Measure the rendered canvas on live. */ 300px;
+  --listing-thumb-w: /* [TBC] not declared in ListingContainer */ 80px;
+  --listing-thumb-h: /* [TBC] */ 64px;
+  --listing-row-h:   /* [TBC] no row height is declared */ auto;
+  --feedback-tab-w:  /* [TBC] third-party widget, not in this repo */ 28px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESET
+   ═══════════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box}
+html,body{margin:var(--sp-0);padding:var(--sp-0)}
+body{
+  background:var(--bg-content);
+  color:var(--base);
+  font-family:var(--font-body);
+  font-size:var(--fs-base);
+  line-height:var(--lh-base);
+  -webkit-font-smoothing:antialiased;
+}
+[hidden]{display:none!important}
+a{text-decoration:none;color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+svg{display:block}
+table{border-collapse:collapse}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · icon-rail-item
+   src/layout/style.js .ant-layout-sider .ant-menu-item
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-rail{
+  width:var(--rail-w);
+  background:var(--sider-bg);
+  box-shadow:var(--shadow-sider);
+  border-inline-end:var(--border-w) solid var(--gray-400);
+  padding-block:var(--rail-pad-block) var(--sp-10);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.pf-rail-brand{
+  height:var(--header-h);
+  display:grid;
+  place-content:center;
+  width:100%;
+}
+.pf-rail-logo{
+  display:grid;
+  place-content:center;
+  color:var(--primary);          /* [TBC] the brand mark is <TenantComponents.Logo/>,
+                                    an SVG asset. Colour measured, not declared. */
+}
+.pf-rail-list{
+  flex:1;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:var(--sp-0);
+  min-height:var(--sp-0);
+}
+.pf-rail-item{
+  width:var(--rail-item-w);
+  height:var(--rail-item-h);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding-inline:var(--rail-item-pad-inline);
+  margin-inline:auto;
+  border-radius:var(--radius-control);
+  color:var(--gray-700);
+  font-weight:var(--fw-500);
+  text-align:center;
+}
+.pf-rail-item svg{width:var(--rail-icon);height:var(--rail-icon)}
+.pf-rail-item:hover,
+.pf-rail-item[data-state="hover"]{color:var(--primary)}
+.pf-rail-item[aria-current="page"],
+.pf-rail-item[data-state="active"]{
+  background:var(--primary-light-4);
+  color:var(--primary);
+  font-weight:var(--fw-600);
+}
+.pf-rail-bottom{
+  display:flex;
+  flex-direction:column;
+  gap:var(--rail-bottom-gap);
+  width:100%;
+  padding-inline:var(--sp-8);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · page-header + header-action
+   src/layout/withAdminLayout.js renderHeader()
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-header{
+  min-height:var(--header-h);
+  max-height:var(--header-h);
+  background:var(--header-bg);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--header-gutter);
+  padding-block:var(--header-pad-block);
+  padding-inline:var(--header-pad-start) var(--header-pad-end);
+  line-height:normal;
+}
+.pf-header-brand{display:flex;align-items:center;gap:var(--header-brand-gap)}
+.pf-page-title{
+  font-weight:var(--fw-700);
+  font-size:var(--fs-page-title);
+  color:var(--black);
+  line-height:var(--lh-tight);
+  white-space:nowrap;
+}
+.pf-header-actions{
+  display:flex;
+  align-items:center;
+  gap:var(--sp-8);
+  margin-inline-end:calc(var(--sp-8) * -1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · button  (primary / link / primary-outlined / default / ghost /
+                        icon-circle)  src/components/common/button/styled.js
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-btn{
+  --btn-bg:var(--white);
+  --btn-fg:var(--gray-color);
+  --btn-bd:var(--gray-100);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:var(--ctl-h);
+  padding:var(--btn-pad-y) var(--btn-pad-x);
+  border:var(--border-w) solid var(--btn-bd);
+  border-radius:var(--radius-control);
+  background:var(--btn-bg);
+  color:var(--btn-fg);
+  font-size:var(--fs-btn);
+  font-weight:var(--fw-600);
+  line-height:var(--lh-base);
+  white-space:nowrap;
+  box-shadow:0 0;
+}
+.pf-btn svg + span,
+.pf-btn img + span{margin-inline-start:var(--btn-icon-gap)}
+.pf-btn[data-size="small"]{height:var(--ctl-h-sm);font-size:var(--fs-btn-sm)}
+.pf-btn[data-size="large"]{height:var(--ctl-h-lg);font-size:var(--fs-btn-lg)}
+
+.pf-btn[data-variant="primary"]{--btn-bg:var(--primary);--btn-fg:var(--white);--btn-bd:var(--primary)}
+.pf-btn[data-variant="primary"]:hover,
+.pf-btn[data-variant="primary"][data-state="hover"]{--btn-bg:var(--primary-hover);--btn-bd:var(--primary-hover)}
+
+.pf-btn[data-variant="link"]{--btn-bg:transparent;--btn-fg:var(--primary);--btn-bd:transparent;padding-inline:var(--sp-0)}
+.pf-btn[data-variant="link"]:hover,
+.pf-btn[data-variant="link"][data-state="hover"]{--btn-fg:var(--primary)}
+
+.pf-btn[data-variant="primary-outlined"]{--btn-bg:var(--primary-light-4);--btn-fg:var(--primary);--btn-bd:var(--primary-light-1)}
+.pf-btn[data-variant="primary-outlined"]:hover,
+.pf-btn[data-variant="primary-outlined"][data-state="hover"]{--btn-bg:var(--primary);--btn-fg:var(--white);--btn-bd:var(--primary)}
+
+.pf-btn[data-variant="ghost"]{--btn-bg:transparent;--btn-fg:var(--ghost-btn-content);--btn-bd:var(--ghost-btn-border)}
+.pf-btn[data-variant="ghost"]:hover,
+.pf-btn[data-variant="ghost"][data-state="hover"]{--btn-bg:var(--ghost-btn-hover-bg)}
+
+.pf-btn[data-variant="icon-circle"]{
+  --btn-bg:var(--bg-gray-normal);
+  --btn-fg:var(--primary);
+  --btn-bd:transparent;
+  border-radius:var(--radius-round);
+  padding:var(--sp-4);
+  height:auto;
+  aspect-ratio:1;
+}
+.pf-btn[data-block="true"]{width:100%}
+.pf-btn:focus-visible,
+.pf-btn[data-state="focus"]{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
+.pf-btn[disabled],
+.pf-btn[data-state="disabled"]{opacity:.45;cursor:not-allowed}
+.pf-btn[data-state="loading"]{opacity:.65;pointer-events:none}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · header classified pill ("Go to Bayut.sa")
+   src/components/common/link-with-icon/styled.js headerClassifiedPillStyles
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-classified-pill{
+  box-sizing:border-box;
+  display:inline-flex;
+  width:fit-content;
+  min-width:var(--classified-pill-minw);
+  height:var(--classified-pill-h);
+  justify-content:center;
+  align-items:center;
+  gap:var(--classified-pill-gap);
+  padding:var(--sp-0) var(--classified-pill-pad-x);
+  background:var(--white);
+  border:var(--border-w) solid var(--pill-border);
+  border-radius:var(--radius-pill);
+  color:var(--pill-text);
+  font-weight:var(--fw-500);
+  font-size:var(--fs-base);
+  line-height:var(--lh-1);
+  white-space:nowrap;
+}
+.pf-classified-pill:hover,
+.pf-classified-pill[data-state="hover"]{
+  color:var(--pill-text-hover);
+  border-color:var(--pill-border-hover);
+  background:var(--pill-bg-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · notification-badge + avatar + progress-ring
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-bell{position:relative;display:inline-grid;place-content:center;padding:var(--sp-4)}
+.pf-badge{
+  position:absolute;
+  inset-block-start:calc(var(--sp-2) * -1);
+  inset-inline-end:calc(var(--sp-2) * -1);
+  min-width:var(--sp-16);
+  height:var(--sp-16);
+  padding-inline:var(--sp-4);
+  border-radius:var(--radius-chip);
+  background:var(--danger);
+  color:var(--white);
+  font-size:var(--fs-tag);
+  font-weight:var(--fw-700);
+  line-height:var(--sp-16);
+  text-align:center;
+}
+.pf-progress-ring{
+  --ring-size:var(--avatar-ring);
+  --ring-pct:0;
+  width:var(--ring-size);
+  height:var(--ring-size);
+  border-radius:var(--radius-round);
+  display:grid;
+  place-content:center;
+  background:
+    conic-gradient(var(--ring-color, var(--success)) calc(var(--ring-pct) * 1%), var(--gray-100) 0);
+  position:relative;
+}
+.pf-progress-ring::before{
+  content:"";
+  position:absolute;
+  inset:var(--sp-2);
+  border-radius:var(--radius-round);
+  background:var(--white);
+}
+.pf-progress-ring > *{position:relative}
+.pf-avatar{
+  width:var(--avatar-img);
+  height:var(--avatar-img);
+  border-radius:var(--radius-round);
+  background:var(--primary-light-3);
+  color:var(--primary);
+  display:grid;
+  place-content:center;
+  overflow:hidden;
+}
+.pf-avatar[data-size="lg"]{width:var(--banner-avatar);height:var(--banner-avatar)}
+.pf-ring-label{
+  position:absolute;
+  inset-block-end:calc(var(--sp-4) * -1);
+  inset-inline-start:calc(var(--sp-2) * -1);
+  background:var(--success);
+  color:var(--white);
+  font-size:var(--fs-tag);
+  font-weight:var(--fw-700);
+  line-height:var(--lh-1);
+  padding:var(--sp-2) var(--sp-4);
+  border-radius:var(--radius-tag);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · alert-banner (profile completion)
+   src/tenant/common/components/profile-completion/style.js ProfileCard
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-alert{
+  background:var(--primary-light-4);
+  border:var(--border-w) solid var(--primary-light-2);
+  border-radius:var(--radius-profile-card);
+  box-shadow:var(--shadow-profile-card);
+  padding:var(--profile-card-pad);
+  display:flex;
+  align-items:center;
+  gap:var(--sp-12);
+}
+.pf-alert-body{flex:1;display:flex;align-items:center;justify-content:space-between;gap:var(--sp-16)}
+.pf-alert-text{color:var(--gray-700);font-size:var(--fs-12)}
+.pf-alert-title{color:var(--base);font-weight:var(--fw-700);font-size:var(--fs-base)}
+.pf-alert-link{color:var(--primary);font-weight:var(--fw-600);padding-inline:var(--sp-4)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · account-switcher
+   src/container/pages/dashboard/dashboard.js renderUserSelect()
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-switcher{display:flex;align-items:center;gap:var(--sp-8)}
+.pf-switcher-name{font-weight:var(--fw-700);font-size:var(--fs-base);color:var(--base)}
+.pf-switcher-toggle{
+  display:inline-grid;
+  place-content:center;
+  padding:var(--sp-8);
+  color:var(--primary);
+  border-radius:var(--radius-control);
+}
+.pf-switcher-toggle:hover,
+.pf-switcher-toggle[data-state="hover"]{background:var(--primary-light-4)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · card + card-header + card-action-link
+   src/components/common/cards/styled.js CardStyled
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-card{
+  background:var(--card-bg);
+  border:var(--border-w) solid var(--gray-100);
+  border-radius:var(--radius-card);
+  box-shadow:var(--shadow-card);
+  display:flex;
+  flex-direction:column;
+  min-width:var(--sp-0);
+}
+.pf-card-head{
+  min-height:var(--card-head-min-h);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--sp-16);
+  padding-inline:var(--card-head-pad-x);
+  padding-block:var(--sp-16) var(--sp-0);
+}
+.pf-card-head[data-border="true"]{border-block-end:var(--border-w) solid var(--gray-100)}
+.pf-card-title{font-size:var(--fs-card-title);font-weight:var(--fw-700);color:var(--base)}
+.pf-card-title[data-level="h4"]{font-size:var(--fs-card-h4)}
+.pf-card-body{padding:var(--card-body-pad);flex:1;min-width:var(--sp-0)}
+.pf-card-body[data-pad="breakdown"]{padding:var(--card-body-pad-breakdown-y) var(--card-body-pad-breakdown-x)}
+.pf-card-body[data-pad="none"]{padding:var(--sp-0)}
+.pf-card-action{
+  color:var(--primary);
+  font-weight:var(--fw-600);
+  font-size:var(--fs-base);
+  display:inline-flex;
+  align-items:center;
+  gap:var(--sp-4);
+}
+.pf-card-action[data-tone="muted"]{color:var(--gray-700);font-weight:var(--fw-400)}
+.pf-card-action:hover,
+.pf-card-action[data-state="hover"]{text-decoration:underline}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · icon-tile
+   src/components/common/icon/IconStyled.js
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-icon-tile{
+  --tile-fg:var(--gray-700);
+  --tile-bg:var(--bg-gray-normal);
+  width:var(--icon-tile);
+  aspect-ratio:1;
+  border-radius:var(--radius-icon-tile);
+  background:var(--tile-bg);
+  color:var(--tile-fg);
+  display:grid;
+  place-content:center;
+  align-self:start;
+  flex:none;
+}
+.pf-icon-tile[data-size="lg"]{width:var(--icon-tile-lg)}
+.pf-icon-tile[data-size="sm"]{width:var(--icon-tile-sm)}
+.pf-icon-tile[data-size="xs"]{width:var(--icon-tile-xs)}
+/* tone = the icon's own colour at alpha .08 for the tile background — IconStyled */
+.pf-icon-tile[data-tone="for-sale"] {--tile-fg:var(--color-for-sale); --tile-bg:var(--tint-for-sale)}
+.pf-icon-tile[data-tone="for-rent"] {--tile-fg:var(--color-for-rent); --tile-bg:var(--tint-for-rent)}
+.pf-icon-tile[data-tone="signature"]{--tile-fg:var(--color-signature);--tile-bg:var(--tint-signature)}
+.pf-icon-tile[data-tone="hot"]      {--tile-fg:var(--color-hot);      --tile-bg:var(--tint-hot)}
+.pf-icon-tile[data-tone="basic"]    {--tile-fg:var(--color-basic);    --tile-bg:var(--tint-basic)}
+.pf-icon-tile[data-tone="primary"]  {--tile-fg:var(--primary);        --tile-bg:var(--tint-primary)}
+.pf-icon-tile[data-tone="clicks"]   {--tile-fg:var(--color-clicks);   --tile-bg:var(--tint-clicks)}
+.pf-icon-tile[data-tone="leads"]    {--tile-fg:var(--color-leads);    --tile-bg:var(--tint-for-rent)}
+.pf-icon-tile[data-tone="plan"]     {--tile-fg:var(--warning);        --tile-bg:var(--tint-plan)}
+.pf-icon-tile[data-shape="round"]{border-radius:var(--radius-round)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · stat-block
+   src/components/common/statistic/styled.js StatisticStyled
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-stat{display:flex;align-items:flex-start;gap:var(--sp-8);line-height:var(--lh-stat)}
+.pf-stat-title{
+  display:block;
+  color:var(--gray-700);
+  font-size:var(--fs-stat-title);
+  margin-block-end:var(--gap-stat-title);
+}
+.pf-stat-value{display:block;font-size:var(--fs-stat-value);font-weight:var(--fw-700);color:var(--dark)}
+.pf-stat[data-emphasis="lead"]   .pf-stat-value{font-size:var(--fs-stat-lead)}
+.pf-stat[data-emphasis="leader"] .pf-stat-value{font-size:var(--fs-stat-leader)}
+.pf-stat[data-title-size="13"]   .pf-stat-title{font-size:var(--fs-13)}
+.pf-stat[data-inline="true"]{align-items:baseline}
+.pf-stat[data-inline="true"] > div{display:flex;align-items:baseline;gap:var(--sp-8)}
+.pf-stat[data-inline="true"] .pf-stat-title,
+.pf-stat[data-inline="true"] .pf-stat-value{display:inline}
+.pf-stat[data-inline="true"] .pf-stat-title{margin-block-end:var(--sp-0)}
+.pf-stat[data-state="loading"] .pf-stat-value,
+.pf-stat[data-state="loading"] .pf-stat-title{
+  color:transparent;
+  background:var(--border-light);
+  border-radius:var(--radius-tag);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · divider
+   antd Divider type=vertical, height 40 / stretch
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-divider{border:0;border-inline-start:var(--border-w) solid var(--gray-100);margin:var(--sp-0)}
+.pf-divider[data-orientation="vertical"]{width:0;height:var(--divider-40);align-self:center}
+.pf-divider[data-orientation="vertical"][data-stretch="true"]{height:auto;align-self:stretch}
+.pf-divider[data-orientation="horizontal"]{
+  border-inline-start:0;
+  border-block-start:var(--border-w) solid var(--gray-100);
+  width:100%;
+  height:0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · credit-meter + plan-badge
+   src/components/widgets/QuotaCreditsStatWidget.js
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-credit-stats{
+  display:flex;
+  align-items:center;
+  gap:var(--gap-credits-stats);
+  width:100%;
+}
+.pf-credit-meter{
+  --meter-pct:0;
+  display:block;
+  margin-block-start:var(--gap-widget);
+  width:100%;
+  height:var(--sp-8);
+  border-radius:var(--radius-chip);
+  background:var(--gray-100);
+  overflow:hidden;
+}
+.pf-credit-meter::before{
+  content:"";
+  display:block;
+  height:100%;
+  width:calc(var(--meter-pct) * 1%);
+  border-radius:var(--radius-chip);
+  background:var(--chart-line);
+}
+.pf-plan{margin-inline-start:auto;text-align:end}
+.pf-plan-label{color:var(--gray-700);font-weight:var(--fw-400);font-size:var(--fs-base)}
+.pf-plan-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--sp-4);
+  margin-block-start:var(--sp-4);
+  font-weight:var(--fw-700);
+  color:var(--base);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · tab-group (segmented)
+   src/components/common/segmented/styled.js
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-segmented{
+  display:inline-flex;
+  background:var(--primary-light-4);
+  border:var(--border-w) solid var(--primary-light-2);
+  border-radius:var(--radius-control);
+  padding:var(--seg-pad-block) var(--seg-pad-inline);
+}
+.pf-segmented-item{
+  padding-inline:var(--seg-label-pad-x);
+  min-height:var(--seg-label-h);
+  line-height:var(--seg-label-h);
+  font-weight:var(--fw-700);
+  color:var(--gray-700);
+  border-radius:var(--radius-seg-item);
+  white-space:nowrap;
+}
+.pf-segmented-item[aria-selected="true"],
+.pf-segmented-item[data-state="active"]{background:var(--primary-hover);color:var(--white)}
+.pf-segmented[data-size="small"] .pf-segmented-item{
+  min-height:var(--chip-h);
+  line-height:var(--chip-h);
+  font-size:var(--fs-12);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · chip-group (radio pills)
+   src/components/common/radio-button/styled.js RadioPill
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-chip-group{display:flex;align-items:center;gap:var(--chip-group-gap);flex-wrap:wrap}
+.pf-chip{
+  --chip-bg:var(--gray-200);
+  --chip-bd:transparent;
+  --chip-fg:var(--base);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:var(--chip-gap);
+  min-width:var(--chip-minw);
+  line-height:var(--chip-h);
+  padding-inline:var(--chip-pad-x);
+  border:var(--border-w) solid var(--chip-bd);
+  border-radius:var(--radius-chip);
+  background:var(--chip-bg);
+  color:var(--chip-fg);
+  font-size:var(--fs-12);
+}
+.pf-chip[aria-checked="true"],
+.pf-chip[data-state="active"]{
+  --chip-bg:var(--primary-light-3);
+  --chip-bd:var(--primary-light-1);
+  --chip-fg:var(--primary);
+  font-weight:var(--fw-700);
+}
+.pf-chip[disabled],
+.pf-chip[data-state="disabled"]{opacity:.45;cursor:not-allowed}
+.pf-dot{width:var(--sp-8);height:var(--sp-8);border-radius:var(--radius-round);background:var(--gray-500);flex:none}
+.pf-dot[data-tone="all"]      {background:var(--dark)}
+.pf-dot[data-tone="basic"]    {background:var(--color-basic)}
+.pf-dot[data-tone="hot"]      {background:var(--color-hot)}
+.pf-dot[data-tone="signature"]{background:var(--color-signature)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · metric-tab + inline-metric
+   src/components/widgets/styled.js PerformanceChartWrapper
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-metric-bar{
+  display:flex;
+  align-items:stretch;
+  border-block-end:var(--border-w) solid var(--gray-100);
+}
+.pf-metric-tab{
+  position:relative;
+  min-width:var(--metric-tab-minw);
+  padding:var(--metric-tab-pad-block) var(--metric-tab-pad-inline);
+  background:var(--white);
+  border-radius:var(--sp-0);
+  text-align:start;
+}
+.pf-metric-tab[aria-selected="true"],
+.pf-metric-tab[data-state="active"]{
+  background:linear-gradient(color-mix(in srgb, var(--primary) 6%, var(--white)) 0%, var(--white) 80%);
+  box-shadow:var(--shadow-tab-active);
+  z-index:1;
+}
+.pf-metric-tab[aria-selected="true"]::before,
+.pf-metric-tab[data-state="active"]::before{
+  content:"";
+  position:absolute;
+  inset-block-start:0;
+  inset-inline:0;
+  height:var(--ink-bar-h);
+  background:var(--chart-line);
+}
+.pf-metric-tab[aria-selected="true"] .pf-stat-title,
+.pf-metric-tab[data-state="active"] .pf-stat-title{color:var(--chart-line)}
+.pf-metric-tab:hover .pf-stat-title,
+.pf-metric-tab[data-state="hover"] .pf-stat-title{color:var(--primary)}
+
+.pf-metric-extra{
+  flex:1;
+  justify-content:flex-end;
+  display:flex;
+  align-items:center;
+  gap:var(--sp-24);
+  padding-inline:var(--metric-tab-extra-pad);
+  position:relative;
+  overflow:hidden;
+  margin-inline-start:auto;
+}
+/* the 4px blurred rule antd renders before the extra content */
+.pf-metric-extra::after{
+  content:"";
+  position:absolute;
+  inset-inline-start:calc(var(--sp-8) * -1);
+  inset-block:0;
+  width:var(--sp-4);
+  background:var(--rule-blur);
+  filter:blur(var(--sp-4));
+}
+.pf-inline-metric{display:inline-flex;align-items:center;gap:var(--sp-6);white-space:nowrap}
+.pf-inline-metric .pf-stat-title,
+.pf-inline-metric .pf-stat-value{display:inline}
+.pf-inline-metric .pf-stat-title{margin-block-end:var(--sp-0);color:var(--gray-700)}
+.pf-inline-metric .pf-stat-value{font-size:var(--fs-stat-value)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · date-picker
+   src/components/common/date-filter — rendered as a bordered input
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-datepicker{
+  display:inline-flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--sp-8);
+  height:var(--ctl-h);
+  padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--border-normal);
+  border-radius:var(--radius-control);
+  background:var(--white);
+  color:var(--base);
+  font-size:var(--fs-base);
+  white-space:nowrap;
+}
+.pf-datepicker:hover,
+.pf-datepicker[data-state="hover"]{border-color:var(--primary-light-1)}
+.pf-datepicker:focus-within,
+.pf-datepicker[data-state="focus"]{border-color:var(--primary);outline:none}
+.pf-datepicker[data-state="disabled"]{background:var(--gray-200);color:var(--gray-600);cursor:not-allowed}
+.pf-datepicker svg{color:var(--gray-700)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · line-chart + chart-tooltip
+   src/components/widgets/LeadsStatsGraphWidget.js scales{}
+   src/components/widgets/styled.js .chartjs-tooltip
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-chart{position:relative;width:100%}
+.pf-chart svg{width:100%;height:auto;display:block;overflow:visible}
+.pf-chart .grid-h{stroke:var(--chart-grid);stroke-width:1;stroke-dasharray:3 3}
+.pf-chart .axis-zero{stroke:var(--chart-zero-line);stroke-width:1}
+.pf-chart .axis-x{stroke:var(--chart-zero-line);stroke-width:2}
+.pf-chart .series{fill:none;stroke:var(--chart-line);stroke-width:2}
+.pf-chart .marker{fill:var(--chart-line);stroke:var(--white);stroke-width:1}
+.pf-chart .tick{
+  fill:var(--chart-tick);
+  font-family:var(--font-body);
+  font-size:var(--fs-chart-tick);
+}
+.pf-chart .tick-x{fill:var(--gray-700);font-size:var(--fs-chart-tick-x)}
+
+.pf-tooltip{
+  background:var(--white);
+  box-shadow:var(--shadow-tooltip);
+  padding:var(--sp-10) var(--sp-12);
+  border-radius:var(--radius-tooltip);
+  border:var(--border-w) solid var(--border-light);
+  min-width:var(--metric-tab-minw);
+  font-family:var(--font-body);
+  position:relative;
+  width:fit-content;
+}
+.pf-tooltip::before{
+  content:"";
+  position:absolute;
+  inset-block-end:calc(var(--sp-4) * -1 - var(--border-w));
+  inset-inline-start:50%;
+  transform:translateX(-50%);
+  border-block-start:var(--sp-4) solid var(--white);
+  border-inline:var(--sp-4) solid transparent;
+}
+.pf-tooltip-title{
+  color:var(--gray-color);
+  font-size:var(--fs-12);
+  font-weight:var(--fw-500);
+  font-family:var(--font-chart);
+  text-transform:capitalize;
+  margin-block-end:var(--sp-4);
+}
+.pf-tooltip-row{
+  display:flex;
+  align-items:center;
+  gap:var(--sp-6);
+  font-size:var(--fs-13);
+  font-weight:var(--fw-500);
+  color:var(--dark);
+  white-space:nowrap;
+}
+.pf-tooltip-key{width:var(--sp-10);height:var(--sp-10);border-radius:var(--radius-round);background:var(--chart-line);flex:none}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · listing table (Recent Listings)
+   columns: src/tenant/bayut/utils/listingUtilities.js listingTableColumnMapper
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-table{width:100%;background:var(--card-bg);border-radius:var(--radius-card);font-size:var(--fs-13)}
+.pf-table th{
+  text-align:start;
+  font-weight:var(--fw-600);
+  color:var(--gray-700);
+  padding:var(--sp-12) var(--sp-16);
+  border-block-end:var(--border-w) solid var(--gray-100);
+  white-space:nowrap;
+}
+.pf-table td{
+  padding:var(--sp-16);
+  border-block-end:var(--border-w) solid var(--gray-100);
+  vertical-align:top;
+}
+.pf-table tbody tr:hover{background:var(--bg-gray-light)}
+.pf-listing{display:flex;gap:var(--sp-12)}
+.pf-listing-thumb{
+  position:relative;
+  width:var(--listing-thumb-w);
+  height:var(--listing-thumb-h);
+  border-radius:var(--radius-control);
+  background:var(--gray-200);
+  flex:none;
+  overflow:hidden;
+}
+.pf-listing-count{
+  position:absolute;
+  inset-block-start:var(--sp-4);
+  inset-inline-start:var(--sp-4);
+  background:var(--success);
+  color:var(--white);
+  font-size:var(--fs-tag);
+  font-weight:var(--fw-700);
+  line-height:var(--lh-1);
+  padding:var(--sp-2) var(--sp-4);
+  border-radius:var(--radius-tag);
+}
+.pf-listing-price{display:flex;align-items:center;gap:var(--sp-8);font-weight:var(--fw-700);color:var(--base)}
+.pf-listing-title{color:var(--primary);font-weight:var(--fw-700);display:block;margin-block:var(--sp-4)}
+.pf-listing-specs{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
+.pf-listing-loc{color:var(--gray-700)}
+.pf-listing-ids{color:var(--gray-600);font-size:var(--fs-tag);margin-block-start:var(--sp-4)}
+.pf-listing-ids span + span{margin-inline-start:var(--sp-8)}
+
+/* product tag — theme color-basic / color-hot / color-signature */
+.pf-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--sp-4);
+  padding:var(--sp-2) var(--sp-6);
+  border-radius:var(--radius-tag);
+  font-size:var(--fs-tag);
+  font-weight:var(--fw-700);
+  color:var(--white);
+  line-height:var(--lh-base);
+}
+.pf-tag[data-tone="basic"]    {background:var(--color-basic)}
+.pf-tag[data-tone="hot"]      {background:var(--color-hot)}
+.pf-tag[data-tone="signature"]{background:var(--color-signature)}
+.pf-tag[data-tone="default"]  {background:var(--bg-gray-deep);color:var(--dark)}
+
+.pf-score{font-weight:var(--fw-700);font-size:var(--fs-12)}
+.pf-score[data-band="high"]{color:var(--success)}
+.pf-score[data-band="mid"] {color:var(--warning)}
+.pf-score[data-band="low"] {color:var(--danger)}
+
+.pf-status-pill{
+  display:inline-flex;
+  align-items:center;
+  padding:var(--sp-2) var(--sp-12);
+  border-radius:var(--radius-chip);
+  font-size:var(--fs-12);
+  font-weight:var(--fw-600);
+}
+.pf-status-pill[data-status="live"]    {background:var(--primary-light-3);color:var(--primary)}
+.pf-status-pill[data-status="pending"] {background:var(--tint-warning-12);color:var(--warning)}
+.pf-status-pill[data-status="rejected"]{background:var(--tint-danger-12);color:var(--danger)}
+.pf-status-pill[data-status="expired"] {background:var(--bg-gray-deep);color:var(--gray-700)}
+
+.pf-action-grid{display:grid;grid-template-columns:repeat(3, auto);gap:var(--sp-8);width:fit-content}
+.pf-round-action{
+  --ra-fg:var(--primary);
+  --ra-bg:var(--bg-gray-normal);
+  width:var(--icon-tile);
+  aspect-ratio:1;
+  border-radius:var(--radius-round);
+  background:var(--ra-bg);
+  color:var(--ra-fg);
+  display:grid;
+  place-content:center;
+}
+.pf-round-action[data-tone="signature"]{--ra-fg:var(--color-signature);--ra-bg:var(--tint-signature-10)}
+.pf-round-action[data-tone="hot"]      {--ra-fg:var(--color-hot);      --ra-bg:var(--tint-hot-10)}
+.pf-round-action[data-tone="refresh"]  {--ra-fg:var(--color-for-rent); --ra-bg:var(--tint-for-rent-10)}
+.pf-round-action[data-tone="photo"]    {--ra-fg:var(--color-for-rent); --ra-bg:var(--tint-for-rent-10)}
+.pf-round-action[data-tone="video"]    {--ra-fg:var(--color-clicks);   --ra-bg:var(--tint-clicks-10)}
+.pf-round-action[data-tone="muted"]    {--ra-fg:var(--gray-500);       --ra-bg:var(--bg-gray-normal)}
+.pf-round-action[data-state="disabled"]{opacity:.45;cursor:not-allowed}
+.pf-round-action:hover,
+.pf-round-action[data-state="hover"]{filter:brightness(.96)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · feedback-tab  [TBC: third-party widget, no source in this repo]
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-feedback-tab{
+  position:fixed;
+  inset-inline-end:var(--sp-0);
+  inset-block-start:50%;
+  transform:translateY(-50%);
+  background:var(--primary-light-3);
+  color:var(--primary);
+  border-start-start-radius:var(--radius-control);
+  border-end-start-radius:var(--radius-control);
+  padding:var(--sp-12) var(--sp-4);
+  z-index:1000;
+}
+/* the label, not the box, is what rotates — rotating the box makes the
+   browser resolve inset-inline-end against the rotated writing mode */
+.pf-feedback-tab span{
+  writing-mode:vertical-rl;
+  display:block;
+  font-size:var(--fs-tag);
+  font-weight:var(--fw-700);
+  letter-spacing:.08em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LAYOUT PRIMITIVES (page composition only — no new visual decisions)
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-shell{display:flex;min-height:100vh}
+.pf-rail-fixed{position:fixed;inset-block:0;inset-inline-start:0;z-index:1002}
+.pf-main{flex:1;margin-inline-start:var(--rail-w);display:flex;flex-direction:column;min-width:var(--sp-0)}
+.pf-header-fixed{position:sticky;inset-block-start:0;z-index:1000}
+.pf-content{
+  flex:1;
+  padding:var(--content-pad-block) var(--content-pad-inline);
+  display:grid;
+  gap:var(--gap-widget);
+  align-content:start;
+  min-width:var(--sp-0);
+}
+.pf-two-col{display:grid;grid-template-columns:var(--grid-two-col);gap:var(--gap-widget);min-width:var(--sp-0)}
+.pf-footer{
+  background:var(--footer-bg);
+  color:var(--footer-text);
+  font-size:var(--fs-base);
+  padding:var(--footer-pad-block) var(--footer-pad-inline);
+  text-align:center;
+  box-shadow:var(--shadow-footer);
+}
+
+/* sider collapses to a drawer below 992px — cards/styled.js drops the border */
+@media screen and (max-width:991px){
+  .pf-card{border-width:var(--sp-0)}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPOSITION PRIMITIVES
+   Catalogued too (components.html § layout-primitives). These carry no new
+   visual decisions — every value is a token already declared above, and
+   each one names the JSX node in dashboard.js that it stands for.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-stack{display:grid;gap:var(--gap-widget)}                    /* <Group> */
+.pf-stack[data-gap="row"]{gap:var(--gap-row)}                    /* .mb-24 */
+.pf-breakdown{display:flex;align-items:center;gap:var(--gap-breakdown-cols)}
+                                                                  /* <Flex align=center gap=50px> */
+.pf-breakdown-rows{display:flex;flex-direction:column;gap:var(--gap-breakdown-rows);flex:1}
+                                                                  /* <Flex vertical gap=40px flex:1> */
+.pf-stat-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:var(--gap-stat-grid)}
+                                                                  /* <Group template=repeat(3,1fr) gap='30px 30px'> */
+.pf-section-head{                                                 /* <Row px-4 mb-8 space-between baseline gap 24> */
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:var(--gap-row);padding-inline:var(--sp-4);margin-block-end:var(--sp-8);
+}
+.pf-section-title{font-size:var(--fs-card-title);font-weight:var(--fw-700);color:var(--base)}
+.pf-card-toolbar{display:flex;align-items:center;gap:var(--gap-widget)}
+                                                                  /* <Group template=repeat(2,1fr) gap 16> */
+.pf-card-head[data-pad="16"]{padding-inline:var(--sp-16);margin-block-end:var(--sp-16)}
+                                                                  /* renderCardTitle: className="px-16 mb-16" */
+.pf-chart-toolbar{display:flex;align-items:center;gap:var(--sp-8);margin-block-end:var(--sp-10)}
+                                                                  /* <Flex marginBottom 10px space-between> */
+.pf-credit-actions{display:flex;justify-content:center;gap:var(--sp-10);margin-block-start:var(--gap-widget)}
+                                                                  /* <Flex justify=center gap=10px> */
+.pf-credit-actions > .pf-btn{width:100%}                          /* className="w-100" */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ICON SPRITE
+   Both files inline the same <svg><defs> sprite and reference it with
+   <use href="#i-…">. These rules hide the sprite itself and size the
+   glyphs; they are shared so an icon is the same size in the catalogue
+   and on the page.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-sprite{position:absolute;width:var(--sp-0);height:var(--sp-0);overflow:hidden}
+.i{width:1.2em;height:1.2em;fill:none;stroke:currentColor;flex:none}
+.i-14{width:var(--sp-14);height:var(--sp-14)}
+.i-16{width:var(--sp-16);height:var(--sp-16)}
+.i-20{width:var(--sp-20);height:var(--sp-20)}
+.i-24{width:var(--sp-24);height:var(--sp-24)}
+
+</style>
+<style>
+/* ── CATALOGUE CHROME ONLY ──────────────────────────────────────────────
+   Nothing here styles a product component. These rules lay out the
+   catalogue itself: the rail of links, the section frames, the spec
+   tables. They are prefixed .cat- so they can never leak into a
+   component definition.
+   ──────────────────────────────────────────────────────────────────── */
+body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1fr}
+.cat-nav{
+  position:sticky;top:0;align-self:start;height:100vh;overflow:auto;
+  background:var(--white);border-inline-end:var(--border-w) solid var(--gray-300);
+  padding:var(--sp-20) var(--sp-16);font-size:var(--fs-13);
+}
+.cat-nav h1{font-size:var(--fs-card-title);margin:0 0 var(--sp-4);color:var(--primary)}
+.cat-nav p{margin:0 0 var(--sp-16);color:var(--gray-700);font-size:var(--fs-12)}
+.cat-nav a{display:block;padding:var(--sp-4) var(--sp-8);border-radius:var(--radius-tag);color:var(--gray-700)}
+.cat-nav a:hover{background:var(--primary-light-4);color:var(--primary)}
+.cat-main{padding:var(--sp-24) var(--sp-24) var(--sp-54);min-width:0}
+.cat-sec{
+  background:var(--white);border:var(--border-w) solid var(--gray-300);
+  border-radius:var(--radius-card);margin-block-end:var(--sp-24);overflow:hidden;
+}
+.cat-sec > header{
+  padding:var(--sp-16) var(--sp-20);border-block-end:var(--border-w) solid var(--gray-300);
+  background:var(--bg-gray-light);
+}
+.cat-sec h2{margin:0;font-size:var(--fs-card-title);color:var(--base)}
+.cat-sec header code{font-size:var(--fs-12);color:var(--primary);background:var(--primary-light-4);padding:var(--sp-2) var(--sp-6);border-radius:var(--radius-tag)}
+.cat-sec header .src{display:block;margin-block-start:var(--sp-4);font-size:var(--fs-12);color:var(--gray-700)}
+.cat-body{padding:var(--sp-20)}
+.cat-row{display:flex;flex-wrap:wrap;gap:var(--sp-20);align-items:flex-start;margin-block-end:var(--sp-20)}
+.cat-row:last-child{margin-block-end:0}
+.cat-item{display:flex;flex-direction:column;gap:var(--sp-8)}
+.cat-label{font-size:var(--fs-tag);text-transform:uppercase;letter-spacing:.06em;color:var(--gray-600);font-weight:var(--fw-700)}
+.cat-stage{
+  background:var(--bg-content);border:var(--border-w) dashed var(--gray-400);
+  border-radius:var(--radius-tag);padding:var(--sp-16);
+  display:flex;align-items:center;gap:var(--sp-12);min-height:var(--sp-54);
+}
+.cat-stage[data-ground="white"]{background:var(--white)}
+.cat-stage[data-ground="dark"]{background:var(--dark)}
+.cat-stage[data-stack="true"]{flex-direction:column;align-items:stretch}
+.cat-spec{width:100%;font-size:var(--fs-12);margin-block-start:var(--sp-12);border-collapse:collapse}
+.cat-spec th,.cat-spec td{text-align:start;padding:var(--sp-4) var(--sp-8);border-block-end:var(--border-w) solid var(--gray-200);vertical-align:top}
+.cat-spec th{color:var(--gray-600);font-weight:var(--fw-700);width:132px;white-space:nowrap}
+.cat-spec code{color:var(--primary);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.cat-note{
+  font-size:var(--fs-12);color:var(--gray-700);background:var(--primary-light-4);
+  border-inline-start:3px solid var(--primary-light-1);padding:var(--sp-8) var(--sp-12);
+  border-radius:var(--radius-tag);margin-block-start:var(--sp-12);
+}
+.cat-note[data-kind="tbc"]{background:rgb(240 167 66 / .10);border-inline-start-color:var(--warning)}
+.cat-fill{width:520px;max-width:100%}
+/* .pf-sprite and .i-* live in profolio.css — shared with the page. */
+</style>
+</head>
+<body class="cat">
+<svg class="pf-sprite" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-post" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M12 9v6M9 12h6"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></symbol>
+<symbol id="i-quota" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 3z"/></symbol>
+<symbol id="i-truleads" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-6 4 3 5-7 4 4"/></symbol>
+<symbol id="i-agentperf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.3 3.1-5.5 7-5.5s7 2.2 7 5.5"/></symbol>
+<symbol id="i-reports" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+<symbol id="i-agency" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M2.5 19c0-3 2.9-5 6.5-5s6.5 2 6.5 5"/><path d="M17 8.5a2.8 2.8 0 1 0 0-.5M18 14c2.4.4 3.9 2 3.9 4"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 14.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.2a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.8-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7h-.2a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 2.7-1.1v-.2a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.8 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7h.2a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.4 1z"/></symbol>
+<symbol id="i-packages" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+<symbol id="i-translate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h9M7.5 5v2c0 3.5-2 6.5-4.5 8M5 10c1.3 2.8 3.6 4.8 6 5.8"/><path d="m13 21 4-10 4 10M14.5 17.5h5"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="1.6"/><rect x="17.5" y="13" width="4" height="6" rx="1.6"/><path d="M19.5 19v.5a2.5 2.5 0 0 1-2.5 2.5h-3"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></symbol>
+<symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></symbol>
+<symbol id="i-plus-square" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M10.5 20a1.8 1.8 0 0 0 3 0"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-3.6 3.4-6 7.5-6s7.5 2.4 7.5 6"/></symbol>
+<symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3.5M15.5 12v2.5"/></symbol>
+<symbol id="i-calendar-day" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s5 4.5 5 9a5 5 0 0 1-10 0c0-1.7.7-3 1.5-4 .2 1.2 1 2 2 2 1.3 0 2-1.2 2-2.5 0-1.8-.5-3.2-.5-4.5z"/><path d="M7 14a5 5 0 0 0 10 0"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+<symbol id="i-plus-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+<symbol id="i-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3 4v5h5M12 8v4.5l3 1.8"/></symbol>
+<symbol id="i-diamond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 3-5h12l3 5-9 11z"/><path d="M3 9h18M9 4l-2 5 5 11 5-11-2-5"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-cursor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 3 6 17 2.5-6.5L20 11z"/></symbol>
+<symbol id="i-phone-call" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5z"/></symbol>
+<symbol id="i-whatsapp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3.3 3.2z"/><path d="M8.8 9.2c.4 2.2 2 3.8 4.2 4.2l1-1.3 1.9.8v1.4c-2.9.4-6.2-2.6-6.6-6.1z"/></symbol>
+<symbol id="i-sms" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 3.5z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></symbol>
+<symbol id="i-bed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-8M3 13h18v5M21 18v-4a3 3 0 0 0-3-3h-6"/><circle cx="7.5" cy="10" r="1.8"/></symbol>
+<symbol id="i-bath" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18v2a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5z"/><path d="M6 12V6a2 2 0 0 1 4 0"/></symbol>
+<symbol id="i-area" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M8 3.5v17M3.5 8h17"/></symbol>
+<symbol id="i-check-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 13 4 4 8-9"/><path d="m11 15 2 2 8-9"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3l1.5-2.5h9L18 8h3v11H3z"/><circle cx="12" cy="13" r="3.4"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="m15.5 11 6-3v8l-6-3z"/></symbol>
+<symbol id="i-shuffle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h4l10 12h4M3 18h4l10-12h4"/><path d="m18 3 3 3-3 3M18 15l3 3-3 3"/></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L20 8l-4-4L4 16z"/></symbol>
+<symbol id="i-percent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5 5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M9 6V4h6v2M6 6l1 14h10l1-14"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 3v5h-5"/></symbol>
+<symbol id="i-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><path d="M15 9.5a3.5 3.5 0 1 0 0 5V8"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 3.5L16 11H5"/></symbol>
+</defs></svg>
+<style>
+/* ── INSTANCE DATA ──────────────────────────────────────────────────────
+   Custom-property values that carry DATA (a percentage, a chart point),
+   not presentation. Kept here so the body has zero style attributes.
+   ──────────────────────────────────────────────────────────────────── */
+#ring-90{--ring-pct:90}
+#ring-40{--ring-pct:40}
+#ring-100{--ring-pct:100;--ring-color:var(--success)}
+#meter-97{--meter-pct:97.17}
+#meter-50{--meter-pct:50}
+#meter-8{--meter-pct:8}
+</style>
+
+<nav class="cat-nav">
+  <h1>Profolio KSA</h1>
+  <p>Component catalogue · extracted from the live Overview screen and
+     profolio-reactjs @ b83e805</p>
+  <a href="#c-rail">icon-rail-item</a>
+  <a href="#c-header">page-header</a>
+  <a href="#c-header-action">header-action</a>
+  <a href="#c-button">primary-button / outline-button</a>
+  <a href="#c-badge">notification-badge</a>
+  <a href="#c-avatar">avatar</a>
+  <a href="#c-ring">progress-ring</a>
+  <a href="#c-alert">alert-banner</a>
+  <a href="#c-switcher">account-switcher</a>
+  <a href="#c-card">card / card-header / card-action-link</a>
+  <a href="#c-tile">icon-tile</a>
+  <a href="#c-stat">stat-block</a>
+  <a href="#c-divider">divider</a>
+  <a href="#c-meter">credit-meter</a>
+  <a href="#c-plan">plan-badge</a>
+  <a href="#c-seg">tab-group (segmented)</a>
+  <a href="#c-chip">chip-group</a>
+  <a href="#c-metric">metric-tab</a>
+  <a href="#c-inline">inline-metric</a>
+  <a href="#c-date">date-picker</a>
+  <a href="#c-chart">line-chart</a>
+  <a href="#c-tooltip">chart-tooltip</a>
+  <a href="#c-tag">product tag</a>
+  <a href="#c-status">status pill</a>
+  <a href="#c-action">round action button</a>
+  <a href="#c-listing">listing cell</a>
+  <a href="#c-table">listing table</a>
+  <a href="#c-feedback">feedback-tab</a>
+  <a href="#c-layout">layout primitives</a>
+</nav>
+
+<main class="cat-main">
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-rail">
+  <header>
+    <h2>icon-rail-item</h2>
+    <code>.pf-rail-item</code>
+    <span class="src">src/layout/style.js · <code>.ant-layout-sider .ant-menu-item</code> —
+      height 36px, icon 20px, colour gray700; selected gets primary-light-4 ground.
+      The rail ships <em>collapsed</em>: <code>useState(true)</code> in withAdminLayout.js.</span>
+  </header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">default</span>
+        <div class="cat-stage" data-ground="white"><a class="pf-rail-item" href="#c-rail"><svg class="i i-20"><use href="#i-list"/></svg></a></div></div>
+      <div class="cat-item"><span class="cat-label">hover</span>
+        <div class="cat-stage" data-ground="white"><a class="pf-rail-item" data-state="hover" href="#c-rail"><svg class="i i-20"><use href="#i-list"/></svg></a></div></div>
+      <div class="cat-item"><span class="cat-label">active (aria-current)</span>
+        <div class="cat-stage" data-ground="white"><a class="pf-rail-item" aria-current="page" href="#c-rail"><svg class="i i-20"><use href="#i-grid"/></svg></a></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">the whole rail, real size (60px)</span>
+        <div class="cat-stage" data-ground="white">
+          <div class="pf-rail">
+            <div class="pf-rail-brand"><span class="pf-rail-logo"><svg class="i i-24"><use href="#i-logo"/></svg></span></div>
+            <div class="pf-rail-list">
+              <a class="pf-rail-item" aria-current="page" href="#c-rail" title="Overview"><svg class="i i-20"><use href="#i-grid"/></svg></a>
+              <a class="pf-rail-item" href="#c-rail" title="Post Listing"><svg class="i i-20"><use href="#i-post"/></svg></a>
+              <a class="pf-rail-item" href="#c-rail" title="My Listings"><svg class="i i-20"><use href="#i-list"/></svg></a>
+              <a class="pf-rail-item" href="#c-rail" title="Credits Usage"><svg class="i i-20"><use href="#i-quota"/></svg></a>
+              <a class="pf-rail-item" href="#c-rail" title="Inbox"><svg class="i i-20"><use href="#i-inbox"/></svg></a>
+              <a class="pf-rail-item" href="#c-rail" title="TruLeads"><svg class="i i-20"><use href="#i-truleads"/></svg></a>
+              <a class="pf-rail-item" href="#c-rail" title="Agent Performance"><svg class="i i-20"><use href="#i-agentperf"/></svg></a>
+              <a class="pf-rail-item" href="#c-rail" title="Reports"><svg class="i i-20"><use href="#i-reports"/></svg></a>
+              <a class="pf-rail-item" href="#c-rail" title="Agency Staff"><svg class="i i-20"><use href="#i-agency"/></svg></a>
+              <a class="pf-rail-item" href="#c-rail" title="Settings"><svg class="i i-20"><use href="#i-settings"/></svg></a>
+              <a class="pf-rail-item" href="#c-rail" title="Credits &amp; Packages"><svg class="i i-20"><use href="#i-packages"/></svg></a>
+            </div>
+            <div class="pf-rail-bottom">
+              <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="العربية"><svg class="i i-20"><use href="#i-translate"/></svg></button>
+              <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="Help &amp; Support"><svg class="i i-20"><use href="#i-help"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--rail-w</code> <code>--rail-item-h</code> <code>--rail-item-w</code> <code>--rail-item-pad-inline</code> <code>--rail-icon</code> <code>--gray-700</code> <code>--primary</code> <code>--primary-light-4</code> <code>--shadow-sider</code> <code>--gray-400</code></td></tr>
+      <tr><th>order</th><td>Overview · Post Listing · My Listings · Credits Usage · Inbox · TruLeads · Agent Performance · Reports · Agency Staff · Settings · Credits &amp; Packages — <strong>read directly</strong> from src/tenant/common/menuList/menuList.js</td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — the icon glyphs. The menu names each icon
+      (<code>SideMenuDashboard</code>, <code>SideMenuQuota</code>, <code>DashboardLmsIcon</code>…) but those are
+      local SVG components I have not opened. The glyphs drawn here are stand-ins at the right size and
+      colour; the <em>order and the count are sourced</em>.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-header">
+  <header>
+    <h2>page-header</h2>
+    <code>.pf-header</code> <code>.pf-page-title</code>
+    <span class="src">src/layout/withAdminLayout.js <code>renderHeader()</code> — inline
+      <code>minHeight:60, maxHeight:60, paddingBlock:12, paddingInlineEnd:20,
+      paddingInlineStart: sidebarOffset + 25</code>. The 60px inline value overrides
+      <code>theme['layout-header-height'] = 74px</code>; 60 is what ships.</span>
+  </header>
+  <div class="cat-body">
+    <div class="cat-stage" data-ground="white" data-stack="true">
+      <div class="pf-header">
+        <div class="pf-header-brand"><span class="pf-page-title">Overview</span></div>
+        <div class="pf-header-actions">
+          <button class="pf-btn" data-variant="link" type="button"><svg class="i i-16"><use href="#i-phone"/></svg><span>Download App</span></button>
+          <a class="pf-classified-pill" href="#c-header"><svg class="i i-16"><use href="#i-external"/></svg>Go to Bayut.sa</a>
+          <button class="pf-btn" data-variant="primary" type="button"><svg class="i i-16"><use href="#i-plus-square"/></svg><span>Post Listing</span></button>
+          <button class="pf-bell" type="button" aria-label="Notifications"><svg class="i i-20"><use href="#i-bell"/></svg><span class="pf-badge">46</span></button>
+          <span class="pf-progress-ring" id="ring-90"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span>
+        </div>
+      </div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--header-h</code> <code>--header-pad-block</code> <code>--header-pad-start</code> <code>--header-pad-end</code> <code>--header-gutter</code> <code>--fs-page-title</code> <code>--fw-700</code> <code>--black</code> <code>--lh-tight</code></td></tr>
+      <tr><th>title text</th><td>the matched menu entry's own <code>title</code> — for <code>/dashboard</code> that is <strong>“Overview”</strong>, not “Dashboard”</td></tr>
+      <tr><th>order L→R</th><td>page title · Download App · Go to Bayut.sa · Post Listing · bell+badge · avatar ring</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-header-action">
+  <header>
+    <h2>header-action · classified pill</h2>
+    <code>.pf-classified-pill</code>
+    <span class="src">src/components/common/link-with-icon/styled.js
+      <code>headerClassifiedPillStyles</code> — every value below is literal in that file.</span>
+  </header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">default</span>
+        <div class="cat-stage" data-ground="white"><a class="pf-classified-pill" href="#c-header-action"><svg class="i i-16"><use href="#i-external"/></svg>Go to Bayut.sa</a></div></div>
+      <div class="cat-item"><span class="cat-label">hover</span>
+        <div class="cat-stage" data-ground="white"><a class="pf-classified-pill" data-state="hover" href="#c-header-action"><svg class="i i-16"><use href="#i-external"/></svg>Go to Bayut.sa</a></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>size</th><td><code>--classified-pill-h</code> 36px · <code>--classified-pill-minw</code> 148.71px · <code>--classified-pill-pad-x</code> 16px · <code>--classified-pill-gap</code> 4px</td></tr>
+      <tr><th>skin</th><td><code>--white</code> ground · <code>--pill-border</code> rgb(240,240,240) 1px · <code>--radius-pill</code> 6px · <code>--pill-text</code> #767676 · <code>--fw-500</code> · <code>--lh-1</code></td></tr>
+      <tr><th>label</th><td><code>Go to {{link}}</code> with <code>capitalizeFirstLetter(LINK_TITLE)</code> → <strong>“Go to Bayut.sa”</strong></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-button">
+  <header>
+    <h2>button — every variant, every state</h2>
+    <code>.pf-btn[data-variant]</code>
+    <span class="src">src/components/common/button/styled.js — radius 6px, padding
+      <code>0.428571em 1em</code>, weight 600, icon→label gap 6px, heights 36 / 32 / 40
+      from the antd <code>Button</code> token block in src/theme/index.js.</span>
+  </header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">primary · default</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="primary" type="button"><svg class="i i-16"><use href="#i-plus-square"/></svg><span>Post Listing</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">primary · hover</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="primary" data-state="hover" type="button"><span>Post Listing</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">primary · focus</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="primary" data-state="focus" type="button"><span>Post Listing</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">primary · disabled</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="primary" data-state="disabled" disabled type="button"><span>Post Listing</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">primary · loading</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="primary" data-state="loading" type="button"><svg class="i i-16"><use href="#i-refresh"/></svg><span>Post Listing</span></button></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">primary-outlined · default</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#i-plus-circle"/></svg><span>Top-Up your Credits</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">primary-outlined · hover</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="primary-outlined" data-state="hover" type="button"><svg class="i i-16"><use href="#i-history"/></svg><span>Credits Usage</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">primary-outlined · disabled</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="primary-outlined" data-state="disabled" disabled type="button"><span>Credits Usage</span></button></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">link · default</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="link" type="button"><svg class="i i-16"><use href="#i-phone"/></svg><span>Download App</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">link · small</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="link" data-size="small" type="button"><span>Why is this important?</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">default (ghost grey)</span><div class="cat-stage" data-ground="white"><button class="pf-btn" type="button"><span>Assign to Users</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">ghost (rail bottom)</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="ghost" type="button"><svg class="i i-16"><use href="#i-help"/></svg><span>Help &amp; Support</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">icon-circle</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="icon-circle" type="button" aria-label="Info"><svg class="i i-14"><use href="#i-info"/></svg></button></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--ctl-h</code> <code>--ctl-h-sm</code> <code>--ctl-h-lg</code> <code>--btn-pad-y</code> <code>--btn-pad-x</code> <code>--btn-icon-gap</code> <code>--radius-control</code> <code>--fw-600</code> <code>--fs-btn</code> <code>--fs-btn-sm</code></td></tr>
+      <tr><th>primary</th><td>bg <code>--primary</code> #006169, fg <code>--white</code></td></tr>
+      <tr><th>primary-outlined</th><td>bg <code>--primary-light-4</code> #F2FAFA, fg <code>--primary</code>, border <code>--primary-light-1</code> #A6C8CA; on hover it <em>inverts</em> to a solid primary fill</td></tr>
+      <tr><th>link</th><td>fg <code>--primary</code>, no ground, no border, zero inline padding</td></tr>
+      <tr><th>default</th><td>fg <code>--gray-color</code> #5A5F7D, border <code>--gray-100</code></td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — <strong>focus</strong>, <strong>loading</strong> and
+      <strong>disabled</strong> rings. The repo leans on antd's stock treatment for all three and
+      never overrides them, so what you see here is my placeholder, not the shipped look.
+      Everything above the divider in this table is sourced.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-badge">
+  <header><h2>notification-badge</h2><code>.pf-badge</code>
+    <span class="src">NotificationCentre, gated on
+      <code>NOTIFICATION_CENTER_ENABLED &amp;&amp; user.push_notifications.value == 'enabled'</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">count</span><div class="cat-stage" data-ground="white"><button class="pf-bell" type="button"><svg class="i i-20"><use href="#i-bell"/></svg><span class="pf-badge">46</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">single digit</span><div class="cat-stage" data-ground="white"><button class="pf-bell" type="button"><svg class="i i-20"><use href="#i-bell"/></svg><span class="pf-badge">3</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">empty</span><div class="cat-stage" data-ground="white"><button class="pf-bell" type="button"><svg class="i i-20"><use href="#i-bell"/></svg></button></div></div>
+    </div>
+    <table class="cat-spec"><tr><th>tokens</th><td><code>--danger</code> <code>--white</code> <code>--fs-tag</code> <code>--fw-700</code> <code>--radius-chip</code></td></tr></table>
+    <div class="cat-note" data-kind="tbc">TBC — the badge's exact offset, height and overflow rule
+      (“46” vs “99+”) come from antd <code>Badge</code> defaults, not from this repo.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-avatar">
+  <header><h2>avatar</h2><code>.pf-avatar</code>
+    <span class="src">src/components/utilities/auth-info/info.js — header avatar is
+      <code>size 30</code> inside a 34px ring; the alert banner uses <code>size 34</code> inside 38.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">30px (header)</span><div class="cat-stage" data-ground="white"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">34px (banner)</span><div class="cat-stage" data-ground="white"><span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span></div></div>
+    </div>
+    <table class="cat-spec"><tr><th>tokens</th><td><code>--avatar-img</code> <code>--banner-avatar</code> <code>--radius-round</code> <code>--primary-light-3</code> <code>--primary</code></td></tr></table>
+    <div class="cat-note" data-kind="tbc">TBC — the fallback ground. The repo renders a
+      <code>FiUser</code> glyph but never states the placeholder's background colour;
+      <code>--primary-light-3</code> here is my choice.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-ring">
+  <header><h2>progress-ring</h2><code>.pf-progress-ring</code>
+    <span class="src">antd <code>Progress type="circle"</code> wrapped as <code>ProgressStyled</code>;
+      stroke colour is <code>getClassificationColor(profile_completion.classification)</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">90% · header</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring" id="ring-90"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span></div></div>
+      <div class="cat-item"><span class="cat-label">40%</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring" id="ring-40"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span></div></div>
+      <div class="cat-item"><span class="cat-label">100%</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring" id="ring-100"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span></span></div></div>
+      <div class="cat-item"><span class="cat-label">with square score badge (banner)</span><div class="cat-stage" data-ground="white"><span class="pf-progress-ring" id="ring-90"><span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span><span class="pf-ring-label">90%</span></span></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--avatar-ring</code> 34px header · <code>--banner-ring</code> 38px banner · <code>--ring-pct</code> (data) · <code>--ring-color</code></td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — <strong>two things</strong>. (1) The stroke colour is keyed to
+      <code>classification</code>, and I do not have the classification→colour map, so the ring is drawn with
+      <code>--success</code>. (2) This is a conic-gradient, antd draws an SVG arc: the cap shape and the
+      track colour will differ. Measure both on live.</div>
+  </div>
+</section>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-alert">
+  <header><h2>alert-banner</h2><code>.pf-alert</code>
+    <span class="src">src/tenant/common/components/profile-completion/style.js <code>ProfileCard</code>
+      — ground <code>primary-light-4</code>, border <code>1px primary-light-2</code>,
+      shadow <code>0px 1px 6px 0px #0000001C</code>, padding 16, radius 12 above 767px.
+      The title and message are <em>API strings</em> (<code>profile_completion.title / .message</code>),
+      not repo strings — the ones below are read off the live screen.</span></header>
+  <div class="cat-body">
+    <div class="cat-row"><div class="cat-item cat-fill"><span class="cat-label">default · score &lt; 100</span>
+      <div class="cat-stage"><div class="pf-alert">
+        <span class="pf-progress-ring" id="ring-90"><span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span><span class="pf-ring-label">90%</span></span>
+        <div class="pf-alert-body">
+          <div class="pf-alert-text">
+            <div class="pf-alert-title">Your profile is incomplete</div>
+            Agents with a complete profile are likely to attract more leads.<a class="pf-alert-link" href="#c-alert">Why is this important?</a>
+          </div>
+          <button class="pf-btn" data-variant="primary" type="button"><span>Complete your Profile</span></button>
+        </div>
+      </div></div></div></div>
+    <div class="cat-row"><div class="cat-item cat-fill"><span class="cat-label">score = 100 · close affordance replaces the CTA</span>
+      <div class="cat-stage"><div class="pf-alert">
+        <span class="pf-progress-ring" id="ring-100"><span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#i-user"/></svg></span><span class="pf-ring-label">100%</span></span>
+        <div class="pf-alert-body">
+          <div class="pf-alert-text"><div class="pf-alert-title">Your profile is complete</div>Keep your details up to date.</div>
+          <button class="pf-btn" data-variant="link" type="button" aria-label="Dismiss"><svg class="i i-20"><use href="#i-plus-square"/></svg></button>
+        </div>
+      </div></div></div></div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--primary-light-4</code> <code>--primary-light-2</code> <code>--shadow-profile-card</code> <code>--profile-card-pad</code> <code>--radius-profile-card</code> <code>--fs-12</code> <code>--fs-base</code> <code>--fw-700</code> <code>--gray-700</code></td></tr>
+      <tr><th>structure</th><td>ring+avatar · [title / message / “Why is this important?” inline link] · CTA, the middle block <code>justify: space-between</code> against the CTA</td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — the score badge. <code>AvatarStyled</code> passes
+      <code>badgeShape="square"</code>, <code>badgeOffset [-17, 35]</code> and
+      <code>iconContainerSize 30</code>, but not the badge's own padding, radius or type size.
+      The 100% variant's copy is invented for the catalogue — <em>the real strings come from the API</em>.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-switcher">
+  <header><h2>account-switcher</h2><code>.pf-switcher</code>
+    <span class="src">dashboard.js <code>renderUserSelect()</code> — a <code>CardMetaStyled</code>
+      with <code>gap 8px</code>, <code>--card-height 33px</code>, <code>titleFontWeight 700</code>, and a
+      <code>Dropdown</code> with <code>suffixIcon="MdKeyboardArrowDown"</code>, <code>padding 8px</code>,
+      arrow tinted <code>primary-color</code>. It renders only for an agency admin or a multi-platform user.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">default</span><div class="cat-stage">
+        <div class="pf-switcher"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span>
+        <span class="pf-switcher-name">Alfalw Company LTD</span>
+        <button class="pf-switcher-toggle" type="button" aria-label="Switch account"><svg class="i i-14"><use href="#i-chevron-down"/></svg></button></div></div></div>
+      <div class="cat-item"><span class="cat-label">open / hover</span><div class="cat-stage">
+        <div class="pf-switcher"><span class="pf-avatar"><svg class="i i-16"><use href="#i-user"/></svg></span>
+        <span class="pf-switcher-name">Alfalw Company LTD</span>
+        <button class="pf-switcher-toggle" data-state="hover" type="button" aria-label="Switch account"><svg class="i i-14"><use href="#i-chevron-down"/></svg></button></div></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--sp-8</code> gap · <code>--fw-700</code> name · <code>--primary</code> arrow · <code>--avatar-img</code></td></tr>
+      <tr><th>option label</th><td><code>`${name} ${id===me ? '(Me)' : id===-1 ? '(Agency)' : ''}`</code> — sourced</td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — the dropdown panel itself (width, row height, selected row
+      treatment). It is an antd <code>Select</code> popup with <code>popupMatchSelectWidth: false</code>
+      and no styling of its own in this repo.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-card">
+  <header><h2>card · card-header · card-action-link</h2>
+    <code>.pf-card</code> <code>.pf-card-head</code> <code>.pf-card-body</code> <code>.pf-card-action</code>
+    <span class="src">src/components/common/cards/styled.js — radius 8px, border 1px
+      (0 below 992px), head <code>min-height 47px</code>, head title <code>h4</code> 18px; every dashboard
+      card overrides the title to <code>.fz-16</code> and passes <code>headStyle.borderBottom: 'none'</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item cat-fill"><span class="cat-label">head + action link, no head border (the dashboard default)</span>
+        <div class="cat-stage"><div class="pf-card">
+          <div class="pf-card-head"><span class="pf-card-title">Listings</span><a class="pf-card-action" href="#c-card">View All Listings</a></div>
+          <div class="pf-card-body">body</div>
+        </div></div></div>
+      <div class="cat-item cat-fill"><span class="cat-label">head with border + muted action</span>
+        <div class="cat-stage"><div class="pf-card">
+          <div class="pf-card-head" data-border="true"><span class="pf-card-title" data-level="h4">Card title at h4 (18px)</span><a class="pf-card-action" data-tone="muted" href="#c-card">View All Listings <svg class="i i-14"><use href="#i-external"/></svg></a></div>
+          <div class="pf-card-body">body</div>
+        </div></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item cat-fill"><span class="cat-label">state · loading</span>
+        <div class="cat-stage"><div class="pf-card"><div class="pf-card-head"><span class="pf-card-title">Listings</span></div>
+        <div class="pf-card-body"><div class="pf-stat" data-state="loading"><div><div class="pf-stat-title">Loading</div><div class="pf-stat-value">0000</div></div></div></div></div></div></div>
+      <div class="cat-item cat-fill"><span class="cat-label">state · empty / error (EmptyState)</span>
+        <div class="cat-stage"><div class="pf-card"><div class="pf-card-head"><span class="pf-card-title">Listings</span></div>
+        <div class="pf-card-body"><div class="pf-alert-title">View In-Depth Insights</div><div class="pf-alert-text">See the number of views, clicks and leads that your listing has received.</div></div></div></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--card-bg</code> <code>--gray-100</code> border · <code>--radius-card</code> <code>--shadow-card</code> <code>--card-head-min-h</code> <code>--card-head-pad-x</code> <code>--card-body-pad</code> <code>--fs-card-title</code> <code>--fs-card-h4</code></td></tr>
+      <tr><th>body padding</th><td>24 (CreditsQuota, Performance) · <code>30px 24px</code> (ListingBreakdown) · 0 (ListingContainer, <code>className="p-0"</code>)</td></tr>
+      <tr><th>empty-state copy</th><td>“View In-Depth Insights” / “See the number of views, clicks and leads that your listing has received.” — <strong>sourced verbatim</strong> from LeadsStatsGraphWidget.js</td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — <code>--card-head-pad-x</code>. The theme declares
+      <code>card-head-padding: 16px</code> but the antd v5 <code>Card.paddingLG</code> token is 12 and every
+      dashboard card passes its own body padding. 24px here is measured off the screenshot, not declared.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-tile">
+  <header><h2>icon-tile</h2><code>.pf-icon-tile</code>
+    <span class="src">src/components/common/icon/IconStyled.js — <code>width 32px</code> default,
+      <code>aspect-ratio 1</code>, <code>border-radius 30%</code>, ground = the icon's own colour at
+      <code>alpha 0.08</code>, falling back to <code>bg-color-normal</code> #F4F5F7.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">neutral 32</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile"><svg class="i i-16"><use href="#i-home"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">for-sale</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile" data-tone="for-sale"><svg class="i i-16"><use href="#i-home"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">for-rent</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile" data-tone="for-rent"><svg class="i i-16"><use href="#i-key"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">daily rental</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile" data-tone="primary"><svg class="i i-16"><use href="#i-calendar-day"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">signature</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile" data-tone="signature"><svg class="i i-16"><use href="#i-bolt"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">hot</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile" data-tone="hot"><svg class="i i-16"><use href="#i-flame"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">basic</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile" data-tone="basic"><svg class="i i-16"><use href="#i-layers"/></svg></span></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">40 (metric tab)</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile" data-size="lg" data-tone="primary"><svg class="i i-20"><use href="#i-eye"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">30</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile" data-size="sm"><svg class="i i-16"><use href="#i-eye"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">18 (plan badge)</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile" data-size="xs" data-tone="plan"><svg class="i i-14"><use href="#i-diamond"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">round</span><div class="cat-stage" data-ground="white"><span class="pf-icon-tile" data-shape="round" data-tone="primary"><svg class="i i-16"><use href="#i-user"/></svg></span></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--icon-tile</code> 32 · <code>--icon-tile-lg</code> 40 · <code>--icon-tile-sm</code> 30 · <code>--icon-tile-xs</code> 18 · <code>--radius-icon-tile</code> 30% · <code>--bg-gray-normal</code></td></tr>
+      <tr><th>tone map</th><td><code>--color-for-sale</code> #2d3e9b · <code>--color-for-rent</code> #479eeb · <code>--color-signature</code> #af6fff · <code>--color-hot</code> #f73131 · <code>--color-basic</code> #28b16d — all sourced from <code>getTheme()</code></td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — which tone each dashboard stat actually uses.
+      <code>iconProps</code> arrive from the <code>/listings-breakdown</code> API per row, so the pairing above is
+      my reading of the screenshot's hues, not a sourced mapping. The colours themselves are sourced.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-stat">
+  <header><h2>stat-block</h2><code>.pf-stat</code>
+    <span class="src">src/components/common/statistic/styled.js — title <code>gray700</code> at
+      <code>1em</code> with <code>margin-block-end 0.1428em</code>; value <code>1.1428em</code> default,
+      <code>1.4285em</code> lead, <code>1.5714em</code> leader, weight 700, line-height 1.4.
+      Sizes are <strong>em against the 14px base</strong> — that is what the source says.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">leader · with lottie/dot</span><div class="cat-stage" data-ground="white">
+        <div class="pf-stat" data-emphasis="leader"><span class="pf-icon-tile" data-tone="basic"><svg class="i i-16"><use href="#i-home"/></svg></span><div><div class="pf-stat-title">Active</div><div class="pf-stat-value">20</div></div></div></div></div>
+      <div class="cat-item"><span class="cat-label">lead</span><div class="cat-stage" data-ground="white">
+        <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Available Credits</div><div class="pf-stat-value">72,880</div></div></div></div></div>
+      <div class="cat-item"><span class="cat-label">default + icon</span><div class="cat-stage" data-ground="white">
+        <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="for-sale"><svg class="i i-16"><use href="#i-home"/></svg></span><div><div class="pf-stat-title">For Sale</div><div class="pf-stat-value">20</div></div></div></div></div>
+      <div class="cat-item"><span class="cat-label">no icon</span><div class="cat-stage" data-ground="white">
+        <div class="pf-stat"><div><div class="pf-stat-title">Used</div><div class="pf-stat-value">2,120</div></div></div></div></div>
+      <div class="cat-item"><span class="cat-label">inline</span><div class="cat-stage" data-ground="white">
+        <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Calls</span><span class="pf-stat-value">3</span></div></div></div></div>
+      <div class="cat-item"><span class="cat-label">zero value</span><div class="cat-stage" data-ground="white">
+        <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="for-rent"><svg class="i i-16"><use href="#i-key"/></svg></span><div><div class="pf-stat-title">To Rent</div><div class="pf-stat-value">0</div></div></div></div></div>
+      <div class="cat-item"><span class="cat-label">loading</span><div class="cat-stage" data-ground="white">
+        <div class="pf-stat" data-state="loading"><div><div class="pf-stat-title">Loading</div><div class="pf-stat-value">0000</div></div></div></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--fs-stat-title</code> <code>--fs-stat-value</code> <code>--fs-stat-lead</code> <code>--fs-stat-leader</code> <code>--gap-stat-title</code> <code>--lh-stat</code> <code>--gray-700</code> <code>--dark</code> <code>--fw-700</code></td></tr>
+      <tr><th>with delta</th><td>a <code>&lt;small&gt;</code> suffix carrying <code>TiArrowSortedUp/Down</code> in <code>--success</code>/<code>--danger</code> and <code>|pct|%</code> — the dashboard passes <code>trends={false}</code>, so <strong>it never renders on this screen</strong></td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — the em scale is the single most likely thing to be wrong
+      on the page. <code>1.5714em × 14px = 21.9996px</code>. Live almost certainly paints 22px flat.
+      Measure a stat value and tell me the integer.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-divider">
+  <header><h2>divider</h2><code>.pf-divider</code>
+    <span class="src">antd <code>Divider type="vertical"</code>. CreditsQuota passes
+      <code>height 40, margin 0</code>; ListingBreakdown passes <code>height auto, align-self stretch</code>.
+      Colour is antd's <code>colorSplit</code> over <code>borderColor: gray100</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">vertical · 40px</span><div class="cat-stage" data-ground="white"><span>A</span><hr class="pf-divider" data-orientation="vertical"><span>B</span></div></div>
+      <div class="cat-item"><span class="cat-label">vertical · stretch</span><div class="cat-stage" data-ground="white"><span>A</span><hr class="pf-divider" data-orientation="vertical" data-stretch="true"><span>B</span></div></div>
+      <div class="cat-item cat-fill"><span class="cat-label">horizontal</span><div class="cat-stage" data-ground="white" data-stack="true"><span>A</span><hr class="pf-divider" data-orientation="horizontal"><span>B</span></div></div>
+    </div>
+    <table class="cat-spec"><tr><th>tokens</th><td><code>--gray-100</code> <code>--border-w</code> <code>--divider-40</code></td></tr></table>
+  </div>
+</section>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-meter">
+  <header><h2>credit-meter</h2><code>.pf-credit-meter</code>
+    <span class="src">QuotaCreditsStatWidget.js — <code>&lt;Progress percent={(available/total)*100}
+      showInfo={false} strokeColor={brandColor} /&gt;</code>. The screen shows
+      72,880 / 75,000 = <strong>97.17%</strong>, which matches the near-full bar.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item cat-fill"><span class="cat-label">97.17% (live)</span><div class="cat-stage" data-ground="white"><span class="pf-credit-meter" id="meter-97"></span></div></div>
+      <div class="cat-item cat-fill"><span class="cat-label">50%</span><div class="cat-stage" data-ground="white"><span class="pf-credit-meter" id="meter-50"></span></div></div>
+      <div class="cat-item cat-fill"><span class="cat-label">8% · near-empty</span><div class="cat-stage" data-ground="white"><span class="pf-credit-meter" id="meter-8"></span></div></div>
+    </div>
+    <div class="cat-row"><div class="cat-item cat-fill"><span class="cat-label">in context · <code>.pf-credit-stats</code> (Group template="repeat(6, auto) 1fr" gap 32)</span>
+      <div class="cat-stage" data-ground="white" data-stack="true">
+        <div class="pf-credit-stats">
+          <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Available Credits</div><div class="pf-stat-value">72,880</div></div></div>
+          <hr class="pf-divider" data-orientation="vertical">
+          <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Used</div><div class="pf-stat-value">2,120</div></div></div>
+          <hr class="pf-divider" data-orientation="vertical">
+          <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Total</div><div class="pf-stat-value">75,000</div></div></div>
+          <hr class="pf-divider" data-orientation="vertical">
+          <div class="pf-plan"><div class="pf-plan-label">Current Plan</div>
+            <div class="pf-plan-badge"><span class="pf-icon-tile" data-size="xs" data-tone="plan"><svg class="i i-14"><use href="#i-diamond"/></svg></span>Platinum Plus</div></div>
+        </div>
+        <span class="pf-credit-meter" id="meter-97"></span>
+        <div class="pf-credit-actions">
+          <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#i-plus-circle"/></svg><span>Top-Up your Credits</span></button>
+          <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#i-history"/></svg><span>Credits Usage</span></button>
+        </div>
+      </div></div></div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--meter-pct</code> (data) · <code>--gray-100</code> track · <code>--chart-line</code> fill · <code>--radius-chip</code></td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — <strong>bar height</strong> and <strong>track colour</strong>
+      are antd <code>Progress</code> defaults, never overridden here. The fill is
+      <code>platform.brandColor</code>, which comes from the platforms API, not the repo.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-plan">
+  <header><h2>plan-badge</h2><code>.pf-plan-badge</code>
+    <span class="src">QuotaCreditsStatWidget.js — label <code>t('Current Plan')</code> as
+      <code>Text type="secondary" fw-400 text-right</code>, then a <code>TextWithIcon</code>
+      at <code>fontWeight 700</code> with <code>iconProps {hasBackground, size 18,
+      iconBackgroundColor: packages[slugType].packageColor}</code> and
+      <code>--icon-styled-width: 30px</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">Platinum Plus</span><div class="cat-stage" data-ground="white">
+        <div class="pf-plan"><div class="pf-plan-label">Current Plan</div>
+        <div class="pf-plan-badge"><span class="pf-icon-tile" data-size="xs" data-tone="plan"><svg class="i i-14"><use href="#i-diamond"/></svg></span>Platinum Plus</div></div></div></div>
+      <div class="cat-item"><span class="cat-label">no package (“-”)</span><div class="cat-stage" data-ground="white">
+        <div class="pf-plan"><div class="pf-plan-label">Current Plan</div>
+        <div class="pf-plan-badge"><span class="pf-icon-tile" data-size="xs"><svg class="i i-14"><use href="#i-diamond"/></svg></span>-</div></div></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--icon-tile-xs</code> 18 · <code>--gray-700</code> label · <code>--fw-700</code> name · <code>--sp-4</code> gap</td></tr>
+      <tr><th>fallback</th><td><code>getLocalisedString(packageData,'name') ?? "-"</code> — sourced</td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — <code>packageColor</code> and the package icon per tier.
+      They live in <code>tenantData.packages[slugType]</code>, which I have not opened; the amber here is a
+      stand-in read off the screenshot.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-seg">
+  <header><h2>tab-group (segmented)</h2><code>.pf-segmented</code>
+    <span class="src">src/components/common/segmented/styled.js — ground
+      <code>primary-light-4</code>, border <code>1px primary-light-2</code>, padding
+      <code>4px 6px</code>; item weight 700 colour gray700, label <code>padding 0 14px,
+      min-height/line-height 32px</code>; selected fills <code>primary-hover</code> at radius 4.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">default · “All” selected</span><div class="cat-stage" data-ground="white">
+        <div class="pf-segmented" role="tablist">
+          <button class="pf-segmented-item" role="tab" aria-selected="true" type="button">All</button>
+          <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">For Sale</button>
+          <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">For Rent</button>
+          <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">Daily Rentals</button>
+        </div></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">small</span><div class="cat-stage" data-ground="white">
+        <div class="pf-segmented" data-size="small" role="tablist">
+          <button class="pf-segmented-item" role="tab" aria-selected="true" type="button">All</button>
+          <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">For Sale</button>
+        </div></div></div>
+      <div class="cat-item"><span class="cat-label">disabled</span><div class="cat-stage" data-ground="white">
+        <div class="pf-segmented" role="tablist">
+          <button class="pf-segmented-item" role="tab" aria-selected="true" type="button" disabled>All</button>
+          <button class="pf-segmented-item" role="tab" aria-selected="false" type="button" disabled>For Sale</button>
+        </div></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--primary-light-4</code> <code>--primary-light-2</code> <code>--seg-pad-block</code> <code>--seg-pad-inline</code> <code>--seg-label-pad-x</code> <code>--seg-label-h</code> <code>--radius-seg-item</code> <code>--fw-700</code></td></tr>
+      <tr><th>options</th><td>All · For Sale · For Rent · Daily Rentals — the fourth appears only when <code>DAILY_RENTAL_ENABLED</code>. All four are on screen, so KSA has it on. <strong>Sourced verbatim</strong> from ReportsLeadsTrafficSection.js <code>btnList</code>.</td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — the disabled treatment. <code>Segmented</code> is passed
+      <code>disabled={platformLoading}</code> but nothing styles that state here; antd's default applies.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-chip">
+  <header><h2>chip-group (radio pills)</h2><code>.pf-chip</code>
+    <span class="src">src/components/common/radio-button/styled.js <code>RadioPill</code> —
+      ground <code>gray200</code>, radius 24 at <code>shape="round"</code>, border 1px transparent,
+      inner span <code>min-width 36, line-height 24 (size small), padding-inline .7rem, gap 4</code>;
+      checked → ground <code>primary-light-3</code>, border <code>primary-light-1</code>,
+      text <code>primary-color</code>, weight 700. Group gap 8.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item cat-fill"><span class="cat-label">default · “All” checked</span><div class="cat-stage" data-ground="white">
+        <div class="pf-chip-group" role="radiogroup">
+          <button class="pf-chip" role="radio" aria-checked="true" type="button"><span class="pf-dot" data-tone="all"></span>All</button>
+          <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="basic"></span>Basic</button>
+          <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="hot"></span>Hot</button>
+          <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="signature"></span>Signature</button>
+        </div></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">“Signature” checked</span><div class="cat-stage" data-ground="white">
+        <div class="pf-chip-group" role="radiogroup">
+          <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="all"></span>All</button>
+          <button class="pf-chip" role="radio" aria-checked="true" type="button"><span class="pf-dot" data-tone="signature"></span>Signature</button>
+        </div></div></div>
+      <div class="cat-item"><span class="cat-label">disabled</span><div class="cat-stage" data-ground="white">
+        <button class="pf-chip" data-state="disabled" type="button" disabled><span class="pf-dot" data-tone="basic"></span>Basic</button></div></div>
+      <div class="cat-item"><span class="cat-label">with product tag instead of a dot</span><div class="cat-stage" data-ground="white">
+        <button class="pf-chip" type="button"><span class="pf-icon-tile" data-size="xs" data-shape="round" data-tone="hot"><svg class="i i-14"><use href="#i-flame"/></svg></span>Hot</button></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--gray-200</code> <code>--primary-light-3</code> <code>--primary-light-1</code> <code>--primary</code> <code>--radius-chip</code> <code>--chip-minw</code> <code>--chip-h</code> <code>--chip-pad-x</code> <code>--chip-group-gap</code> <code>--fs-12</code></td></tr>
+      <tr><th>dot colours</th><td>Basic <code>--color-basic</code> · Hot <code>--color-hot</code> · Signature <code>--color-signature</code> — sourced from <code>getTheme()</code>; “All” comes from the API's <code>types[].borderColor</code></td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — the “All” dot colour. It is <code>types[0].borderColor</code>
+      off the reports API. Dark is my read of the screenshot.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-metric">
+  <header><h2>metric-tab</h2><code>.pf-metric-tab</code>
+    <span class="src">src/components/widgets/styled.js <code>PerformanceChartWrapper</code> —
+      <code>padding 16px 1.6em</code>, <code>min-width 200px</code> above 640, ground white, radius 0,
+      <code>border-inline-end: 0</code>; active gets
+      <code>linear-gradient(color-mix(in srgb, var(--primary-color) 6%, #fff) 0%, #fff 80%)</code>,
+      <code>box-shadow 0 16px 0 -1px #fff, 2px 0 21px -10px #41414164</code>, and the ink bar is moved to
+      <code>top: 0, height: 3px</code>. Tab gutter is <code>0px</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row"><div class="cat-item cat-fill"><span class="cat-label">three tabs · “Views” active</span>
+      <div class="cat-stage" data-ground="white" data-stack="true">
+        <div class="pf-metric-bar" role="tablist">
+          <button class="pf-metric-tab" role="tab" aria-selected="true" type="button">
+            <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="primary"><svg class="i i-20"><use href="#i-eye"/></svg></span><span><span class="pf-stat-title">Views</span><span class="pf-stat-value">24,853</span></span></span></button>
+          <button class="pf-metric-tab" role="tab" aria-selected="false" type="button">
+            <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="clicks"><svg class="i i-20"><use href="#i-cursor"/></svg></span><span><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">387</span></span></span></button>
+          <button class="pf-metric-tab" role="tab" aria-selected="false" type="button">
+            <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="leads"><svg class="i i-20"><use href="#i-phone-call"/></svg></span><span><span class="pf-stat-title">Leads</span><span class="pf-stat-value">12</span></span></span></button>
+        </div></div></div></div>
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">hover</span><div class="cat-stage" data-ground="white">
+        <button class="pf-metric-tab" data-state="hover" type="button"><span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="clicks"><svg class="i i-20"><use href="#i-cursor"/></svg></span><span><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">387</span></span></span></button></div></div>
+      <div class="cat-item"><span class="cat-label">loading</span><div class="cat-stage" data-ground="white">
+        <button class="pf-metric-tab" type="button"><span class="pf-stat" data-state="loading"><span><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">000</span></span></span></button></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--metric-tab-pad-block</code> <code>--metric-tab-pad-inline</code> <code>--metric-tab-minw</code> <code>--ink-bar-h</code> <code>--shadow-tab-active</code> <code>--chart-line</code> <code>--icon-tile-lg</code></td></tr>
+      <tr><th>tab labels</th><td>from <code>item.reach_data</code> (API). On screen: Views · Clicks · Leads</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-inline">
+  <header><h2>inline-metric</h2><code>.pf-inline-metric</code>
+    <span class="src">LeadsStatsGraphWidget.js <code>tabBarExtraContent</code> — the same
+      <code>renderTabTitle</code> Statistic, laid out in an antd <code>Space size="large"</code>
+      with a <code>Divider type="vertical" height 40</code> between entries past the first two.
+      The strip sits behind a <code>4px</code>, <code>blur(4px)</code>, <code>#0007</code> rule.
+      Rows come from <code>item.data_summary</code>, minus the one whose key is <code>leads</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row"><div class="cat-item cat-fill"><span class="cat-label">Calls · WhatsApp · SMS · Emails</span>
+      <div class="cat-stage" data-ground="white">
+        <div class="pf-metric-extra">
+          <span class="pf-inline-metric"><svg class="i i-16"><use href="#i-phone-call"/></svg><span class="pf-stat-title">Calls</span><span class="pf-stat-value">3</span></span>
+          <hr class="pf-divider" data-orientation="vertical">
+          <span class="pf-inline-metric"><svg class="i i-16"><use href="#i-whatsapp"/></svg><span class="pf-stat-title">WhatsApp</span><span class="pf-stat-value">9</span></span>
+          <hr class="pf-divider" data-orientation="vertical">
+          <span class="pf-inline-metric"><svg class="i i-16"><use href="#i-sms"/></svg><span class="pf-stat-title">SMS</span><span class="pf-stat-value">0</span></span>
+          <hr class="pf-divider" data-orientation="vertical">
+          <span class="pf-inline-metric"><svg class="i i-16"><use href="#i-mail"/></svg><span class="pf-stat-title">Emails</span><span class="pf-stat-value">0</span></span>
+        </div></div></div></div>
+    <table class="cat-spec"><tr><th>tokens</th><td><code>--metric-tab-extra-pad</code> <code>--divider-40</code> <code>--gray-700</code> <code>--fs-stat-value</code></td></tr></table>
+    <div class="cat-note" data-kind="tbc">TBC — the divider placement. The source writes
+      <code>{i &gt; 1 &amp;&amp; &lt;Divider/&gt;}</code> over an array that has already had the
+      <code>leads</code> row filtered out of the render but <em>not</em> out of the index, so the first
+      visible gap may have no rule. The screenshot is too soft there to settle it.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-date">
+  <header><h2>date-picker</h2><code>.pf-datepicker</code>
+    <span class="src">ReportsLeadsTrafficSection.js <code>&lt;DateFilter reportsStaticRanges
+      minDate={now - 2y} /&gt;</code>. The label is the chosen static range, defaulting to the
+      <code>getVariousDates(29)</code> window — 30 days.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">default</span><div class="cat-stage" data-ground="white"><span class="pf-datepicker">Last 30 Days<svg class="i i-16"><use href="#i-calendar-day"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">hover</span><div class="cat-stage" data-ground="white"><span class="pf-datepicker" data-state="hover">Last 30 Days<svg class="i i-16"><use href="#i-calendar-day"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">focus / open</span><div class="cat-stage" data-ground="white"><span class="pf-datepicker" data-state="focus">Last 30 Days<svg class="i i-16"><use href="#i-calendar-day"/></svg></span></div></div>
+      <div class="cat-item"><span class="cat-label">disabled (loading)</span><div class="cat-stage" data-ground="white"><span class="pf-datepicker" data-state="disabled">Last 30 Days<svg class="i i-16"><use href="#i-calendar-day"/></svg></span></div></div>
+    </div>
+    <table class="cat-spec"><tr><th>tokens</th><td><code>--ctl-h</code> <code>--border-normal</code> <code>--radius-control</code> <code>--fs-base</code> <code>--gray-700</code> icon</td></tr></table>
+    <div class="cat-note" data-kind="tbc">TBC — the field's real height and inline padding.
+      <code>DateFilter</code> renders an antd input whose height comes from
+      <code>input-height-base: 44px</code>, but on screen it looks like the 36px control height.
+      I used 36. Measure it.</div>
+  </div>
+</section>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-chart">
+  <header><h2>line-chart</h2><code>.pf-chart</code>
+    <span class="src">src/components/widgets/LeadsStatsGraphWidget.js <code>scales</code> —
+      y gridlines <code>rgba(0,0,0,0.1)</code> <code>borderDash [3,3]</code>, zero line
+      <code>#e5e9f2</code> 1px; y ticks <code>fontSize 13, fontColor #182b49, beginAtZero, min 0</code>;
+      x gridlines transparent, x zero line <code>#e5e9f2</code> width 2, <code>tickMarkLength 0</code>,
+      tick padding 10. Series: <code>borderWidth 2, fill false, pointBorderColor '#fff'</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row"><div class="cat-item cat-fill"><span class="cat-label">30-day series · Views</span>
+      <div class="cat-stage" data-ground="white" data-stack="true">
+<div class="pf-chart">
+  <svg viewBox="0 0 1200 340" role="img" aria-label="Views by date, Aug 23 to Sep 21">
+    <line class="grid-h" x1="58" y1="227.2" x2="1188" y2="227.2"/>
+    <text class="tick" x="50" y="231.2" text-anchor="end">500</text>
+    <line class="grid-h" x1="58" y1="174.4" x2="1188" y2="174.4"/>
+    <text class="tick" x="50" y="178.4" text-anchor="end">1000</text>
+    <line class="grid-h" x1="58" y1="121.6" x2="1188" y2="121.6"/>
+    <text class="tick" x="50" y="125.6" text-anchor="end">1500</text>
+    <line class="grid-h" x1="58" y1="68.8" x2="1188" y2="68.8"/>
+    <text class="tick" x="50" y="72.8" text-anchor="end">2000</text>
+    <line class="grid-h" x1="58" y1="16.0" x2="1188" y2="16.0"/>
+    <text class="tick" x="50" y="20.0" text-anchor="end">2500</text>
+    <line class="axis-x" x1="58" y1="280" x2="1188" y2="280"/>
+    <text class="tick tick-x" x="58.0" y="302" text-anchor="middle">Aug 23</text>
+    <text class="tick tick-x" x="97.0" y="302" text-anchor="middle">Aug 24</text>
+    <text class="tick tick-x" x="135.9" y="302" text-anchor="middle">Aug 25</text>
+    <text class="tick tick-x" x="174.9" y="302" text-anchor="middle">Aug 26</text>
+    <text class="tick tick-x" x="213.9" y="302" text-anchor="middle">Aug 27</text>
+    <text class="tick tick-x" x="252.8" y="302" text-anchor="middle">Aug 28</text>
+    <text class="tick tick-x" x="291.8" y="302" text-anchor="middle">Aug 29</text>
+    <text class="tick tick-x" x="330.8" y="302" text-anchor="middle">Aug 30</text>
+    <text class="tick tick-x" x="369.7" y="302" text-anchor="middle">Aug 31</text>
+    <text class="tick tick-x" x="408.7" y="302" text-anchor="middle">Sep 01</text>
+    <text class="tick tick-x" x="447.7" y="302" text-anchor="middle">Sep 02</text>
+    <text class="tick tick-x" x="486.6" y="302" text-anchor="middle">Sep 03</text>
+    <text class="tick tick-x" x="525.6" y="302" text-anchor="middle">Sep 04</text>
+    <text class="tick tick-x" x="564.6" y="302" text-anchor="middle">Sep 05</text>
+    <text class="tick tick-x" x="603.5" y="302" text-anchor="middle">Sep 06</text>
+    <text class="tick tick-x" x="642.5" y="302" text-anchor="middle">Sep 07</text>
+    <text class="tick tick-x" x="681.4" y="302" text-anchor="middle">Sep 08</text>
+    <text class="tick tick-x" x="720.4" y="302" text-anchor="middle">Sep 09</text>
+    <text class="tick tick-x" x="759.4" y="302" text-anchor="middle">Sep 10</text>
+    <text class="tick tick-x" x="798.3" y="302" text-anchor="middle">Sep 11</text>
+    <text class="tick tick-x" x="837.3" y="302" text-anchor="middle">Sep 12</text>
+    <text class="tick tick-x" x="876.3" y="302" text-anchor="middle">Sep 13</text>
+    <text class="tick tick-x" x="915.2" y="302" text-anchor="middle">Sep 14</text>
+    <text class="tick tick-x" x="954.2" y="302" text-anchor="middle">Sep 15</text>
+    <text class="tick tick-x" x="993.2" y="302" text-anchor="middle">Sep 16</text>
+    <text class="tick tick-x" x="1032.1" y="302" text-anchor="middle">Sep 17</text>
+    <text class="tick tick-x" x="1071.1" y="302" text-anchor="middle">Sep 18</text>
+    <text class="tick tick-x" x="1110.1" y="302" text-anchor="middle">Sep 19</text>
+    <text class="tick tick-x" x="1149.0" y="302" text-anchor="middle">Sep 20</text>
+    <text class="tick tick-x" x="1188.0" y="302" text-anchor="middle">Sep 21</text>
+    <polyline class="series" points="58.0,280.0 97.0,280.0 135.9,276.8 174.9,275.8 213.9,275.8 252.8,274.7 291.8,267.3 330.8,212.4 369.7,245.2 408.7,228.3 447.7,192.4 486.6,191.3 525.6,196.6 564.6,173.3 603.5,130.0 642.5,94.1 681.4,98.4 720.4,130.0 759.4,152.2 798.3,121.6 837.3,38.2 876.3,115.3 915.2,142.7 954.2,180.7 993.2,185.0 1032.1,178.6 1071.1,153.3 1110.1,161.7 1149.0,173.3 1188.0,220.9"/>
+    <circle class="marker" cx="58.0" cy="280.0" r="2.6"/>
+    <circle class="marker" cx="97.0" cy="280.0" r="2.6"/>
+    <circle class="marker" cx="135.9" cy="276.8" r="2.6"/>
+    <circle class="marker" cx="174.9" cy="275.8" r="2.6"/>
+    <circle class="marker" cx="213.9" cy="275.8" r="2.6"/>
+    <circle class="marker" cx="252.8" cy="274.7" r="2.6"/>
+    <circle class="marker" cx="291.8" cy="267.3" r="2.6"/>
+    <circle class="marker" cx="330.8" cy="212.4" r="2.6"/>
+    <circle class="marker" cx="369.7" cy="245.2" r="2.6"/>
+    <circle class="marker" cx="408.7" cy="228.3" r="2.6"/>
+    <circle class="marker" cx="447.7" cy="192.4" r="2.6"/>
+    <circle class="marker" cx="486.6" cy="191.3" r="2.6"/>
+    <circle class="marker" cx="525.6" cy="196.6" r="2.6"/>
+    <circle class="marker" cx="564.6" cy="173.3" r="2.6"/>
+    <circle class="marker" cx="603.5" cy="130.0" r="2.6"/>
+    <circle class="marker" cx="642.5" cy="94.1" r="2.6"/>
+    <circle class="marker" cx="681.4" cy="98.4" r="2.6"/>
+    <circle class="marker" cx="720.4" cy="130.0" r="2.6"/>
+    <circle class="marker" cx="759.4" cy="152.2" r="2.6"/>
+    <circle class="marker" cx="798.3" cy="121.6" r="2.6"/>
+    <circle class="marker" cx="837.3" cy="38.2" r="2.6"/>
+    <circle class="marker" cx="876.3" cy="115.3" r="2.6"/>
+    <circle class="marker" cx="915.2" cy="142.7" r="2.6"/>
+    <circle class="marker" cx="954.2" cy="180.7" r="2.6"/>
+    <circle class="marker" cx="993.2" cy="185.0" r="2.6"/>
+    <circle class="marker" cx="1032.1" cy="178.6" r="2.6"/>
+    <circle class="marker" cx="1071.1" cy="153.3" r="2.6"/>
+    <circle class="marker" cx="1110.1" cy="161.7" r="2.6"/>
+    <circle class="marker" cx="1149.0" cy="173.3" r="2.6"/>
+    <circle class="marker" cx="1188.0" cy="220.9" r="2.6"/>
+  </svg>
+</div>      </div></div></div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--chart-grid</code> <code>--chart-zero-line</code> <code>--chart-tick</code> <code>--chart-line</code> <code>--fs-chart-tick</code> <code>--fs-12</code></td></tr>
+      <tr><th>axis</th><td>y 0 → 2500 in steps of 500 · x Aug 23 → Sep 21, 30 daily ticks — <strong>read off the screenshot</strong></td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — three things. (1) The <strong>series values are traced
+      from the screenshot</strong>, not sourced; treat every point as ±40. (2) The source sets
+      <code>pointRadius: '0'</code> — a <em>string</em> — yet the live chart clearly shows round markers,
+      so something downstream overrides it; the 2.6px radius here is measured, not declared.
+      (3) The chart is a Chart.js canvas at <code>height=64</code> with
+      <code>maintainAspectRatio: true</code>, so its painted height is a ratio of its width, not a CSS
+      value. This SVG is a stand-in at the right proportions.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-tooltip">
+  <header><h2>chart-tooltip</h2><code>.pf-tooltip</code>
+    <span class="src">src/components/widgets/styled.js <code>.chartjs-tooltip</code> — ground #fff,
+      <code>box-shadow 0 8px 10px #9299B815</code>, <code>padding 10px 12px</code>,
+      <code>border-radius 3px</code>, <code>border 1px #F1F2F6</code>, a 5px white caret on the
+      underside; <code>min-width</code> is raised to 175px by <code>PerformanceChartWrapper</code>.
+      Title: <code>gray-color</code>, 12px, weight 500, Inter, capitalised, <code>margin-bottom 4</code>.
+      Row: 13px / weight 500 / <code>dark-color</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">zero value (as shown live)</span><div class="cat-stage" data-ground="white">
+        <div class="pf-tooltip"><div class="pf-tooltip-title">Aug 23</div><div class="pf-tooltip-row"><span class="pf-tooltip-key"></span>Views: 0</div></div></div></div>
+      <div class="cat-item"><span class="cat-label">peak value</span><div class="cat-stage" data-ground="white">
+        <div class="pf-tooltip"><div class="pf-tooltip-title">Sep 12</div><div class="pf-tooltip-row"><span class="pf-tooltip-key"></span>Views: 2,290</div></div></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--shadow-tooltip</code> <code>--radius-tooltip</code> <code>--border-light</code> <code>--font-chart</code> <code>--gray-color</code> <code>--dark</code> <code>--fs-12</code> <code>--fs-13</code></td></tr>
+      <tr><th>label callback</th><td><code>`${metricLabel}: ${yLabel}`</code>; title is <code>xLabel.replace('-', ', ')</code> — sourced</td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — the colour key. <code>.chartjs-tooltip-key</code> is
+      declared <code>10×10</code> with <code>background: "pink"</code> (a quoted string, so it is invalid CSS
+      and does nothing). The live dot takes its colour from the dataset. Also note
+      <code>.tooltip-value</code> in the same file is <code>#63b963</code> at 22px/600 — a green that
+      appears nowhere in the theme, and it is not what this tooltip variant renders.</div>
+  </div>
+</section>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-tag">
+  <header><h2>product tag</h2><code>.pf-tag</code>
+    <span class="src">colours from <code>getTheme()</code>:
+      <code>color-basic #28b16d</code>, <code>color-hot #f73131</code>,
+      <code>color-signature #af6fff</code>; <code>tag-font-size 11px</code>,
+      <code>tag-default-bg #EFF0F3</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">basic</span><div class="cat-stage" data-ground="white"><span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#i-layers"/></svg>Basic</span></div></div>
+      <div class="cat-item"><span class="cat-label">hot</span><div class="cat-stage" data-ground="white"><span class="pf-tag" data-tone="hot"><svg class="i i-14"><use href="#i-flame"/></svg>Hot</span></div></div>
+      <div class="cat-item"><span class="cat-label">signature</span><div class="cat-stage" data-ground="white"><span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#i-bolt"/></svg>Signature</span></div></div>
+      <div class="cat-item"><span class="cat-label">default</span><div class="cat-stage" data-ground="white"><span class="pf-tag" data-tone="default">Draft</span></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">health score · high / mid / low</span><div class="cat-stage" data-ground="white">
+        <span class="pf-score" data-band="high">62%</span><span class="pf-score" data-band="mid">50%</span><span class="pf-score" data-band="low">31%</span></div></div>
+    </div>
+    <table class="cat-spec"><tr><th>tokens</th><td><code>--color-basic</code> <code>--color-hot</code> <code>--color-signature</code> <code>--bg-gray-deep</code> <code>--fs-tag</code> <code>--radius-tag</code></td></tr></table>
+    <div class="cat-note" data-kind="tbc">TBC — the <strong>score bands</strong>. The theme has
+      <code>health-color-low #FF7258</code>, <code>-avg #FFDC65</code>, <code>-good #98DAB9</code>, but the
+      screenshot's percentages are clearly not those pastels, and I could not find where the listing
+      score picks its colour. I used success/warning/danger and the thresholds are guessed —
+      <strong>tell me the real bands</strong>.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-status">
+  <header><h2>status pill</h2><code>.pf-status-pill</code>
+    <span class="src">column <code>{ title:'Status', key:'disposition', component:'PlatformStatus' }</code>
+      in src/tenant/bayut/utils/listingUtilities.js.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">live</span><div class="cat-stage" data-ground="white"><span class="pf-status-pill" data-status="live">Live</span></div></div>
+      <div class="cat-item"><span class="cat-label">pending</span><div class="cat-stage" data-ground="white"><span class="pf-status-pill" data-status="pending">Pending</span></div></div>
+      <div class="cat-item"><span class="cat-label">rejected</span><div class="cat-stage" data-ground="white"><span class="pf-status-pill" data-status="rejected">Rejected</span></div></div>
+      <div class="cat-item"><span class="cat-label">expired</span><div class="cat-stage" data-ground="white"><span class="pf-status-pill" data-status="expired">Expired</span></div></div>
+    </div>
+    <div class="cat-note" data-kind="tbc">TBC — only <strong>“Live”</strong> is on screen. The other three
+      labels and all four colour pairs are mine; <code>PlatformStatus</code> resolves them from
+      <code>listings.json</code>, which I did not open for the bayut tenant.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-action">
+  <header><h2>round action button</h2><code>.pf-round-action</code>
+    <span class="src">columns <code>Upgrades</code> (<code>PlatformListingActions</code>) and
+      <code>Actions</code> (<code>TableListingActions</code>, <code>width 180, fixed right</code>).
+      Both render a 3 × 2 grid of circular icon buttons.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">upgrades · available</span><div class="cat-stage" data-ground="white">
+        <div class="pf-action-grid">
+          <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+          <button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+          <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+          <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#i-camera"/></svg></button>
+          <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#i-video"/></svg></button>
+          <button class="pf-round-action" data-tone="muted" type="button" aria-label="Swap"><svg class="i i-16"><use href="#i-shuffle"/></svg></button>
+        </div></div></div>
+      <div class="cat-item"><span class="cat-label">upgrades · already applied (muted)</span><div class="cat-stage" data-ground="white">
+        <div class="pf-action-grid">
+          <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+          <button class="pf-round-action" data-tone="muted" data-state="disabled" type="button" disabled aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+          <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+        </div></div></div>
+      <div class="cat-item"><span class="cat-label">actions</span><div class="cat-stage" data-ground="white">
+        <div class="pf-action-grid">
+          <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#i-check-2"/></svg></button>
+          <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#i-share"/></svg></button>
+          <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+          <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+          <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#i-percent"/></svg></button>
+          <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+        </div></div></div>
+    </div>
+    <table class="cat-spec"><tr><th>tokens</th><td><code>--icon-tile</code> size · <code>--radius-round</code> · <code>--bg-gray-normal</code> default ground · tone grounds at <code>alpha .10</code></td></tr></table>
+    <div class="cat-note" data-kind="tbc">TBC — <strong>which icon means what, and the enabled/disabled
+      rule</strong>. Twelve circular buttons per row and the repo resolves them inside
+      <code>PlatformListingActions</code> / <code>TableListingActions</code>, which I did not open.
+      Sizes and grounds are measured; the glyph-to-action mapping is a guess.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-listing">
+  <header><h2>listing cell (the Property column)</h2><code>.pf-listing</code>
+    <span class="src">column <code>{ title:'Property', key:'property', component:'ListingPurpose',
+      className:'col-property' }</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row"><div class="cat-item cat-fill"><span class="cat-label">default</span>
+      <div class="cat-stage" data-ground="white">
+        <div class="pf-listing">
+          <span class="pf-listing-thumb"><span class="pf-listing-count">21</span></span>
+          <div>
+            <div class="pf-listing-price"><bdi>ر.س</bdi> 1,250,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#i-layers"/></svg>Basic</span> <span class="pf-score" data-band="high">62%</span></div>
+            <a class="pf-listing-title" href="#c-listing">Floor for Sale | Ready</a>
+            <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 3</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 3</span><span><svg class="i i-14"><use href="#i-area"/></svg> 64 Sq. M.</span></div>
+            <div class="pf-listing-loc">Riyadh, North Riyadh, Al Wurud</div>
+            <div class="pf-listing-ids"><span>Bayut ID: 88126259</span><span>REGA ID: 7201105004</span></div>
+          </div>
+        </div></div></div></div>
+    <table class="cat-spec">
+      <tr><th>currency</th><td><strong>ر.س</strong> — never “SAR”, never “SR”. Hard constraint in the KSA design skill.</td></tr>
+      <tr><th>ids</th><td>KSA rows carry <em>both</em> <code>Bayut ID</code> and <code>REGA ID</code>. REGA is KSA-only.</td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — thumbnail size (<code>--listing-thumb-w/h</code>), the
+      green count badge on the thumbnail (what it counts, its exact size), the row's vertical padding, and
+      the divider between rows. None are declared; all are measured off the screenshot.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-table">
+  <header><h2>listing table</h2><code>.pf-table</code>
+    <span class="src">src/tenant/bayut/utils/listingUtilities.js
+      <code>listingTableColumnMapper(user,'active')</code> — the six columns below, in this order.
+      <code>Actions</code> is <code>fixed:'right', width:180</code>; <code>Timeline</code> appears only for
+      an <code>isCurrencyUser</code>. Rendered by <code>&lt;ListingContainer className="p-0"&gt;</code>,
+      so the card carries no body padding.</span></header>
+  <div class="cat-body">
+    <div class="cat-stage" data-ground="white" data-stack="true">
+      <table class="pf-table">
+        <thead><tr><th>Property</th><th>Timeline</th><th>Performance</th><th>Status</th><th>Upgrades</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="pf-listing">
+              <span class="pf-listing-thumb"><span class="pf-listing-count">21</span></span>
+              <div>
+                <div class="pf-listing-price"><bdi>ر.س</bdi> 1,250,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#i-layers"/></svg>Basic</span> <span class="pf-score" data-band="mid">62%</span></div>
+                <a class="pf-listing-title" href="#c-table">Floor for Sale | Ready</a>
+                <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 3</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 3</span><span><svg class="i i-14"><use href="#i-area"/></svg> 64 Sq. M.</span></div>
+                <div class="pf-listing-loc">Riyadh, North Riyadh, Al Wurud</div>
+                <div class="pf-listing-ids"><span>Bayut ID: 88126259</span><span>REGA ID: 7201105004</span></div>
+              </div></div></td>
+            <td>Posted on Sep 09, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">896</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">35</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">2</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td><div class="pf-action-grid">
+              <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+              <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+              <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+            </div></td>
+            <td><div class="pf-action-grid">
+              <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+              <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+              <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="pf-listing">
+              <span class="pf-listing-thumb"><span class="pf-listing-count">38</span></span>
+              <div>
+                <div class="pf-listing-price"><bdi>ر.س</bdi> 2,330,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#i-bolt"/></svg>Signature</span> <span class="pf-score" data-band="mid">43%</span></div>
+                <a class="pf-listing-title" href="#c-table">Villa for Sale | Ready</a>
+                <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#i-bed"/></svg> 5</span><span><svg class="i i-14"><use href="#i-bath"/></svg> 6</span><span><svg class="i i-14"><use href="#i-area"/></svg> 79 Sq. M.</span></div>
+                <div class="pf-listing-loc">Riyadh, East Riyadh, Al Nahdah</div>
+                <div class="pf-listing-ids"><span>Bayut ID: 88121852</span><span>REGA ID: 7201104997</span></div>
+              </div></div></td>
+            <td>Posted on Sep 05, 2026 <svg class="i i-14"><use href="#i-info"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">2,669</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">36</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">2</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="live">Live</span></td>
+            <td><div class="pf-action-grid">
+              <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#i-bolt"/></svg></button>
+              <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#i-flame"/></svg></button>
+              <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#i-refresh"/></svg></button>
+            </div></td>
+            <td><div class="pf-action-grid">
+              <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#i-pencil"/></svg></button>
+              <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#i-eye"/></svg></button>
+              <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#i-trash"/></svg></button>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cat-note" data-kind="tbc">TBC — row padding, the row divider colour, the thumbnail box,
+      and the header row's own height. None are declared in the repo; all four are measured off the
+      screenshot. Column widths likewise, apart from <code>Actions: 180</code>.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-feedback">
+  <header><h2>feedback-tab</h2><code>.pf-feedback-tab</code>
+    <span class="src">Not in this repo.</span></header>
+  <div class="cat-body">
+    <div class="cat-row"><div class="cat-item"><span class="cat-label">rendered inline for the catalogue</span>
+      <div class="cat-stage" data-ground="white"><span class="pf-tag" data-tone="default">FEEDBACK</span></div></div></div>
+    <div class="cat-note" data-kind="tbc">TBC — <strong>everything</strong>. The vertical FEEDBACK rail on the
+      right edge of the live screen is a third-party widget; I found no source for it in
+      profolio-reactjs. On the page it is rendered as a fixed tab with placeholder geometry, and it is the
+      one element you should expect to be wrong in every dimension.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-layout">
+  <header><h2>layout primitives</h2>
+    <code>.pf-stack</code> <code>.pf-two-col</code> <code>.pf-breakdown</code> <code>.pf-stat-grid</code> <code>.pf-section-head</code> <code>.pf-card-toolbar</code> <code>.pf-chart-toolbar</code> <code>.pf-credit-actions</code>
+    <span class="src">Catalogued so the rule holds: <strong>nothing on the page is styled by a class that
+      is not here</strong>. Each primitive stands for one JSX node in
+      src/container/pages/dashboard/dashboard.js and introduces no value that is not already a token.</span></header>
+  <div class="cat-body">
+    <table class="cat-spec">
+      <tr><th><code>.pf-stack</code></th><td><code>&lt;Group&gt;</code> — grid, gap <code>--gap-widget</code> 16px</td></tr>
+      <tr><th><code>.pf-stack[data-gap=row]</code></th><td><code>.mb-24</code> under the account switcher — gap <code>--gap-row</code> 24px</td></tr>
+      <tr><th><code>.pf-two-col</code></th><td><code>&lt;Group className="c-listing-credits" template="repeat(2, minmax(0, 1fr))" gap="16px"&gt;</code> — <strong>the one grid that is literally sourced</strong></td></tr>
+      <tr><th><code>.pf-breakdown</code></th><td><code>&lt;Flex align="center" gap="50px"&gt;</code> in ListingBreakdown — total · divider · stats</td></tr>
+      <tr><th><code>.pf-breakdown-rows</code></th><td><code>&lt;Flex vertical gap="40px" style={{flex:1}}&gt;</code> — the purposes row over the products row</td></tr>
+      <tr><th><code>.pf-stat-grid</code></th><td><code>&lt;Group template="repeat(3, 1fr)" gap="30px 30px"&gt;</code> — 3 columns, from <code>round((purposes 3 + products 3) / 2)</code></td></tr>
+      <tr><th><code>.pf-section-head</code></th><td><code>&lt;Row className="px-4 mb-8" justify="space-between" style={{alignItems:'baseline', gap:24}}&gt;</code> — the Recent Listings heading row, <em>outside</em> the card</td></tr>
+      <tr><th><code>.pf-card-toolbar</code></th><td><code>&lt;Group template="repeat(2, 1fr)" style={{gap:16, alignItems:'center'}}&gt;</code> — segmented + date filter</td></tr>
+      <tr><th><code>.pf-card-head[data-pad=16]</code></th><td><code>renderCardTitle</code>'s <code>className="px-16 mb-16"</code></td></tr>
+      <tr><th><code>.pf-chart-toolbar</code></th><td><code>&lt;Flex style={{marginBottom:'10px'}} justify="space-between"&gt;</code> — the chip row above the chart</td></tr>
+      <tr><th><code>.pf-shell</code></th><td>the <code>&lt;Layout&gt;</code> root — flex row, <code>min-height 100vh</code></td></tr>
+      <tr><th><code>.pf-rail-fixed</code></th><td><code>SideBarStyle</code> — <code>position fixed, inset-block 0, inset-inline-start 0, z-index 1002</code></td></tr>
+      <tr><th><code>.pf-main</code></th><td><code>&lt;Layout className="atbd-main-layout"&gt;</code> — offset by <code>--rail-w</code></td></tr>
+      <tr><th><code>.pf-header-fixed</code></th><td>the header's <code>position: fixed, top: 0, inset-inline: 0</code> (rendered sticky here so the page scrolls as one document)</td></tr>
+      <tr><th><code>.pf-content</code></th><td><code>&lt;Content&gt;</code> wrapping <code>&lt;Main&gt;</code> — the widget column</td></tr>
+      <tr><th><code>.pf-footer</code></th><td><code>footerStyle</code> — <code>padding 12px 16px</code>, <code>rgba(255,255,255,.90)</code>, <code>rgba(0,0,0,0.65)</code>, <code>box-shadow 0 -5px 10px rgba(146,153,184,0.05)</code>. All four <strong>sourced</strong>.</td></tr>
+      <tr><th><code>.pf-section-title</code></th><td>the <code>TextWithIcon className="fz-16" fontWeight={700}</code> in <code>renderListings()</code></td></tr>
+      <tr><th><code>.pf-credit-stats</code></th><td><code>&lt;Group template="repeat(6, auto) 1fr" gap="32px" justify="start"&gt;</code> — sourced</td></tr>
+      <tr><th><code>.pf-rail-logo</code></th><td><code>.sidebar-overview-icon &gt; &lt;TenantComponents.Logo/&gt;</code></td></tr>
+      <tr><th><code>.pf-table</code></th><td>see § <a href="#c-table">listing table</a></td></tr>
+      <tr><th><code>.pf-feedback-tab</code></th><td>see § <a href="#c-feedback">feedback-tab</a> — not in this repo</td></tr>
+      <tr><th><code>.pf-credit-actions</code></th><td><code>&lt;Flex justify="center" gap="10px"&gt;</code> with both buttons at <code>className="w-100"</code></td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — <code>--content-pad-inline</code> / <code>--content-pad-block</code>.
+      The main content area's gutter is not declared anywhere in withAdminLayout.js or
+      <code>Main</code>; 16px is measured off the screenshot.</div>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
