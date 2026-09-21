@@ -323,6 +323,10 @@ writeFileSync(join(OUT, 'index.html'), html);
    do not overwrite it. Everything else gets a readable rendered page so each
    reference can be opened, checked against the live product and corrected.   */
 const DOC_CSS = `
+/* Documentation chrome, deliberately not the product's tokens: a reference page
+   is not a Profolio screen, and dressing it as one makes it harder to tell the
+   documentation from the thing being documented. The type is the product's,
+   though — deliverables/fonts.css, the same three Lato faces it ships. */
 :root{--bg:#f2f5f5;--paper:#fff;--ink:#16211f;--ink2:#41544f;--mute:#6f817d;
  --rule:#d6e0de;--soft:#eaf0ef;--accent:#006169;--code:#f4f7f7}
 @media(prefers-color-scheme:dark){:root{--bg:#0b1312;--paper:#131e1c;--ink:#e6eeec;--ink2:#b3c4c0;
@@ -365,7 +369,7 @@ for (const d of docs) {
   writeFileSync(target, `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(d.title)} — Profolio KSA</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="${'../'.repeat(depth)}../deliverables/fonts.css">
 <style>${DOC_CSS}</style></head><body><div class="page">
   <div class="crumb">${esc(d.rel)}</div>
   <a class="back" href="${'../'.repeat(depth)}../site/index.html">&larr; whole design system</a>

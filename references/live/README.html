@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live probes — Profolio KSA</title>
+<link rel="stylesheet" href="../../deliverables/fonts.css">
+<style>
+/* Documentation chrome, deliberately not the product's tokens: a reference page
+   is not a Profolio screen, and dressing it as one makes it harder to tell the
+   documentation from the thing being documented. The type is the product's,
+   though — deliverables/fonts.css, the same three Lato faces it ships. */
+:root{--bg:#f2f5f5;--paper:#fff;--ink:#16211f;--ink2:#41544f;--mute:#6f817d;
+ --rule:#d6e0de;--soft:#eaf0ef;--accent:#006169;--code:#f4f7f7}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1312;--paper:#131e1c;--ink:#e6eeec;--ink2:#b3c4c0;
+ --mute:#7f938e;--rule:#243432;--soft:#182422;--accent:#63c3c6;--code:#101a19}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Lato,-apple-system,"Segoe UI",sans-serif;
+ -webkit-font-smoothing:antialiased}
+.page{max-width:900px;margin:0 auto;padding:34px 22px 90px}
+.crumb{font:500 11.5px ui-monospace,monospace;color:var(--accent);letter-spacing:.04em;margin-bottom:6px}
+.back{font:12px ui-monospace,monospace;color:var(--mute);text-decoration:none;display:inline-block;margin-bottom:18px}
+.back:hover{color:var(--accent)}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:28px 32px}
+h2{font-size:26px;margin:0 0 14px;letter-spacing:-.02em;line-height:1.14}
+h3{font-size:17px;margin:26px 0 8px}h4{font-size:14px;margin:20px 0 6px;color:var(--ink2)}
+p{margin:0 0 11px;color:var(--ink2);max-width:76ch}
+ul,ol{margin:0 0 12px;padding-inline-start:22px;color:var(--ink2)}li{margin-bottom:4px}
+strong{color:var(--ink)}a{color:var(--accent)}hr{border:0;border-top:1px solid var(--rule);margin:22px 0}
+blockquote{margin:0 0 12px;padding:12px 16px;background:var(--soft);border-inline-start:3px solid var(--accent);
+ color:var(--ink2);font-size:14px;border-radius:0 4px 4px 0}
+code{font:12.5px ui-monospace,SFMono-Regular,monospace;background:var(--code);padding:.13em .38em;
+ border-radius:3px;word-break:break-word}
+pre.code{background:var(--code);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre.code code{background:none;padding:0;font-size:12px;line-height:1.65;white-space:pre}
+.tw{overflow-x:auto;margin:0 0 14px;border:1px solid var(--rule);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:420px}
+th,td{text-align:start;padding:9px 13px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{background:var(--soft);font:600 10.5px ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase;
+ color:var(--mute);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}td{color:var(--ink2)}
+.boardlink{display:inline-block;margin-bottom:16px;padding:9px 14px;background:var(--accent);color:#fff;
+ border-radius:6px;text-decoration:none;font-weight:600;font-size:13.5px}
+</style></head><body><div class="page">
+  <div class="crumb">live/README.md</div>
+  <a class="back" href="../../site/index.html">&larr; whole design system</a>
+  
+  <div class="card"><h2>Live probes</h2>
+<p>This directory is where a measurement of the real screen lands. It is empty until someone takes one — nothing here is generated from the codebase.</p>
+<h3>Why</h3>
+<p>Almost everything about Profolio KSA is in its source, and the generator pulls it out. A short list is not, at any level: the chart's painted canvas height, the antd Progress stroke width, a table row's height, and the third-party FEEDBACK widget. Those values only exist once a browser has laid the page out.</p>
+<h3>Taking one</h3>
+<ol><li>Open the screen on live.</li><li>Open devtools, paste the whole of <code>scripts/probe.js</code> into the console.</li><li>It copies a JSON blob to your clipboard. Save it here as</li></ol>
+<p>   <code>&lt;route&gt;.live.probe.json</code> — for example <code>dashboard.live.probe.json</code>.</p>
+<p>The probe reads <strong>layout and computed style only</strong>: box sizes, padding, colours, font metrics, and the font families the browser resolved. It never reads text, values, names or ids, so nothing about the account leaves the browser. The file is short enough to read before you send it.</p>
+<h3>Using one</h3>
+<pre class="code"><code>node scripts/reconcile.mjs --dry     # what would change
+node scripts/reconcile.mjs           # fold it into profolio.css</code></pre>
+<p>Each token it rewrites is stamped with where the number came from and when. Tokens the probe has nothing to say about are left alone, <code>TBC</code> and all — a gap that stays visible is the point of the marker.</p>
+<h3>Measuring fidelity</h3>
+<p>Every probe target carries two selectors: one for the live app, one for <code>deliverables/dashboard.html</code>. Probe both, save the second as <code>&lt;route&gt;.ours.probe.json</code>, then:</p>
+<pre class="code"><code>node scripts/reconcile.mjs --diff</code></pre>
+<p>It reports every property where the two disagree, worst first, and one weighted number at the end. The shell and type count triple, because getting those wrong moves everything else; the feedback widget counts a quarter, because it is not ours. That number is the honest version of "about 75%".</p></div>
+</div></body></html>
