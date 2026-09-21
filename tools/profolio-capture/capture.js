@@ -64,8 +64,8 @@
   /* ── the walk ────────────────────────────────────────────────────────── */
 
   const SKIP = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'META', 'LINK', 'TITLE', 'HEAD']);
-  const MAX_DEPTH = 18;
-  const MAX_NODES = 4000;
+  const MAX_DEPTH = 28;   /* the listings table puts <td> at depth 19; 18 dropped every cell */
+  const MAX_NODES = 6000;
   let nodes = 0;
 
   function walk(el, depth) {

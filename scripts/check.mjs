@@ -73,7 +73,7 @@ hex.length || rgb.length ? bad(`raw colour outside :root — ${[...hex, ...rgb].
 
 const sprite = readFileSync(join(D, 'sprite.svg'), 'utf8');
 const symbols = new Set([...sprite.matchAll(/id="(pf-[\w]+)"/g)].map((m) => m[1]));
-for (const page of ['dashboard.html', 'components.html']) {
+for (const page of ['dashboard.html', 'listings.html', 'components.html']) {
   const raw = readFileSync(join(D, page), 'utf8');
   /* Strip comments before scanning: the sprite carries a usage example, and the
      catalogue quotes the product's JSX inside <code>, so a naive search finds
@@ -121,6 +121,8 @@ if (existsSync(antdPath)) {
     ['.pf-badge',        '.ant-badge-count',   ['height', 'min-width', 'font-size', 'line-height', 'border-radius']],
     ['.pf-credit-meter', '.ant-progress-inner', ['border-radius']],
     ['.pf-card',         '.ant-card',          ['border-radius']],
+    ['.pf-tab',          '.ant-tabs-tab',      ['padding', 'font-size']],
+    ['.pf-input',        '.ant-input-affix-wrapper', ['border-radius', 'font-size', 'line-height']],
   ];
 
   const rule = (cls) => {
@@ -157,14 +159,17 @@ if (existsSync(antdPath)) {
   warn('data/antd-css.json absent — run npm run antd-css');
 }
 
-/* every class the page styles must be defined in the one stylesheet */
-const pageCls = new Set([...readFileSync(join(D, 'dashboard.html'), 'utf8')
-  .matchAll(/class="([^"]+)"/g)].flatMap((m) => m[1].split(/\s+/)).filter(Boolean));
+/* every class a page uses must be defined in the one stylesheet */
 const cssCls = new Set([...css.matchAll(/\.([a-zA-Z][\w-]*)/g)].map((m) => m[1]));
 const instance = new Set(['pct-90', 'pct-40', 'pct-100', 'fill-97', 'fill-50', 'fill-8']);
-const orphan = [...pageCls].filter((c) => !cssCls.has(c) && !instance.has(c));
-orphan.length ? bad(`dashboard.html uses classes the stylesheet does not define: ${orphan.join(', ')}`)
-              : ok(`dashboard.html — all ${pageCls.size} classes defined`);
+for (const page of ['dashboard.html', 'listings.html']) {
+  if (!existsSync(join(D, page))) { bad(`${page} missing`); continue; }
+  const pageCls = new Set([...readFileSync(join(D, page), 'utf8')
+    .matchAll(/class="([^"]+)"/g)].flatMap((m) => m[1].split(/\s+/)).filter(Boolean));
+  const orphan = [...pageCls].filter((c) => !cssCls.has(c) && !instance.has(c));
+  orphan.length ? bad(`${page} uses classes the stylesheet does not define: ${orphan.join(', ')}`)
+                : ok(`${page} — all ${pageCls.size} classes defined`);
+}
 
 /* ── 3b · the knowledge base is content, not chrome ────────────────────────
    The old reference layer inlined a <style> block into 320 pages and cost the

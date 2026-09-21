@@ -73,6 +73,15 @@
     ['btn.outlined',     '.ant-btn',                     '.pf-btn[data-variant="primary-outlined"]', ['height', 'borderColor', 'backgroundColor', 'color']],
     ['alert',            '.ant-card',                    '.pf-alert',           ['backgroundColor', 'borderColor', 'borderRadius', 'padding', 'boxShadow']],
     ['feedback',         '[class*="feedback" i], [id*="feedback" i]', '.pf-feedback-tab', ['width', 'height', 'backgroundColor', 'insetInlineEnd', 'writingMode', 'borderRadius']],
+    /* /listings — the filter bar, the line tabs and the pager */
+    ['filter.label',     '.main-filter-container label', '.pf-field-label', ['fontSize', 'fontWeight', 'color', 'lineHeight']],
+    ['filter.input',     '.main-filter-container .ant-input-affix-wrapper', '.pf-input', ['height', 'padding', 'borderColor', 'borderRadius']],
+    ['filter.select',    '.main-filter-container .ant-select-selector', '.pf-select', ['height', 'paddingInline', 'borderColor', 'borderRadius']],
+    ['filter.search',    '.main-filter-container .ant-btn-primary', '.pf-filter-actions .pf-btn[data-variant="primary"]', ['height', 'paddingInline', 'fontSize', 'fontWeight']],
+    ['tabs.tab',         '.ant-tabs-tab',                '.pf-tab',             ['padding', 'fontSize', 'fontWeight', 'color']],
+    ['tabs.active',      '.ant-tabs-tab-active .ant-tabs-tab-btn', '.pf-tab[aria-selected="true"]', ['color', 'fontWeight']],
+    ['pager.item',       '.ant-pagination-item',         '.pf-page-item',       ['minWidth', 'height', 'borderRadius', 'borderColor', 'margin', 'fontSize']],
+    ['pager.active',     '.ant-pagination-item-active',  '.pf-page-item[aria-current="page"]', ['backgroundColor', 'borderColor', 'fontWeight']],
   ];
 
   const px = (v) => (typeof v === 'string' ? v : String(v));

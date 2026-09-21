@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Overview — Profolio KSA</title>
+<title>My Listings — Profolio KSA</title>
 <!-- the product's own faces, embedded; no network -->
 <style>
 /* inlined from fonts.css — see scripts/bundle.mjs */
@@ -1614,9 +1614,8 @@ table{border-collapse:collapse}
 /* ── INSTANCE DATA ──────────────────────────────────────────────────────
    Custom-property values carrying DATA (a percentage), not presentation.
    Kept out of the body so there is not one style attribute in the markup.
-   ──────────────────────────────────────────────────────────────────── */
+   ─────────────────────────────────────────────────────────────────────── */
 .pct-90{--ring-pct:90}                /* profile completion score */
-.fill-97{--meter-pct:97.17}           /* 72,880 / 75,000 — QuotaCreditsStatWidget */
 </style>
 </head>
 <body>
@@ -2108,24 +2107,17 @@ table{border-collapse:collapse}
     <path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"/>
   </symbol>
 </defs></svg>
-<!-- ═══════════════════════════════════════════════════════════════════════
-     OVERVIEW · /dashboard · tenant bayut (KSA)
-     Composition order is src/container/pages/dashboard/dashboard.js:
-
-       <Main><Group>
-         {dashboardBanner && <DashboardPromoBanner/>}   ← absent in this capture
-         {user?.id && <TruBrokerAndProfileCard/>}       → .pf-alert
-         desktopDashboard()
-           <ContainerWidgets>                            → .pf-stack
-             renderMultiPlatformsLabel()   .mb-24        → account switcher
-             renderListingBreakDownWidget()              → .pf-two-col
-                 <ListingBreakdown/>  (left)  "Listings"
-                 <CreditsQuota/>      (right) "Credits Balance"
-             <ReportsLeadsTrafficSection/>               → "Performance"
-             renderListings()                            → Recent Listings
-     ═══════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════
+     MY LISTINGS — composed from data/fixtures/listings.json by scripts/pages/listings.mjs
+     Structure follows src/tenant/bayut/components/listing/listings.js:
+       <Filters filtersList={filtersList}/>               → .pf-filter-bar
+       <DataTable renderBanner tabs={TabsStyled}>          → .pf-table-card
+         <Card contain-tabs> head: status tabs             →   .pf-table-card-head > .pf-tabs
+         body: <Table columns={listingTableColumnMapper}>  →   .pf-table
+       <Pagination showSizeChanger={false}>                → .pf-pagination
+     Measured against data/live/listings.capture.json — see data/layout/listings.json.
+     ═══════════════════════════════════════════════════════════════════════ -->
 <div class="pf-shell">
-
   <!-- ── icon rail · collapsed (60px), the shipped default state ────── -->
   <div class="pf-rail pf-rail-fixed">
     <div class="pf-rail-brand"><span class="pf-rail-logo"><svg class="pf-wordmark" width="205" height="33" viewBox="0 0 205 33" role="img" aria-label="brand wordmark">
@@ -2162,9 +2154,9 @@ table{border-collapse:collapse}
   </text>
 </svg></span></div>
     <nav class="pf-rail-list" aria-label="Main">
-      <a class="pf-rail-item" aria-current="page" href="#" title="Overview"><svg class="i i-20"><use href="#pf-SideMenuDashboard"/></svg></a>
+      <a class="pf-rail-item" href="#" title="Overview"><svg class="i i-20"><use href="#pf-SideMenuDashboard"/></svg></a>
       <a class="pf-rail-item" href="#" title="Post Listing"><svg class="i i-20"><use href="#pf-PostListingIcon"/></svg></a>
-      <a class="pf-rail-item" href="#" title="My Listings"><svg class="i i-20"><use href="#pf-MyListingIcon"/></svg></a>
+      <a class="pf-rail-item" aria-current="page" href="#" title="My Listings"><svg class="i i-20"><use href="#pf-MyListingIcon"/></svg></a>
       <a class="pf-rail-item" href="#" title="Credits Usage"><svg class="i i-20"><use href="#pf-SideMenuQuota"/></svg></a>
       <a class="pf-rail-item" href="#" title="Inbox"><svg class="i i-20"><use href="#pf-SideMenuInbox"/></svg></a>
       <a class="pf-rail-item" href="#" title="TruLeads"><svg class="i i-20"><use href="#pf-DashboardLmsIcon"/></svg></a>
@@ -2179,12 +2171,10 @@ table{border-collapse:collapse}
       <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="Help &amp; Support"><svg class="i i-20"><use href="#pf-HelpSupportIcon"/></svg></button>
     </div>
   </div>
-
   <div class="pf-main">
-
     <!-- ── header ──────────────────────────────────────────────────── -->
     <header class="pf-header pf-header-fixed">
-      <div class="pf-header-brand"><span class="pf-page-title">Overview</span></div>
+      <div class="pf-header-brand"><span class="pf-page-title">My Listings</span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
         <a class="pf-classified-pill" href="#"><svg class="i i-18"><use href="#pf-SidebarClassifiedLinkIcon"/></svg>Go to Bayut.sa</a>
@@ -2193,233 +2183,49 @@ table{border-collapse:collapse}
         <span class="pf-progress-ring pct-90"><span class="pf-avatar"><svg class="i i-16"><use href="#pf-FiUser"/></svg></span></span>
       </div>
     </header>
-
-    <main class="pf-content">
-
-      <!-- ── TruBrokerAndProfileCard → ProfileCompletionBanner ──────── -->
-      <div class="pf-alert">
-        <span class="pf-progress-ring pct-90">
-          <span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#pf-FiUser"/></svg></span>
-          <span class="pf-ring-label">90%</span>
-        </span>
-        <div class="pf-alert-body">
-          <div class="pf-alert-text">
-            <div class="pf-alert-title">Your profile is incomplete</div>
-            Agents with a complete profile are likely to attract more leads.<a class="pf-alert-link" href="#">Why is this important?</a>
-          </div>
-          <button class="pf-btn" data-variant="primary" type="button"><span>Complete your Profile</span></button>
+    <main class="pf-content" data-gap="8">
+      <!-- ── Filters ────────────────────────────────────────────────── -->
+      <div class="pf-filter-bar">
+        <div class="pf-filter-fields">
+        <div class="pf-field">
+          <label class="pf-field-label" for="f-listing_id">Listing ID</label>
+          <span class="pf-input"><input id="f-listing_id" type="text" placeholder="Enter Listing ID"><span class="pf-input-suffix"></span></span>
+        </div>
+        <div class="pf-field">
+          <label class="pf-field-label" for="f-ad_license">REGA Ad License Number</label>
+          <span class="pf-input"><input id="f-ad_license" type="text" placeholder="Enter REGA Ad License Number"><span class="pf-input-suffix"></span></span>
+        </div>
+        <div class="pf-field">
+          <label class="pf-field-label" for="f-purpose_id">Purpose</label>
+          <button class="pf-select" id="f-purpose_id" type="button" aria-haspopup="listbox"><span class="pf-placeholder">Select Purpose</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+        </div>
+        <div class="pf-field">
+          <label class="pf-field-label" for="f-type_id">Property Type</label>
+          <button class="pf-select" id="f-type_id" type="button" aria-haspopup="listbox"><span class="pf-placeholder">Select Property Types</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+        </div>
+        </div>
+        <div class="pf-filter-actions">
+          <button class="pf-btn" data-variant="tint" data-size="small" type="button"><span>Show More</span><svg class="i i-18"><use href="#pf-MdOutlineDoubleArrow"/></svg></button>
+          <button class="pf-btn" data-variant="link-danger" data-size="small" type="button"><span>Clear filters</span></button>
+          <button class="pf-btn" data-variant="primary" data-size="large" type="button"><svg class="i"><use href="#pf-FiSearch"/></svg><span>Search</span></button>
         </div>
       </div>
-
-      <!-- ── ContainerWidgets ───────────────────────────────────────── -->
-      <div class="pf-stack">
-
-        <!-- renderMultiPlatformsLabel() → .mb-24 -->
-        <div class="pf-stack" data-gap="row">
-          <div class="pf-switcher">
-            <span class="pf-avatar"><svg class="i i-16"><use href="#pf-FiUser"/></svg></span>
-            <span class="pf-switcher-name">Najd Horizon Real Estate</span>
-            <button class="pf-switcher-toggle" type="button" aria-label="Switch account"><svg class="i i-14"><use href="#pf-MdKeyboardArrowDown"/></svg></button>
+      <!-- ── DataTable: status tabs in the card head, the table in its body ── -->
+      <section class="pf-table-card">
+        <div class="pf-table-card-head">
+          <div class="pf-tabs" role="tablist">
+          <button class="pf-tab" role="tab" aria-selected="true" type="button">Active (20)</button>
+          <button class="pf-tab" role="tab" type="button">Draft (2)</button>
+          <button class="pf-tab" role="tab" type="button">Pending (1)</button>
+          <button class="pf-tab" role="tab" type="button">Removed (0)</button>
+          <button class="pf-tab" role="tab" type="button">Ad License Requests (0)</button>
           </div>
         </div>
-
-        <!-- renderListingBreakDownWidget() → Group template="repeat(2, minmax(0,1fr))" gap="16px" -->
-        <div class="pf-two-col">
-
-          <!-- ListingBreakdown · linear={false} -->
-          <section class="pf-card">
-            <div class="pf-card-head">
-              <span class="pf-card-title">Listings</span>
-              <a class="pf-card-action" href="#">View All Listings</a>
-            </div>
-            <div class="pf-card-body" data-pad="breakdown">
-              <div class="pf-breakdown">
-                <div class="pf-stat" data-emphasis="leader">
-                  <svg class="i i-32 pf-glyph-tile"><use href="#pf-ActiveListingIcon"/></svg>
-                  <div><div class="pf-stat-title">Active</div><div class="pf-stat-value">20</div></div>
-                </div>
-                <hr class="pf-divider" data-orientation="vertical" data-stretch="true">
-                <div class="pf-breakdown-rows">
-                  <div class="pf-stat-grid">
-                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="for-sale"><svg class="i i-16"><use href="#pf-IconForSale"/></svg></span><div><div class="pf-stat-title">For Sale</div><div class="pf-stat-value">20</div></div></div>
-                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="for-rent"><svg class="i i-16"><use href="#pf-IconForRent"/></svg></span><div><div class="pf-stat-title">To Rent</div><div class="pf-stat-value">0</div></div></div>
-                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="primary"><svg class="i i-16"><use href="#pf-IconRental"/></svg></span><div><div class="pf-stat-title">Daily Rentals</div><div class="pf-stat-value">0</div></div></div>
-                  </div>
-                  <div class="pf-stat-grid">
-                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></span><div><div class="pf-stat-title">Signature</div><div class="pf-stat-value">12</div></div></div>
-                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></span><div><div class="pf-stat-title">Hot</div><div class="pf-stat-value">5</div></div></div>
-                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="basic"><svg class="i i-16"><use href="#pf-IconBasic"/></svg></span><div><div class="pf-stat-title">Basic</div><div class="pf-stat-value">3</div></div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- CreditsQuota -->
-          <section class="pf-card">
-            <div class="pf-card-head">
-              <span class="pf-card-title">Credits Balance</span>
-              <button class="pf-btn" data-variant="icon-circle" type="button" aria-label="About credits"><svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></button>
-            </div>
-            <div class="pf-card-body">
-              <div class="pf-credit-stats">
-                <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Available Credits</div><div class="pf-stat-value">72,880</div></div></div>
-                <hr class="pf-divider" data-orientation="vertical">
-                <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Used</div><div class="pf-stat-value">2,120</div></div></div>
-                <hr class="pf-divider" data-orientation="vertical">
-                <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Total</div><div class="pf-stat-value">75,000</div></div></div>
-                <hr class="pf-divider" data-orientation="vertical">
-                <div class="pf-plan">
-                  <div class="pf-plan-label">Current Plan</div>
-                  <div class="pf-plan-badge"><span class="pf-icon-tile" data-size="xs" data-tone="plan"><svg class="i i-14"><use href="#pf-IconPkgPlatinumPlus"/></svg></span>Platinum Plus</div>
-                </div>
-              </div>
-              <span class="pf-credit-meter fill-97"></span>
-              <div class="pf-credit-actions">
-                <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#pf-IoAddCircleOutline"/></svg><span>Top-Up your Credits</span></button>
-                <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#pf-PiClockClockwiseFill"/></svg><span>Credits Usage</span></button>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <!-- ReportsLeadsTrafficSection → LeadsStatsGraphWidget -->
-        <section class="pf-card">
-          <div class="pf-card-head" data-pad="16">
-            <span class="pf-card-title">Performance</span>
-            <div class="pf-card-toolbar">
-              <div class="pf-segmented" role="tablist">
-                <button class="pf-segmented-item" role="tab" aria-selected="true" type="button">All</button>
-                <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">For Sale</button>
-                <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">For Rent</button>
-                <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">Daily Rentals</button>
-              </div>
-              <span class="pf-datepicker">Last 30 Days<svg class="i i-16"><use href="#pf-FiCalendar"/></svg></span>
-            </div>
-          </div>
-
-          <div class="pf-metric-bar" role="tablist">
-            <button class="pf-metric-tab" role="tab" aria-selected="true" type="button">
-              <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="primary"><svg class="i i-20"><use href="#pf-IoMdEye"/></svg></span><span><span class="pf-stat-title">Views</span><span class="pf-stat-value">24,853</span></span></span>
-            </button>
-            <button class="pf-metric-tab" role="tab" aria-selected="false" type="button">
-              <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="clicks"><svg class="i i-20"><use href="#pf-HiCursorClick"/></svg></span><span><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">387</span></span></span>
-            </button>
-            <button class="pf-metric-tab" role="tab" aria-selected="false" type="button">
-              <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="leads"><svg class="i i-20"><use href="#pf-MdPhone"/></svg></span><span><span class="pf-stat-title">Leads</span><span class="pf-stat-value">12</span></span></span>
-            </button>
-            <div class="pf-metric-extra">
-              <span class="pf-inline-metric"><svg class="i i-16"><use href="#pf-MdPhone"/></svg><span class="pf-stat-title">Calls</span><span class="pf-stat-value">3</span></span>
-              <hr class="pf-divider" data-orientation="vertical">
-              <span class="pf-inline-metric"><svg class="i i-16"><use href="#pf-IconWhatsapp"/></svg><span class="pf-stat-title">WhatsApp</span><span class="pf-stat-value">9</span></span>
-              <hr class="pf-divider" data-orientation="vertical">
-              <span class="pf-inline-metric"><svg class="i i-16"><use href="#pf-MdSms"/></svg><span class="pf-stat-title">SMS</span><span class="pf-stat-value">0</span></span>
-              <hr class="pf-divider" data-orientation="vertical">
-              <span class="pf-inline-metric"><svg class="i i-16"><use href="#pf-MdEmail"/></svg><span class="pf-stat-title">Emails</span><span class="pf-stat-value">0</span></span>
-            </div>
-          </div>
-
-          <div class="pf-card-body">
-            <div class="pf-chart-toolbar">
-              <div class="pf-chip-group" role="radiogroup">
-                <button class="pf-chip" role="radio" aria-checked="true" type="button"><span class="pf-dot" data-tone="all"></span>All</button>
-                <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="basic"></span>Basic</button>
-                <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="hot"></span>Hot</button>
-                <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="signature"></span>Signature</button>
-              </div>
-            </div>
-            <div class="pf-chart">
-              <svg viewBox="0 0 1200 340" role="img" aria-label="Views by date, Aug 23 to Sep 21">
-                <line class="grid-h" x1="58" y1="227.2" x2="1188" y2="227.2"/>
-                <text class="tick" x="50" y="231.2" text-anchor="end">500</text>
-                <line class="grid-h" x1="58" y1="174.4" x2="1188" y2="174.4"/>
-                <text class="tick" x="50" y="178.4" text-anchor="end">1000</text>
-                <line class="grid-h" x1="58" y1="121.6" x2="1188" y2="121.6"/>
-                <text class="tick" x="50" y="125.6" text-anchor="end">1500</text>
-                <line class="grid-h" x1="58" y1="68.8" x2="1188" y2="68.8"/>
-                <text class="tick" x="50" y="72.8" text-anchor="end">2000</text>
-                <line class="grid-h" x1="58" y1="16.0" x2="1188" y2="16.0"/>
-                <text class="tick" x="50" y="20.0" text-anchor="end">2500</text>
-                <line class="axis-x" x1="58" y1="280" x2="1188" y2="280"/>
-                <text class="tick tick-x" x="58.0" y="302" text-anchor="middle">Aug 23</text>
-                <text class="tick tick-x" x="97.0" y="302" text-anchor="middle">Aug 24</text>
-                <text class="tick tick-x" x="135.9" y="302" text-anchor="middle">Aug 25</text>
-                <text class="tick tick-x" x="174.9" y="302" text-anchor="middle">Aug 26</text>
-                <text class="tick tick-x" x="213.9" y="302" text-anchor="middle">Aug 27</text>
-                <text class="tick tick-x" x="252.8" y="302" text-anchor="middle">Aug 28</text>
-                <text class="tick tick-x" x="291.8" y="302" text-anchor="middle">Aug 29</text>
-                <text class="tick tick-x" x="330.8" y="302" text-anchor="middle">Aug 30</text>
-                <text class="tick tick-x" x="369.7" y="302" text-anchor="middle">Aug 31</text>
-                <text class="tick tick-x" x="408.7" y="302" text-anchor="middle">Sep 01</text>
-                <text class="tick tick-x" x="447.7" y="302" text-anchor="middle">Sep 02</text>
-                <text class="tick tick-x" x="486.6" y="302" text-anchor="middle">Sep 03</text>
-                <text class="tick tick-x" x="525.6" y="302" text-anchor="middle">Sep 04</text>
-                <text class="tick tick-x" x="564.6" y="302" text-anchor="middle">Sep 05</text>
-                <text class="tick tick-x" x="603.5" y="302" text-anchor="middle">Sep 06</text>
-                <text class="tick tick-x" x="642.5" y="302" text-anchor="middle">Sep 07</text>
-                <text class="tick tick-x" x="681.4" y="302" text-anchor="middle">Sep 08</text>
-                <text class="tick tick-x" x="720.4" y="302" text-anchor="middle">Sep 09</text>
-                <text class="tick tick-x" x="759.4" y="302" text-anchor="middle">Sep 10</text>
-                <text class="tick tick-x" x="798.3" y="302" text-anchor="middle">Sep 11</text>
-                <text class="tick tick-x" x="837.3" y="302" text-anchor="middle">Sep 12</text>
-                <text class="tick tick-x" x="876.3" y="302" text-anchor="middle">Sep 13</text>
-                <text class="tick tick-x" x="915.2" y="302" text-anchor="middle">Sep 14</text>
-                <text class="tick tick-x" x="954.2" y="302" text-anchor="middle">Sep 15</text>
-                <text class="tick tick-x" x="993.2" y="302" text-anchor="middle">Sep 16</text>
-                <text class="tick tick-x" x="1032.1" y="302" text-anchor="middle">Sep 17</text>
-                <text class="tick tick-x" x="1071.1" y="302" text-anchor="middle">Sep 18</text>
-                <text class="tick tick-x" x="1110.1" y="302" text-anchor="middle">Sep 19</text>
-                <text class="tick tick-x" x="1149.0" y="302" text-anchor="middle">Sep 20</text>
-                <text class="tick tick-x" x="1188.0" y="302" text-anchor="middle">Sep 21</text>
-                <polyline class="series" points="58.0,280.0 97.0,280.0 135.9,276.8 174.9,275.8 213.9,275.8 252.8,274.7 291.8,267.3 330.8,212.4 369.7,245.2 408.7,228.3 447.7,192.4 486.6,191.3 525.6,196.6 564.6,173.3 603.5,130.0 642.5,94.1 681.4,98.4 720.4,130.0 759.4,152.2 798.3,121.6 837.3,38.2 876.3,115.3 915.2,142.7 954.2,180.7 993.2,185.0 1032.1,178.6 1071.1,153.3 1110.1,161.7 1149.0,173.3 1188.0,220.9"/>
-                <circle class="marker" cx="58.0" cy="280.0" r="2.6"/>
-                <circle class="marker" cx="97.0" cy="280.0" r="2.6"/>
-                <circle class="marker" cx="135.9" cy="276.8" r="2.6"/>
-                <circle class="marker" cx="174.9" cy="275.8" r="2.6"/>
-                <circle class="marker" cx="213.9" cy="275.8" r="2.6"/>
-                <circle class="marker" cx="252.8" cy="274.7" r="2.6"/>
-                <circle class="marker" cx="291.8" cy="267.3" r="2.6"/>
-                <circle class="marker" cx="330.8" cy="212.4" r="2.6"/>
-                <circle class="marker" cx="369.7" cy="245.2" r="2.6"/>
-                <circle class="marker" cx="408.7" cy="228.3" r="2.6"/>
-                <circle class="marker" cx="447.7" cy="192.4" r="2.6"/>
-                <circle class="marker" cx="486.6" cy="191.3" r="2.6"/>
-                <circle class="marker" cx="525.6" cy="196.6" r="2.6"/>
-                <circle class="marker" cx="564.6" cy="173.3" r="2.6"/>
-                <circle class="marker" cx="603.5" cy="130.0" r="2.6"/>
-                <circle class="marker" cx="642.5" cy="94.1" r="2.6"/>
-                <circle class="marker" cx="681.4" cy="98.4" r="2.6"/>
-                <circle class="marker" cx="720.4" cy="130.0" r="2.6"/>
-                <circle class="marker" cx="759.4" cy="152.2" r="2.6"/>
-                <circle class="marker" cx="798.3" cy="121.6" r="2.6"/>
-                <circle class="marker" cx="837.3" cy="38.2" r="2.6"/>
-                <circle class="marker" cx="876.3" cy="115.3" r="2.6"/>
-                <circle class="marker" cx="915.2" cy="142.7" r="2.6"/>
-                <circle class="marker" cx="954.2" cy="180.7" r="2.6"/>
-                <circle class="marker" cx="993.2" cy="185.0" r="2.6"/>
-                <circle class="marker" cx="1032.1" cy="178.6" r="2.6"/>
-                <circle class="marker" cx="1071.1" cy="153.3" r="2.6"/>
-                <circle class="marker" cx="1110.1" cy="161.7" r="2.6"/>
-                <circle class="marker" cx="1149.0" cy="173.3" r="2.6"/>
-                <circle class="marker" cx="1188.0" cy="220.9" r="2.6"/>
-              </svg>
-            </div>          </div>
-        </section>
-
-        <!-- renderListings() — the heading Row sits OUTSIDE the card -->
-        <div>
-          <div class="pf-section-head">
-            <span class="pf-section-title">Recent Listings</span>
-            <a class="pf-card-action" data-tone="muted" href="#">View All Listings <svg class="i i-14"><use href="#pf-FiArrowUpRight"/></svg></a>
-          </div>
-          <section class="pf-card">
-            <div class="pf-card-body" data-pad="none">
-              <table class="pf-table">
-                <thead>
-                  <tr><th class="col-property">Property</th><th>Timeline</th><th>Performance</th><th>Status</th><th class="col-upgrades">Upgrades</th><th class="col-actions">Actions</th></tr>
-                </thead>
-                <tbody>
-
+        <table class="pf-table">
+          <thead>
+            <tr><th class="col-property">Property</th><th>Timeline</th><th>Performance</th><th>Status</th><th class="col-upgrades">Upgrades</th><th class="col-actions">Actions</th></tr>
+          </thead>
+          <tbody>
           <tr>
             <td class="col-property">
               <div class="pf-listing">
@@ -2829,21 +2635,19 @@ table{border-collapse:collapse}
                 <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
-          </tr>                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-
-      </div><!-- /.pf-stack ContainerWidgets -->
+          </tr>
+          </tbody>
+        </table>
+      </section>
+      <ul class="pf-pagination">
+        <li class="pf-page-item" data-nav="prev" aria-disabled="true"><button type="button" aria-label="Previous page" disabled><svg class="i i-12"><use href="#pf-LeftOutlined"/></svg></button></li>
+        <li class="pf-page-item" aria-current="page"><a href="#">1</a></li>
+        <li class="pf-page-item"><a href="#">2</a></li>
+        <li class="pf-page-item" data-nav="next"><button type="button" aria-label="Next page"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
+      </ul>
     </main>
-
     <footer class="pf-footer">© 2026 – All Rights Reserved</footer>
   </div><!-- /.pf-main -->
 </div><!-- /.pf-shell -->
-
-<!-- third-party widget, no source in profolio-reactjs — geometry is a placeholder -->
-<div class="pf-feedback-tab"><span>FEEDBACK</span></div>
-
 </body>
 </html>

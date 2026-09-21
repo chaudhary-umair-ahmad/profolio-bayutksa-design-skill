@@ -12,13 +12,15 @@
     "bundle": "node scripts/bundle.mjs",
     "check": "node scripts/sync.mjs --check && node scripts/check.mjs && node scripts/test-capture.mjs",
     "diff": "node scripts/reconcile.mjs --diff",
-    "all": "npm run icons && npm run fonts && npm run antd && npm run antd-css && npm run layers && npm run build && npm run kb && npm run bundle && npm run combine && npm run check",
+    "all": "npm run icons && npm run fonts && npm run antd && npm run antd-css && npm run layers && npm run build && npm run kb && npm run pages && npm run sync && npm run bundle && npm run combine && npm run check",
     "layers": "node scripts/extract-layers.mjs --repo ../profolio-reactjs-copy --tenant bayut",
     "antd-css": "node scripts/antd-css.mjs --repo ../profolio-reactjs-copy",
     "test-capture": "node scripts/test-capture.mjs",
     "kb": "node scripts/kb.mjs",
     "harness:install": "node harness/install.mjs",
-    "harness:capture": "node harness/capture.mjs"
+    "harness:capture": "node harness/capture.mjs",
+    "pages": "node scripts/pages/listings.mjs",
+    "layout": "node scripts/derive-layout.mjs"
   },
   "devDependencies": {
     "antd": "5.22.1",

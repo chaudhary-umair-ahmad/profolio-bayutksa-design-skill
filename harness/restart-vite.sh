@@ -4,7 +4,7 @@
 # matches its own command line and kills the caller.
 set -u
 REPO="${PROFOLIO_REPO:-/home/user/profolio-reactjs-copy}"
-LOG="$(dirname "$0")/vite.log"
+LOG="$(cd "$(dirname "$0")" && pwd)/vite.log"
 pkill -f "vite --host" 2>/dev/null
 pkill -f "yarn start" 2>/dev/null
 sleep 1

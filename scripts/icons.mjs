@@ -104,6 +104,8 @@ const REACT_ICONS = {
   MdMoreVert: 'more actions',
   BsFillLightningChargeFill: 'Signature listing',
   BiSearch: 'search',
+  FiSearch: 'filter bar Search button (filters.js searchButton icon default)',
+  MdOutlineDoubleArrow: 'Show More filters (filters.js:629)',
   MdPieChartOutline: 'manage products',
   // performance metrics — tenant/common/transformers/reports.js reach_data
   HiCursorClick: 'Clicks',
@@ -407,6 +409,39 @@ if (reactIconsAvailable) {
   }
 } else {
   for (const name of Object.keys(REACT_ICONS)) missing.push(`${name} (react-icons not installed)`);
+}
+
+/* ── 2b · antd's own icons ──────────────────────────────────────────────── */
+/* The Select arrow and the Pagination chevrons are antd's, not the product's:
+   @ant-design/icons-svg ships each as a data module with the same {tag, attrs,
+   children} shape react-icons uses. antd renders them at 1em with fill
+   currentColor. */
+const ANTD_ICONS = {
+  DownOutlined: 'Select arrow',
+  LeftOutlined: 'Pagination previous',
+  RightOutlined: 'Pagination next',
+};
+const ASN = join(ROOT, 'node_modules', '@ant-design', 'icons-svg', 'es', 'asn');
+if (existsSync(ASN)) {
+  const renderAnt = (node) => {
+    const attrs = Object.entries(node.attrs || {}).map(([k, v]) => ` ${k}="${v}"`).join('');
+    const kids = (node.children || []).map(renderAnt).join('');
+    return kids ? `<${node.tag}${attrs}>${kids}</${node.tag}>` : `<${node.tag}${attrs}/>`;
+  };
+  for (const [name, use] of Object.entries(ANTD_ICONS)) {
+    const file = join(ASN, `${name}.js`);
+    if (!existsSync(file)) { missing.push(`${name} (@ant-design/icons-svg)`); continue; }
+    const m = readFileSync(file, 'utf8').match(/=\s*(\{[\s\S]*?\});\s*\n/);
+    let icon; try { icon = new Function(`return (${m[1]})`)().icon; } catch { missing.push(`${name} (unparseable)`); continue; }
+    symbols.push(
+      `  <!-- ${use} · @ant-design/icons-svg -->\n` +
+      `  <symbol id="pf-${name}" viewBox="${icon.attrs.viewBox}" fill="currentColor">\n` +
+      `    ${(icon.children || []).map(renderAnt).join('')}\n` +
+      `  </symbol>`
+    );
+  }
+} else {
+  for (const name of Object.keys(ANTD_ICONS)) missing.push(`${name} (@ant-design/icons-svg not installed)`);
 }
 
 /* ── 3 · write ─────────────────────────────────────────────────────────── */

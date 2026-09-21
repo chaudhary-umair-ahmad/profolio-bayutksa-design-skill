@@ -41,6 +41,7 @@ pages with one linked stylesheet, so a page costs about what its prose weighs.
 | `kb/design/antd-css.html` | When a value looks like an antd default and you want what the component actually paints — Badge is 20px, not `controlHeightXS`. This wins over the token scale. |
 | `deliverables/sprite.svg` | **The product's real icons**, 64 of them, each named as the codebase names it. Reference one with `<use href="#pf-SideMenuDashboard">`. Never draw a glyph yourself. |
 | `deliverables/dashboard.html` | The dashboard rebuilt on `deliverables/profolio.css` — the one stylesheet every page composes from. Start here when asked to change the dashboard. |
+| `deliverables/listings.html` | **My Listings**, composed the same way and measured at 91.7% against the product's own render. Start here for anything with a filter bar, status tabs, a table card or a pager. |
 | `deliverables/components.html` | Every catalogued class with its variants and states side by side. A page may only use classes that exist here. |
 | `kb/guide/recipe.html` | **Building a whole page?** Follow it — the order exists because each step cost real rework when skipped. |
 

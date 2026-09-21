@@ -1,0 +1,98 @@
+{
+  "score": 55.8,
+  "checks": 231,
+  "disagreements": [
+    {
+      "id": "shell.content",
+      "prop": "height",
+      "live": "2557.98px",
+      "ours": "2640.77px",
+      "w": 3
+    },
+    {
+      "id": "tabs.active",
+      "prop": "(region)",
+      "live": "present",
+      "ours": "MISSING",
+      "w": 3
+    },
+    {
+      "id": "tabs.tab",
+      "prop": "(region)",
+      "live": "present",
+      "ours": "MISSING",
+      "w": 3
+    },
+    {
+      "id": "filter.bar",
+      "prop": "(region)",
+      "live": "present",
+      "ours": "MISSING",
+      "w": 2
+    },
+    {
+      "id": "table",
+      "prop": "box.y",
+      "live": 998,
+      "ours": 1127,
+      "w": 2
+    },
+    {
+      "id": "table",
+      "prop": "width",
+      "live": "1332px",
+      "ours": "1330px",
+      "w": 2
+    },
+    {
+      "id": "table",
+      "prop": "height",
+      "live": "1583.67px",
+      "ours": "1553.17px",
+      "w": 2
+    },
+    {
+      "id": "table.card",
+      "prop": "(region)",
+      "live": "present",
+      "ours": "MISSING",
+      "w": 2
+    },
+    {
+      "id": "table.cell",
+      "prop": "box.w",
+      "live": 452,
+      "ours": 464,
+      "w": 2
+    },
+    {
+      "id": "table.head",
+      "prop": "box.w",
+      "live": 452,
+      "ours": 464,
+      "w": 2
+    },
+    {
+      "id": "table.row",
+      "prop": "box.w",
+      "live": 1331,
+      "ours": 1329,
+      "w": 2
+    },
+    {
+      "id": "tabs.nav",
+      "prop": "(region)",
+      "live": "present",
+      "ours": "MISSING",
+      "w": 2
+    },
+    {
+      "id": "table.card.head",
+      "prop": "(region)",
+      "live": "present",
+      "ours": "MISSING",
+      "w": 1
+    }
+  ],
+  "at": "2026-09-21T16:15:14.448Z"
+}

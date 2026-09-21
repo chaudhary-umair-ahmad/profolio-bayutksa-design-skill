@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const D = join(ROOT, 'deliverables');
 const CHECK = process.argv.includes('--check');
-const PAGES = ['dashboard.html', 'components.html'];
+const PAGES = ['dashboard.html', 'listings.html', 'components.html'];
 
 /* From the <svg> onward only. sprite.svg opens with a generated header comment,
    and embedding that alongside the one already in the page appended a fresh copy

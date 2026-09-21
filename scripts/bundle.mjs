@@ -19,6 +19,7 @@ const css = readFileSync(join(D, 'profolio.css'), 'utf8');
 const fonts = readFileSync(join(D, 'fonts.css'), 'utf8');
 
 for (const [src, out] of [['dashboard.html', 'dashboard.bundled.html'],
+                          ['listings.html', 'listings.bundled.html'],
                           ['components.html', 'components.bundled.html']]) {
   const html = readFileSync(join(D, src), 'utf8');
   const link = '<link rel="stylesheet" href="profolio.css">';

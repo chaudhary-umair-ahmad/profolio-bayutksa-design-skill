@@ -66,7 +66,7 @@ function place(rel) {
   return ['Guide', `guide/${basename(rel, '.md')}.html`, 90];
 }
 
-const GUIDE_ORDER = ['recipe', 'qa-dashboard', 'extraction-report', 'harness', 'capture-extension'];
+const GUIDE_ORDER = ['recipe', 'qa-listings', 'qa-dashboard', 'extraction-report', 'harness', 'capture-extension'];
 
 /* ── inputs ────────────────────────────────────────────────────────────── */
 const sources = [

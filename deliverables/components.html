@@ -42,6 +42,7 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
 .cat-row{display:flex;flex-wrap:wrap;gap:var(--sp-20);align-items:flex-start;margin-block-end:var(--sp-20)}
 .cat-row:last-child{margin-block-end:0}
 .cat-item{display:flex;flex-direction:column;gap:var(--sp-8)}
+.cat-item[data-wide="true"]{flex:1 1 100%}
 .cat-label{font-size:var(--fs-tag);text-transform:uppercase;letter-spacing:.06em;color:var(--gray-600);font-weight:var(--fw-700)}
 .cat-stage{
   background:var(--bg-content);border:var(--border-w) dashed var(--gray-400);
@@ -489,6 +490,14 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
   <symbol id="pf-BiSearch" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
     <path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"/>
   </symbol>
+  <!-- filter bar Search button (filters.js searchButton icon default) · react-icons/fi -->
+  <symbol id="pf-FiSearch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  </symbol>
+  <!-- Show More filters (filters.js:629) · react-icons/md -->
+  <symbol id="pf-MdOutlineDoubleArrow" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
+    <path fill="none" d="M0 0h24v24H0z"/><path d="M15.5 5H11l5 7-5 7h4.5l5-7z"/><path d="M8.5 5H4l5 7-5 7h4.5l5-7z"/>
+  </symbol>
   <!-- manage products · react-icons/md -->
   <symbol id="pf-MdPieChartOutline" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
     <path fill="none" d="M0 0h24v24H0z"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m1 2.07c3.61.45 6.48 3.33 6.93 6.93H13zM4 12c0-4.06 3.07-7.44 7-7.93v15.87c-3.93-.5-7-3.88-7-7.94m9 7.93V13h6.93A8 8 0 0 1 13 19.93"/>
@@ -532,6 +541,18 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
   <!-- Verified Videography (#FFA900) · react-icons/hi -->
   <symbol id="pf-HiVideoCamera" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="0" aria-hidden="true">
     <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+  </symbol>
+  <!-- Select arrow · @ant-design/icons-svg -->
+  <symbol id="pf-DownOutlined" viewBox="64 64 896 896" fill="currentColor">
+    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"/>
+  </symbol>
+  <!-- Pagination previous · @ant-design/icons-svg -->
+  <symbol id="pf-LeftOutlined" viewBox="64 64 896 896" fill="currentColor">
+    <path d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 000 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z"/>
+  </symbol>
+  <!-- Pagination next · @ant-design/icons-svg -->
+  <symbol id="pf-RightOutlined" viewBox="64 64 896 896" fill="currentColor">
+    <path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"/>
   </symbol>
 </defs></svg>
 <style>
@@ -578,6 +599,9 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
   <a href="#c-action">round action button</a>
   <a href="#c-listing">listing cell</a>
   <a href="#c-table">listing table</a>
+  <a href="#c-filter">filter bar · field · input · select</a>
+  <a href="#c-tabs">table card · line tabs</a>
+  <a href="#c-pager">pagination</a>
   <a href="#c-feedback">feedback-tab</a>
   <a href="#c-layout">layout primitives</a>
 </nav>
@@ -752,6 +776,8 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
       <div class="cat-item"><span class="cat-label">link · small</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="link" data-size="small" type="button"><span>Why is this important?</span></button></div></div>
       <div class="cat-item"><span class="cat-label">default (ghost grey)</span><div class="cat-stage" data-ground="white"><button class="pf-btn" type="button"><span>Assign to Users</span></button></div></div>
       <div class="cat-item"><span class="cat-label">ghost (rail bottom)</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="ghost" type="button"><svg class="i i-16"><use href="#pf-HelpSupportIcon"/></svg><span>Help &amp; Support</span></button></div></div>
+      <div class="cat-item"><span class="cat-label">tint · small (Show More)</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="tint" data-size="small" type="button"><span>Show More</span><svg class="i i-18"><use href="#pf-MdOutlineDoubleArrow"/></svg></button></div></div>
+      <div class="cat-item"><span class="cat-label">link-danger · small (Clear filters)</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="link-danger" data-size="small" type="button"><span>Clear filters</span></button></div></div>
       <div class="cat-item"><span class="cat-label">icon-circle</span><div class="cat-stage" data-ground="white"><button class="pf-btn" data-variant="icon-circle" type="button" aria-label="Info"><svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></button></div></div>
     </div>
     <table class="cat-spec">
@@ -760,6 +786,8 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
       <tr><th>primary-outlined</th><td>bg <code>--primary-light-4</code> #F2FAFA, fg <code>--primary</code>, border <code>--primary-light-1</code> #A6C8CA; on hover it <em>inverts</em> to a solid primary fill</td></tr>
       <tr><th>link</th><td>fg <code>--primary</code>, no ground, no border, zero inline padding</td></tr>
       <tr><th>default</th><td>fg <code>--gray-color</code> #5A5F7D, border <code>--gray-100</code></td></tr>
+      <tr><th>tint</th><td>bg <code>--primary-light-4</code> #F2FAFA, fg <code>--gray-color</code>, no border — the <em>type="default"</em> button as filters.js renders it, 32 tall at 13/600. Measured off the harness render.</td></tr>
+      <tr><th>link-danger</th><td>fg <code>--danger</code> #F73131, zero inline padding — <code>&lt;Button type="link" danger&gt;</code></td></tr>
     </table>
     <div class="cat-note" data-kind="tbc">TBC — <strong>focus</strong>, <strong>loading</strong> and
       <strong>disabled</strong> rings. The repo leans on antd's stock treatment for all three and
@@ -1554,6 +1582,100 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
 </section>
 
 <!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-filter">
+  <header><h2>filter bar · field · input · select</h2><code>.pf-filter-bar .pf-filter-fields .pf-field .pf-field-label .pf-input .pf-select .pf-filter-actions</code>
+    <span class="src">src/components/common/filters/filters.js renders <code>&lt;Row gutter=8&gt;</code> of
+      <code>&lt;Col span=6&gt;</code> Form.Items — a 12px label over a 44px control — and a trailing
+      row of Show More · Clear filters · Search. Field list: src/tenant/common/filters/listingFilters.js.
+      Every number here is either declared in the product or measured from <code>data/live/listings.capture.json</code>;
+      the token comments say which.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">field · input</span><div class="cat-stage" data-ground="white"><div class="pf-field"><label class="pf-field-label" for="cat-f1">Listing ID</label><span class="pf-input"><input id="cat-f1" type="text" placeholder="Enter Listing ID"><span class="pf-input-suffix"></span></span></div></div></div>
+      <div class="cat-item"><span class="cat-label">field · input · filled</span><div class="cat-stage" data-ground="white"><div class="pf-field"><label class="pf-field-label" for="cat-f2">REGA Ad License Number</label><span class="pf-input"><input id="cat-f2" type="text" value="7201340882"><span class="pf-input-suffix"><svg class="i i-14"><use href="#pf-IoMdClose"/></svg></span></span></div></div></div>
+      <div class="cat-item"><span class="cat-label">field · select</span><div class="cat-stage" data-ground="white"><div class="pf-field"><label class="pf-field-label" for="cat-f3">Purpose</label><button class="pf-select" id="cat-f3" type="button" aria-haspopup="listbox"><span class="pf-placeholder">Select Purpose</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button></div></div></div>
+      <div class="cat-item"><span class="cat-label">field · select · chosen</span><div class="cat-stage" data-ground="white"><div class="pf-field"><label class="pf-field-label" for="cat-f4">Property Type</label><button class="pf-select" id="cat-f4" type="button" aria-haspopup="listbox"><span>Apartment</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button></div></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">actions row</span><div class="cat-stage" data-ground="white"><div class="pf-filter-actions"><button class="pf-btn" data-variant="tint" data-size="small" type="button"><span>Show More</span><svg class="i i-18"><use href="#pf-MdOutlineDoubleArrow"/></svg></button><button class="pf-btn" data-variant="link-danger" data-size="small" type="button"><span>Clear filters</span></button><button class="pf-btn" data-variant="primary" data-size="large" type="button"><svg class="i"><use href="#pf-FiSearch"/></svg><span>Search</span></button></div></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item" data-wide="true"><span class="cat-label">the whole bar · 1332 wide on the page</span><div class="cat-stage" data-ground="white" data-stack="true"><div class="pf-filter-bar">
+        <div class="pf-filter-fields">
+          <div class="pf-field"><label class="pf-field-label" for="cat-b1">Listing ID</label><span class="pf-input"><input id="cat-b1" type="text" placeholder="Enter Listing ID"><span class="pf-input-suffix"></span></span></div>
+          <div class="pf-field"><label class="pf-field-label" for="cat-b2">REGA Ad License Number</label><span class="pf-input"><input id="cat-b2" type="text" placeholder="Enter REGA Ad License Number"><span class="pf-input-suffix"></span></span></div>
+          <div class="pf-field"><label class="pf-field-label" for="cat-b3">Purpose</label><button class="pf-select" id="cat-b3" type="button"><span class="pf-placeholder">Select Purpose</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button></div>
+          <div class="pf-field"><label class="pf-field-label" for="cat-b4">Property Type</label><button class="pf-select" id="cat-b4" type="button"><span class="pf-placeholder">Select Property Types</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button></div>
+        </div>
+        <div class="pf-filter-actions"><button class="pf-btn" data-variant="tint" data-size="small" type="button"><span>Show More</span><svg class="i i-18"><use href="#pf-MdOutlineDoubleArrow"/></svg></button><button class="pf-btn" data-variant="link-danger" data-size="small" type="button"><span>Clear filters</span></button><button class="pf-btn" data-variant="primary" data-size="large" type="button"><svg class="i"><use href="#pf-FiSearch"/></svg><span>Search</span></button></div>
+      </div></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--filter-label-fs</code> 12 · <code>--filter-label-fw</code> 600 · <code>--filter-label-color</code> #9D9D9D · <code>--filter-label-gap</code> 8 · <code>--filter-field-gap</code> 8 · <code>--input-h</code> 44 · <code>--input-pad-block</code> 10 · <code>--input-pad-inline</code> 11 · <code>--input-border</code> #DEDEDE · <code>--form-item-mb</code> 24 · <code>--filter-actions-h</code> 48 · <code>--filter-search-h</code> 42</td></tr>
+      <tr><th>label</th><td>12px / 600, <code>--gray-600</code> — the theme's <code>placeholderColor</code> doubles as the label colour; 19px tall at line-height 1.571</td></tr>
+      <tr><th>input</th><td><code>.ant-input-affix-wrapper</code>: 44 tall, padding 10/11, border <code>--border-normal</code>, radius <code>--radius-control</code>; placeholder <code>--text-placeholder</code> (theme <code>colorTextPlaceholder: gray600</code>); suffix slot 24 wide</td></tr>
+      <tr><th>select</th><td>same box as the input; arrow <code>DownOutlined</code> at 12px in <code>--text-quaternary</code> rgba(0,0,0,.25)</td></tr>
+      <tr><th>actions</th><td>a 48px row bottom-aligned to the controls, above the Form.Item margin; Search is <code>size="large"</code> with <code>btnHeight=42</code> written inline by filters.js — hence <code>--filter-search-h</code></td></tr>
+      <tr><th>grid</th><td>four fields of 243 in 996 (gutter 8), actions 328 wide, container gap 12 — <code>.main-filter-container</code></td></tr>
+    </table>
+    <div class="cat-note" data-kind="tbc">TBC — the input's <strong>focus</strong> ring and the select's <strong>open</strong> state are not rendered by the
+      harness (nothing is focused in a capture). antd's are <code>0 0 0 2px</code> of the primary at 10% — unverified here.
+      The <strong>Show More</strong> icon is <code>MdOutlineDoubleArrow</code> with the product's <code>.flipX</code> class; it points right in LTR on the harness render, so it is left unflipped.</div>
+  </div>
+</section>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-tabs">
+  <header><h2>table card · line tabs</h2><code>.pf-table-card .pf-table-card-head .pf-tabs .pf-tab[aria-selected]</code>
+    <span class="src">dataTable/style.js <code>TableList</code> wraps the table in a Card with body padding 0 and overflow
+      hidden (<code>.ant-card-contain-tabs</code>); the status tabs are antd Tabs through
+      radio-button/styled.js <code>TabsStyled</code>, ink bar on the head's bottom border. Not the same component
+      as <a href="#c-metric">metric-tab</a> (card tabs on the Performance widget).</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">tab · rest / selected</span><div class="cat-stage" data-ground="white"><div class="pf-table-card-head"><div class="pf-tabs" role="tablist"><button class="pf-tab" role="tab" aria-selected="true" type="button">Active (20)</button><button class="pf-tab" role="tab" type="button">Draft (2)</button><button class="pf-tab" role="tab" type="button">Pending (1)</button><button class="pf-tab" role="tab" type="button">Removed (0)</button><button class="pf-tab" role="tab" type="button">Ad License Requests (0)</button></div></div></div></div>
+    </div>
+    <div class="cat-row">
+      <div class="cat-item" data-wide="true"><span class="cat-label">table card · head + two rows</span><div class="cat-stage" data-ground="white" data-stack="true"><section class="pf-table-card"><div class="pf-table-card-head"><div class="pf-tabs" role="tablist"><button class="pf-tab" role="tab" aria-selected="true" type="button">Active (20)</button><button class="pf-tab" role="tab" type="button">Draft (2)</button></div></div>
+        <table class="pf-table"><thead><tr><th class="col-property">Property</th><th>Timeline</th><th>Status</th></tr></thead>
+        <tbody><tr><td class="col-property">Villa for Sale</td><td>Posted on Sep 07, 2026</td><td><span class="pf-status-pill" data-status="green">Live</span></td></tr>
+        <tr><td class="col-property">Apartment for Sale</td><td>Posted on Sep 01, 2026</td><td><span class="pf-status-pill">Pending</span></td></tr></tbody></table></section></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--tab-pad-block</code> 12 · <code>--tab-gap</code> 24 · <code>--tab-ink-h</code> 2 · <code>--table-card-head-h</code> 46 · <code>--table-card-head-pad-x</code> 12 · <code>--color-text</code> rgba(0,0,0,.88)</td></tr>
+      <tr><th>tab</th><td>14px, padding 12/0 (antd's 15px inline padding is overridden to 0 by the product — measured), rest <code>--color-text</code> 400, selected <code>--primary</code> 700 with a 2px inset ink bar</td></tr>
+      <tr><th>card</th><td>border <code>--gray-100</code>, radius <code>--radius-card</code> 8, <code>--shadow-card</code>, overflow hidden; head 46 tall, padding-inline 12, bottom border <code>--gray-100</code>; the table inside drops its own radius and top border</td></tr>
+      <tr><th>gap to next</th><td>the pager sits 16 below the card: <code>TableList .mb-16</code>, expressed as the grid gap + <code>--sp-8</code> on <code>.pf-pagination</code></td></tr>
+    </table>
+  </div>
+</section>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-pager">
+  <header><h2>pagination</h2><code>.pf-pagination .pf-page-item[aria-current] [data-nav] [aria-disabled]</code>
+    <span class="src">antd <code>&lt;Pagination showSizeChanger={false}&gt;</code> in dataTable/style.js
+      <code>TablePagination</code> — justify end, item radius 4. Renders only when <code>totalPages &gt; 1</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item" data-wide="true"><span class="cat-label">page 1 of 2 · previous disabled</span><div class="cat-stage" data-ground="white" data-stack="true"><ul class="pf-pagination">
+        <li class="pf-page-item" data-nav="prev" aria-disabled="true"><button type="button" aria-label="Previous page" disabled><svg class="i i-12"><use href="#pf-LeftOutlined"/></svg></button></li>
+        <li class="pf-page-item" aria-current="page"><a href="#">1</a></li>
+        <li class="pf-page-item"><a href="#">2</a></li>
+        <li class="pf-page-item" data-nav="next"><button type="button" aria-label="Next page"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
+      </ul></div></div>
+      <div class="cat-item" data-wide="true"><span class="cat-label">page 3 of 5</span><div class="cat-stage" data-ground="white" data-stack="true"><ul class="pf-pagination">
+        <li class="pf-page-item" data-nav="prev"><button type="button" aria-label="Previous page"><svg class="i i-12"><use href="#pf-LeftOutlined"/></svg></button></li>
+        <li class="pf-page-item"><a href="#">1</a></li><li class="pf-page-item"><a href="#">2</a></li><li class="pf-page-item" aria-current="page"><a href="#">3</a></li><li class="pf-page-item"><a href="#">4</a></li><li class="pf-page-item"><a href="#">5</a></li>
+        <li class="pf-page-item" data-nav="next"><button type="button" aria-label="Next page"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
+      </ul></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--pager-h</code> 40 · <code>--pager-item</code> 32 · <code>--pager-item-margin</code> 3 · <code>--pager-radius</code> 4 · <code>--pager-nav-radius</code> 6 · <code>--pager-nav-margin</code> 4 · <code>--pager-border</code> #F1F2F6 · <code>--pager-active-bg</code> #F7FCFC · <code>--pager-text</code> #5A5F7D · <code>--pager-nav-fs</code> 12</td></tr>
+      <tr><th>item</th><td>32×32, border <code>--border-light</code>, radius 4 (product), text <code>--gray-color</code> 14/400</td></tr>
+      <tr><th>current</th><td>bg <code>--primary-light</code>, border and text <code>--primary</code>, 600</td></tr>
+      <tr><th>prev / next</th><td>radius 6 (antd's), margin 4, chevrons <code>LeftOutlined</code>/<code>RightOutlined</code> at 12px; disabled in <code>--text-disabled</code> rgba(0,0,0,.25)</td></tr>
+    </table>
+  </div>
+</section>
 <section class="cat-sec" id="c-feedback">
   <header><h2>feedback-tab</h2><code>.pf-feedback-tab</code>
     <span class="src">Not in this repo.</span></header>

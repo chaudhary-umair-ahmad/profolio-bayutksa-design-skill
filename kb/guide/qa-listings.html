@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QA — `/listings` against the harness render — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#guide">Guide</a> › QA — `/listings` against the harness render</nav>
+<main>
+<h1>QA — <code>/listings</code> against the harness render</h1>
+<p><strong>Score: 91.7%</strong> — 15 disagreements out of 351 weighted checks, 28 regions found in the product and 27 in ours. <code>data/layout/listings.score.json</code> carries the full list; re-run it with</p>
+<pre class="code"><code>node harness/capture.mjs --routes listings          # the product, in a real browser
+node scripts/derive-layout.mjs --ours deliverables/listings.html
+node scripts/derive-layout.mjs --compare data/live/listings.capture.json data/ours/listings.capture.json</code></pre>
+<p>This is the first page built the right way round: the measurement existed before the markup. The dashboard took several passes against one screenshot and still has no number; this took one pass and has one.</p>
+<hr>
+<h2>Fixed, and what the measurement caught</h2>
+<table><tr><th></th><th>was</th><th>is</th><th>how it was found</th></tr><tr><td><strong>header title 60px too far right</strong></td><td><code>padding-inline-start:85px</code> inside <code>.pf-main</code>, which is already offset by the rail — so the title landed at 145</td><td>the header now spans the viewport (<code>margin-inline-start:-60px; width:calc(100% + 60px)</code>), exactly as <code>withAdminLayout</code> renders it with the rail painted over its first 60px</td><td><code>shell.header box.x 0 vs 60</code></td></tr><tr><td><strong>row divider drawn that the product does not draw</strong></td><td><code>td { border-block-end: 1px solid #f0f0f0 }</code> — antd's default, which I had assumed survived</td><td><code>border-block-end:0</code>; <code>dataTable/style.js</code> sets <code>border-collapse !important</code> and the harness render shows no divider on any row</td><td><code>table.cell borderBottomWidth 0 vs 1px</code></td></tr><tr><td><strong>button icon gap 6px</strong></td><td>from <code>button/styled.js:243</code></td><td><strong>8px</strong> — antd's <code>.ant-btn</code> gap. Line 243 sits under a commented-out selector and never applies; the render measures 8</td><td><code>filter.search</code> width delta</td></tr><tr><td><strong>large button line-height</strong></td><td>inherited 1.571 → 22px</td><td><code>--lh-btn-lg:1.5</code> → 24px, antd's <code>lineHeightLG</code></td><td><code>filter.search lineHeight 24 vs 25.14</code></td></tr><tr><td><strong>footer 6px too tall</strong></td><td>inherited <code>--lh-base</code></td><td><code>line-height:normal</code> — <code>footerStyle</code> sets none</td><td><code>shell.footer height 40.09 vs 45.98</code></td></tr><tr><td><strong>capture stopped above the cells</strong></td><td><code>MAX_DEPTH = 18</code>; <code>&lt;td&gt;</code> is at depth 19 on this page</td><td>28, and <code>MAX_NODES</code> 6000. <strong>Every table capture before this carried no cells at all</strong> — the dashboard's table is shallower, so it never showed</td><td><code>table.cell</code> had no product side to compare</td></tr><tr><td><strong>pager radius, nav font-size</strong></td><td>the nav chevrons' 12px sat on the <code>&lt;li&gt;</code>, so the scorer matched the wrong element</td><td>font-size moved to the <code>&lt;button&gt;</code>; the region predicates now tell a page item from a nav item by its child (<code>&lt;a&gt;</code> vs <code>&lt;button&gt;</code>), not by style</td><td><code>pager.nav MISSING</code></td></tr></table>
+<p>Two of those — the divider and the icon gap — were wrong on the <strong>dashboard</strong> too, and are now fixed there by the same stylesheet.</p>
+<h2>Still open</h2>
+<p>All fifteen remaining rows are one of two cascades, and neither is a value I can source:</p>
+<p><strong>Text metrics (9 rows).</strong> <code>shell.title</code> 110 vs 103, <code>filter.clear</code> 72 vs 78, <code>filter.showmore</code> 122 vs 125, <code>tabs.nav</code> 526 vs 521. Our text is laid out by the same Lato faces at the same sizes, but the product's buttons carry antd's <code>&lt;span&gt;</code> wrappers and ours do not, so a word wraps a fraction differently. The knock-on is the filter fields: our actions column is ~7px wider, so each of the four fields is 241.2 instead of 242.9.</p>
+<p><strong>Table column widths (4 rows).</strong> Product <code>452 250 138 103 197 190</code>, ours <code>465 240 143 99 192 190</code>. Both are auto-layout over the same content; only <code>col-actions</code> (180, declared in <code>listingUtilities.js</code>) is a real number. The product's cells wrap their content in <code>.mb-8</code> divs that claim more width in the Timeline column. <strong>I have not forced these with a <code>&lt;colgroup&gt;</code></strong> — transcribing the measured widths would make the page match this one render and teach the design system nothing.</p>
+<p><strong>Page height, 1900 vs 1929 (2 rows).</strong> The product has one row at 170px where the location wraps to two lines (<code>Riyadh, North Riyadh, Al Mughrizat</code>); at our column width it fits on one. Same cause as above.</p>
+<h2>Known approximations</h2>
+<ol><li><strong>The listing title reads <code>Floor for Sale | Ready</code>.</strong> On live it does; in the</li></ol>
+<p>   harness render it reads <code>Floor for Sale</code>, because <code> | Ready</code> is appended only    when <code>purpose.slug === 'sale'</code> and the fixture's slug is <code>for-sale</code>. The    fixture is wrong, not the page — <code>data/fixtures/listings.json</code> inherits it    from the dashboard's, which was read off the live screenshot.</p>
+<ol><li><strong>Applied upgrades have no check badge.</strong> The product draws a small green</li></ol>
+<p>   tick on an applied upgrade circle; neither page does. It is in    <code>table-actions.js</code> and not yet catalogued.</p>
+<ol><li><strong>The filter input's focus ring and the select's open state are TBC.</strong></li></ol>
+<p>   Nothing is focused in a capture, so neither was measured; antd's is    <code>0 0 0 2px</code> of the primary at 10%, unverified here.</p>
+<ol><li><strong><code>Show More</code> uses <code>MdOutlineDoubleArrow</code> unflipped.</strong> The product adds its</li></ol>
+<p>   <code>.flipX</code> class; on the LTR harness render the glyph points right either way.</p>
+<hr>
+<h2>What this page added to the system</h2>
+<p>Seven classes the other pages will reuse, each defined in <code>profolio.css</code> with its source and shown in <code>components.html</code> with its states:</p>
+<p><code>.pf-filter-bar</code> · <code>.pf-filter-fields</code> · <code>.pf-field</code> · <code>.pf-field-label</code> · <code>.pf-input</code> · <code>.pf-select</code> · <code>.pf-filter-actions</code> · <code>.pf-table-card</code> · <code>.pf-tabs</code> · <code>.pf-tab</code> · <code>.pf-pagination</code> · <code>.pf-page-item</code>, plus two button variants (<code>tint</code>, <code>link-danger</code>) and five sprite symbols (<code>FiSearch</code>, <code>MdOutlineDoubleArrow</code>, and antd's own <code>DownOutlined</code> / <code>LeftOutlined</code> / <code>RightOutlined</code>, which <code>scripts/icons.mjs</code> now extracts from <code>@ant-design/icons-svg</code>).</p>
+<p>The shell is no longer copied: <code>scripts/pages/shell.mjs</code> writes the rail, header and footer once, and <code>scripts/pages/listings.mjs</code> composes the page around it from <code>data/fixtures/listings.json</code>. The row markup is the dashboard's, class for class, so the two tables cannot drift.</p>
+<hr>
+<h2>A caveat about running this against the dashboard</h2>
+<p><code>derive-layout.mjs --compare</code> will happily score <code>dashboard.html</code> and reports <strong>55.8%</strong>. That number is not meaningful yet and should not be quoted. The region table is the listings page's vocabulary — filter bar, status tabs, table card, pager — and on the dashboard it matches the Performance widget's card and metric tabs as though they were the listings table's, then counts our page "missing" six regions it never had. The dashboard needs its own regions (breakdown, credits meter, chart, account switcher) before its score means anything. What the run does prove is that the two shared fixes — the row divider and the button icon gap — landed on both pages.</p>
+</main>
+</body>
+</html>

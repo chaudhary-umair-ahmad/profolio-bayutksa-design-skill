@@ -268,7 +268,9 @@
                                        /* in theme['layout-header-height'] */
   --header-pad-block:12px;
   --header-pad-end:20px;
-  --header-pad-start:85px;             /* sidebarOffset(60) + 25 */
+  --header-pad-start:85px;             /* sidebarOffset(60) + 25 — measured from the viewport,
+                                          because the product's header spans the full width and
+                                          the rail (z-index 1002) is painted over it */
   --header-gutter:16px;                /* Row gutter={16} */
   --header-brand-gap:12px;
   --rail-pad-block:4px;
@@ -329,6 +331,8 @@
   --rail-bottom-gap:8px;
   --footer-pad-block:12px;
   --footer-pad-inline:16px;
+  --lh-normal:normal;                  /* footerStyle sets no line-height; measured 16.1px = normal */
+  --lh-btn-lg:1.5;                     /* antd lineHeightLG on size="large" buttons — measured 24px at 16px */
 
   /* ── CONTROLS ── antd tokens + button/styled.js ────────────────────── */
   --ctl-h:36px;                        /* Button controlHeight */
@@ -336,9 +340,47 @@
   --ctl-h-sm:32px;                     /* controlHeightSM */
   --btn-pad-y:0.428571em;
   --btn-pad-x:1em;
-  --btn-icon-gap:6px;                  /* svg + span margin-inline-start */
+  --btn-icon-gap:8px;                  /* measured: antd .ant-btn gap 8px (marginXS). button/styled.js:243's 6px sits under a commented-out selector and never applies */
   --input-h:44px;                      /* theme input-height-base */
   --input-h-sm:40px;
+
+  /* ── FILTER BAR ── components/common/filters/filters.js + listingFilters.js ──
+     Every value below is either declared in the product or measured from the
+     harness render (data/live/listings.capture.json); the comment says which. */
+  --filter-label-fs:12px;              /* measured: label 12px/600, 19px tall */
+  --filter-label-fw:600;
+  --filter-label-color:var(--gray-600);   /* #9D9D9D — theme placeholderColor doubles as the label */
+  --filter-label-gap:8px;              /* <Group gap=8> between label and control */
+  --filter-field-gap:8px;              /* Row gutter 8 → four 243px fields in 996px */
+  --filter-actions-h:48px;             /* measured: the Show More / Clear / Search row */
+  --filter-search-h:42px;              /* filters.js searchButton btnHeight=42, an inline style */
+  --form-item-mb:24px;                 /* antd Form.Item margin-bottom = marginLG */
+  --input-pad-block:10px;              /* .ant-input-affix-wrapper padding 10px 11px (data/antd-css.json) */
+  --input-border:var(--border-normal); /* #DEDEDE borderColorNormal */
+  --input-suffix-w:24px;               /* measured: .ant-input-suffix */
+  --text-placeholder:var(--gray-600);  /* theme colorTextPlaceholder: gray600 */
+  --text-quaternary:rgba(0,0,0,0.25);  /* antd colorTextQuaternary — Select arrow */
+  --text-disabled:rgba(0,0,0,0.25);    /* theme/index.js:304 colorTextDisabled */
+  --color-text:rgba(0,0,0,0.88);       /* antd colorText — tabs, pager */
+
+  /* ── LINE TABS ── antd Tabs via radio-button/styled.js TabsStyled ────────── */
+  --tab-pad-block:12px;                /* .ant-tabs-tab padding 12px (antd); inline 0 — measured, product overrides antd's 15px */
+  --tab-gap:24px;                      /* measured: .ant-tabs-nav-list gap */
+  --tab-ink-h:2px;                     /* .ant-tabs-ink-bar height 2px (data/antd-css.json) */
+  --table-card-head-pad-x:12px;        /* measured: .ant-card-head padding-inline with contain-tabs */
+  --table-card-head-h:46px;            /* measured: 12 + 22 + 12 */
+
+  /* ── PAGINATION ── dataTable/style.js TablePagination + antd Pagination ─── */
+  --pager-h:40px;                      /* measured: .ant-pagination */
+  --pager-item:32px;                   /* antd itemSize = controlHeight */
+  --pager-item-margin:3px;             /* measured; antd's 8px inline margin is collapsed by the product */
+  --pager-radius:4px;                  /* TablePagination .ant-pagination-item border-radius 4px */
+  --pager-nav-radius:6px;              /* antd borderRadius on prev/next */
+  --pager-nav-margin:4px;              /* measured */
+  --pager-border:var(--border-light);  /* #F1F2F6 */
+  --pager-active-bg:var(--primary-light); /* #F7FCFC */
+  --pager-text:var(--gray-color);      /* #5A5F7D */
+  --pager-nav-fs:12px;                 /* antd fontSizeSM on the chevrons */
 
   --classified-pill-h:36px;
   --classified-pill-minw:148.71px;
@@ -552,7 +594,7 @@ table{border-collapse:collapse}
 .pf-btn svg + span,
 .pf-btn img + span{margin-inline-start:var(--btn-icon-gap)}
 .pf-btn[data-size="small"]{height:var(--ctl-h-sm);font-size:var(--fs-btn-sm)}
-.pf-btn[data-size="large"]{height:var(--ctl-h-lg);font-size:var(--fs-btn-lg)}
+.pf-btn[data-size="large"]{height:var(--ctl-h-lg);font-size:var(--fs-btn-lg);line-height:var(--lh-btn-lg)}
 
 .pf-btn[data-variant="primary"]{--btn-bg:var(--primary);--btn-fg:var(--white);--btn-bd:var(--primary)}
 .pf-btn[data-variant="primary"]:hover,
@@ -1107,9 +1149,10 @@ table{border-collapse:collapse}
 .pf-table th:last-child {border-inline-end:var(--border-w) solid var(--border-light)}
 .pf-table td{
   padding:var(--table-cell-pad);
-  /* .ant-table-tbody >tr >td — dataTable/style.js restyles the side borders and
-     leaves the row divider as antd's #f0f0f0 */
-  border-block-end:var(--border-w) solid var(--gray-100);
+  /* measured: data/live/listings.capture.json — the product's rows have NO
+     divider. antd's #f0f0f0 border-bottom is reset by dataTable/style.js
+     (border-collapse !important on the table); the harness render shows none. */
+  border-block-end:0;
   vertical-align:top;
   white-space:nowrap;
 }
@@ -1281,7 +1324,16 @@ table{border-collapse:collapse}
 .pf-shell{display:flex;min-height:100vh}
 .pf-rail-fixed{position:fixed;inset-block:0;inset-inline-start:0;z-index:1002}
 .pf-main{flex:1;margin-inline-start:var(--rail-w);display:flex;flex-direction:column;min-width:var(--sp-0)}
-.pf-header-fixed{position:sticky;inset-block-start:0;z-index:1000}
+/* the header spans the viewport, not the content column: withAdminLayout renders
+   it as a sibling of the sider at inset-inline 0, and the rail overlays its first
+   60px. Reaching back over .pf-main's rail offset is what reproduces that. */
+.pf-header-fixed{
+  position:sticky;
+  inset-block-start:0;
+  z-index:1000;
+  margin-inline-start:calc(-1 * var(--rail-w));
+  width:calc(100% + var(--rail-w));
+}
 .pf-content{
   flex:1;
   padding:var(--content-pad-block) var(--content-pad-inline);
@@ -1296,6 +1348,7 @@ table{border-collapse:collapse}
   color:var(--footer-text);
   font-size:var(--fs-base);
   padding:var(--footer-pad-block) var(--footer-pad-inline);
+  line-height:var(--lh-normal);
   text-align:center;
   box-shadow:var(--shadow-footer);
 }
@@ -1311,6 +1364,7 @@ table{border-collapse:collapse}
    visual decisions — every value is a token already declared above, and
    each one names the JSX node in dashboard.js that it stands for.
    ═══════════════════════════════════════════════════════════════════════ */
+.pf-content[data-gap="8"]{gap:var(--sp-8)}                        /* listings.js <Group gap=8> */
 .pf-stack{display:grid;gap:var(--gap-widget)}                    /* <Group> */
 .pf-stack[data-gap="row"]{gap:var(--gap-row)}                    /* .mb-24 */
 .pf-breakdown{display:flex;align-items:center;gap:var(--gap-breakdown-cols)}
@@ -1357,3 +1411,147 @@ table{border-collapse:collapse}
 .i-16{width:var(--sp-16);height:var(--sp-16)}
 .i-20{width:var(--sp-20);height:var(--sp-20)}
 .i-24{width:var(--sp-24);height:var(--sp-24)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · filter bar  (My Listings)
+   components/common/filters/filters.js renders <Row gutter=8> of <Col span=6>
+   Form.Items, each a <Group gap=8> of a 12px label over a 44px control, and a
+   trailing <Row> of Show More · Clear filters · Search.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-filter-bar{display:grid;grid-template-columns:1fr auto;gap:var(--sp-12);align-items:start}
+                                                                  /* .main-filter-container flex gap 12 */
+.pf-filter-fields{display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:var(--filter-field-gap)}
+.pf-field{display:grid;gap:var(--filter-label-gap);margin-block-end:var(--form-item-mb);min-width:var(--sp-0)}
+.pf-field-label{
+  font-size:var(--filter-label-fs);
+  font-weight:var(--filter-label-fw);
+  line-height:var(--lh-base);
+  color:var(--filter-label-color);
+}
+.pf-input,
+.pf-select{
+  display:flex;
+  align-items:center;
+  height:var(--input-h);
+  padding:var(--input-pad-block) var(--input-pad-inline);
+  border:var(--border-w) solid var(--input-border);
+  border-radius:var(--radius-control);
+  background:var(--white);
+  font-size:var(--fs-base);
+  line-height:var(--lh-base);
+  color:var(--color-text);
+  min-width:var(--sp-0);
+}
+.pf-input input{flex:1;min-width:var(--sp-0);border:0;outline:0;background:none;font:inherit;color:inherit;padding:var(--sp-0)}
+.pf-input input::placeholder{color:var(--text-placeholder)}
+.pf-input-suffix{display:flex;align-items:center;justify-content:center;width:var(--input-suffix-w);flex:none;color:var(--text-quaternary)}
+.pf-select{justify-content:space-between;text-align:start;cursor:pointer;font-family:inherit}
+.pf-select .pf-placeholder{color:var(--text-placeholder)}
+.pf-select-arrow{display:flex;color:var(--text-quaternary);flex:none}
+.pf-filter-actions{
+  display:flex;
+  align-items:center;
+  gap:var(--sp-8);
+  height:var(--filter-actions-h);
+  align-self:end;                                /* bottoms out on the 44px controls … */
+  margin-block-end:var(--form-item-mb);          /* … above the Form.Item margin */
+}
+.pf-filter-actions .pf-btn[data-variant="primary"]{height:var(--filter-search-h);padding-inline:var(--sp-16)}
+                                                                  /* filters.js: size="large", btnHeight=42 inline */
+/* two more button variants the filter bar introduces — button/styled.js */
+.pf-btn[data-variant="tint"]{--btn-bg:var(--primary-light-4);--btn-fg:var(--gray-color);--btn-bd:transparent}
+                                                                  /* Show More: type default on the primary tint */
+.pf-btn[data-variant="link-danger"]{--btn-bg:transparent;--btn-fg:var(--danger);--btn-bd:transparent;padding-inline:var(--sp-0)}
+                                                                  /* Clear filters: type="link" danger */
+.pf-btn span + svg{margin-inline-start:var(--btn-icon-gap)}       /* icon after the label (Show More) */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · table card + line tabs
+   dataTable/style.js TableList wraps the table in an <Card> with body padding
+   0 and overflow hidden; the status tabs render in the card head as antd Tabs
+   (radio-button/styled.js TabsStyled), ink bar on the head's bottom border.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-table-card{
+  background:var(--card-bg);
+  border:var(--border-w) solid var(--gray-100);
+  border-radius:var(--radius-card);
+  box-shadow:var(--shadow-card);
+  overflow:hidden;
+  min-width:var(--sp-0);
+}
+.pf-table-card-head{
+  display:flex;
+  align-items:center;
+  min-height:var(--table-card-head-h);
+  padding-inline:var(--table-card-head-pad-x);
+  border-block-end:var(--border-w) solid var(--gray-100);
+}
+.pf-tabs{display:flex;gap:var(--tab-gap);margin-block-end:calc(-1 * var(--border-w))}
+                                                                  /* the ink bar sits on the head border */
+.pf-tab{
+  padding:var(--tab-pad-block) var(--sp-0);
+  border:0;
+  background:none;
+  font:inherit;
+  font-size:var(--fs-base);
+  font-weight:var(--fw-400);
+  line-height:var(--lh-base);
+  color:var(--color-text);
+  white-space:nowrap;
+  cursor:pointer;
+}
+.pf-tab[aria-selected="true"]{
+  color:var(--primary);
+  font-weight:var(--fw-700);
+  box-shadow:inset 0 calc(-1 * var(--tab-ink-h)) 0 0 var(--primary);   /* .ant-tabs-ink-bar, 2px */
+}
+.pf-table-card .pf-table{                                         /* .ant-card-body margin -1px: the table
+                                                                     sits over the card border, so th's own
+                                                                     side and top borders land exactly where
+                                                                     the product's do */
+  border-radius:var(--sp-0);
+  width:calc(100% + 2 * var(--border-w));
+  margin-inline:calc(-1 * var(--border-w));
+  margin-block-start:calc(-1 * var(--border-w));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · pagination
+   antd <Pagination showSizeChanger={false}> inside dataTable/style.js
+   TablePagination — justify end, item radius 4.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-pagination{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  height:var(--pager-h);
+  margin:var(--sp-8) var(--sp-0) var(--sp-0);                     /* TableList .mb-16 less the grid gap */
+  padding:var(--sp-0);
+  list-style:none;
+}
+.pf-page-item{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:var(--pager-item);
+  height:var(--pager-item);
+  margin:var(--pager-item-margin);
+  border:var(--border-w) solid var(--pager-border);
+  border-radius:var(--pager-radius);
+  background:var(--white);
+  color:var(--pager-text);
+  font-size:var(--fs-base);
+  line-height:calc(var(--pager-item) - 2 * var(--border-w));      /* 30px inside the 1px borders */
+}
+.pf-page-item a{display:block;padding-inline:var(--sp-4);color:inherit;text-decoration:none;line-height:inherit}
+.pf-page-item[aria-current="page"]{
+  background:var(--pager-active-bg);
+  border-color:var(--primary);
+  color:var(--primary);
+  font-weight:var(--fw-600);
+}
+.pf-page-item[data-nav]{border-radius:var(--pager-nav-radius);margin:var(--pager-nav-margin);color:var(--color-text)}
+.pf-page-item[data-nav] button{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border:0;background:none;color:inherit;cursor:pointer;padding:var(--sp-0);font-size:var(--pager-nav-fs)}
+.pf-page-item[aria-disabled="true"]{color:var(--text-disabled)}
+.pf-page-item[aria-disabled="true"] button{cursor:not-allowed}
+.i-12{width:var(--fs-12);height:var(--fs-12)}
