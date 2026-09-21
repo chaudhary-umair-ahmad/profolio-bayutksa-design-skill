@@ -91,6 +91,57 @@ for (const page of ['dashboard.html', 'components.html']) {
                                         : ok(`${page} — no network dependencies`);
 }
 
+/* ── 3 · profolio.css against the CSS antd actually emits ───────────────────
+   The badge shipped at 16px for a week because `controlHeightXS` is 16 and a
+   16px badge looks fine. antd emits 20. This compares the two and asks for a
+   note wherever the product deliberately differs — most of the time it does,
+   because styled-components override antd, and that is the point: an
+   unexplained difference is the one worth looking at. */
+const antdPath = join(ROOT, 'references', 'tokens', 'antd-css.json');
+if (existsSync(antdPath)) {
+  const antd = JSON.parse(readFileSync(antdPath, 'utf8')).selectors;
+
+  /* our class <- antd selector, and the properties worth holding to account */
+  const MIRROR = [
+    ['.pf-badge',        '.ant-badge-count',   ['height', 'min-width', 'font-size', 'line-height', 'border-radius']],
+    ['.pf-credit-meter', '.ant-progress-inner', ['border-radius']],
+    ['.pf-card',         '.ant-card',          ['border-radius']],
+  ];
+
+  const rule = (cls) => {
+    const at = css.indexOf(`\n${cls}{`);
+    return at < 0 ? null : css.slice(at, css.indexOf('\n}', at));
+  };
+  const px = (v) => { const m = /(-?[\d.]+)px/.exec(String(v)); return m ? +m[1] : null; };
+
+  let mismatches = 0, noted = 0, compared = 0;
+  for (const [cls, sel, props] of MIRROR) {
+    const ours = rule(cls);
+    const theirs = antd[sel];
+    if (!ours || !theirs) continue;
+    for (const prop of props) {
+      if (theirs[prop] === undefined) continue;
+      const line = ours.split('\n').find((l) => l.trim().startsWith(prop + ':'));
+      if (!line) continue;
+      compared++;
+      /* a var() is resolved by reading the token it names */
+      const token = /var\((--[\w-]+)/.exec(line)?.[1];
+      const value = token
+        ? (new RegExp(`${token}\\s*:\\s*([^;/]+)`).exec(css)?.[1] || '').trim()
+        : line.slice(line.indexOf(':') + 1).replace(/;.*$/, '').trim();
+      const a = px(value), b = px(theirs[prop]);
+      if ((a !== null && b !== null && Math.abs(a - b) <= 1) || value === theirs[prop]) continue;
+      /* an explained difference is fine — the product overrides antd constantly */
+      if (/\/\*/.test(line)) { noted++; continue; }
+      bad(`${cls} { ${prop} } is ${value}, antd emits ${theirs[prop]} — fix it or say why`);
+      mismatches++;
+    }
+  }
+  if (!mismatches) ok(`profolio.css agrees with antd (${compared} properties, ${noted} explained)`);
+} else {
+  warn('references/tokens/antd-css.json absent — run npm run antd-css');
+}
+
 /* every class the page styles must be defined in the one stylesheet */
 const pageCls = new Set([...readFileSync(join(D, 'dashboard.html'), 'utf8')
   .matchAll(/class="([^"]+)"/g)].flatMap((m) => m[1].split(/\s+/)).filter(Boolean));
@@ -100,7 +151,7 @@ const orphan = [...pageCls].filter((c) => !cssCls.has(c) && !instance.has(c));
 orphan.length ? bad(`dashboard.html uses classes the stylesheet does not define: ${orphan.join(', ')}`)
               : ok(`dashboard.html — all ${pageCls.size} classes defined`);
 
-/* ── 3 · verdict ───────────────────────────────────────────────────────── */
+/* ── 4 · verdict ───────────────────────────────────────────────────────── */
 console.log('');
 if (fails.length) {
   console.log(`  ${fails.length} failure${fails.length > 1 ? 's' : ''}.`);

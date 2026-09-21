@@ -309,6 +309,7 @@
   --radius-pill:6px;                   /* header classified pill */
   --radius-icon-tile:30%;              /* IconStyled --icon-radius */
   --radius-round:50%;
+  --radius-pill-full:100px;            /* .ant-progress-inner */
   --radius-tooltip:3px;                /* widgets/styled.js .chartjs-tooltip */
   --radius-profile-card:12px;          /* profile-completion/style.js ≥767px */
 
@@ -361,7 +362,11 @@
   /* upgrade + action grids — platformActions.js, table-actions.js */
   --action-cell:32px;
   --action-gap:8px;
-  --badge-h:16px;                      /* antd controlHeightXS */
+  --badge-h:20px;                      /* .ant-badge-count — antd-css.md.
+                                          Not controlHeightXS (16): that is the
+                                          global token, not what Badge emits. */
+  --badge-radius:10px;
+  --badge-ring:0 0 0 1px #ffffff;      /* .ant-badge-count box-shadow */
   --meter-h:8px;                       /* [TBC] antd Progress default stroke width */
 
   /* DateFilter.js — minWidth 250 on desktop; antd input padding is unoverridden */
@@ -424,7 +429,9 @@
 
   /* ── CARDS ─────────────────────────────────────────────────────────── */
   --card-head-min-h:47px;              /* cards/styled.js */
-  --card-head-pad-x:24px;              /* [px] — antd Card paddingLG resolves here */
+  --card-head-pad-x:24px;              /* style.less:68 .ant-card-head — the
+                                          product overrides antd's 12px head
+                                          padding. Sourced, not measured. */
   --card-body-pad:24px;                /* CreditsQuota bodyStyle padding: 24 */
   --card-body-pad-breakdown-y:30px;    /* ListingBreakdown bodyStyle '30px 24px' */
   --card-body-pad-breakdown-x:24px;
@@ -669,15 +676,16 @@ table{border-collapse:collapse}
   position:absolute;
   inset-block-start:calc(var(--sp-2) * -1);
   inset-inline-end:calc(var(--sp-2) * -1);
-  /* antd Badge: controlHeightXS 16, fontSizeSM 12 — references/tokens/antd.md */
+  /* .ant-badge-count — references/tokens/antd-css.md */
   min-width:var(--badge-h);
   height:var(--badge-h);
   padding-inline:var(--sp-4);
-  border-radius:var(--radius-chip);
+  border-radius:var(--badge-radius);
+  box-shadow:var(--badge-ring);
   background:var(--danger);
   color:var(--white);
   font-size:var(--fs-12);
-  font-weight:var(--fw-700);
+  font-weight:var(--fw-400);         /* antd emits font-weight: normal */
   line-height:var(--badge-h);
   text-align:center;
 }
@@ -767,7 +775,8 @@ table{border-collapse:collapse}
 .pf-card{
   background:var(--card-bg);
   border:var(--border-w) solid var(--gray-100);
-  border-radius:var(--radius-card);
+  border-radius:var(--radius-card);  /* 8px, not antd's 10: CardStyled
+                                        overrides borderRadiusLG */
   box-shadow:var(--shadow-card);
   display:flex;
   flex-direction:column;
@@ -891,8 +900,8 @@ table{border-collapse:collapse}
   margin-block-start:var(--gap-widget);
   width:100%;
   height:var(--meter-h);
-  border-radius:var(--radius-chip);
-  background:var(--color-fill-secondary);   /* antd Progress track */
+  border-radius:var(--radius-pill-full);    /* .ant-progress-inner */
+  background:var(--color-fill-secondary);   /* colorFillSecondary */
   overflow:hidden;
 }
 .pf-credit-meter::before{
@@ -900,7 +909,7 @@ table{border-collapse:collapse}
   display:block;
   height:100%;
   width:calc(var(--meter-pct) * 1%);
-  border-radius:var(--radius-chip);
+  border-radius:var(--radius-pill-full);
   background:var(--chart-line);
 }
 .pf-plan{margin-inline-start:auto;text-align:end}
@@ -1150,7 +1159,9 @@ table{border-collapse:collapse}
 .pf-table th:last-child {border-inline-end:var(--border-w) solid var(--border-light)}
 .pf-table td{
   padding:var(--table-cell-pad);
-  border-block-end:var(--border-w) solid var(--border-light);
+  /* .ant-table-tbody >tr >td — dataTable/style.js restyles the side borders and
+     leaves the row divider as antd's #f0f0f0 */
+  border-block-end:var(--border-w) solid var(--gray-100);
   vertical-align:top;
   white-space:nowrap;
 }
