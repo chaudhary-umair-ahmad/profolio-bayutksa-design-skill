@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard QA — Profolio KSA</title>
+<style>
+/* Self-contained. No network, no external assets, system fonts only. */
+:root{
+  --bg:#12181a; --panel:#1a2325; --panel-2:#212c2f; --line:#2e3d40;
+  --ink:#e8f0f0; --ink-2:#9fb3b3; --mute:#6f8486;
+  --accent:#3fb8bd; --ok:#3ecf8e; --bad:#ff6b6b; --unk:#8a9a9c;
+  --h:44px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);overflow:hidden;
+  font:13px/1.5 ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+button,input,select{font:inherit;color:inherit}
+
+/* ── top bar ─────────────────────────────────────────────────────────── */
+.bar{
+  height:var(--h);display:flex;align-items:center;gap:14px;padding:0 14px;
+  background:var(--panel);border-bottom:1px solid var(--line);
+}
+.bar h1{font-size:13px;margin:0;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.bar h1 em{color:var(--accent);font-style:normal}
+.seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{background:none;border:0;padding:6px 13px;color:var(--ink-2);cursor:pointer}
+.seg button.on{background:var(--accent);color:#06211f;font-weight:700}
+.tool{
+  background:var(--panel-2);border:1px solid var(--line);border-radius:6px;
+  padding:6px 11px;cursor:pointer;color:var(--ink-2);white-space:nowrap;
+}
+.tool.on{border-color:var(--accent);color:var(--accent)}
+.tool:disabled{opacity:.4;cursor:not-allowed}
+.spacer{flex:1}
+label.file{
+  background:var(--panel-2);border:1px dashed var(--line);border-radius:6px;
+  padding:6px 11px;cursor:pointer;color:var(--ink-2);white-space:nowrap;
+}
+label.file.loaded{border-style:solid;border-color:var(--ok);color:var(--ok)}
+label.file input{display:none}
+.ctl{display:flex;align-items:center;gap:7px;color:var(--ink-2);white-space:nowrap}
+.ctl input[type=range]{width:120px;accent-color:var(--accent)}
+.val{font:11px ui-monospace,monospace;color:var(--accent);min-width:34px;text-align:end}
+
+/* ── layout ──────────────────────────────────────────────────────────── */
+.wrap{display:grid;grid-template-columns:1fr 340px;height:calc(100% - var(--h))}
+.stage{position:relative;overflow:hidden;background:#0c1112}
+.side{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+.pane{position:relative;overflow:auto;background:#fff}
+.pane.shotpane{background:#0c1112}
+.pane > img{display:block;width:100%;height:auto}
+.pane > iframe{display:block;width:100%;border:0;background:#fff}
+.tab{
+  position:absolute;top:0;inset-inline-start:0;z-index:6;
+  background:#000a;color:#fff;font:10px ui-monospace,monospace;
+  padding:3px 8px;letter-spacing:.09em;text-transform:uppercase;pointer-events:none;
+}
+
+/* overlay + wipe share one stacked frame */
+.stack{position:absolute;inset:0;overflow:auto}
+.stack .layer{position:relative;width:100%}
+.stack .layer.under{position:absolute;inset-block-start:0;inset-inline-start:0;width:100%}
+.stack .layer.over{position:absolute;inset-block-start:0;inset-inline-start:0;width:100%}
+.stack.diff .layer.over{mix-blend-mode:difference;filter:invert(1)}
+.stack .layer img{display:block;width:100%;height:auto}
+.stack .layer iframe{display:block;width:100%;border:0;background:#fff}
+.wipe-handle{
+  position:absolute;inset-block:0;width:3px;background:var(--accent);z-index:9;cursor:ew-resize;
+}
+.wipe-handle::after{
+  content:"";position:absolute;inset-block-start:50%;inset-inline-start:50%;
+  width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 3px #0006;
+}
+.empty{
+  position:absolute;inset:0;display:grid;place-content:center;gap:8px;text-align:center;
+  color:var(--mute);font-size:13px;padding:24px;
+}
+.empty b{color:var(--ink-2);display:block;font-size:14px}
+
+/* ── measurement layer ───────────────────────────────────────────────── */
+.mgrid{position:absolute;inset:0;pointer-events:none;z-index:4;display:none}
+.mgrid.on{display:block}
+.mgrid.g4{
+  background-image:linear-gradient(to right,#3fb8bd22 1px,transparent 1px),
+                   linear-gradient(to bottom,#3fb8bd22 1px,transparent 1px);
+  background-size:4px 4px;
+}
+.mgrid.g8{
+  background-image:linear-gradient(to right,#3fb8bd44 1px,transparent 1px),
+                   linear-gradient(to bottom,#3fb8bd44 1px,transparent 1px);
+  background-size:8px 8px;
+}
+.outlines{position:absolute;inset:0;pointer-events:none;z-index:5}
+.obox{position:absolute;border:1px solid #ff8c42;pointer-events:none}
+.obox span{
+  position:absolute;inset-block-start:0;inset-inline-start:0;
+  background:#ff8c42;color:#1a1000;font:9px/1.35 ui-monospace,monospace;
+  padding:1px 4px;white-space:pre;max-width:100%;
+}
+.readout{
+  position:absolute;z-index:11;background:#000d;border:1px solid var(--line);
+  border-radius:5px;padding:6px 9px;font:11px ui-monospace,monospace;
+  pointer-events:none;display:none;color:var(--ink);
+}
+.readout.on{display:block}
+.readout .sw{display:inline-block;width:11px;height:11px;border-radius:2px;
+  border:1px solid #fff4;vertical-align:-1px;margin-inline-end:6px}
+
+/* ── checklist ───────────────────────────────────────────────────────── */
+.check{background:var(--panel);border-inline-start:1px solid var(--line);
+  display:flex;flex-direction:column;overflow:hidden}
+.check .top{padding:11px 13px;border-bottom:1px solid var(--line);display:flex;
+  align-items:center;gap:9px;flex-wrap:wrap}
+.check .top strong{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.score{font:11px ui-monospace,monospace;color:var(--mute)}
+.score b{color:var(--ok)}.score i{color:var(--bad);font-style:normal}
+.check .body{overflow-y:auto;padding:4px 0 40px}
+.grp{padding:12px 13px 4px;font:10.5px ui-monospace,monospace;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--mute)}
+.row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:6px 13px;align-items:start}
+.row:hover{background:var(--panel-2)}
+.row .lbl{font-size:12.5px;color:var(--ink-2);line-height:1.4}
+.row .lbl small{display:block;color:var(--mute);font:10.5px ui-monospace,monospace;
+  margin-top:2px;word-break:break-word}
+.tri{display:flex;gap:2px}
+.tri button{
+  width:24px;height:22px;border:1px solid var(--line);background:var(--panel-2);
+  border-radius:4px;cursor:pointer;color:var(--mute);font-size:11px;line-height:1;padding:0;
+}
+.tri button.on[data-v=pass]{background:var(--ok);border-color:var(--ok);color:#04241a}
+.tri button.on[data-v=fail]{background:var(--bad);border-color:var(--bad);color:#2b0606}
+.tri button.on[data-v=unk]{background:var(--unk);border-color:var(--unk);color:#111}
+.mini{background:none;border:1px solid var(--line);border-radius:5px;padding:4px 8px;
+  color:var(--ink-2);cursor:pointer;font-size:11px}
+.note{padding:10px 13px;color:var(--mute);font-size:11.5px;line-height:1.5}
+@media (max-width:1100px){.wrap{grid-template-columns:1fr 300px}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>Dashboard QA <em>·</em> Profolio KSA</h1>
+
+  <div class="seg" id="modes">
+    <button data-mode="side" class="on">Side by side</button>
+    <button data-mode="overlay">Overlay</button>
+    <button data-mode="wipe">Slider</button>
+  </div>
+
+  <label class="file" id="lblShot">Load screenshot
+    <input type="file" id="fShot" accept="image/*">
+  </label>
+  <label class="file" id="lblDash">Load dashboard.html
+    <input type="file" id="fDash" accept=".html,text/html">
+  </label>
+
+  <div class="ctl" id="opacityCtl" hidden>
+    <span>Opacity</span><input type="range" id="op" min="0" max="100" value="50">
+    <span class="val" id="opVal">50</span>
+  </div>
+  <button class="tool" id="bDiff" hidden>Difference</button>
+
+  <div class="spacer"></div>
+
+  <button class="tool" id="bGrid4">Grid 4</button>
+  <button class="tool" id="bGrid8">Grid 8</button>
+  <button class="tool" id="bOutline">Outline widgets</button>
+  <button class="tool" id="bPick">Colour pick</button>
+</div>
+
+<div class="wrap">
+  <div class="stage" id="stage">
+
+    <!-- side by side -->
+    <div class="side" id="viewSide">
+      <div class="pane shotpane" id="paneShot">
+        <span class="tab">Live · screenshot</span>
+        <div class="empty" id="emptyShot"><b>No screenshot loaded</b>Load a PNG of the live Overview.</div>
+      </div>
+      <div class="pane" id="paneDash">
+        <span class="tab">dashboard.html</span>
+        <div class="empty" id="emptyDash"><b>No dashboard loaded</b>Load deliverables/dashboard.html.</div>
+      </div>
+    </div>
+
+    <!-- overlay + wipe -->
+    <div class="stack" id="viewStack" hidden>
+      <div class="layer under" id="layUnder"></div>
+      <div class="layer over" id="layOver"></div>
+      <div class="wipe-handle" id="wipe" hidden></div>
+    </div>
+
+    <div class="mgrid" id="grid"></div>
+    <div class="outlines" id="outlines"></div>
+    <div class="readout" id="readout"></div>
+  </div>
+
+  <aside class="check">
+    <div class="top">
+      <strong>Checklist</strong>
+      <span class="score" id="score"></span>
+      <div class="spacer"></div>
+      <button class="mini" id="bDerive" disabled>Derive from page</button>
+      <button class="mini" id="bExport">Export</button>
+      <button class="mini" id="bReset">Reset</button>
+    </div>
+    <div class="body" id="list"></div>
+  </aside>
+</div>
+
+<script>
+'use strict';
+const $ = (s) => document.querySelector(s);
+const KEY = 'profolio-dash-qa-v1';
+
+let shotURL = null, dashHTML = null, mode = 'side';
+
+/* ══ persistence ═══════════════════════════════════════════════════════ */
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
+const save = (s) => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} };
+let state = load();
+
+/* ══ checklist definition ══════════════════════════════════════════════ */
+const BASE = [
+  ['Shell — sider', [
+    ['sider-w', 'Sider width', 'Expect 220px (SIDEBAR_EXPANDED_WIDTH)'],
+    ['nav-text', 'Nav label text', 'All 14 exactly as shipped — TruLeads, Credits & Packages'],
+    ['nav-order', 'Nav order', 'Overview → Post Listing → My Listings → Credits Usage → Inbox → TruLeads → Agent Performance → Reports(3) → Agency Staff → Settings → Credits & Packages'],
+    ['nav-active', 'Active-state styling', 'primary-light bg, primary text, weight 600'],
+  ]],
+  ['Shell — header', [
+    ['hdr-h', 'Header height', 'Expect 74px'],
+    ['hdr-parts', 'Header contents', 'logo · credits · bell · classified pill · account. Search hidden on KSA'],
+    ['hdr-align', 'Header alignment', 'Vertical centring and inline gaps'],
+    ['hdr-pill', 'Classified pill', 'Bordered link, min-width 148.71px — not a solid button'],
+  ]],
+  ['Shell — content & footer', [
+    ['content-bg', 'Content ground', 'Expect #F6F7FB'],
+    ['content-pad', 'Page padding', 'Expect 24px 32px'],
+    ['footer', 'Footer', '#fafafa, 24px 15px, REGA block + Report to REGA'],
+  ]],
+  ['System', [
+    ['type-scale', 'Type scale — every distinct size and weight used', 'Derive from page, then compare'],
+    ['colour-set', 'Colour set — every distinct colour used', 'Derive from page, then compare'],
+    ['spacing-set', 'Spacing — every distinct gap and padding used', 'Derive from page, then compare'],
+  ]],
+];
+
+const WIDGET_CHECKS = ['present', 'position', 'size', 'padding', 'background', 'border', 'radius', 'heading text'];
+
+/* Widgets come from dashboard.html's own data-widget attributes once loaded. */
+let widgetGroups = [];
+
+function allRows() {
+  return BASE.concat(widgetGroups);
+}
+
+function render() {
+  const list = $('#list');
+  list.innerHTML = '';
+  let pass = 0, fail = 0, total = 0;
+
+  for (const [group, rows] of allRows()) {
+    const h = document.createElement('div');
+    h.className = 'grp'; h.textContent = group;
+    list.appendChild(h);
+
+    for (const [id, label, hint] of rows) {
+      total++;
+      const v = state[id] || 'unk';
+      if (v === 'pass') pass++; if (v === 'fail') fail++;
+
+      const row = document.createElement('div');
+      row.className = 'row';
+      const l = document.createElement('div');
+      l.className = 'lbl';
+      l.textContent = label;
+      if (hint) { const s = document.createElement('small'); s.textContent = hint; l.appendChild(s); }
+      row.appendChild(l);
+
+      const tri = document.createElement('div');
+      tri.className = 'tri';
+      for (const [val, glyph, title] of [['pass','✓','Pass'],['fail','✕','Fail'],['unk','?','Unknown']]) {
+        const b = document.createElement('button');
+        b.dataset.v = val; b.textContent = glyph; b.title = title;
+        if (v === val) b.classList.add('on');
+        b.onclick = () => { state[id] = val; save(state); render(); };
+        tri.appendChild(b);
+      }
+      row.appendChild(tri);
+      list.appendChild(row);
+    }
+  }
+
+  const note = document.createElement('div');
+  note.className = 'note';
+  note.textContent = 'Progress is kept in this browser (localStorage). Export writes a JSON file.';
+  list.appendChild(note);
+
+  $('#score').innerHTML = `<b>${pass}</b> / <i>${fail}</i> / ${total - pass - fail} unknown`;
+}
+
+/* ══ file inputs ═══════════════════════════════════════════════════════ */
+$('#fShot').onchange = (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { shotURL = r.result; $('#lblShot').classList.add('loaded');
+    $('#lblShot').firstChild.textContent = 'Screenshot ✓ '; paint(); };
+  r.readAsDataURL(f);
+};
+
+/* dashboard.html is read as TEXT and written into the iframe with srcdoc, so the
+   iframe shares this document's origin. Pointing an iframe at a file:// URL gives
+   an opaque origin in Chrome and the measurement layer could not read it. */
+$('#fDash').onchange = (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { dashHTML = r.result; $('#lblDash').classList.add('loaded');
+    $('#lblDash').firstChild.textContent = 'Dashboard ✓ ';
+    $('#bDerive').disabled = false; paint(); };
+  r.readAsText(f);
+};
+
+/* ══ view painting ═════════════════════════════════════════════════════ */
+function frame() {
+  const f = document.createElement('iframe');
+  f.setAttribute('srcdoc', dashHTML);
+  f.onload = () => { sizeFrame(f); if (outlineOn) drawOutlines(); };
+  return f;
+}
+function sizeFrame(f) {
+  try {
+    const d = f.contentDocument;
+    f.style.height = Math.max(d.documentElement.scrollHeight, d.body.scrollHeight) + 'px';
+  } catch { f.style.height = '2000px'; }
+}
+function img() { const i = document.createElement('img'); i.src = shotURL; i.onload = () => { if (outlineOn) drawOutlines(); }; return i; }
+
+function paint() {
+  const side = $('#viewSide'), stack = $('#viewStack');
+  side.hidden = mode !== 'side';
+  stack.hidden = mode === 'side';
+  $('#opacityCtl').hidden = mode !== 'overlay';
+  $('#bDiff').hidden = mode !== 'overlay';
+  $('#wipe').hidden = mode !== 'wipe';
+
+  if (mode === 'side') {
+    const ps = $('#paneShot'), pd = $('#paneDash');
+    ps.querySelectorAll('img').forEach(n => n.remove());
+    pd.querySelectorAll('iframe').forEach(n => n.remove());
+    $('#emptyShot').hidden = !!shotURL;
+    $('#emptyDash').hidden = !!dashHTML;
+    if (shotURL) ps.appendChild(img());
+    if (dashHTML) pd.appendChild(frame());
+    syncScroll(ps, pd);
+  } else {
+    const u = $('#layUnder'), o = $('#layOver');
+    u.innerHTML = ''; o.innerHTML = '';
+    if (shotURL) u.appendChild(img());
+    if (dashHTML) o.appendChild(frame());
+    applyOpacity();
+    if (mode === 'wipe') applyWipe(wipeX);
+    else o.style.clipPath = '';
+  }
+  clearOutlines();
+  if (outlineOn) setTimeout(drawOutlines, 250);
+}
+
+/* synced scroll, guarded against feedback */
+function syncScroll(a, b) {
+  let lock = false;
+  const link = (from, to) => from.addEventListener('scroll', () => {
+    if (lock) return; lock = true;
+    const max = from.scrollHeight - from.clientHeight;
+    const ratio = max > 0 ? from.scrollTop / max : 0;
+    to.scrollTop = ratio * (to.scrollHeight - to.clientHeight);
+    requestAnimationFrame(() => { lock = false; });
+  });
+  link(a, b); link(b, a);
+}
+
+/* ══ overlay controls ══════════════════════════════════════════════════ */
+function applyOpacity() {
+  const v = mode === 'overlay' ? (+$('#op').value / 100) : 1;
+  $('#layOver').style.opacity = v;
+}
+$('#op').oninput = () => { $('#opVal').textContent = $('#op').value; applyOpacity(); };
+$('#bDiff').onclick = () => { $('#bDiff').classList.toggle('on'); $('#viewStack').classList.toggle('diff'); };
+
+/* ══ wipe ══════════════════════════════════════════════════════════════ */
+let wipeX = 50, dragging = false;
+function applyWipe(pct) {
+  wipeX = Math.min(100, Math.max(0, pct));
+  $('#layOver').style.clipPath = `inset(0 ${100 - wipeX}% 0 0)`;
+  $('#wipe').style.left = wipeX + '%';
+}
+$('#wipe').addEventListener('pointerdown', (e) => { dragging = true; $('#wipe').setPointerCapture(e.pointerId); });
+$('#wipe').addEventListener('pointerup', () => { dragging = false; });
+$('#stage').addEventListener('pointermove', (e) => {
+  if (!dragging || mode !== 'wipe') return;
+  const r = $('#stage').getBoundingClientRect();
+  applyWipe(((e.clientX - r.left) / r.width) * 100);
+});
+
+/* ══ modes ═════════════════════════════════════════════════════════════ */
+$('#modes').onclick = (e) => {
+  const b = e.target.closest('button[data-mode]'); if (!b) return;
+  [...$('#modes').children].forEach(x => x.classList.toggle('on', x === b));
+  mode = b.dataset.mode;
+  paint();
+  if (mode === 'wipe') applyWipe(wipeX);
+};
+
+/* ══ measurement — grid ════════════════════════════════════════════════ */
+$('#bGrid4').onclick = () => toggleGrid('g4', '#bGrid4');
+$('#bGrid8').onclick = () => toggleGrid('g8', '#bGrid8');
+function toggleGrid(cls, btn) {
+  const g = $('#grid'), on = g.classList.contains(cls);
+  g.classList.remove('g4', 'g8', 'on');
+  $('#bGrid4').classList.remove('on'); $('#bGrid8').classList.remove('on');
+  if (!on) { g.classList.add(cls, 'on'); $(btn).classList.add('on'); }
+}
+
+/* ══ measurement — widget outlines ═════════════════════════════════════ */
+let outlineOn = false;
+$('#bOutline').onclick = () => {
+  outlineOn = !outlineOn;
+  $('#bOutline').classList.toggle('on', outlineOn);
+  outlineOn ? drawOutlines() : clearOutlines();
+};
+function clearOutlines() { $('#outlines').innerHTML = ''; }
+
+function activeFrame() { return $('#stage').querySelector('iframe'); }
+
+function drawOutlines() {
+  clearOutlines();
+  const f = activeFrame(); if (!f) return;
+  let doc; try { doc = f.contentDocument; } catch { return; }
+  if (!doc) return;
+
+  const host = $('#outlines');
+  const fRect = f.getBoundingClientRect();
+  const sRect = $('#stage').getBoundingClientRect();
+
+  const targets = doc.querySelectorAll('[data-widget], .card, header, nav, footer, main');
+  for (const el of targets) {
+    const r = el.getBoundingClientRect();
+    if (r.width < 40 || r.height < 24) continue;
+    const cs = getComputedStyle(el);
+    const box = document.createElement('div');
+    box.className = 'obox';
+    box.style.left  = (fRect.left - sRect.left + r.left) + 'px';
+    box.style.top   = (fRect.top  - sRect.top  + r.top)  + 'px';
+    box.style.width = r.width + 'px';
+    box.style.height= r.height + 'px';
+    const tag = el.dataset.widget || el.tagName.toLowerCase();
+    const lab = document.createElement('span');
+    lab.textContent = `${tag}  ${Math.round(r.width)}×${Math.round(r.height)}  pad ${cs.padding}`;
+    box.appendChild(lab);
+    host.appendChild(box);
+  }
+}
+
+/* ══ measurement — colour pick ═════════════════════════════════════════ */
+let pickOn = false, canvas = null, cctx = null;
+$('#bPick').onclick = () => {
+  pickOn = !pickOn;
+  $('#bPick').classList.toggle('on', pickOn);
+  $('#readout').classList.toggle('on', pickOn);
+  if (pickOn && shotURL) prepCanvas();
+};
+function prepCanvas() {
+  const im = new Image();
+  im.onload = () => {
+    canvas = document.createElement('canvas');
+    canvas.width = im.naturalWidth; canvas.height = im.naturalHeight;
+    cctx = canvas.getContext('2d', { willReadFrequently: true });
+    cctx.drawImage(im, 0, 0);
+  };
+  im.src = shotURL;
+}
+const hex = (r, g, b) => '#' + [r, g, b].map(n => n.toString(16).padStart(2, '0')).join('');
+
+$('#stage').addEventListener('mousemove', (e) => {
+  if (!pickOn) return;
+  const out = $('#readout');
+  const sRect = $('#stage').getBoundingClientRect();
+  out.style.left = Math.min(e.clientX - sRect.left + 14, sRect.width - 220) + 'px';
+  out.style.top  = (e.clientY - sRect.top + 16) + 'px';
+
+  // over the screenshot → sample the pixel
+  const imEl = document.elementFromPoint(e.clientX, e.clientY);
+  if (imEl && imEl.tagName === 'IMG' && cctx) {
+    const r = imEl.getBoundingClientRect();
+    const x = Math.round((e.clientX - r.left) / r.width * canvas.width);
+    const y = Math.round((e.clientY - r.top) / r.height * canvas.height);
+    if (x >= 0 && y >= 0 && x < canvas.width && y < canvas.height) {
+      const d = cctx.getImageData(x, y, 1, 1).data;
+      const h = hex(d[0], d[1], d[2]);
+      out.innerHTML = `<span class="sw" style="background:${h}"></span>${h}  ·  rgb(${d[0]}, ${d[1]}, ${d[2]})<br>screenshot ${x},${y}`;
+      return;
+    }
+  }
+
+  // over the rendered page → read computed styles of the element beneath
+  const f = activeFrame();
+  if (f) {
+    let doc; try { doc = f.contentDocument; } catch { doc = null; }
+    if (doc) {
+      const fr = f.getBoundingClientRect();
+      const el = doc.elementFromPoint(e.clientX - fr.left, e.clientY - fr.top);
+      if (el) {
+        const cs = getComputedStyle(el);
+        const sel = el.tagName.toLowerCase() + (el.className && typeof el.className === 'string'
+          ? '.' + el.className.trim().split(/\s+/)[0] : '');
+        out.innerHTML =
+          `<span class="sw" style="background:${cs.backgroundColor}"></span>bg ${cs.backgroundColor}<br>` +
+          `<span class="sw" style="background:${cs.color}"></span>fg ${cs.color}<br>` +
+          `${sel}<br>${cs.fontSize} / ${cs.fontWeight} · pad ${cs.padding}`;
+        return;
+      }
+    }
+  }
+  out.textContent = '—';
+});
+
+/* ══ derive checks from the loaded page ════════════════════════════════ */
+$('#bDerive').onclick = () => {
+  const f = activeFrame();
+  if (!f) { alert('Switch to a view that renders dashboard.html first.'); return; }
+  let doc; try { doc = f.contentDocument; } catch { doc = null; }
+  if (!doc) { alert('Cannot read the frame.'); return; }
+
+  const sizes = new Set(), weights = new Set(), colours = new Set(), spaces = new Set();
+  for (const el of doc.querySelectorAll('*')) {
+    const cs = getComputedStyle(el);
+    if (el.textContent && el.children.length === 0) { sizes.add(cs.fontSize); weights.add(cs.fontWeight); }
+    for (const c of [cs.color, cs.backgroundColor, cs.borderTopColor]) {
+      if (c && c !== 'rgba(0, 0, 0, 0)') colours.add(c);
+    }
+    for (const s of [cs.paddingTop, cs.paddingLeft, cs.gap, cs.marginBottom]) {
+      if (s && s !== '0px' && s !== 'normal' && !s.includes(' ')) spaces.add(s);
+    }
+  }
+
+  const widgets = [...doc.querySelectorAll('[data-widget]')].map(e => e.dataset.widget);
+  widgetGroups = widgets.map(w => [
+    'Widget · ' + w,
+    WIDGET_CHECKS.map(c => [`w-${w}-${c.replace(/\s+/g, '-')}`, c[0].toUpperCase() + c.slice(1), ''])
+  ]);
+
+  const byNum = (a, b) => parseFloat(a) - parseFloat(b);
+  const set = (id, txt) => {
+    for (const [, rows] of BASE) for (const r of rows) if (r[0] === id) r[2] = txt;
+  };
+  set('type-scale', `${sizes.size} sizes: ${[...sizes].sort(byNum).join(', ')} · weights: ${[...weights].sort(byNum).join(', ')}`);
+  set('colour-set', `${colours.size} colours: ${[...colours].join('  ')}`);
+  set('spacing-set', `${spaces.size} values: ${[...spaces].sort(byNum).join(', ')}`);
+
+  render();
+};
+
+/* ══ export / reset ════════════════════════════════════════════════════ */
+$('#bExport').onclick = () => {
+  const out = { savedAt: new Date().toISOString(), results: {} };
+  for (const [group, rows] of allRows())
+    for (const [id, label, hint] of rows)
+      out.results[id] = { group, label, hint, verdict: state[id] || 'unknown' };
+  const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'dashboard-qa-results.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+$('#bReset').onclick = () => {
+  if (!confirm('Clear every verdict?')) return;
+  state = {}; save(state); render();
+};
+
+addEventListener('resize', () => { if (outlineOn) drawOutlines(); });
+render();
+</script>
+</body>
+</html>

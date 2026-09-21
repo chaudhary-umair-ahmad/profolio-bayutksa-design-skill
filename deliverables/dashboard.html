@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard - Profolio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN LANGUAGE
+   Every value below is sourced from the profolio-ksa-design skill v0.7.0.
+   Anything marked TBC could not be sourced — a visible gap, not a guess.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root{
+
+  /* ── Colour · theme/index.js via foundations.md ───────────────────────── */
+  --gray-900:#4f4f4f;
+  --gray-800:#626262;
+  --gray-700:#707070;
+  --gray-600:#9D9D9D;
+  --gray-550:#BABABA;
+  --gray-500:#C2C2C2;
+  --gray-400:#DEDEDE;
+  --gray-300:#E6E6E6;
+  --gray-200:#f5f5f5;
+  --gray-100:#f0f0f0;
+
+  --primary:#006169;
+  --primary-hover:#006169;
+  --primary-light:#F7FCFC;
+  --primary-light-1:#A6C8CA;
+  --primary-light-2:#CCDFE1;
+  --primary-light-3:#E1F2F0;
+  --primary-light-4:#F2FAFA;
+
+  --success:#28b16d;
+  --warning:#f0a742;
+  --danger:#f73131;
+  --error:#f73131;
+  --info:#2C99FF;
+
+  --heading:#222;
+  --base:#222;
+  --gray-blue:#5A5F7D;          /* grayColor */
+  --gray-blue-light:#868EAE;    /* lightGrayColor */
+  --placeholder:#9D9D9D;
+  --white:#fff;
+
+  --border-light:#F1F2F6;       /* borderColorLight */
+  --border-normal:#DEDEDE;      /* borderColorNormal */
+
+  --bg-content:#F6F7FB;         /* layout content ground */
+  --bg-footer:#fafafa;
+  --bg-gray-light:#F8F9FB;      /* bgGrayColorLight */
+
+  /* ── Spacing · utils.less generated scale ─────────────────────────────── */
+  --sp-0:0px;
+  --sp-2:2px;
+  --sp-4:4px;
+  --sp-8:8px;
+  --sp-12:12px;
+  --sp-16:16px;
+  --sp-20:20px;
+  --sp-24:24px;
+  --sp-25:25px;
+  --sp-30:30px;
+  --sp-32:32px;
+  --sp-40:40px;
+  --sp-48:48px;
+  --sp-54:54px;
+
+  /* ── Radius · per component family ────────────────────────────────────── */
+  --border-w:1px;               /* every component border in the system is 1px */
+  --border-w-card-sm:0px;       /* card.md — border drops to 0 below 992px */
+
+  --radius-tag:4px;             /* tag.md */
+  --radius-nav:4px;             /* navitem.md */
+  --radius-control:6px;         /* button.md, input, select */
+  --radius-card:8px;            /* card.md */
+
+  /* ── Elevation ────────────────────────────────────────────────────────── */
+  --shadow-card:0 5px 20px #9299b803;    /* card.md, style.less */
+  --shadow-menu:0 5px 20px #9299b820;    /* dropdown.md */
+
+  /* ── Type · Lato + Droid Arabic Kufi, base 14 / 1.571 ─────────────────── */
+  --font-body:Lato,'Droid Arabic Kufi',Arial,sans-serif;
+  --fs-base:14px;
+  --lh-base:1.571;
+
+  --fs-card-title:18px;         /* card.md — 18px h4 */
+  --fs-page-title:20px;         /* TBC: page-header h3 size — _shell.md gives padding
+                                   24px 32px but no heading size. Measure on live. */
+  --fs-label:13px;              /* TBC: derived from select/nav usage, not declared */
+  --fs-small:12px;              /* TBC: used by tag.md at 12px; not a declared step */
+  --fs-micro:11px;              /* TBC: footer/meta text; not a declared step */
+
+  /* statistic.md expresses sizes in em against the 14px base */
+  --fs-stat-title:1em;
+  --fs-stat-value:1.143em;
+  --fs-stat-lead:1.429em;
+  --fs-stat-leader:1.571em;
+  --gap-stat:0.143em;
+
+  --fw-regular:400;
+  --fw-medium:500;
+  --fw-semibold:600;
+  --fw-bold:700;
+  --fw-black:900;
+
+  /* ── Shell · withAdminLayout.js ───────────────────────────────────────── */
+  --sider-w:220px;              /* SIDEBAR_EXPANDED_WIDTH */
+  --sider-w-collapsed:60px;     /* SIDEBAR_COLLAPSED_WIDTH */
+  --header-h:74px;
+  --classified-pill-minw:148.71px;
+  --avatar-size:36px;
+  --control-h-lg:48px;          /* btnlg */
+  --control-h-sm:36px;          /* btnsm */
+  --control-h-xs:29px;          /* btnxs */
+
+  --breakpoint-sider:992px;     /* sider → drawer */
+
+  /* ── Grid · only one dashboard grid is sourced ────────────────────────── */
+  --grid-two-col:repeat(2, minmax(0, 1fr));   /* Group template=, dashboard.js */
+  --grid-auto-fit:repeat(auto-fit, minmax(min(40ch, 100%), 1fr));
+  --gap-widget:16px;            /* Group gap=, dashboard.js */
+  --gap-row:24px;               /* Flex gap=, dashboard.js */
+
+  /* ── UNSOURCED — fill these from a live capture ───────────────────────── */
+  --widget-row-1-span: /* TBC: does the profile row span full width or sit beside
+                          TruBrokerStatus? dashboard.js nests both in one Flex but
+                          the skeleton does not record the flex basis. */ 1 / -1;
+  --widget-min-h: /* TBC: no minimum height is declared for dashboard widgets.
+                     Measure each container on live. */ auto;
+  --chart-h: /* TBC: ReportsLeadsTrafficSection chart height. Not in any spec. */ auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESET
+   ═══════════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box}
+body{
+  margin:var(--sp-0);
+  background:var(--bg-content);
+  color:var(--base);
+  font-family:var(--font-body);
+  font-size:var(--fs-base);
+  line-height:var(--lh-base);
+  -webkit-font-smoothing:antialiased;
+}
+[hidden]{display:none!important}
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SHELL · pages/_shell.md
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf{
+  display:grid;
+  grid-template-columns:var(--sider-w) 1fr;
+  min-height:100vh;
+}
+
+/* ── header ───────────────────────────────────────────────────────────── */
+.pf-header{
+  grid-column:1 / -1;
+  height:var(--header-h);
+  background:var(--white);
+  border-block-end:var(--border-w) solid var(--border-light);
+  display:flex;
+  align-items:center;
+  gap:var(--sp-16);
+  padding-inline:var(--sp-24);
+}
+.pf-logo{
+  width:calc(var(--sider-w) - var(--sp-24));
+  flex:none;
+  font-weight:var(--fw-black);
+  color:var(--primary);
+  font-size:var(--fs-page-title);
+}
+.pf-logo span{
+  font-weight:var(--fw-regular);
+  font-size:var(--fs-small);
+  color:var(--gray-600);
+  text-transform:uppercase;
+}
+.pf-spacer{flex:1}
+.pf-credits{
+  display:flex;
+  flex-direction:column;
+  padding-inline-end:var(--sp-16);
+  border-inline-end:var(--border-w) solid var(--gray-100);
+}
+.pf-credits .k{
+  font-size:var(--fs-micro);
+  color:var(--gray-600);
+  text-transform:uppercase;
+}
+.pf-credits .v{font-size:var(--fs-base);color:var(--heading);font-weight:var(--fw-bold)}
+.pf-bell{
+  position:relative;
+  background:none;
+  border:0;
+  color:var(--gray-blue);
+  display:grid;
+  place-items:center;
+  width:var(--sp-24);
+  height:var(--sp-24);
+}
+.pf-bell svg{width:var(--sp-20);height:var(--sp-20)}
+.pf-bell .badge{
+  position:absolute;
+  inset-block-start:calc(var(--sp-4) * -1);
+  inset-inline-end:calc(var(--sp-8) * -1);
+  min-width:var(--sp-20);
+  height:var(--sp-20);
+  border-radius:var(--sp-20);
+  background:var(--danger);
+  color:var(--white);
+  font-size:var(--fs-micro);
+  font-weight:var(--fw-bold);
+  display:grid;
+  place-items:center;
+  border:var(--sp-2) solid var(--white);
+}
+/* _shell.md: bordered outbound link, NOT a solid primary button */
+.pf-classified{
+  min-width:var(--classified-pill-minw);
+  height:var(--control-h-sm);
+  border:var(--border-w) solid var(--gray-100);
+  border-radius:var(--radius-control);
+  display:grid;
+  place-items:center;
+  padding-inline:var(--sp-16);
+  color:var(--gray-700);
+  font-size:var(--fs-label);
+}
+.pf-account{display:flex;align-items:center;gap:var(--sp-8);font-size:var(--fs-label);color:var(--gray-900)}
+.pf-account .av{
+  width:var(--avatar-size);
+  height:var(--avatar-size);
+  border-radius:var(--avatar-size);
+  background:var(--primary-light-3);
+  color:var(--primary);
+  display:grid;
+  place-items:center;
+  font-weight:var(--fw-bold);
+  font-size:var(--fs-label);
+}
+
+/* ── sider · navitem.md ───────────────────────────────────────────────── */
+.pf-sider{
+  background:var(--white);
+  border-inline-end:var(--border-w) solid var(--border-light);
+  padding-block-start:var(--sp-30);
+}
+.pf-nav a,
+.pf-nav .grp > .grp-label{
+  display:block;
+  padding:var(--sp-8) var(--sp-16);
+  margin-inline:var(--sp-16);
+  margin-block-end:var(--sp-8);
+  border-radius:var(--radius-nav);
+  font-weight:var(--fw-medium);
+  color:var(--base);
+}
+.pf-nav a:hover{background:var(--bg-gray-light);color:var(--primary)}
+.pf-nav a.is-active{background:var(--primary-light);color:var(--primary);font-weight:var(--fw-semibold)}
+.pf-nav .grp a{
+  font-weight:var(--fw-regular);
+  padding-block:var(--sp-8);
+  margin-inline-start:var(--sp-32);
+}
+
+/* ── content ──────────────────────────────────────────────────────────── */
+.pf-content{
+  padding:var(--sp-24) var(--sp-32);
+  display:grid;
+  grid-template-rows:auto 1fr;
+  gap:var(--gap-widget);
+  align-content:start;
+}
+.pf-pagehead{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-16);flex-wrap:wrap}
+.pf-pagehead h1{margin:var(--sp-0);font-size:var(--fs-page-title);font-weight:var(--fw-bold);color:var(--heading)}
+
+/* ── footer ───────────────────────────────────────────────────────────── */
+.pf-footer{
+  grid-column:1 / -1;
+  background:var(--bg-footer);
+  padding:var(--sp-24) var(--sp-16);
+  border-block-start:var(--border-w) solid var(--border-light);
+  display:flex;
+  justify-content:space-between;
+  gap:var(--sp-16);
+  flex-wrap:wrap;
+  font-size:var(--fs-micro);
+  color:var(--gray-700);
+}
+.pf-footer b{color:var(--primary)}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COMPONENTS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* card.md — radius 8px, 1px border desktop, shadow, head ≥47px / 18px h4 /
+   inline padding 24px, body padding 12px */
+.card{
+  background:var(--white);
+  border:var(--border-w) solid var(--border-normal);
+  border-radius:var(--radius-card);
+  box-shadow:var(--shadow-card);
+  overflow:hidden;
+}
+.card-head{
+  min-height:var(--sp-48);
+  display:flex;
+  align-items:center;
+  gap:var(--sp-12);
+  flex-wrap:wrap;
+  padding-block:var(--sp-8);
+  padding-inline:var(--sp-24);
+  border-block-end:var(--border-w) solid var(--gray-100);
+}
+.card-head h2{
+  margin:var(--sp-0);
+  font-size:var(--fs-card-title);
+  font-weight:var(--fw-bold);
+  color:var(--heading);
+}
+/* card.md: head extra is a centred flex row whose links are gray-blue-light */
+.card-extra{margin-inline-start:auto;display:flex;align-items:center;gap:var(--sp-16)}
+.card-extra a{color:var(--gray-blue-light);font-size:var(--fs-label);font-weight:var(--fw-semibold)}
+.card-extra a.is-primary{color:var(--primary)}
+.card-body{padding:var(--sp-12) var(--sp-24)}
+
+/* statistic.md — title gray700 1em, gap .143em, value 700,
+   adjacent statistics gain a gray100 inline-start divider at 16px padding */
+.stats{display:flex;align-items:stretch;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:var(--gap-stat);padding-inline-end:var(--sp-24)}
+.stat + .stat{border-inline-start:var(--border-w) solid var(--gray-100);padding-inline-start:var(--sp-16)}
+.stat .t{font-size:var(--fs-stat-title);color:var(--gray-700)}
+.stat .v{font-size:var(--fs-stat-value);font-weight:var(--fw-bold);color:var(--heading);font-variant-numeric:tabular-nums}
+.stat .v.is-lead{font-size:var(--fs-stat-lead)}
+.stat .v.is-leader{font-size:var(--fs-stat-leader)}
+
+/* button.md — weight 600, padding .4286em 1em, radius 6px */
+.btn{
+  font-weight:var(--fw-semibold);
+  border-radius:var(--radius-control);
+  padding:0.4286em 1em;
+  border:var(--border-w) solid transparent;
+  display:inline-flex;
+  align-items:center;
+  gap:var(--sp-8);
+  height:var(--control-h-lg);
+  white-space:nowrap;
+}
+.btn.is-primary{background:var(--primary);color:var(--white)}
+.btn.is-outlined{background:transparent;color:var(--primary);border-color:var(--primary)}
+.btn.is-sm{height:var(--control-h-sm);font-size:var(--fs-label)}
+
+/* tag.md — style.less override wins: weight 600, padding 0 9.5px */
+.tag{
+  background:var(--gray-200);
+  color:var(--gray-700);
+  border-radius:var(--radius-tag);
+  font-weight:var(--fw-semibold);
+  font-size:var(--fs-small);
+  padding-block:var(--sp-4);
+  padding-inline:var(--sp-8);
+  display:inline-flex;
+  align-items:center;
+  gap:var(--sp-4);
+}
+
+/* select.md */
+.select{
+  display:flex;
+  align-items:center;
+  gap:var(--sp-8);
+  background:var(--white);
+  border:var(--border-w) solid var(--border-normal);
+  border-radius:var(--radius-control);
+  padding:var(--sp-8) var(--sp-12);
+  font-size:var(--fs-label);
+  color:var(--gray-900);
+  min-width:var(--sp-54);
+}
+.select .caret{margin-inline-start:auto;color:var(--gray-600)}
+
+/* feedback.md — skeleton gradient from border-color-light */
+.sk{background:var(--gray-100);border-radius:var(--radius-tag);display:block}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DASHBOARD LAYOUT
+   Widget order follows the real DOM order in src/container/pages/dashboard.
+   Only one grid is sourced from the code: Group template="repeat(2,
+   minmax(0,1fr))" gap="16px". Every other placement is TBC.
+   ═══════════════════════════════════════════════════════════════════════ */
+.dash{display:grid;gap:var(--gap-widget);align-content:start}
+.dash-two-col{display:grid;grid-template-columns:var(--grid-two-col);gap:var(--gap-widget)}
+.dash-auto-fit{display:grid;grid-template-columns:var(--grid-auto-fit);gap:var(--gap-widget)}
+.dash-row{display:flex;gap:var(--gap-row);flex-wrap:wrap;align-items:center}
+
+/* Unsourced widget bodies render as a labelled gap, not invented content. */
+.tbc{
+  border:var(--border-w) dashed var(--gray-400);
+  border-radius:var(--radius-tag);
+  padding:var(--sp-16);
+  color:var(--gray-600);
+  font-size:var(--fs-small);
+  background:var(--bg-gray-light);
+}
+.tbc b{color:var(--gray-700);font-weight:var(--fw-semibold)}
+
+/* States — sibling blocks, hidden by default */
+[data-state]{display:none}
+.card-body > .sk + .sk{margin-block-start:var(--sp-8)}
+
+/* --breakpoint-sider is 992px. CSS does not permit custom properties in a media
+   condition, so the literal is unavoidable here. It is the one px outside :root. */
+@media (max-width:992px){
+  .pf{grid-template-columns:1fr}
+  .pf-sider{display:none}
+  .dash-two-col{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="pf">
+
+  <!-- ══ HEADER · _shell.md, parts in order ══════════════════════════════ -->
+  <header class="pf-header">
+    <div class="pf-logo">bayut <span>KSA</span></div>
+    <!-- Header search omitted: SHOW_SEARCH_HEADER is false on KSA -->
+    <div class="pf-spacer"></div>
+
+    <!-- Platform segmented control: multi-platform users only.
+         TBC: not rendered — no spec for its states or labels. -->
+
+    <div class="pf-credits">
+      <span class="k">Available Credits</span>
+      <span class="v">1,280</span>
+    </div>
+
+    <button class="pf-bell" type="button" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+      </svg>
+      <span class="badge">7</span>
+    </button>
+
+    <a class="pf-classified" href="#">Go to Bayut.sa</a>
+
+    <div class="pf-account">
+      <span class="av">SA</span>
+      <span>Saad Al-Harbi</span>
+    </div>
+  </header>
+
+  <!-- ══ SIDER · all 14 entries, labels exactly as they ship ═════════════ -->
+  <nav class="pf-sider" aria-label="Main">
+    <div class="pf-nav">
+      <a class="is-active" href="/dashboard">Overview</a>
+      <a href="/post-listing">Post Listing</a>
+      <a href="/listings">My Listings</a>
+      <a href="/credits-usage">Credits Usage</a>
+      <a href="/inbox/received">Inbox</a>
+      <a href="/lms/truleads">TruLeads</a>
+      <a href="/agent-performance">Agent Performance</a>
+      <div class="grp">
+        <span class="grp-label">Reports</span>
+        <a href="/reports/summary">Summary</a>
+        <a href="/reports/listing-report">Listing Report</a>
+        <a href="/reports/leads-reports">Leads &amp; Reach Report</a>
+      </div>
+      <a href="/agency-staff">Agency Staff</a>
+      <a href="/user-settings/user-profile">Settings</a>
+      <a href="/packages">Credits &amp; Packages</a>
+    </div>
+  </nav>
+
+  <!-- ══ CONTENT ═════════════════════════════════════════════════════════ -->
+  <main class="pf-content">
+
+    <div class="pf-pagehead">
+      <h1>Overview</h1>
+      <div class="select"><span>All</span><span class="caret">▾</span></div>
+    </div>
+
+    <div class="dash">
+
+      <!-- 1 · profile row — Flex > CardMetaStyled + PlatfromSwitch -->
+      <section class="card" data-widget="profile-row" data-role="agency-owner agency-staff individual">
+        <div class="card-body dash-row">
+          <div class="pf-account"><span class="av">SA</span><span>Saad Al-Harbi</span></div>
+          <span class="tag" data-component="TruBrokerTag">TBC: TruBrokerTag label</span>
+          <div class="select" data-component="PlatfromSwitch"><span>All</span><span class="caret">▾</span></div>
+        </div>
+      </section>
+
+      <!-- 2 · TruBrokerStatus -->
+      <section class="card" data-widget="TruBrokerStatus" data-flag="TRU_BROKER_ENABLED">
+        <div class="card-head"><h2>TBC: heading</h2></div>
+        <div class="card-body">
+          <p class="tbc"><b>TruBrokerStatus</b> — component has no spec in the register.
+            Needs: heading text, metric labels, badge treatment, tier states.</p>
+        </div>
+      </section>
+
+      <!-- 3 · TruPointsWidget — contains Group auto-fit minmax(40ch) gap 16 of TextWithIcon -->
+      <section class="card" data-widget="TruPointsWidget" data-flag="TRU_BROKER_ENABLED">
+        <div class="card-head"><h2>TBC: heading</h2></div>
+        <div class="card-body">
+          <div class="dash-auto-fit">
+            <p class="tbc"><b>TextWithIcon</b> ×n — count and labels unsourced.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 · ListingBreakdown -->
+      <section class="card" data-widget="ListingBreakdown">
+        <div class="card-head">
+          <h2>Breakdown By Date</h2>
+          <div class="card-extra"><a href="#">View In-Depth Insights</a></div>
+        </div>
+        <div class="card-body">
+          <div class="stats">
+            <div class="stat"><span class="t">For Sale</span><span class="v is-leader">TBC</span></div>
+            <div class="stat"><span class="t">For Rent</span><span class="v is-leader">TBC</span></div>
+            <div class="stat"><span class="t">Daily Rentals</span><span class="v is-leader">TBC</span></div>
+          </div>
+          <p class="tbc"><b>Chart</b> — ReportsLeadsTrafficSection uses Chart.js.
+            No chart spec exists: series palette, axes, grid and height all unsourced.</p>
+        </div>
+      </section>
+
+      <!-- 5 · CreditsQuota -->
+      <section class="card" data-widget="CreditsQuota" data-flag="ALLOW_CREDITS_TOPTUP ENABLE_SMART_CREDITS_UTILISATION">
+        <div class="card-head">
+          <h2>Available Quota</h2>
+          <div class="card-extra"><a class="is-primary" href="/credits-usage">Credits Usage</a></div>
+        </div>
+        <div class="card-body">
+          <div class="stats">
+            <div class="stat"><span class="t">Available Credits</span><span class="v is-leader">TBC</span></div>
+            <div class="stat"><span class="t">Used</span><span class="v is-leader">TBC</span></div>
+            <div class="stat"><span class="t">Total</span><span class="v is-leader">TBC</span></div>
+          </div>
+          <p class="tbc"><b>Current Plan</b> row and the progress treatment are unsourced.
+            Copy available: “Current Plan”, “Top-Up your Credits”, “Assign to Users”.</p>
+        </div>
+      </section>
+
+      <!-- 6 · two-column row — the ONE sourced grid -->
+      <div class="dash-two-col" data-grid="repeat(2, minmax(0, 1fr))">
+
+        <!-- Row justify=space-between > TextWithIcon + LinkWithIcon, then ListingContainer -->
+        <section class="card" data-widget="RecentListings">
+          <div class="card-head">
+            <h2>Recent Listings</h2>
+            <div class="card-extra"><a href="/listings">View All Listings</a></div>
+          </div>
+          <div class="card-body">
+            <p class="tbc"><b>ListingContainer</b> — row height, thumbnail size and
+              per-row fields unsourced. listing-card is in the register but its
+              dashboard variant is not.</p>
+          </div>
+        </section>
+
+        <section class="card" data-widget="LeadsTraffic" data-flag="IS_LMS_ENABLED">
+          <div class="card-head">
+            <h2>TBC: heading</h2>
+            <div class="card-extra"><a href="/lms/truleads">View Leads</a></div>
+          </div>
+          <div class="card-body">
+            <p>See the number of views, clicks and leads that your listing has received.</p>
+            <p class="tbc"><b>ReportsLeadsTrafficSection</b> — chart, metric row and
+              empty copy “Not enough data” placement unsourced.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- 7 · DashboardPromoBanner -->
+      <section class="card" data-widget="DashboardPromoBanner">
+        <div class="card-body">
+          <p class="tbc"><b>DashboardPromoBanner</b> — banner.md documents the generic
+            banner; this instance’s art, copy and CTA are unsourced.
+            Related copy: “Introducing Leads Management”.</p>
+        </div>
+      </section>
+
+      <!-- ══ STATES · sibling blocks, hidden by default ══════════════════ -->
+
+      <section class="card" data-state="loading" hidden>
+        <div class="card-head"><h2>Recent Listings</h2></div>
+        <div class="card-body">
+          <span class="sk"></span>
+          <span class="sk"></span>
+          <span class="sk"></span>
+        </div>
+      </section>
+
+      <section class="card" data-state="empty" hidden>
+        <div class="card-head"><h2>Recent Listings</h2></div>
+        <div class="card-body">
+          <p class="tbc"><b>Empty state</b> — EmptyState has 7 documented types but the
+            dashboard’s variant, illustration and message are unsourced.
+            Known related copy: “Not enough data”.</p>
+        </div>
+      </section>
+
+      <section class="card" data-state="error" hidden>
+        <div class="card-body">
+          <p class="tbc"><b>Error state</b> — EmptyState carries a retry button; the
+            dashboard’s error copy is unsourced.</p>
+        </div>
+      </section>
+
+      <section data-state="flag-off" hidden>
+        <p class="tbc"><b>Flag off</b> — the widget is not rendered at all. No placeholder,
+          no reserved space; the next widget becomes the first.</p>
+      </section>
+
+      <section class="card" data-state="no-permission" hidden>
+        <div class="card-body">
+          <p class="tbc"><b>No permission</b> — permissions.js gates stats, leads and
+            staff. The dashboard’s denied treatment is unsourced.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ══ FOOTER · REGA block on KSA ══════════════════════════════════════ -->
+  <footer class="pf-footer">
+    <small>© 2026 Bayut KSA</small>
+    <span>Licensed by <b>REGA</b> · <a href="#">Report to REGA</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
