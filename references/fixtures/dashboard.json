@@ -1,0 +1,68 @@
+{
+  "_": "GENERATED-SHAPE fixture for /dashboard. Invented data at the same shapes and string lengths as the real screen, so layout stays honest and nothing real is committed. Bayut ids are 8 digits starting 88; REGA ids are 10 digits starting 7201. Locations are real Riyadh districts, which are public. Prices are plausible, not observed.",
+  "user": {
+    "agency": "Najd Horizon Real Estate",
+    "completion": 90,
+    "classification": "high",
+    "notifications": 46
+  },
+  "listings": {
+    "active": 20,
+    "purposes": [
+      { "title": "For Sale", "value": 20, "icon": "IconForSale", "tone": "for-sale" },
+      { "title": "To Rent", "value": 0, "icon": "IconForRent", "tone": "for-rent" },
+      { "title": "Daily Rentals", "value": 0, "icon": "IconRental", "tone": "for-rent" }
+    ],
+    "products": [
+      { "title": "Signature", "value": 12, "icon": "BsFillLightningChargeFill", "tone": "signature" },
+      { "title": "Hot", "value": 5, "icon": "IconSuperHot", "tone": "hot" },
+      { "title": "Basic", "value": 3, "icon": "IconBasic", "tone": "basic" }
+    ]
+  },
+  "credits": {
+    "available": "72,880",
+    "used": "2,120",
+    "total": "75,000",
+    "percent": 97.17,
+    "plan": "Platinum Plus",
+    "planIcon": "IconPkgPlatinumPlus"
+  },
+  "performance": {
+    "range": "Last 30 Days",
+    "purposes": ["All", "For Sale", "For Rent", "Daily Rentals"],
+    "metrics": [
+      { "key": "views", "title": "Views", "value": "24,853", "icon": "IoMdEye", "tone": "primary" },
+      { "key": "clicks", "title": "Clicks", "value": "387", "icon": "HiCursorClick", "tone": "clicks" },
+      { "key": "leads", "title": "Leads", "value": "12", "icon": "MdPhone", "tone": "leads" }
+    ],
+    "summary": [
+      { "title": "Calls", "value": "3", "icon": "MdPhone" },
+      { "title": "WhatsApp", "value": "9", "icon": "IconWhatsapp" },
+      { "title": "SMS", "value": "0", "icon": "MdSms" },
+      { "title": "Emails", "value": "0", "icon": "MdEmail" }
+    ],
+    "chips": [
+      { "label": "All", "tone": "all" },
+      { "label": "Basic", "tone": "basic" },
+      { "label": "Hot", "tone": "hot" },
+      { "label": "Signature", "tone": "signature" }
+    ],
+    "chart": {
+      "_": "Traced off a screenshot, so the shape is right and no point is. 30 days.",
+      "from": "Aug 23", "to": "Sep 21", "max": 2500, "step": 500,
+      "series": [0,0,30,40,40,50,120,640,330,490,830,840,790,1010,1420,1760,1720,1420,1210,1500,2290,1560,1300,940,900,960,1200,1120,1010,560]
+    }
+  },
+  "recentListings": [
+    { "images": 21, "price": "1,250,000", "product": "basic",     "score": "62%", "title": "Floor for Sale | Ready",     "beds": 3, "baths": 3, "area": "64 Sq. M.",  "location": "Riyadh, North Riyadh, Al Wurud",     "bayutId": "88240117", "regaId": "7201340882", "posted": "Sep 09, 2026", "views": "896",   "clicks": "35", "leads": "2" },
+    { "images": 18, "price": "1,399,000", "product": "basic",     "score": "62%", "title": "Floor for Sale | Ready",     "beds": 3, "baths": 3, "area": "73 Sq. M.",  "location": "Riyadh, North Riyadh, Al Masif",     "bayutId": "88240112", "regaId": "7201340856", "posted": "Sep 09, 2026", "views": "796",   "clicks": "17", "leads": "1" },
+    { "images": 26, "price": "1,999,000", "product": "hot",       "score": "54%", "title": "Floor for Sale | Ready",     "beds": 4, "baths": 5, "area": "79 Sq. M.",  "location": "Riyadh, North Riyadh, Al Mughrizat", "bayutId": "88238421", "regaId": "7201340887", "posted": "Sep 07, 2026", "views": "1,600", "clicks": "18", "leads": "0" },
+    { "images": 31, "price": "1,049,000", "product": "hot",       "score": "50%", "title": "Apartment for Sale | Ready", "beds": 3, "baths": 3, "area": "79 Sq. M.",  "location": "Riyadh, East Riyadh, Al Rawabi",     "bayutId": "88236048", "regaId": "7201340868", "posted": "Sep 06, 2026", "views": "2,015", "clicks": "18", "leads": "0" },
+    { "images": 38, "price": "2,330,000", "product": "signature", "score": "43%", "title": "Villa for Sale | Ready",     "beds": 5, "baths": 6, "area": "79 Sq. M.",  "location": "Riyadh, East Riyadh, Al Nahdah",     "bayutId": "88235710", "regaId": "7201340875", "posted": "Sep 05, 2026", "views": "2,669", "clicks": "36", "leads": "2" },
+    { "images": 47, "price": "4,900,000", "product": "signature", "score": "46%", "title": "Villa for Sale | Ready",     "beds": 6, "baths": 7, "area": "399 Sq. M.", "location": "Al Diriyah, As Sulaymaniyah",        "bayutId": "88234837", "regaId": "7201351018", "posted": "Sep 02, 2026", "views": "2,386", "clicks": "66", "leads": "1" },
+    { "images": 18, "price": "870,000",   "product": "signature", "score": "31%", "title": "Apartment for Sale | Ready", "beds": 3, "baths": 3, "area": "131 Sq. M.", "location": "Riyadh, East Riyadh, Al Yarmuk",     "bayutId": "88232857", "regaId": "7201347658", "posted": "Aug 31, 2026", "views": "1,192", "clicks": "13", "leads": "0" },
+    { "images": 19, "price": "920,000",   "product": "signature", "score": "34%", "title": "Apartment for Sale | Ready", "beds": 3, "baths": 3, "area": "140 Sq. M.", "location": "Riyadh, East Riyadh, Al Yarmuk",     "bayutId": "88230489", "regaId": "7201347647", "posted": "Aug 31, 2026", "views": "1,050", "clicks": "6",  "leads": "0" },
+    { "images": 20, "price": "995,000",   "product": "signature", "score": "39%", "title": "Apartment for Sale | Ready", "beds": 3, "baths": 3, "area": "150 Sq. M.", "location": "Riyadh, East Riyadh, Al Yarmuk",     "bayutId": "88230479", "regaId": "7201347611", "posted": "Aug 31, 2026", "views": "1,007", "clicks": "3",  "leads": "0" },
+    { "images": 24, "price": "1,050,000", "product": "signature", "score": "33%", "title": "Apartment for Sale | Ready", "beds": 3, "baths": 3, "area": "156 Sq. M.", "location": "Riyadh, East Riyadh, Al Yarmuk",     "bayutId": "88230478", "regaId": "7201347593", "posted": "Aug 31, 2026", "views": "749",   "clicks": "5",  "leads": "0" }
+  ]
+}

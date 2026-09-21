@@ -185,3 +185,23 @@ Each step exists because skipping it cost real rework on the dashboard:
 - `deliverables/qa-<route>.md` exists
 - the page composes only catalogued classes, and the catalogue gained whatever
   the page needed
+
+---
+
+## Appendix · capture, in practice
+
+```
+tools/profolio-capture/        load once at chrome://extensions
+references/fixtures/<route>.json   invent the data, keep the shapes
+references/live/<route>.capture.json   what the extension writes
+```
+
+**Never commit a page built from a real account.** Compose from a fixture whose
+strings are the same length as the real ones — a two-word agency name where the
+real one is two words, an eight-digit Bayut id where the real one is eight
+digits — so the layout you are checking is the layout that ships. The dashboard's
+fixture is the worked example.
+
+The capture itself carries no account data by construction, and
+`npm run test-capture` asserts that. The screenshot does; capture on a test
+account if it matters, or send the JSON alone.

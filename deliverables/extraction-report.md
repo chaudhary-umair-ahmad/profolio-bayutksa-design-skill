@@ -119,7 +119,9 @@ text **“© 2026 – All Rights Reserved”** (an en dash, and the year is `get
 * `CardMetaStyled` gap 8px, `--card-height: 33px`, `titleFontWeight 700`, avatar `iconSize 24`.
   Dropdown: `padding 8px`, `suffixIcon "MdKeyboardArrowDown"` tinted `primary-color`,
   `iconSize 14px`. All **[read]**.
-* Name **“Alfalw Company LTD”** [read]. Renders only for `is_agency_admin` or a multi-platform user.
+* The agency name is API copy [read]. Renders only for `is_agency_admin` or a
+  multi-platform user. The deliverables show a fixture name — see
+  `references/fixtures/dashboard.json`.
 * The `TruBrokerTag` slot next to the name is empty here — `TRU_BROKER_ENABLED && is_tru_broker` is false. [inf]
 * Dropdown panel geometry — **[?]**
 
@@ -336,7 +338,10 @@ Answer these and I will fill them; I will not guess a number for any of them.
 
 ## One housekeeping note
 
-`dashboard.html` carries the real account data off your screenshot: the agency name,
-ten Bayut and REGA listing IDs, prices and locations. No phone numbers or email
-addresses. If this file is going anywhere beyond the team, say the word and I will
-swap the table for fixtures.
+`dashboard.html` used to carry the real account off your screenshot. It no longer
+does: every listing row, id and the agency name now come from
+`references/fixtures/dashboard.json` — invented data at the same shapes and
+string lengths, so layout stays honest and nothing real is committed.
+
+The chart series is still traced from the screenshot rather than sourced. It is
+a shape, not data, and it is marked as such in the fixture.
