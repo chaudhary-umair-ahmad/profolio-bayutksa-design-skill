@@ -31,6 +31,10 @@ Load what the task needs. Never load more.
 | `references/copy/<area>.md` | **The real shipped strings**, English beside Arabic. Load the area you are designing. |
 | `references/flags.md` | When a surface may be switched off or altered. |
 | `references/pages/<route>.board.html` | **The screen as an artboard** — real shell chrome with content blocked out from the layout skeleton. Open it in a browser; start from it rather than a blank page. |
+| `references/data/scales.md` | Before you write a spacing or size value. The only steps the product can express with a class — anything else has to be a literal. |
+| `references/data/colours.md` | When a colour depends on state: the completion ring, the plan badge, the platform accent. These are runtime lookups, not theme tokens, so `foundations.md` will not have them. |
+| `references/data/listing-table.md` | Any listings table. Columns in order, every disposition's Tag colour, and which upgrade or action is enabled for which state. |
+| `references/data/fonts.md` | Before you specify a weight. Only 300/400/700 ship; 500 and 600 are synthesised. |
 | `references/tokens/antd.md` | When a value looks like an antd default — Table padding, Badge, Progress, dividers, disabled states. Those are computed at runtime, not declared, and this is them resolved. |
 | `deliverables/sprite.svg` | **The product's real icons**, 64 of them, each named as the codebase names it. Reference one with `<use href="#pf-SideMenuDashboard">`. Never draw a glyph yourself. |
 | `references/screens/<route>.png` | **The live screen, if one has been captured.** Check it exists before you rely on it — `references/screens/` is empty until someone runs a capture, and most routes have none. When there is no screenshot, the artboard plus the page template is what you have. |

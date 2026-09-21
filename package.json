@@ -13,7 +13,8 @@
     "bundle": "node scripts/bundle.mjs",
     "check": "node scripts/check.mjs",
     "diff": "node scripts/reconcile.mjs --diff",
-    "all": "npm run icons && npm run fonts && npm run antd && npm run build && npm run site && npm run bundle && npm run combine && npm run check"
+    "all": "npm run icons && npm run fonts && npm run antd && npm run layers && npm run build && npm run site && npm run bundle && npm run combine && npm run check",
+    "layers": "node scripts/extract-layers.mjs --repo ../profolio-reactjs-copy --tenant bayut"
   },
   "devDependencies": {
     "antd": "5.20",
