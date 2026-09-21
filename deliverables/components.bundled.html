@@ -106,6 +106,13 @@
   --white:#fff;
 
   /* surfaces + borders */
+  /* antd's own resolved tokens — references/tokens/antd.md, from antd 5.20.6.
+     The product never overrides these, so they were "cannot tell" until the
+     token algorithm was actually run. */
+  --color-split:rgba(5, 5, 5, 0.06);       /* colorSplit — every antd Divider */
+  --color-fill-secondary:rgba(0, 0, 0, 0.06); /* colorFillSecondary — Progress track */
+  --color-border-secondary:#f0f0f0;        /* colorBorderSecondary — card border */
+
   --border-light:#F1F2F6;      /* borderColorLight */
   --border-normal:#DEDEDE;     /* borderColorNormal — input border */
   --border-deep:#C6D0DC;
@@ -209,9 +216,8 @@
   --tint-hot-10:rgb(247 49 49 / .10);
   --tint-for-rent-10:rgb(71 158 235 / .10);
   --tint-clicks-10:rgb(240 167 66 / .10);
-  /* status pill grounds — [TBC] only "Live" is on screen */
-  --tint-warning-12:rgb(240 167 66 / .12);
-  --tint-danger-12:rgb(247 49 49 / .12);
+  /* Superseded by the antd Tag presets above — listingDispositionMapper gives a
+     colour name ('green' | 'red' | ''), never a hex, so the pill uses --tag-*. */
   /* antd renders the tab-bar separator as a blurred #0007 rule */
   --rule-blur:rgb(0 0 0 / .47);
 
@@ -348,6 +354,8 @@
   /* upgrade + action grids — platformActions.js, table-actions.js */
   --action-cell:32px;
   --action-gap:8px;
+  --badge-h:16px;                      /* antd controlHeightXS */
+  --meter-h:8px;                       /* [TBC] antd Progress default stroke width */
 
   /* DateFilter.js — minWidth 250 on desktop; antd input padding is unoverridden */
   --datepicker-minw:250px;
@@ -482,8 +490,8 @@ table{border-collapse:collapse}
 .pf-rail-logo{
   display:grid;
   place-content:center;
-  color:var(--primary);          /* [TBC] the brand mark is <TenantComponents.Logo/>,
-                                    an SVG asset. Colour measured, not declared. */
+  /* ProfolioLogo carries its own #28B16D mark and #222 wordmark, so nothing
+     here needs to set a colour. */
 }
 .pf-rail-list{
   flex:1;
@@ -653,15 +661,16 @@ table{border-collapse:collapse}
   position:absolute;
   inset-block-start:calc(var(--sp-2) * -1);
   inset-inline-end:calc(var(--sp-2) * -1);
-  min-width:var(--sp-16);
-  height:var(--sp-16);
+  /* antd Badge: controlHeightXS 16, fontSizeSM 12 — references/tokens/antd.md */
+  min-width:var(--badge-h);
+  height:var(--badge-h);
   padding-inline:var(--sp-4);
   border-radius:var(--radius-chip);
   background:var(--danger);
   color:var(--white);
-  font-size:var(--fs-tag);
+  font-size:var(--fs-12);
   font-weight:var(--fw-700);
-  line-height:var(--sp-16);
+  line-height:var(--badge-h);
   text-align:center;
 }
 .pf-progress-ring{
@@ -673,7 +682,7 @@ table{border-collapse:collapse}
   display:grid;
   place-content:center;
   background:
-    conic-gradient(var(--ring-color, var(--success)) calc(var(--ring-pct) * 1%), var(--gray-100) 0);
+    conic-gradient(var(--ring-color, var(--classification-high)) calc(var(--ring-pct) * 1%), var(--color-fill-secondary) 0);
   position:relative;
 }
 .pf-progress-ring::before{
@@ -846,12 +855,14 @@ table{border-collapse:collapse}
    COMPONENT · divider
    antd Divider type=vertical, height 40 / stretch
    ═══════════════════════════════════════════════════════════════════════ */
-.pf-divider{border:0;border-inline-start:var(--border-w) solid var(--gray-100);margin:var(--sp-0)}
+/* antd Divider paints colorSplit, which resolves to rgba(5,5,5,0.06) —
+   not gray-100. references/tokens/antd.md */
+.pf-divider{border:0;border-inline-start:var(--border-w) solid var(--color-split);margin:var(--sp-0)}
 .pf-divider[data-orientation="vertical"]{width:0;height:var(--divider-40);align-self:center}
 .pf-divider[data-orientation="vertical"][data-stretch="true"]{height:auto;align-self:stretch}
 .pf-divider[data-orientation="horizontal"]{
   border-inline-start:0;
-  border-block-start:var(--border-w) solid var(--gray-100);
+  border-block-start:var(--border-w) solid var(--color-split);
   width:100%;
   height:0;
 }
@@ -871,9 +882,9 @@ table{border-collapse:collapse}
   display:block;
   margin-block-start:var(--gap-widget);
   width:100%;
-  height:var(--sp-8);
+  height:var(--meter-h);
   border-radius:var(--radius-chip);
-  background:var(--gray-100);
+  background:var(--color-fill-secondary);   /* antd Progress track */
   overflow:hidden;
 }
 .pf-credit-meter::before{
