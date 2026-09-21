@@ -67,7 +67,7 @@ Cite token names, never raw hex.
 
 ## Pre-flight — run this before you output a single artboard
 
-Eight checks. Each one has been failed in a real session; each takes seconds.
+Nine checks. Each one has been failed in a real session; each takes seconds.
 
 1. **Nav.** Count your sidebar items against the table in `kb/pages/_shell.html`. Labels must match
    character for character — **TruLeads**, not "Leads"; **Credits & Packages**, not "Packages".
@@ -86,6 +86,9 @@ Eight checks. Each one has been failed in a real session; each takes seconds.
    Figtree from Google Fonts, and **1,698 of the 1,708 elements** in the product's own render
    compute it. Lato is downloaded but paints nothing outside the lite experience.
    Figtree is **variable 300–900**, so 500 and 600 are real weights — ask for them freely.
+   It is **upright**. The Google URL the product uses asks for the italic axis too, and our own
+   font pipeline shipped the italic faces under a `normal` declaration for a while — every
+   artboard was slanted. If your type looks oblique, that is the bug, not the typeface.
 5. **Copy.** Every label, button, empty state and error in your design must come from
    `kb/product/copy/<area>.html`. **Never invent a string.** If the word you need is not there, name the
    file you checked and ask — invented copy is how "Post a Listing" ended up on the classified
@@ -99,6 +102,14 @@ Eight checks. Each one has been failed in a real session; each takes seconds.
    (`SideMenuDashboard`, `IconForSale`, `MdPhone`). **Never draw one.** If the icon you need is
    not in the sprite, name the one you looked for and ask — a hand-drawn glyph is the single
    most visible way a design stops looking like the product.
+9. **States.** A screen is not one picture. Before you design a flow, open
+   `deliverables/listings.html` and walk it: every modal, drawer and popover opens, every status
+   tab switches, and the bar at the bottom flips the page between **default, loading and error**.
+   `listings.html#state=modal-delete` goes straight to one. Each of those was captured from the
+   running product before it was drawn, and `deliverables/qa-listings.html` scores every one of
+   them. Two rules fall out of that and hold for your work too: **a disabled control is dimmed to
+   0.54** (`utils.less:142`, it is global), and **a failed list query shows the same “No Record
+   Found” empty state as an empty one** — Profolio has no separate error card for a table.
 
 If a check fails, fix it before producing. If the information genuinely is not in
 `kb/`, say which file you looked in and stop — a guess that looks confident is worse

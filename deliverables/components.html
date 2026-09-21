@@ -62,6 +62,12 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
   border-radius:var(--radius-tag);margin-block-start:var(--sp-12);
 }
 .cat-note[data-kind="tbc"]{background:rgb(240 167 66 / .10);border-inline-start-color:var(--warning)}
+/* the catalogue stages an overlay in the flow of the page rather than over it,
+   so the positioned components are pinned down here. These are CATALOGUE
+   classes, not product ones — no page uses them. */
+.cat-stage .pf-popover,.cat-stage .pf-drawer-head{position:static}
+.cat-stage .pf-noti{background:var(--card-bg);border-radius:var(--popover-radius-noti)}
+.cat-stage .pf-spin{block-size:120px}
 .cat-fill{width:520px;max-width:100%}
 /* .pf-sprite and .i-* live in profolio.css — shared with the page. */
 </style>
@@ -602,6 +608,13 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
   <a href="#c-filter">filter bar · field · input · select</a>
   <a href="#c-tabs">table card · line tabs</a>
   <a href="#c-pager">pagination</a>
+  <a href="#c-modal">modal</a>
+  <a href="#c-drawer">drawer</a>
+  <a href="#c-popover">popover · account menu · notifications</a>
+  <a href="#c-empty">empty state</a>
+  <a href="#c-spin">spin</a>
+  <a href="#c-applied">applied-upgrade tick</a>
+  <a href="#c-proto">prototype layer</a>
   <a href="#c-feedback">feedback-tab</a>
   <a href="#c-layout">layout primitives</a>
 </nav>
@@ -1676,6 +1689,186 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
     </table>
   </div>
 </section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     OVERLAYS — every one measured from a state capture. The harness opens
+     the thing on the product, walks it and screenshots it; only then is it
+     drawn here. The capture file behind each is named in its source line.
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="cat-sec" id="c-modal">
+  <header><h2>modal</h2><code>.pf-mask .pf-modal .pf-modal-head .pf-modal-title .pf-modal-body .pf-modal-foot .pf-overlay-close</code>
+    <span class="src">antd <code>&lt;Modal&gt;</code>, portalled onto <code>&lt;body&gt;</code>. Measured from
+      <code>data/live/listings--modal-delete</code> (620 wide) and
+      <code>data/live/listings--modal-download-app</code> (360).</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item" data-wide="true"><span class="cat-label">default — 620 wide, head 57, foot 73</span>
+        <div class="cat-stage" data-ground="gray" data-stack="true">
+          <div class="pf-modal">
+            <div class="pf-modal-head"><span class="pf-modal-title">Delete Listing</span>
+              <button class="pf-overlay-close" type="button" aria-label="Close"><svg class="i i-16"><use href="#pf-IoMdClose"/></svg></button></div>
+            <div class="pf-modal-body"><p><strong>Why are you deleting your listing?</strong></p></div>
+            <div class="pf-modal-foot">
+              <button class="pf-btn" type="button"><span>Cancel</span></button>
+              <button class="pf-btn" data-variant="primary" type="button"><span>Delete</span></button>
+            </div>
+          </div>
+        </div></div>
+      <div class="cat-item" data-wide="true"><span class="cat-label">data-size="small" — 360, and a title the modal supplies itself</span>
+        <div class="cat-stage" data-ground="gray" data-stack="true">
+          <div class="pf-modal" data-size="small">
+            <div class="pf-modal-head"><span class="pf-modal-title" data-size="lg">Get the Bayut KSA App</span>
+              <button class="pf-overlay-close" type="button" aria-label="Close"><svg class="i i-16"><use href="#pf-IoMdClose"/></svg></button></div>
+            <div class="pf-modal-body"><div class="pf-modal-lead">Scan the QR code to download the app</div></div>
+          </div>
+        </div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--mask-bg</code> rgba(0,0,0,.45) · <code>--modal-w</code> 620 · <code>--modal-w-sm</code> 360 · <code>--modal-radius</code> 8 · <code>--modal-head-pad</code> 16 24 · <code>--modal-body-pad</code> · <code>--modal-foot-pad</code> 16 24 · <code>--overlay-z</code> 1000</td></tr>
+      <tr><th>title</th><td>16/700 at <code>--lh-modal-title</code> 1.5 by default; <code>data-size="lg"</code> is 20/600, which is what the Download App modal passes as its own node</td></tr>
+      <tr><th>rules</th><td>head <code>--gray-100</code> #f0f0f0 · foot <code>--gray-100</code></td></tr>
+      <tr><th>z-index</th><td><strong>1000</strong>, which is BELOW the rail's 1002 — the rail stays bright over an open modal. Measured, and it was 1050 here until the state QA put shell.sider at 99.4%.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="cat-sec" id="c-drawer">
+  <header><h2>drawer</h2><code>.pf-drawer .pf-drawer-head .pf-drawer-body .pf-drawer-foot</code>
+    <span class="src">antd <code>&lt;Drawer placement="right"&gt;</code> —
+      <code>data/live/listings--drawer-filters</code>, 450 wide, head 91, mask 0.45.</span></header>
+  <div class="cat-body">
+    <div class="cat-row"><div class="cat-item" data-wide="true"><span class="cat-label">filters drawer, head and foot</span>
+      <div class="cat-stage" data-ground="gray" data-stack="true">
+        <div class="pf-drawer-head">
+          <div><div class="pf-modal-title">Filters</div><div class="pf-listing-loc">Apply filters to organize data accordingly</div></div>
+          <button class="pf-overlay-close" type="button" aria-label="Close"><svg class="i i-16"><use href="#pf-IoMdClose"/></svg></button>
+        </div>
+      </div></div></div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--drawer-w</code> 450 · <code>--drawer-head-h</code> 91 · <code>--drawer-head-pad</code> 16 · <code>--drawer-body-pad</code> 16 · <code>--drawer-foot-pad</code> 24 16 · <code>--drawer-border</code> rgba(5,5,5,.06)</td></tr>
+      <tr><th>mask</th><td>its own element (<code>data-mask</code> points at it), because the panel is fixed to the inline end rather than centred in the mask</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="cat-sec" id="c-popover">
+  <header><h2>popover · account menu · notifications</h2>
+    <code>.pf-popover[data-kind] .pf-user-info .pf-user-avatar .pf-verified .pf-menu-list .pf-noti .pf-noti-card</code>
+    <span class="src">Both header menus are <code>.ant-popover</code>, not the drawer and dropdown I first
+      assumed. <code>data/live/listings--popover-account</code> 400×233 radius 10 ·
+      <code>data/live/listings--popover-notifications</code> 590 radius 8 · auth-info-style.js:250, :280.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item" data-wide="true"><span class="cat-label">account menu</span>
+        <div class="cat-stage" data-ground="gray" data-stack="true">
+          <div class="pf-popover" data-kind="account">
+            <div class="pf-user-info">
+              <div class="pf-user-row"><span class="pf-user-avatar"><svg class="i i-20"><use href="#pf-FiUser"/></svg></span>
+                <div class="pf-user-meta"><div class="pf-user-name">Faisal Al-Harbi</div>
+                  <div class="pf-user-sub"><span class="pf-user-role">Agency User</span><svg class="i"><use href="#pf-GoDotFill"/></svg><span class="pf-user-email">faisal@najdhorizon.example</span></div></div></div>
+              <span class="pf-verified">Nafath Verified<svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg></span>
+              <span class="pf-verified">REGA Verified<svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg></span>
+            </div>
+            <ul class="pf-menu-list">
+              <li><a href="#"><svg class="i i-16"><use href="#pf-FiUser"/></svg><span>Account Settings</span></a></li>
+              <li><button type="button"><svg class="i i-16"><use href="#pf-FiLogOut"/></svg><span>Sign Out</span></button></li>
+            </ul>
+          </div>
+        </div></div>
+      <div class="cat-item" data-wide="true"><span class="cat-label">notification rows — unread and read</span>
+        <div class="cat-stage" data-ground="gray" data-stack="true">
+          <div class="pf-noti">
+            <div class="pf-noti-head"><div class="pf-noti-head-start"><h5 class="pf-noti-title">Notifications</h5></div>
+              <button class="pf-btn" data-variant="link" type="button">Mark all as read</button></div>
+            <div class="pf-noti-card" data-unread><div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">Your listing is live</span></div><span class="pf-noti-time">an hour ago</span></div>
+            <div class="pf-noti-card"><div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">TruCheck visit scheduled</span></div><span class="pf-noti-time">3 days ago</span></div>
+          </div>
+        </div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--popover-w-account</code> 400 · <code>--popover-w-notifications</code> 590 · <code>--popover-radius</code> 10 · <code>--popover-radius-noti</code> 8 · <code>--popover-z</code> 99999 · <code>--avatar-40</code> · <code>--tag-h</code> 26 · <code>--tag-gap</code> 6 · <code>--menu-item-pad</code> 12 4 · <code>--noti-row-gap</code> 20</td></tr>
+      <tr><th>menu item</th><td>16/600 <code>--gray-700</code>, each <code>&lt;li&gt;</code> with a 1px <code>--gray-400</code> #DEDEDE top border (auth-info-style.js:283)</td></tr>
+      <tr><th>notification row</th><td>an <code>.ant-card</code>: radius 10, <code>--gray-100</code> border, 12 padding, 4 below. <strong>Unread is <code>--primary-light</code> #F7FCFC</strong>, read is white; the glyph is the primary colour at 20 and the time is 12px <code>--gray-600</code>.</td></tr>
+      <tr><th>z-index</th><td>99999 — a popover is not masked and the product lifts it clear of everything, unlike the modal at 1000</td></tr>
+      <tr><th>[TBC]</th><td>the Nafath wordmark inside the first pill is the product's own 20×9 SVG and is not in our sprite; the label stands in for it</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="cat-sec" id="c-empty">
+  <header><h2>empty state</h2><code>.pf-empty .pf-empty-art .pf-empty-title</code>
+    <span class="src">EmptyState.js:31 <code>type="table"</code> — an <code>EmptyListing</code> illustration in
+      <code>primary-light-2</code>, the title “No Record Found” and a primary button.
+      <code>data/live/listings--tab-removed</code>, captured after teaching the fixture to honour the tab.</span></header>
+  <div class="cat-body">
+    <div class="cat-row"><div class="cat-item" data-wide="true"><span class="cat-label">table empty · also what a failed query renders</span>
+      <div class="cat-stage" data-ground="white" data-stack="true">
+        <div class="pf-empty">
+          <div><div class="pf-empty-title">No Record Found</div></div>
+          <button class="pf-btn" data-variant="primary" data-size="large" type="button"><svg class="i"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></button>
+        </div>
+      </div></div></div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--empty-gap</code> 32 · <code>--empty-min-h</code> 300 · <code>--empty-title-mb</code> 9</td></tr>
+      <tr><th>art</th><td>164×89 intrinsic, inlined from <code>deliverables/inline-art.html</code> because it carries its own fills</td></tr>
+      <tr><th>title</th><td>18/600 in <code>--black</code> — an antd <code>Heading as="h5"</code> with an explicit <code>#000</code></td></tr>
+      <tr><th>error</th><td><strong>There is no separate error card.</strong> A 500 from the listings query renders this same empty state — captured, not assumed (<code>data/live/listings--error</code>).</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="cat-sec" id="c-spin">
+  <header><h2>spin</h2><code>.pf-spin .pf-spin-dot</code>
+    <span class="src">antd <code>&lt;Spin&gt;</code> inside the table body, captured by holding the listings
+      request open — <code>data/live/listings--loading</code>.</span></header>
+  <div class="cat-body">
+    <div class="cat-row"><div class="cat-item"><span class="cat-label">table loading</span>
+      <div class="cat-stage" data-ground="white" data-stack="true">
+        <div class="pf-spin"><span class="pf-spin-dot"><i></i><i></i><i></i><i></i></span></div>
+      </div></div></div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--spin-area-h</code> 400 · <code>--spin-dot-box</code> 27 · <code>--spin-dot</code> 9 · <code>--loading-opacity</code> 0.65</td></tr>
+      <tr><th>colour</th><td><code>--primary</code> #006169, measured on the dots</td></tr>
+      <tr><th>the rest of the page</th><td>the card head stays 47 tall but carries NO tabs — the counts come from the same query — and the Search button sits at 0.65</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="cat-sec" id="c-applied">
+  <header><h2>applied-upgrade tick</h2><code>.pf-round-action-wrap .pf-applied-check .pf-round-action[data-applied]</code>
+    <span class="src">upgrade-icons.js:50 renders an <code>HiCheck</code> beside the circle when the upgrade is
+      applied; upgrade-icons/styled.js:29 gives it <code>--icon-bg</code> #28b16d at −2/−2.</span></header>
+  <div class="cat-body">
+    <div class="cat-row">
+      <div class="cat-item"><span class="cat-label">not applied — and disabled, as every circle on the listings screen is</span>
+        <div class="cat-stage" data-ground="white"><span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot" disabled><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span></div></div>
+      <div class="cat-item"><span class="cat-label">applied</span>
+        <div class="cat-stage" data-ground="white"><span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" data-applied type="button" aria-label="Hot" disabled><svg class="i"><use href="#pf-IconSuperHot"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span></div></div>
+    </div>
+    <table class="cat-spec">
+      <tr><th>tokens</th><td><code>--applied-check</code> 14 · <code>--applied-check-inset</code> −2 · <code>--icon-applied</code> 19 · <code>--action-cell</code> 36 · <code>--action-gap-dense</code> 4</td></tr>
+      <tr><th>state</th><td>platformActions.js:142 disables a circle when it is neither applied nor applicable AND when it is applied — so every one of them is at <code>--disabled-opacity</code> 0.54 on this screen</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="cat-sec" id="c-proto">
+  <header><h2>prototype layer</h2><code>data-open data-close data-panel data-panel-id data-state-set data-state-panel</code>
+    <span class="src">deliverables/prototype.js — <strong>not a product component</strong>. It is what makes the
+      reference pages walkable, and it is the only code in the deliverables that the product does not have.</span></header>
+  <div class="cat-body">
+    <table class="cat-spec">
+      <tr><th><code>data-open="id"</code></th><td>opens that overlay and remembers the trigger. Esc closes, the mask closes, focus is trapped while it is open and returns to the trigger on close.</td></tr>
+      <tr><th><code>data-close</code></th><td>closes the overlay the button sits in</td></tr>
+      <tr><th><code>data-panel="name"</code></th><td>a tab: selects itself and shows <code>[data-panel-id="name"]</code>, hiding only its own siblings so two tab groups on one page cannot fight</td></tr>
+      <tr><th><code>data-state-set="name"</code></th><td>a page state: shows <code>[data-state-panel="name"]</code> and sets <code>data-page-state</code> on <code>&lt;body&gt;</code>, so a rule can dress what sits outside the panel</td></tr>
+      <tr><th><code>#state=name</code></th><td>reaches any of the three by name — an overlay id, a tab name or a page state. It is also how <code>qa-design.mjs</code> reaches a state to score it.</td></tr>
+      <tr><th>the bar</th><td><code>.pf-proto-bar</code> is labelled “Prototype” on the page and hidden by the QA before it measures</td></tr>
+      <tr><th>the guard</th><td><code>scripts/check.mjs</code> fails on a trigger with no target, and <code>scripts/test-prototype.mjs</code> walks every one in a real browser: open, Escape, focus returns</td></tr>
+    </table>
+  </div>
+</section>
+
 <section class="cat-sec" id="c-feedback">
   <header><h2>feedback-tab</h2><code>.pf-feedback-tab</code>
     <span class="src">Not in this repo.</span></header>

@@ -6,7 +6,7 @@
       "id": "shell.content",
       "prop": "height",
       "live": "1817.62px",
-      "ours": "1799.02px",
+      "ours": "1791.02px",
       "w": 3
     },
     {
@@ -26,8 +26,8 @@
     {
       "id": "table.cell",
       "prop": "box.w",
-      "live": 457,
-      "ours": 471,
+      "live": 456,
+      "ours": 470,
       "w": 2
     },
     {
@@ -40,8 +40,8 @@
     {
       "id": "table.head",
       "prop": "box.w",
-      "live": 457,
-      "ours": 471,
+      "live": 456,
+      "ours": 470,
       "w": 2
     },
     {
@@ -54,8 +54,8 @@
     {
       "id": "filter.clear",
       "prop": "width",
-      "live": "69px",
-      "ours": "71px",
+      "live": "68px",
+      "ours": "70px",
       "w": 1
     },
     {
@@ -69,9 +69,9 @@
       "id": "pager",
       "prop": "box.y",
       "live": 1818,
-      "ours": 1799,
+      "ours": 1791,
       "w": 1
     }
   ],
-  "at": "2026-09-21T16:52:19.107Z"
+  "at": "2026-09-21T18:58:05.560Z"
 }

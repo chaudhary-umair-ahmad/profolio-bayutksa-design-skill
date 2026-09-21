@@ -63,9 +63,14 @@ column width it fits on one. Same cause as above.
    when `purpose.slug === 'sale'` and the fixture's slug is `for-sale`. The
    fixture is wrong, not the page — `data/fixtures/listings.json` inherits it
    from the dashboard's, which was read off the live screenshot.
-2. **Applied upgrades have no check badge.** The product draws a small green
-   tick on an applied upgrade circle; neither page does. It is in
-   `table-actions.js` and not yet catalogued.
+2. ~~**Applied upgrades have no check badge.**~~ **Closed.** It is
+   `upgrade-icons.js:50` — an `HiCheck` rendered beside the circle when the
+   upgrade is applied, 14×14 on `#28b16d` at −2/−2 (`styled.js:29`). Built,
+   catalogued, and it brought two more measurements with it: an applied circle
+   keeps its product colour at 10% with a 19px glyph while every other circle
+   is `#F4F5F7` under `rgb(173,180,210)` at 16, and **all of them are
+   disabled** — `platformActions.js:142` disables a circle when it is neither
+   applied nor applicable AND when it is applied.
 3. **The filter input's focus ring and the select's open state are TBC.**
    Nothing is focused in a capture, so neither was measured; antd's is
    `0 0 0 2px` of the primary at 10%, unverified here.
@@ -163,16 +168,102 @@ A check that has never failed is not evidence.
 
 | | |
 |---|---|
-| shell.sider | 5.0% — inside threshold |
-| shell.footer | 2.0% — inside threshold |
-| shell.header | 10.1% — **over**, and the remainder is the title inside it |
-| shell.title | 23.3% — **over**; 106px vs 110px on one 11-character string |
-| table.thumb | 95.5% — expected: the product renders an image, we render the grey placeholder a design system should |
+| region score | **94.9%** — 10 disagreements, all one cascade: the auto column widths |
+| shell.sider / header / title / footer | **all inside threshold, in all 13 states** |
 | off-scale values | 0 |
+| px literals outside `:root` | 0 |
 | physical properties | 0 |
 | RTL | no overflow |
-| contrast below 4.5:1 | 74 — **not yet triaged against the product's own values** |
+| contrast | **0 ours** / 74 the product's own |
+| states captured and scored | **13** |
 
-The two open items are honest: the title is four pixels narrow at 20/700, and
-the contrast list has not been compared against the product. Neither is fixed by
-guessing.
+---
+
+# The states
+
+`94.9%` measured one screen. A page can score that and still be useless to
+walk, and this one was. Thirteen states are captured from the product now and
+every one is scored the same way the default is:
+
+| state | what it is |
+|---|---|
+| `modal-trucheck` `modal-delete` `modal-download-app` | row actions and the header |
+| `drawer-filters` | Show More |
+| `popover-notifications` `popover-account` | the header bell and avatar |
+| `tab-draft` `tab-pending` `tab-removed` `tab-ad-license-requests` | every status tab |
+| `loading` `error` | the query held open, and the query failing |
+
+Reach any of them in the page with `listings.html#state=<name>`; that is also
+how `qa-design.mjs` gets to them.
+
+## What the states found that the default screen could not
+
+**We shipped Figtree Italic.** The Google URL asks for
+`ital,wght@0,300..900;1,300..900` and Google answers italic-first.
+`scripts/fonts.mjs` took the first `latin` block it saw, cached it under the
+upright name and wrote `font-style:normal` over it. Every page in the design
+system painted in italic — and because the harness serves that same file to
+the product, **both sides of every comparison were italic** and no number
+moved. It took looking at a magnified crop to see it.
+
+**The rail stays bright over a modal.** Both masks measure `z-index: 1000`
+(antd's `zIndexPopupBase`) and the sider is 1002. Ours was 1050, so it dimmed
+the rail: `shell.sider` read 99.4% different in every masked state. A popover
+is not masked at all and the product lifts it to 99999.
+
+**`[disabled] { opacity: 0.54 }` is a global rule** (`utils.less:142`). Three
+of our components carried an invented 0.45, and the Clear filters button is
+*disabled* whenever no filter is applied (`filters.js:641`) — which is the
+default screen.
+
+**The Draft tab is not the Active tab with fewer rows.** The tab is a query
+parameter (`f[nested.platform_listings.status.slug]`), and each tab gets its
+own column set from `listingUtilities.js:402`: Draft trades Performance for
+Publish, Pending drops both, Removed carries both. The harness answered every
+tab with the same ten rows until this was fixed, so **"Removed (0)" rendered
+ten listings** and the empty state had never been captured at all.
+
+**A failed query shows no error card.** `/api/surge/listings` answering 500
+renders the same *No Record Found* empty state as an empty one. That was worth
+capturing rather than guessing, and the page does what the product does.
+
+**An upgrade circle is coloured only when the upgrade is applied.** Ours lit
+five of six on every row.
+
+## What the QA itself had wrong
+
+**It compared colour channels.** The product rasterises text greyscale and we
+rasterise subpixel, so every glyph edge carried orange and blue fringes:
+`shell.title` read 23.8% on a region with *no* measurable disagreement — same
+family, size, weight, line-height, colour and box. It compares luminance now.
+The cause is a composited layer in the product's tree, not a style we are
+missing: `-webkit-font-smoothing: antialiased` is a no-op in this Chromium
+(781 vs 725 coloured pixels in a controlled render) while
+`transform: translateZ(0)` takes it to zero.
+
+**It ranked regions hidden behind an open overlay.** The account popover sits
+on the filter buttons, and `filter.showmore` duly read 49.5% different — every
+pixel of it the popover. Those are marked *behind the overlay* now, not ranked.
+
+**It paired the wrong elements for `tabs.active`.** The product's region is the
+74×22 label inside the tab; ours was the 74×46 button. 42% of that was the
+button's own padding. Our markup carries a `.pf-tab-label` now, exactly as antd
+carries `.ant-tabs-tab-btn`.
+
+## Still open
+
+- **Table column widths**, unchanged and deliberate: product `456 250 138 103
+  197 190`, ours `470 240 143 99 192 190`. Both are auto-layout over the same
+  content; forcing a `<colgroup>` of measured widths would match this one
+  render and teach the system nothing. Page height (1892 vs 1918) follows from
+  it, as does `table.cell` at 24.5%.
+- `filter.clear` 13.1% and `tabs.active` 13.0% — two-pixel label widths, the
+  browser's own metrics.
+- The **Download App** modal body is 17.4% different because the QR and the two
+  store badges are art we do not ship; they are drawn as labelled placeholders
+  at the measured 166×166 and 111×33.
+- Six row-action overlays (hide, unhide, booking, change owner, apply discount,
+  the listing drawer) are **not built**, because they do not render for these
+  fixtures and there is nothing to measure. They need the fixture backlog
+  first — an overlay drawn from imagination is exactly what this method exists
+  to prevent.
