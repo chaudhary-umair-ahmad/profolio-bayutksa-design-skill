@@ -17,7 +17,7 @@ states    loading · empty · error · flag-off
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
 shot      not captured — run scripts/capture.mjs
-board     `references/pages/event-checkout.html` — open in a browser to see this screen
+board     `references/pages/event-checkout.board.html` — the screen as an artboard
 ```
 
 ## Reference screenshot

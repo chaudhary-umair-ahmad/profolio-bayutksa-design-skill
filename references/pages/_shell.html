@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Profolio shell — Profolio KSA</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap">
+<style>
+:root{--bg:#f2f5f5;--paper:#fff;--ink:#16211f;--ink2:#41544f;--mute:#6f817d;
+ --rule:#d6e0de;--soft:#eaf0ef;--accent:#006169;--code:#f4f7f7}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1312;--paper:#131e1c;--ink:#e6eeec;--ink2:#b3c4c0;
+ --mute:#7f938e;--rule:#243432;--soft:#182422;--accent:#63c3c6;--code:#101a19}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Lato,-apple-system,"Segoe UI",sans-serif;
+ -webkit-font-smoothing:antialiased}
+.page{max-width:900px;margin:0 auto;padding:34px 22px 90px}
+.crumb{font:500 11.5px ui-monospace,monospace;color:var(--accent);letter-spacing:.04em;margin-bottom:6px}
+.back{font:12px ui-monospace,monospace;color:var(--mute);text-decoration:none;display:inline-block;margin-bottom:18px}
+.back:hover{color:var(--accent)}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:28px 32px}
+h2{font-size:26px;margin:0 0 14px;letter-spacing:-.02em;line-height:1.14}
+h3{font-size:17px;margin:26px 0 8px}h4{font-size:14px;margin:20px 0 6px;color:var(--ink2)}
+p{margin:0 0 11px;color:var(--ink2);max-width:76ch}
+ul,ol{margin:0 0 12px;padding-inline-start:22px;color:var(--ink2)}li{margin-bottom:4px}
+strong{color:var(--ink)}a{color:var(--accent)}hr{border:0;border-top:1px solid var(--rule);margin:22px 0}
+blockquote{margin:0 0 12px;padding:12px 16px;background:var(--soft);border-inline-start:3px solid var(--accent);
+ color:var(--ink2);font-size:14px;border-radius:0 4px 4px 0}
+code{font:12.5px ui-monospace,SFMono-Regular,monospace;background:var(--code);padding:.13em .38em;
+ border-radius:3px;word-break:break-word}
+pre.code{background:var(--code);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre.code code{background:none;padding:0;font-size:12px;line-height:1.65;white-space:pre}
+.tw{overflow-x:auto;margin:0 0 14px;border:1px solid var(--rule);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:420px}
+th,td{text-align:start;padding:9px 13px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{background:var(--soft);font:600 10.5px ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase;
+ color:var(--mute);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}td{color:var(--ink2)}
+.boardlink{display:inline-block;margin-bottom:16px;padding:9px 14px;background:var(--accent);color:#fff;
+ border-radius:6px;text-decoration:none;font-weight:600;font-size:13.5px}
+</style></head><body><div class="page">
+  <div class="crumb">pages/_shell.md</div>
+  <a class="back" href="../../site/index.html">&larr; whole design system</a>
+  
+  <div class="card"><h2>The Profolio shell</h2>
+<p><strong>Every Profolio KSA screen starts here.</strong> There is no blank canvas. A screen that does not exist yet still has the header, side navigation and footer — so the worst case a designer receives is correct chrome around an empty content area, never an improvised layout.</p>
+<p>Source: <code>src/layout/withAdminLayout.js</code> · <code>src/tenant/common/menuList/menuList.js</code></p>
+<h3>Measurements — use these, do not estimate</h3>
+<div class="tw"><table><thead><tr><th>Part</th><th>Value</th><th>Source</th></tr></thead><tbody><tr><td>Sider width, expanded</td><td><strong>220px</strong></td><td><code>SIDEBAR_EXPANDED_WIDTH</code></td></tr><tr><td>Sider width, collapsed</td><td><strong>60px</strong></td><td><code>SIDEBAR_COLLAPSED_WIDTH</code></td></tr><tr><td>Header height</td><td><strong>74px</strong></td><td>layout</td></tr><tr><td>Content ground</td><td><code>#F6F7FB</code></td><td>layout</td></tr><tr><td>Page header padding</td><td><code>24px 32px</code> (<code>26px 15px</code> ≤768px, <code>16px 20px</code> ≤576px)</td><td>style.less</td></tr><tr><td>Footer</td><td><code>#fafafa</code> · <code>24px 15px</code></td><td>layout</td></tr><tr><td>Mobile sider drawer</td><td>280px at <code>top: 75px</code>, 0.35s ease-in</td><td>layout</td></tr></tbody></table></div>
+<h3>The sidebar — these exact 14 entries, these exact labels</h3>
+<p>Never invent, rename, reorder or omit one. "TruLeads" is not "Leads"; "Credits &amp; Packages" is not "Packages"; there is no top-level "Licenses" entry.</p>
+<div class="tw"><table><thead><tr><th>Label</th><th>Path</th><th>Shown when</th><th>Roles</th></tr></thead><tbody><tr><td><strong>Overview</strong></td><td><code>/dashboard</code></td><td>always</td><td>all</td></tr><tr><td><strong>Post Listing</strong></td><td><code>/post-listing</code></td><td>always</td><td>all</td></tr><tr><td><strong>My Listings</strong></td><td><code>/listings</code></td><td>always</td><td>all</td></tr><tr><td><strong>Credits Usage</strong></td><td><code>/credits-usage</code></td><td><code>user &amp;&amp; user.isCurrencyUser</code></td><td>all</td></tr><tr><td><strong>Inbox</strong></td><td><code>/inbox/received</code></td><td><code>!HIDE_INBOX</code></td><td>all</td></tr><tr><td><strong>TruLeads</strong></td><td><code>/lms/truleads</code></td><td><code>user?.is_lms_enabled &amp;&amp; IS_LMS_ENABLED &amp;&amp; !HIDE_REPORTS</code></td><td>all</td></tr><tr><td><strong>Agent Performance</strong></td><td><code>/agent-performance</code></td><td><code>AGENT_PERFORMANCE_ENABLED</code></td><td>all</td></tr><tr><td><strong>Reports</strong></td><td><code>— (parent)</code></td><td><code>user &amp;&amp; user.isCurrencyUser &amp;&amp; !HIDE_REPORTS</code></td><td>premium</td></tr><tr><td>&amp;nbsp;&amp;nbsp;↳ <strong>Summary</strong></td><td><code>/reports/summary</code></td><td><code>user &amp;&amp; user.isCurrencyUser &amp;&amp; !HIDE_REPORTS</code></td><td>premium</td></tr><tr><td>&amp;nbsp;&amp;nbsp;↳ <strong>Listing Report</strong></td><td><code>/reports/listing-report</code></td><td><code>user &amp;&amp; user.isCurrencyUser &amp;&amp; !HIDE_REPORTS</code></td><td>premium</td></tr><tr><td>&amp;nbsp;&amp;nbsp;↳ <strong>Leads &amp; Reach Report</strong></td><td><code>/reports/leads-reports</code></td><td><code>user &amp;&amp; user.isCurrencyUser &amp;&amp; !HIDE_REPORTS</code></td><td>premium</td></tr><tr><td><strong>Agency Staff</strong></td><td><code>/agency-staff</code></td><td>always</td><td>staff, agency only</td></tr><tr><td><strong>Settings</strong></td><td><code>/user-settings/user-profile</code></td><td>always</td><td>all</td></tr><tr><td><strong>Credits &amp; Packages</strong></td><td><code>/packages</code></td><td><code>user &amp;&amp; user.isCurrencyUser</code></td><td>all</td></tr></tbody></table></div>
+<h3>Header parts, in order</h3>
+<ol><li>Logo — Bayut + KSA lockup</li><li>Header search — <strong>hidden on KSA</strong>, <code>SHOW_SEARCH_HEADER: false</code></li><li>Platform segmented control — multi-platform users only</li><li>Credits summary</li><li>Notification bell with unread badge</li><li><strong>Classified pill</strong> — a link out to the classified site, min-width 148.71px, 1px <code>#f0f0f0</code></li></ol>
+<p>   border, radius 6px, 36px tall. It is a bordered link, <strong>not a solid primary button</strong>, and    it is not "Post a Listing".</p>
+<ol><li>Account dropdown — avatar plus name</li></ol>
+<h3>Starting markup</h3>
+<p>Copy this. It is the shell at the measurements above, with the real nav. Replace only the content area.</p>
+<pre class="code lang-html"><code>&lt;div class="pf"&gt;
+  &lt;header class="pf-header"&gt;
+    &lt;div class="pf-logo"&gt;bayut &lt;span&gt;KSA&lt;/span&gt;&lt;/div&gt;
+    &lt;div class="pf-spacer"&gt;&lt;/div&gt;
+    &lt;div class="pf-credits"&gt;&lt;em&gt;Credits&lt;/em&gt;&lt;b&gt;1,280&lt;/b&gt;&lt;/div&gt;
+    &lt;button class="pf-bell" aria-label="Notifications"&gt;7&lt;/button&gt;
+    &lt;a class="pf-classified" href="#"&gt;Go to Bayut.sa&lt;/a&gt;
+    &lt;div class="pf-account"&gt;&lt;span class="av"&gt;SA&lt;/span&gt; Saad Al-Harbi&lt;/div&gt;
+  &lt;/header&gt;
+  &lt;nav class="pf-sider"&gt;
+    &lt;a href="/dashboard" class="on"&gt;Overview&lt;/a&gt;
+    &lt;a href="/post-listing"&gt;Post Listing&lt;/a&gt;
+    &lt;a href="/listings"&gt;My Listings&lt;/a&gt;
+    &lt;a href="/credits-usage"&gt;Credits Usage&lt;/a&gt;
+    &lt;a href="/inbox/received"&gt;Inbox&lt;/a&gt;
+    &lt;a href="/lms/truleads"&gt;TruLeads&lt;/a&gt;
+    &lt;a href="/agent-performance"&gt;Agent Performance&lt;/a&gt;
+    &lt;div class="grp"&gt;&lt;span&gt;Reports&lt;/span&gt;
+      &lt;a href="/reports/summary"&gt;Summary&lt;/a&gt;
+      &lt;a href="/reports/listing-report"&gt;Listing Report&lt;/a&gt;
+      &lt;a href="/reports/leads-reports"&gt;Leads &amp; Reach Report&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;a href="/agency-staff"&gt;Agency Staff&lt;/a&gt;
+    &lt;a href="/user-settings/user-profile"&gt;Settings&lt;/a&gt;
+    &lt;a href="/packages"&gt;Credits &amp; Packages&lt;/a&gt;
+  &lt;/nav&gt;
+  &lt;main class="pf-content"&gt;&lt;!-- the screen goes here --&gt;&lt;/main&gt;
+  &lt;footer class="pf-footer"&gt;
+    &lt;small&gt;© 2026 Bayut KSA&lt;/small&gt;
+    &lt;span class="rega"&gt;Licensed by &lt;b&gt;REGA&lt;/b&gt; · &lt;a href="#"&gt;Report to REGA&lt;/a&gt;&lt;/span&gt;
+  &lt;/footer&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+.pf{display:grid;grid-template-columns:220px 1fr;background:#F6F7FB;
+    font-family:Lato,'Droid Arabic Kufi',sans-serif;font-size:14px;line-height:1.571;color:#222}
+.pf-header{grid-column:1/-1;height:74px;background:#fff;border-bottom:1px solid #F1F2F6;
+    display:flex;align-items:center;gap:18px;padding:0 24px}
+.pf-logo{width:196px;flex:none;font-weight:900;color:#006169;font-size:19px}
+.pf-logo span{font-weight:400;font-size:12px;color:#9D9D9D;text-transform:uppercase}
+.pf-spacer{flex:1}
+.pf-credits{display:flex;flex-direction:column;padding-inline-end:18px;border-right:1px solid #f0f0f0}
+.pf-credits em{font-style:normal;font-size:10.5px;color:#9D9D9D;text-transform:uppercase}
+.pf-credits b{font-size:14px;color:#222}
+.pf-bell{background:none;border:0;color:#5A5F7D;cursor:pointer}
+.pf-classified{min-width:148.71px;height:36px;border:1px solid #f0f0f0;border-radius:6px;
+    display:grid;place-items:center;padding:0 16px;color:#767676;text-decoration:none;font-size:13px}
+.pf-account{display:flex;align-items:center;gap:9px;font-size:13px;color:#4f4f4f}
+.pf-account .av{width:36px;height:36px;border-radius:50%;background:#E1F2F0;color:#006169;
+    display:grid;place-items:center;font-weight:700;font-size:13px}
+.pf-sider{background:#fff;border-right:1px solid #F1F2F6;padding:30px 0 0}
+.pf-sider a{display:block;padding:8px 16px;margin:0 15px 8px;border-radius:4px;
+    font-weight:500;color:#222;text-decoration:none}
+.pf-sider a:hover{background:#F8F9FB;color:#006169}
+.pf-sider a.on{background:#F7FCFC;color:#006169;font-weight:600}
+.pf-sider .grp&gt;span{display:block;padding:8px 16px;margin:0 15px;font-weight:500;color:#222}
+.pf-sider .grp a{font-weight:400;padding-block:7px;margin-inline-start:31px}
+.pf-content{padding:24px 32px;display:grid;grid-template-rows:auto 1fr;gap:16px}
+.pf-footer{grid-column:1/-1;background:#fafafa;padding:24px 15px;border-top:1px solid #F1F2F6;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11.5px;color:#707070}
+.pf-footer b{color:#006169}
+@media (max-width:992px){.pf{grid-template-columns:1fr}.pf-sider{display:none}}
+&lt;/style&gt;</code></pre>
+<h3>Variants</h3>
+<p><code>withAdminLayout.js</code> branches four ways. Name which one you are designing.</p>
+<div class="tw"><table><thead><tr><th>Variant</th><th>Condition</th><th>What changes</th></tr></thead><tbody><tr><td><code>isMobile</code></td><td>≤992px</td><td>Sider → 280px drawer at <code>top:75px</code>. <code>lite-header-dropdown</code> replaces the account menu; <code>lite-sidebar-drawer</code> replaces the sider. Cards lose their border; selects shrink to 40px.</td></tr><tr><td><code>isMemberArea</code></td><td><code>HAS_MEMBER_AREA: true</code> on KSA</td><td>Reduced chrome. <strong>This is the lite surface — v2, not specified.</strong> Stop and say so.</td></tr><tr><td><code>topMenu</code></td><td>layout preference</td><td>Horizontal nav replaces the sider.</td></tr><tr><td><code>isWebView</code></td><td>embedded in the app</td><td>Chrome suppressed entirely.</td></tr></tbody></table></div>
+<h3>Page template header</h3>
+<p>Every <code>pages/&lt;route&gt;.md</code> opens with these fields. Filling it in <strong>is</strong> the proposal.</p>
+<pre class="code"><code>shell     default | isMobile | isMemberArea | topMenu | isWebView
+route     /the-route
+source    src/container/pages/&lt;dir&gt;
+purpose   one sentence, user-side
+roles     agency owner · agency staff · individual seller — and what differs
+flags     tenant constants that change or remove it
+uses      documented components it composes
+states    loading · empty · error · flag-off · no-permission
+lang      en &lt;draft|approved&gt; · ar &lt;pending|passed&gt;
+ga4       event names, when product supplies them</code></pre></div>
+</div></body></html>

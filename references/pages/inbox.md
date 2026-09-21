@@ -17,7 +17,7 @@ states    loading · empty · error · no-permission
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
 shot      not captured — run scripts/capture.mjs
-board     `references/pages/inbox.html` — open in a browser to see this screen
+board     `references/pages/inbox.board.html` — the screen as an artboard
 ```
 
 ## Reference screenshot

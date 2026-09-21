@@ -482,7 +482,7 @@ states    ${states.length ? states.join(' · ') : 'none detected — confirm wit
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
 shot      ${hasShot ? '`references/' + shotFile + '` — OPEN IT BEFORE DESIGNING' : 'not captured — run scripts/capture.mjs'}
-board     \`references/pages/${slug(route)}.html\` — open in a browser to see this screen
+board     \`references/pages/${slug(route)}.board.html\` — the screen as an artboard
 \`\`\`
 ${hasShot ? `
 ## Reference screenshot
@@ -1004,7 +1004,7 @@ ${content}
 </div>
 </body></html>`;
 
-  writeFileSync(join(REFS, `pages/${slug(route)}.html`), board);
+  writeFileSync(join(REFS, `pages/${slug(route)}.board.html`), board);
   boards++;
 }
 console.log(`artboards        ${boards}`);
