@@ -86,6 +86,18 @@ export const REGIONS = [
   { id: 'table.cell',     ours: '.pf-table td',      w: 2, live: (n) => n.tag === 'td' && n.box.h > 0,                  mine: (n) => n.tag === 'td',             props: ['height', ...PAD, 'fontSize', 'borderBottomWidth'] },
   { id: 'table.thumb',    ours: '.pf-listing-thumb', w: 2, live: (n) => cls(n, 'ant-image-img'),         mine: (n) => cls(n, 'pf-listing-thumb'), props: [...GEOM] },
 
+  /* ── the user-settings family ──────────────────────────────────────────
+     A 336-wide left column of two cards over a right column of a header card
+     and a form card. These regions only ever resolve on a settings route; on
+     Listings they are simply absent, which the scorer already tolerates.
+     data/live/user-settings-*.capture.json */
+  { id: 'settings.side',   ours: '.pf-settings-side',  w: 2, live: (n) => cls(n, 'ant-col-lg-6'),  mine: (n) => cls(n, 'pf-settings-side'), props: [...GEOM] },
+  { id: 'settings.main',   ours: '.pf-settings-main',  w: 2, live: (n) => cls(n, 'ant-col-lg-18'), mine: (n) => cls(n, 'pf-settings-main'), props: ['width'] },
+  { id: 'settings.head',   ours: '.pf-settings-head',  w: 2, live: (n) => cls(n, 'ant-card') && Math.round(n.box.h) === 152, mine: (n) => cls(n, 'pf-settings-head'), props: [...GEOM, ...BOXY] },
+  { id: 'settings.avatar', ours: '.pf-settings-avatar',w: 1, scope: 'settings.head', live: (n) => cls(n, 'ant-card-meta-avatar'), mine: (n) => cls(n, 'pf-settings-avatar'), props: ['height'] },
+  { id: 'sfield',          ours: '.pf-sfield',         w: 3, scope: 'settings.main', live: (n) => n.tag === 'label' && cls(n, 'kZVzgy'), mine: (n) => cls(n, 'pf-field-label') && n.box.w > 300, props: ['height', ...TYPE] },
+  { id: 'sfield.control',  ours: '.pf-sfield .pf-input',w: 3, scope: 'settings.main', live: (n) => n.tag === 'input' && cls(n, 'ant-input'), mine: (n) => n.tag === 'input' && n.box.h > 40, props: ['height', ...BOXY] },
+
   { id: 'pager',          ours: '.pf-pagination',    w: 1, live: (n) => cls(n, 'ant-pagination'),        mine: (n) => cls(n, 'pf-pagination'),    props: [...GEOM, 'justifyContent'] },
   { id: 'pager.item',     ours: '.pf-page-item',     w: 1, live: (n) => cls(n, 'ant-pagination-item') && !cls(n, 'ant-pagination-item-active'), mine: (n) => cls(n, 'pf-page-item') && n.children?.[0]?.tag === 'a' && rgb(n.style.borderTopColor) !== 'rgb(0,97,105)', props: [...GEOM, 'minWidth', 'marginTop', 'marginInlineStart', ...BOXY, 'fontSize', 'lineHeight'] },
   { id: 'pager.active',   ours: '.pf-page-item[aria-current="page"]', w: 1, live: (n) => cls(n, 'ant-pagination-item-active'), mine: (n) => cls(n, 'pf-page-item') && rgb(n.style.borderTopColor) === 'rgb(0,97,105)', props: ['backgroundColor', 'borderTopColor', 'fontWeight'] },
@@ -186,6 +198,15 @@ if (flag('--compare')) {
   const same = (p, x, y) => {
     if (x === undefined && y === undefined) return true;
     if (x === undefined || y === undefined) return false;
+    /* antd's Card declares its radius as a clamp() and the browser reports the
+       DECLARATION, not the resolved length — `clamp(0px, -999900% + 1.4358px,
+       8px)`. A stylesheet that writes the resolved 8px is right and was being
+       marked wrong on every card on every page. Take the clamp's upper bound,
+       which is what it resolves to at any realistic width. */
+    /* the real string is `clamp(0px, -999900% + 1.43586e+07px, 8px) 8px` —
+       a clamp, then the second radius of the shorthand. Take the last px. */
+    const clamped = (v) => { const str = String(v); if (!str.startsWith('clamp(')) return v; const m = str.match(/([\d.]+)px/g); return m ? m[m.length - 1] : v; };
+    x = clamped(x); y = clamped(y);
     const px1 = px(x), px2 = px(y);
     if (px1 !== null && px2 !== null) return Math.abs(px1 - px2) <= 1;
     return rgb(x) === rgb(y);

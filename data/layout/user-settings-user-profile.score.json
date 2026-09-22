@@ -1,0 +1,35 @@
+{
+  "score": 93.2,
+  "checks": 148,
+  "disagreements": [
+    {
+      "id": "shell.content",
+      "prop": "height",
+      "live": "1580.64px",
+      "ours": "1578.12px",
+      "w": 3
+    },
+    {
+      "id": "shell.title",
+      "prop": "box.w",
+      "live": 79,
+      "ours": 76,
+      "w": 3
+    },
+    {
+      "id": "settings.main",
+      "prop": "box.h",
+      "live": 1541,
+      "ours": 1538,
+      "w": 2
+    },
+    {
+      "id": "settings.side",
+      "prop": "height",
+      "live": "1540.64px",
+      "ours": "1538.12px",
+      "w": 2
+    }
+  ],
+  "at": "2026-09-22T11:18:52.604Z"
+}

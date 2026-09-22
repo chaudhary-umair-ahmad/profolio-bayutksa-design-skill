@@ -165,8 +165,19 @@ if (existsSync(antdPath)) {
 
 /* every class a page uses must be defined in the one stylesheet */
 const cssCls = new Set([...css.matchAll(/\.([a-zA-Z][\w-]*)/g)].map((m) => m[1]));
-const instance = new Set(['pct-90', 'pct-40', 'pct-100', 'fill-97', 'fill-50', 'fill-8']);
-for (const page of ['dashboard.html', 'listings.html']) {
+/* instance classes carry DATA, and each page's <style> declares its own */
+const instance = new Set(['pct-90', 'pct-40', 'pct-100', 'fill-97', 'fill-90', 'fill-50', 'fill-8']);
+/* EVERY page in deliverables/, not a hand-kept pair. The list used to be
+   ['dashboard.html','listings.html'] and a third page could ship using classes
+   no stylesheet defines without anything saying so. */
+const PAGES = readdirSync(D)
+  .filter((f) => f.endsWith('.html'))
+  /* .qa.html is a REVIEW TOOL, not a deliverable page: it ships its own
+     stylesheet and is exempt for the same reason kb/ artboards are */
+  .filter((f) => !/bundled|components|not-built|inline-art|qa-|\.qa\.|profolio-ksa/.test(f))
+  .sort();
+
+for (const page of PAGES) {
   if (!existsSync(join(D, page))) { bad(`${page} missing`); continue; }
   const pageCls = new Set([...readFileSync(join(D, page), 'utf8')
     .matchAll(/class="([^"]+)"/g)].flatMap((m) => m[1].split(/\s+/)).filter(Boolean));
@@ -199,7 +210,7 @@ if (existsSync(KB)) {
    A page can carry every overlay and still be dead: a data-open naming an id
    nothing has, a tab whose panel was never written. scripts/test-prototype.mjs
    clicks them; this catches it without a browser. */
-for (const page of ['dashboard.html', 'listings.html']) {
+for (const page of PAGES) {
   if (!existsSync(join(D, page))) continue;
   const html = readFileSync(join(D, page), 'utf8').replace(/<!--[\s\S]*?-->/g, '');
   const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));

@@ -657,6 +657,26 @@
   --health-row-3:71px;
   --health-row-4:59px;
   --health-row-5:57px;
+  /* the user-settings family, measured from
+     data/live/user-settings-user-profile.capture.json */
+  --settings-side:336px;               /* the left column */
+  --settings-gutter:5px;               /* .ant-col padding-inline */
+  --settings-card:326px;               /* the cards inside it */
+  --settings-nav-h:256px;
+  --settings-nav-pad:17px 26px;
+  --settings-head-h:152px;
+  --settings-avatar:68px;
+  --settings-avatar-slot:74px;
+  --sfield-label-h:22px;
+  --sfield-control-h:44px;
+  --sfield-gap:8px;                    /* label to control */
+  --sfield-col:390px;
+  --sfield-gutter:54px;
+  --sfield-row-gap:24px;               /* 98 pitch less the 74 field */
+  --sfield-tall:164px;                 /* a generate-content textarea */
+  --input-disabled-bg:rgba(0,0,0,.04);  /* .ant-input-disabled, measured */
+  --sfield-upload:133px;               /* the image-select row that ends the form */
+  --sfield-upload-art:103px;
   --detail-col:528px;
   --detail-gallery-h:424px;
   --fs-detail-price:20px;
@@ -2831,6 +2851,130 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   inset-inline-end:var(--sp-24);
   margin-inline-start:var(--sp-0);
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE · user settings
+   A 336-wide left column of two cards and a right column of a header card
+   over a form card. One layout, four pages.
+   data/live/user-settings-*.capture.json
+   ═══════════════════════════════════════════════════════════════════════ */
+/* antd's Row/Col, reproduced: the row runs 5 wider than the content box on
+   each side and every column carries 5 of inline padding, so the CARDS land on
+   326 and 997 while the columns measure 336 and 1007. A grid with an 8 gap put
+   the right column at 988 and the left at 336 — right shape, wrong numbers. */
+.pf-settings-grid{
+  display:grid;
+  grid-template-columns:var(--settings-side) minmax(var(--sp-0),1fr);
+  margin-inline:calc(var(--settings-gutter) * -1);
+  align-items:stretch;
+}
+.pf-settings-side,
+.pf-settings-main{
+  display:grid;gap:var(--sp-8);align-content:start;
+  padding-inline:var(--settings-gutter);
+  min-inline-size:var(--sp-0);
+}
+
+.pf-settings-nav{padding:var(--settings-nav-pad);block-size:var(--settings-nav-h);box-sizing:border-box}
+.pf-settings-nav ul{list-style:none;margin:var(--sp-0);padding:var(--sp-0)}
+.pf-settings-nav a{
+  display:flex;align-items:center;gap:var(--sp-12);
+  padding-block:var(--sp-8);
+  color:var(--base);
+}
+.pf-settings-nav a[aria-current="page"]{color:var(--primary);font-weight:var(--fw-600)}
+.pf-settings-nav a:hover{color:var(--primary)}
+
+.pf-completion{padding:var(--sp-24)}
+.pf-completion-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-8);margin-block-end:var(--sp-4)}
+.pf-completion-title{font-weight:var(--fw-500)}
+.pf-completion-meter{display:flex;align-items:center;gap:var(--sp-8);margin-block-end:var(--sp-16)}
+.pf-completion-pct{font-weight:var(--fw-600)}
+.pf-completion-body{display:grid;justify-items:start;gap:var(--sp-8)}
+.pf-mini-card{
+  display:inline-flex;align-items:center;gap:var(--sp-8);
+  padding:var(--sp-2) var(--sp-8);
+  border:var(--border-w) solid var(--gray-400);
+  border-radius:var(--radius-tag);
+  font-size:var(--fs-12);
+}
+
+.pf-settings-head{block-size:var(--settings-head-h);display:flex;align-items:center;padding-inline:var(--sp-40)}
+.pf-settings-meta{display:flex;align-items:center;gap:var(--sp-16)}
+/* the meta's avatar SLOT is 74 wide and the circle inside it 68 — the 6 is
+   antd's card-meta gutter, and measuring the circle alone read 68 against 74 */
+.pf-settings-avatar{
+  inline-size:var(--settings-avatar-slot);block-size:var(--settings-avatar);
+  padding-inline-end:calc(var(--settings-avatar-slot) - var(--settings-avatar));
+  border-radius:var(--radius-round);
+  background:var(--bg-gray-deep);color:var(--gray-600);
+  display:grid;place-items:center;flex:none;
+}
+.pf-settings-name{font-size:var(--fs-18);font-weight:var(--fw-600)}
+.pf-settings-sub{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
+.pf-settings-sub svg{color:var(--gray-500)}
+
+.pf-settings-form{padding:var(--sp-40)}
+.pf-card-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-12)}
+/* two 390 columns with a 54 gutter and a 98 row pitch — a field is a 22 label
+   over a 44 control with 8 between them */
+.pf-form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,var(--sfield-col));
+  column-gap:var(--sfield-gutter);
+  row-gap:var(--sfield-row-gap);
+}
+.pf-sfield{display:flex;flex-direction:column;gap:var(--sfield-gap)}
+/* a settings label is 14/22 in black — NOT the filter bar's 12/19 grey, which
+   is what it inherited and what the region diff read as a 9.6%% difference on
+   every field */
+.pf-sfield > .pf-field-label{
+  block-size:var(--sfield-label-h);
+  font-size:var(--fs-base);
+  line-height:var(--lh-base);
+  color:var(--black);
+}
+/* the 44 belongs to the INPUT, which is what the product measures; putting it
+   on the wrapper left the control region missing entirely */
+.pf-sfield .pf-input > input{block-size:var(--sfield-control-h)}
+/* the BORDER is the input's here, as the product's .ant-input carries it —
+   with it on the wrapper the control region had no border at all */
+.pf-sfield .pf-input{border:0;padding:var(--sp-0)}
+/* the wrapper's suffix slot has no job on a settings field and was eating 24
+   of the control's width — 366 against the product's 390 */
+.pf-sfield .pf-input > .pf-input-suffix{display:none}
+.pf-sfield .pf-input > input{
+  inline-size:100%;
+  padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--input-border);
+  border-radius:var(--radius-control);
+  background:var(--white);
+}
+/* a disabled field is filled, not just dimmed — rgba(0,0,0,.04), measured on
+   the three read-only fields at the top of the profile form */
+.pf-sfield .pf-input > input:disabled{background:var(--input-disabled-bg);cursor:not-allowed}
+.pf-sfield.upload{block-size:var(--sfield-upload)}
+.pf-upload{display:flex;align-items:center;gap:var(--sp-16)}
+.pf-upload-art{
+  inline-size:var(--sfield-upload-art);block-size:var(--sfield-upload-art);
+  border-radius:var(--radius-card);
+  background:var(--border-light);
+  flex:none;
+}
+.pf-sfield.span-all{grid-column:1 / -1}
+.pf-sfield .pf-input,
+.pf-sfield .pf-select{block-size:var(--sfield-control-h)}
+.pf-sfield.tall{block-size:var(--sfield-tall)}
+.pf-textarea{
+  flex:1;
+  padding:var(--sp-12);
+  border:var(--border-w) solid var(--input-border);
+  border-radius:var(--radius-control);
+  background:var(--white);color:var(--base);
+  font:inherit;resize:none;
+}
+.pf-form-actions{display:flex;justify-content:flex-end;gap:var(--sp-12);margin-block-start:var(--sp-24)}
 
 </style>
 <style>

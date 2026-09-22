@@ -1,0 +1,142 @@
+{
+  "_": "The user-settings family. Nav labels and icons are appRoutes.js's getUserSettingsRoutes(); field labels, placeholders and types are src/tenant/bayut/data/profileFields.js. Field ORDER is transcribed from data/live/user-settings-*.capture.json, because a capture records where a control sits and never what it says.",
+  "user": {
+    "name": "Faisal Al-Harbi",
+    "role": "Agency User",
+    "email": "faisal@najdhorizon.example"
+  },
+  "completion": 90,
+  "badges": [
+    "Nafath Verified",
+    "REGA Verified"
+  ],
+  "listbox": [
+    "Riyadh",
+    "Jeddah",
+    "Dammam"
+  ],
+  "nav": [
+    {
+      "label": "User Settings",
+      "icon": "FiUser",
+      "page": "user-settings-user-profile.html"
+    },
+    {
+      "label": "Agency Settings",
+      "icon": "SideMenuSetting",
+      "page": "user-settings-agency-profile.html"
+    },
+    {
+      "label": "Licenses",
+      "icon": "PiIdentificationCard",
+      "page": null
+    },
+    {
+      "label": "Preferences",
+      "icon": "VscSettings",
+      "page": null
+    },
+    {
+      "label": "Bank Detail",
+      "icon": "FiCreditCard",
+      "page": "user-settings-bank-detail.html"
+    },
+    {
+      "label": "Change Password",
+      "icon": "MdPassword",
+      "page": "user-settings-change-password.html"
+    }
+  ],
+  "pages": [
+    {
+      "slug": "user-settings-user-profile",
+      "route": "user-settings-user-profile",
+      "title": "User Settings",
+      "formTitle": "Profile Information",
+      "formCardH": 1373,
+      "fields": [
+        {
+          "label": "Title (English)",
+          "placeholder": "Please enter English title",
+          "type": "input",
+          "disabled": true
+        },
+        {
+          "label": "العنوان (عربي)",
+          "placeholder": "Please enter Arabic title",
+          "type": "input",
+          "disabled": true
+        },
+        {
+          "label": "Email",
+          "placeholder": "Enter Email",
+          "type": "input",
+          "disabled": true
+        },
+        {
+          "label": "Phone Number",
+          "placeholder": "Enter Phone Number",
+          "type": "input"
+        },
+        {
+          "label": "Whatsapp",
+          "placeholder": "Enter whatsapp number",
+          "type": "input"
+        },
+        {
+          "label": "Gender",
+          "placeholder": "Select Gender",
+          "type": "select"
+        },
+        {
+          "label": "National Short Address",
+          "placeholder": "Enter National Short Address",
+          "type": "input",
+          "span": true
+        },
+        {
+          "label": "Address",
+          "placeholder": "Enter Address",
+          "type": "input",
+          "span": true
+        },
+        {
+          "label": "Service Area",
+          "placeholder": "Select Service Areas",
+          "type": "select"
+        },
+        {
+          "label": "User Languages",
+          "placeholder": "Select User Languages",
+          "type": "select"
+        },
+        {
+          "label": "Years of Experience",
+          "placeholder": "Select Years of Experiences",
+          "type": "select"
+        },
+        {
+          "label": "Agent Description - English",
+          "placeholder": "Enter Agent Description",
+          "type": "textarea",
+          "span": true,
+          "tall": true
+        },
+        {
+          "label": "وصف الوكيل - بالعربية (اختياري)",
+          "placeholder": "أدخل وصف الوكيل",
+          "type": "textarea",
+          "span": true,
+          "tall": true
+        },
+        {
+          "label": "Upload a picture",
+          "placeholder": "Browse and Upload",
+          "type": "upload",
+          "span": true,
+          "upload": true
+        }
+      ]
+    }
+  ]
+}
