@@ -477,8 +477,15 @@
                                          is 73 tall, and 16+41+16 is what makes 73
                                          — data/live/listings--modal-delete */
   --drawer-w:450px;                    /* .ant-drawer-content */
-  --drawer-head-h:91px;
-  --drawer-head-pad:16px;
+  /* the COMPONENT's head, measured on /design-capture where a drawer renders
+     with nothing but a title: 63 tall, padded 16/24. The 91 and the flat 16
+     that used to be here are the FILTERS drawer's — it carries a subtitle and
+     overrides the padding — and they were promoted to the default because the
+     filters drawer was the only one I had ever measured. */
+  --drawer-head-h:63px;
+  --drawer-head-pad:16px 24px;
+  --drawer-head-h-filters:91px;        /* title + subtitle, data/live/listings--drawer-filters */
+  --drawer-head-pad-filters:16px;
   --drawer-body-pad:16px;
   --drawer-foot-pad:24px 16px;
   --drawer-border:rgba(5, 5, 5, 0.06); /* colorSplit — the header/footer rules */
@@ -489,7 +496,7 @@
        data/live/listings--popover-notifications.capture.json  590x776, radius 8 */
   --popover-w-account:400px;
   --popover-w-notifications:590px;
-  --popover-radius-noti:8px;           /* antd's own borderRadiusLG on .ant-popover-inner */
+  --popover-radius-account:10px;       /* the account menu overrides the default */
   --avatar-40:40px;                    /* .user-info avatar — measured 40x40, radius 50% */
   --icon-20:20px;                      /* the 20px glyph inside it */
   --icon-applied:19px;                 /* an applied upgrade's glyph is larger */
@@ -504,7 +511,11 @@
   --qr-size:166px;                     /* .ant-image in the Download App modal */
   --store-badge-w:111px;               /* App Store badge svg — Google Play is 113 */
   --store-badge-h:33px;
-  --popover-radius:10px;               /* .ant-popover-inner */
+  /* 8 is the COMPONENT's radius — measured on /design-capture, where a popover
+     renders with no product class on it. The 10 that used to be here is the
+     account menu's, which carries .menu-main; the notification centre keeps
+     the default. Another instance promoted to a default. */
+  --popover-radius:8px;
   --popover-arrow:16px;
   --popover-shadow:0 6px 16px rgba(0,0,0,.08), 0 3px 6px -4px rgba(0,0,0,.12), 0 9px 28px 8px rgba(0,0,0,.05);
   /* MEASURED, and it corrects an assumption. Both masks compute z-index 1000
@@ -1879,6 +1890,11 @@ table{border-collapse:collapse}
   gap:var(--sp-16);
   font-size:var(--fs-card-title);
 }
+/* the filters drawer is the one instance that deviates, and it deviates twice */
+.pf-drawer[data-kind="filters"] .pf-drawer-head{
+  min-block-size:var(--drawer-head-h-filters);
+  padding:var(--drawer-head-pad-filters);
+}
 .pf-drawer-body{padding:var(--drawer-body-pad);overflow:auto;flex:1;min-height:var(--sp-0)}
 .pf-drawer-foot{
   padding:var(--drawer-foot-pad);
@@ -1916,8 +1932,8 @@ table{border-collapse:collapse}
 .pf-popover-item:hover{background:var(--primary-light-4)}
 
 /* the two shell popovers are fixed widths, not content-sized */
-.pf-popover[data-kind="account"]{width:var(--popover-w-account)}
-.pf-popover[data-kind="notifications"]{width:var(--popover-w-notifications);border-radius:var(--popover-radius-noti)}
+.pf-popover[data-kind="account"]{width:var(--popover-w-account);border-radius:var(--popover-radius-account)}
+.pf-popover[data-kind="notifications"]{width:var(--popover-w-notifications)}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · account menu — the popover behind the header avatar
@@ -3957,7 +3973,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 
 <!-- data/live/listings--drawer-filters — 450 wide, head 91, foot 91, mask 0.45 -->
 <div class="pf-mask" id="drawer-filters-mask" hidden></div>
-<div class="pf-drawer" id="drawer-filters" data-mask="drawer-filters-mask" role="dialog" aria-modal="true" aria-labelledby="flt-title" hidden>
+<div class="pf-drawer" data-kind="filters" id="drawer-filters" data-mask="drawer-filters-mask" role="dialog" aria-modal="true" aria-labelledby="flt-title" hidden>
   <div class="pf-drawer-head">
     <div>
       <div class="pf-modal-title" id="flt-title">Filters</div>

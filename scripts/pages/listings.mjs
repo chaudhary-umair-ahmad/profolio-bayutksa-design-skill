@@ -232,7 +232,7 @@ ${['Property is no longer available', 'Rented out through Bayut', 'Sold through 
 
 <!-- data/live/listings--drawer-filters — 450 wide, head 91, foot 91, mask 0.45 -->
 <div class="pf-mask" id="drawer-filters-mask" hidden></div>
-<div class="pf-drawer" id="drawer-filters" data-mask="drawer-filters-mask" role="dialog" aria-modal="true" aria-labelledby="flt-title" hidden>
+<div class="pf-drawer" data-kind="filters" id="drawer-filters" data-mask="drawer-filters-mask" role="dialog" aria-modal="true" aria-labelledby="flt-title" hidden>
   <div class="pf-drawer-head">
     <div>
       <div class="pf-modal-title" id="flt-title">Filters</div>

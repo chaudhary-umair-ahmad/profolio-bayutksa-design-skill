@@ -95,8 +95,15 @@ class Boundary extends React.Component {
 /* Same containing-block trick as the sibling route: getContainer={false} keeps
    antd's fixed positioning, so without a composited ancestor every overlay
    would stack in the middle of the viewport. */
+/* The walker that measures this page DROPS data-* attributes on purpose — a
+   capture records how a page looks, never what it says, and data-* is where
+   applications put content. So the specimen name is carried as a CLASS as
+   well: `spec-modal-default` survives the walk, `data-spec` does not. Keep
+   both — the attribute is what a human greps for in a saved file. */
+const specClass = (name) => `spec spec-${String(name).replace(/[^a-z0-9]+/gi, '-')}`;
+
 const Flow = ({ name, children, height = 520 }) => (
-  <section data-spec={name} style={{ padding: '16px 0', borderBlockEnd: '1px solid #f0f0f0' }}>
+  <section data-spec={name} className={specClass(name)} style={{ padding: '16px 0', borderBlockEnd: '1px solid #f0f0f0' }}>
     <div style={{ font: '11px/1.6 ui-monospace, monospace', color: '#9D9D9D' }}>{name}</div>
     <div
       data-spec-body

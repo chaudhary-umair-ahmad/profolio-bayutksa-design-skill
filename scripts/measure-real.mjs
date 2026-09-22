@@ -3,6 +3,13 @@
  * Measure a REAL Profolio screen, saved from a real browser with SingleFile.
  *
  *   node scripts/measure-real.mjs ~/page.html --route listings --width 1440
+ *   node scripts/measure-real.mjs http://127.0.0.1:3000/en/design-capture
+ *
+ * It takes a SingleFile on disk or a URL. A URL is how the /design-capture
+ * routes get measured without anyone saving anything: they are public, they
+ * need no account and no server, so the harness's own boot serves them and
+ * this walks them directly. A SingleFile is still what brings back a screen
+ * this sandbox cannot reach.
  *
  * Why this exists: the sandbox cannot reach profolio.bayut.sa or
  * profolio.staging.bayut.sa — the proxy answers 403 — and there is no route to
@@ -44,28 +51,35 @@ const arg = (name, fallback) => {
   return i > -1 ? argv[i + 1] : fallback;
 };
 const file = argv.find((a) => !a.startsWith('--') && argv[argv.indexOf(a) - 1]?.startsWith('--') !== true);
-if (!file || !existsSync(file)) {
-  console.error('usage: measure-real.mjs <singlefile.html> [--route listings] [--width 1440]');
+const isUrl = !!file && /^https?:\/\//.test(file);
+if (!file || (!isUrl && !existsSync(file))) {
+  console.error('usage: measure-real.mjs <singlefile.html | url> [--route name] [--width 1440]');
   process.exit(2);
 }
 const width = Number(arg('--width', 1440));
 
 /* SingleFile writes the original URL into a comment at the top of the file.
    It is provenance worth keeping — and it is how the route defaults. */
-const head = readFileSync(file, 'utf8').slice(0, 1200);
-const sourceUrl = /url:\s*(\S+)/.exec(head)?.[1] || '';
-const savedAt = /saved date:\s*([^\n]+)/.exec(head)?.[1]?.trim() || '';
-const route = arg('--route', (sourceUrl.match(/\/[a-z]{2}\/([\w-]+)/)?.[1] || basename(file).replace(/\..*$/, '')));
+const head = isUrl ? '' : readFileSync(file, 'utf8').slice(0, 1200);
+const sourceUrl = isUrl ? file : /url:\s*(\S+)/.exec(head)?.[1] || '';
+const savedAt = isUrl ? new Date().toISOString() : /saved date:\s*([^\n]+)/.exec(head)?.[1]?.trim() || '';
+/* /en/design-capture/flows?only=booking → design-capture-flows-only-booking,
+   so every route lands on one flat, predictable filename */
+const slug = (u) => ((u.match(/\/[a-z]{2}\/(.+)$/)?.[1] || 'page')
+  .replace(/[/?&=]+/g, '-').replace(/-+$/, '').replace(/^-+/, '') || 'page');
+const route = arg('--route', isUrl ? slug(sourceUrl) : (sourceUrl.match(/\/[a-z]{2}\/([\w-]+)/)?.[1] || basename(file).replace(/\..*$/, '')));
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width, height: 900 } });
-await page.goto('file://' + file, { waitUntil: 'load' });
-await page.waitForTimeout(1200);
+await page.goto(isUrl ? file : 'file://' + file, { waitUntil: isUrl ? 'domcontentloaded' : 'load' });
+/* a live route has to mount, fetch its lazy chunk and let the ref-driven
+   overlays open themselves; a saved file is already settled */
+await page.waitForTimeout(isUrl ? 5000 : 1200);
 
 /* the SAME walker the extension and the harness use, so the output is an
    ordinary capture and derive-layout/qa-design need no special case */
 const capture = await page.evaluate(readFileSync(join(ROOT, 'tools/profolio-capture/capture.js'), 'utf8'));
-capture.source = 'singlefile';
+capture.source = isUrl ? 'local-route' : 'singlefile';
 capture.sourceUrl = sourceUrl;
 capture.savedAt = savedAt;
 capture.route = route;
