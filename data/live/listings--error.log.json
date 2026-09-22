@@ -8,8 +8,8 @@
     "popover": false,
     "dropdown": false
   },
-  "spinning": false,
-  "pageHeight": 900,
+  "spinning": true,
+  "pageHeight": 1000,
   "note": "/api/surge/listings answers 500 — the product's own error card",
   "url": "http://127.0.0.1:3000/en/listings"
 }

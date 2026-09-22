@@ -3,7 +3,7 @@
   "shell": true,
   "errorCard": false,
   "overlay": {
-    "modal": false,
+    "modal": true,
     "drawer": false,
     "popover": false,
     "dropdown": false

@@ -9,7 +9,7 @@
     "dropdown": false
   },
   "spinning": true,
-  "pageHeight": 900,
+  "pageHeight": 1000,
   "note": "the listings query held open — antd Skeleton/Spin, whatever the product paints while waiting",
   "url": "http://127.0.0.1:3000/en/listings"
 }
