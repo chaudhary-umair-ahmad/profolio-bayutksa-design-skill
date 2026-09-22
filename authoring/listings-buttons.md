@@ -351,11 +351,11 @@ numbers. Add a control to the page and the check fails until it has a row here.
 `dead` is the number this file exists to drive to zero.
 
 ```census
-button 202
-a 57
+button 201
+a 60
 input 16
-total 275
-reachable 222
+total 277
+reachable 224
 disabled 15
 field 16
 acknowledged 22

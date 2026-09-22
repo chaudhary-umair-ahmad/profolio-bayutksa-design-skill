@@ -468,9 +468,19 @@
   --menu-item-gap:10px;                /* auth-info-style.js:293 .dropdwon-links a gap */
   --menu-item-pad:12px 4px;            /* auth-info-style.js:294 */
   --noti-row-gap:20px;                 /* .ant-card-body inner flex gap */
+  /* the notification list is a FIXED scroll region, measured 558x700 —
+     data/live/listings--popover-notifications.capture.json .rc-virtual-list.
+     Cards are 43 with a 4px pitch, so three of them fill 142 of the 700. */
+  --noti-list-h:700px;
+  --noti-card-h:43px;
+  --noti-card-gap:4px;
+  --menu-item-h:50px;                  /* ul.dropdwon-links li, measured */
+  --verified-h:26px;                   /* the first badge */
+  --verified-h-lg:34px;                /* the second, which carries a wordmark */
   --qr-size:166px;                     /* .ant-image in the Download App modal */
   --store-badge-w:111px;               /* App Store badge svg — Google Play is 113 */
   --store-badge-h:33px;
+  --store-badge-h-lg:42px;             /* the <a> around it — 40 and 42, row takes 42 */
   /* 8 is the COMPONENT's radius — measured on /design-capture, where a popover
      renders with no product class on it. The 10 that used to be here is the
      account menu's, which carries .menu-main; the notification centre keeps
@@ -1994,7 +2004,10 @@ table{border-collapse:collapse}
    data/live/listings--popover-account.capture.json
    ═══════════════════════════════════════════════════════════════════════ */
 .pf-user-info{padding-inline:var(--sp-16);padding-block:var(--sp-12) var(--sp-0)}
-.pf-user-row{display:flex;align-items:center;gap:var(--menu-item-gap)}
+/* 368x40 measured — the row is the avatar's height, and the two lines of meta
+   have to fit inside it. Ours ran 47 because the name and the sub-line carried
+   the body line-height. */
+.pf-user-row{display:flex;align-items:center;gap:var(--menu-item-gap);block-size:var(--avatar-40)}
 /* NOT .pf-avatar — that name is the header's 30px one, and a 40px rule under
    the same name covered the profile-completion ring on every page */
 .pf-user-avatar{
@@ -2007,7 +2020,7 @@ table{border-collapse:collapse}
 }
 .pf-user-avatar svg{inline-size:var(--icon-20);block-size:var(--icon-20)}
 .pf-user-meta{min-inline-size:var(--sp-0);overflow:hidden}
-.pf-user-name{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--dark)}
+.pf-user-name{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--dark);line-height:var(--lh-tight)}
 .pf-user-sub{
   display:flex;align-items:center;gap:var(--sp-4);flex-wrap:nowrap;
   min-inline-size:var(--sp-0);
@@ -2027,8 +2040,17 @@ table{border-collapse:collapse}
   font-size:var(--fs-12);color:var(--base);
 }
 .pf-verified svg{color:var(--info-alt)}    /* #479eeb seal-check */
+/* the second badge sits in its own 34-tall row — it carries the Nafath
+   wordmark in the product and is taller than the first */
+/* the first badge carries mb-8, so this row starts 8 below it */
+.pf-verified-row{display:flex;align-items:center;block-size:var(--verified-h-lg);margin-block-start:var(--sp-8)}
+.pf-verified[data-size="lg"]{block-size:var(--verified-h-lg)}
 .pf-menu-list{list-style:none;margin:var(--sp-0);padding:var(--sp-0)}
 .pf-menu-list > li{border-block-start:var(--border-w) solid var(--gray-400)}  /* auth-info-style.js:283 gray400 */
+/* the li is 50 INCLUDING its top rule — ours was 51 because the rule sat
+   outside a 50-tall link */
+.pf-menu-list > li{block-size:var(--menu-item-h);box-sizing:border-box}
+.pf-menu-list > li > a,.pf-menu-list > li > button{block-size:100%}
 .pf-menu-list a,.pf-menu-list button{
   display:flex;align-items:center;gap:var(--menu-item-gap);
   padding:var(--menu-item-pad);
@@ -2052,6 +2074,8 @@ table{border-collapse:collapse}
 .pf-noti-head-start{display:flex;align-items:center}
 .pf-noti-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--base);margin:var(--sp-0)}
 .pf-noti-card{
+  block-size:var(--noti-card-h);
+  flex:none;
   display:flex;align-items:center;justify-content:space-between;gap:var(--noti-row-gap);
   padding:var(--sp-12);
   margin-block-end:var(--sp-4);
@@ -2064,7 +2088,14 @@ table{border-collapse:collapse}
 .pf-noti-card-meta svg{color:var(--primary);inline-size:var(--icon-20);block-size:var(--icon-20);flex-shrink:0}
 .pf-noti-card-title{font-size:var(--fs-base);font-weight:var(--fw-600);color:var(--dark)}
 .pf-noti-time{font-size:var(--fs-12);color:var(--gray-600)}   /* #9D9D9D, measured */
-.pf-noti-rule{block-size:var(--border-w);background:var(--drawer-border);margin-block-start:var(--sp-12)}
+.pf-noti-rule{block-size:var(--border-w);background:var(--drawer-border);margin-block-start:var(--sp-4);border-block-start:var(--border-w) dashed var(--drawer-border)}
+/* the scroll region, not a stack: it is 700 tall whether or not there are
+   enough notifications to fill it */
+.pf-noti-list{
+  block-size:var(--noti-list-h);
+  overflow-y:auto;
+  display:flex;flex-direction:column;gap:var(--noti-card-gap);
+}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · Download App modal body
@@ -2075,7 +2106,16 @@ table{border-collapse:collapse}
    placeholders at the measured size, and qa-listings.md says so.
    ═══════════════════════════════════════════════════════════════════════ */
 .pf-center-column{display:flex;flex-direction:column;align-items:center;gap:var(--sp-8);text-align:center}
-.pf-qr{inline-size:var(--qr-size);block-size:var(--qr-size)}
+/* NOT .pf-skeleton. That class declares height:16px and sits later in this
+   file, so it won the cascade and the QR rendered 166 WIDE AND 16 TALL —
+   150px of the modal's missing 159. It is placeholder art, not a loading
+   state, so it carries its own fill. */
+.pf-qr{
+  inline-size:var(--qr-size);
+  block-size:var(--qr-size);
+  background:var(--border-light);
+  border-radius:var(--radius-tag);
+}
 .pf-divider-text{
   display:flex;align-items:center;gap:var(--sp-16);
   margin-block:var(--sp-16);
@@ -2084,7 +2124,10 @@ table{border-collapse:collapse}
 .pf-divider-text::before,.pf-divider-text::after{content:"";flex:1;block-size:var(--border-w);background:var(--drawer-border)}
 .pf-store-badges{display:flex;align-items:center;justify-content:center;gap:var(--menu-item-gap)}
 .pf-store-badge{
-  inline-size:var(--store-badge-w);block-size:var(--store-badge-h);
+  /* the SVG art is 111x33 and 113x35; the <a> around it measures 40 and 42,
+     and the row takes the taller. A second block-size declaration below this
+     one used to win and the row came out 33. */
+  inline-size:var(--store-badge-w);block-size:var(--store-badge-h-lg);
   display:grid;place-items:center;
   border:var(--border-w) solid var(--gray-400);
   border-radius:var(--radius-control);

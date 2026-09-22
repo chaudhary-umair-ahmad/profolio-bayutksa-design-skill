@@ -197,20 +197,7 @@
   {
     "name": "modal-download-app",
     "kind": "modal",
-    "faults": [
-      {
-        "w": 3,
-        "m": "height 250 vs 409 (-159)"
-      },
-      {
-        "w": 3,
-        "m": "0 link(s), the product has 2"
-      },
-      {
-        "w": 2,
-        "m": "band heights 187≠346"
-      }
-    ],
+    "faults": [],
     "theirs": {
       "x": 540,
       "y": 245,
@@ -228,18 +215,18 @@
     },
     "ours": {
       "x": 540,
-      "y": 325,
+      "y": 245,
       "w": 360,
-      "h": 250,
+      "h": 409,
       "bands": [
         63,
-        187
+        346
       ],
       "button": 1,
-      "link": 0,
+      "link": 2,
       "input": 0,
       "icon": 1,
-      "text": 6
+      "text": 4
     }
   },
   {
@@ -293,24 +280,7 @@
   {
     "name": "popover-account",
     "kind": "popover",
-    "faults": [
-      {
-        "w": 3,
-        "m": "height 197 vs 233 (-36)"
-      },
-      {
-        "w": 3,
-        "m": "1 button(s), the product has 0"
-      },
-      {
-        "w": 3,
-        "m": "1 link(s), the product has 2"
-      },
-      {
-        "w": 2,
-        "m": "band heights 97≠132"
-      }
-    ],
+    "faults": [],
     "theirs": {
       "x": 1040,
       "y": 60,
@@ -330,13 +300,13 @@
       "x": 1024,
       "y": 60,
       "w": 400,
-      "h": 197,
+      "h": 232,
       "bands": [
-        97,
+        132,
         100
       ],
-      "button": 1,
-      "link": 1,
+      "button": 0,
+      "link": 2,
       "input": 0,
       "icon": 6,
       "text": 5
@@ -440,16 +410,7 @@
   {
     "name": "popover-notifications",
     "kind": "popover",
-    "faults": [
-      {
-        "w": 4,
-        "m": "5 band(s) inside, the product has 2 — [36 48 48 48 1] vs [36 700]"
-      },
-      {
-        "w": 3,
-        "m": "height 241 vs 776 (-535)"
-      }
-    ],
+    "faults": [],
     "theirs": {
       "x": 770,
       "y": 59,
@@ -469,13 +430,10 @@
       "x": 834,
       "y": 60,
       "w": 590,
-      "h": 241,
+      "h": 776,
       "bands": [
         36,
-        48,
-        48,
-        48,
-        1
+        700
       ],
       "button": 2,
       "link": 0,

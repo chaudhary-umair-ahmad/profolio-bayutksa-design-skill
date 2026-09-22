@@ -1,6 +1,6 @@
 {
   "route": "listings",
-  "at": "2026-09-22T08:51:36.714Z",
+  "at": "2026-09-22T10:20:01.262Z",
   "shellFails": [],
   "diffs": [
     {
@@ -1020,16 +1020,12 @@
       "shellFails": [],
       "diffs": [
         {
-          "id": "table.row",
-          "diff": 18.1
+          "id": "filter.showmore",
+          "diff": 16.8
         },
         {
           "id": "modal.body",
-          "diff": 17.4
-        },
-        {
-          "id": "filter.showmore",
-          "diff": 16.8
+          "diff": 16.7
         },
         {
           "id": "filter.clear",
@@ -1041,31 +1037,23 @@
         },
         {
           "id": "modal",
-          "diff": 13.3
+          "diff": 14.3
         },
         {
           "id": "filter.search",
           "diff": 13
         },
         {
-          "id": "modal.mask",
-          "diff": 10.5
+          "id": "table.row",
+          "diff": 8.5
         },
         {
           "id": "tabs.nav",
           "diff": 7.6
         },
         {
-          "id": "table",
-          "diff": 6
-        },
-        {
-          "id": "table.card",
-          "diff": 5.9
-        },
-        {
-          "id": "shell.content",
-          "diff": 5.3
+          "id": "modal.mask",
+          "diff": 6.3
         },
         {
           "id": "shell.sider",
@@ -1076,8 +1064,20 @@
           "diff": 3.9
         },
         {
+          "id": "table",
+          "diff": 3.4
+        },
+        {
+          "id": "table.card",
+          "diff": 3.4
+        },
+        {
           "id": "table.card.head",
           "diff": 3.2
+        },
+        {
+          "id": "shell.content",
+          "diff": 3.1
         },
         {
           "id": "tabs.tab",
@@ -1288,39 +1288,39 @@
           "diff": 13
         },
         {
-          "id": "popover",
-          "diff": 12.3
-        },
-        {
           "id": "table.row",
-          "diff": 11.9
+          "diff": 11.5
         },
         {
           "id": "tabs.nav",
           "diff": 9.7
         },
         {
-          "id": "filter.bar",
-          "diff": 8.5
+          "id": "table.card.head",
+          "diff": 7.3
         },
         {
-          "id": "table.card.head",
-          "diff": 7.9
+          "id": "popover",
+          "diff": 6.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 6.7
         },
         {
           "id": "table.card",
-          "diff": 4.8
+          "diff": 4.6
         },
         {
           "id": "table",
-          "diff": 4.7
-        },
-        {
-          "id": "shell.content",
           "diff": 4.6
         },
         {
           "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "shell.content",
           "diff": 4.4
         },
         {
@@ -1377,15 +1377,15 @@
         },
         {
           "id": "filter.showmore",
-          "diff": 20.8
-        },
-        {
-          "id": "filter.clear",
-          "diff": 9.2
+          "diff": 15.9
         },
         {
           "id": "filter.search",
-          "diff": 4.4
+          "diff": 0.4
+        },
+        {
+          "id": "filter.clear",
+          "diff": 0.4
         }
       ],
       "notModelled": [
@@ -1646,24 +1646,20 @@
           "diff": 9.7
         },
         {
-          "id": "popover",
-          "diff": 4.9
+          "id": "shell.sider",
+          "diff": 4.4
         },
         {
           "id": "table.card",
-          "diff": 4.7
+          "diff": 4.2
         },
         {
           "id": "table",
-          "diff": 4.6
+          "diff": 4.2
         },
         {
           "id": "shell.content",
-          "diff": 4.4
-        },
-        {
-          "id": "shell.sider",
-          "diff": 4.4
+          "diff": 4
         },
         {
           "id": "tabs.tab",
@@ -1680,6 +1676,10 @@
         {
           "id": "shell.title",
           "diff": 2.7
+        },
+        {
+          "id": "popover",
+          "diff": 1.5
         },
         {
           "id": "table.head",
@@ -1719,19 +1719,19 @@
         },
         {
           "id": "filter.search",
-          "diff": 38
+          "diff": 38.5
         },
         {
           "id": "table.row",
-          "diff": 12.4
+          "diff": 10
         },
         {
           "id": "table.card.head",
-          "diff": 7.2
+          "diff": 7.1
         },
         {
           "id": "filter.bar",
-          "diff": 7.1
+          "diff": 7
         },
         {
           "id": "filter.clear",

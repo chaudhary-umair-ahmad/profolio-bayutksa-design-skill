@@ -151,17 +151,24 @@ export function shellOverlays() {
       <span class="pf-modal-title" data-size="lg" id="dl-title">Get the Bayut KSA App</span>
       <button class="pf-overlay-close" type="button" aria-label="Close" data-close>${icon('IoMdClose', 16)}</button>
     </div>
+    <!-- BODY 346, and every band in it measured rather than stacked by eye:
+           label   284x25   16/600
+           QR      166x166  9px under the label
+           divider 312x25   17px under the QR
+           badges  312x42   16px under the divider, and they are LINKS
+         This was 187 tall with no links in it, which the region diff scored
+         at 17% and the overlay diff at -159. -->
     <div class="pf-modal-body">
       <div class="pf-center-column">
         <div class="pf-modal-lead">Scan the QR code to download the app</div>
         <!-- the product embeds a generated QR; a design system ships the box -->
-        <div class="pf-qr pf-skeleton" role="img" aria-label="QR code placeholder"></div>
+        <div class="pf-qr" role="img" aria-label="QR code placeholder"></div>
       </div>
       <div class="pf-divider-text"><span>OR</span></div>
       <!-- vendor badge art we do not ship, at the measured 111x33 / 113x35 -->
       <div class="pf-store-badges">
-        <span class="pf-store-badge">App Store</span>
-        <span class="pf-store-badge">Google Play</span>
+        <a class="pf-store-badge" href="not-built.html?screen=App%20Store">App Store</a>
+        <a class="pf-store-badge" href="not-built.html?screen=Google%20Play">Google Play</a>
       </div>
     </div>
   </div>
@@ -178,19 +185,26 @@ export function shellOverlays() {
       </div>
       <button class="pf-btn" data-variant="link" type="button" data-noop="marks every notification read; a data mutation, not a navigation">Mark all as read</button>
     </div>
-    <div class="pf-noti-card" data-unread>
-      <div class="pf-noti-card-meta">${icon('IoRefreshSharp', 20)}<span class="pf-noti-card-title">Your listing is live</span></div>
-      <span class="pf-noti-time">an hour ago</span>
+    <!-- The list is a FIXED 700-TALL SCROLL REGION (rc-virtual-list), not a
+         stack that ends with the last card. Three cards of 43 with a 4px
+         pitch fill 142 of it and the rest is empty — which is why the product
+         popover is 776 tall on an account with three notifications. Ours
+         stopped at the last card and measured 241. -->
+    <div class="pf-noti-list">
+      <div class="pf-noti-card" data-unread>
+        <div class="pf-noti-card-meta">${icon('IoRefreshSharp', 20)}<span class="pf-noti-card-title">Your listing is live</span></div>
+        <span class="pf-noti-time">an hour ago</span>
+      </div>
+      <div class="pf-noti-card" data-unread>
+        <div class="pf-noti-card-meta">${icon('IoRefreshSharp', 20)}<span class="pf-noti-card-title">Credits expiring soon</span></div>
+        <span class="pf-noti-time">a day ago</span>
+      </div>
+      <div class="pf-noti-card">
+        <div class="pf-noti-card-meta">${icon('IoRefreshSharp', 20)}<span class="pf-noti-card-title">TruCheck visit scheduled</span></div>
+        <span class="pf-noti-time">3 days ago</span>
+      </div>
+      <div class="pf-noti-rule"></div>
     </div>
-    <div class="pf-noti-card" data-unread>
-      <div class="pf-noti-card-meta">${icon('IoRefreshSharp', 20)}<span class="pf-noti-card-title">Credits expiring soon</span></div>
-      <span class="pf-noti-time">a day ago</span>
-    </div>
-    <div class="pf-noti-card">
-      <div class="pf-noti-card-meta">${icon('IoRefreshSharp', 20)}<span class="pf-noti-card-title">TruCheck visit scheduled</span></div>
-      <span class="pf-noti-time">3 days ago</span>
-    </div>
-    <div class="pf-noti-rule"></div>
   </div>
 </div>
 
@@ -209,12 +223,16 @@ export function shellOverlays() {
         </div>
       </div>
     </div>
+    <!-- ONE tag at 152x26, then a 368x34 row — not two identical spans. The
+         second badge carries the Nafath wordmark and is 8px taller. -->
     <span class="pf-verified">Nafath Verified${icon('PiSealCheckFill', 14)}</span>
-    <span class="pf-verified">REGA Verified${icon('PiSealCheckFill', 14)}</span>
+    <div class="pf-verified-row"><span class="pf-verified" data-size="lg">REGA Verified${icon('PiSealCheckFill', 14)}</span></div>
   </div>
+  <!-- both items are LINKS in the product (400x50 each), and Sign Out was a
+       button here, which is one fewer link than the product has -->
   <ul class="pf-menu-list">
     <li><a href="${href(null, 'Settings')}">${icon('FiUser', 16)}<span>Account Settings</span></a></li>
-    <li><button type="button" data-close>${icon('FiLogOut', 16)}<span>Sign Out</span></button></li>
+    <li><a href="not-built.html?screen=Sign%20Out">${icon('FiLogOut', 16)}<span>Sign Out</span></a></li>
   </ul>
 </div>`;
 }
