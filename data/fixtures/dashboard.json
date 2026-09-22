@@ -208,7 +208,7 @@
       "price": "1,999,000",
       "product": "hot",
       "score": "54%",
-      "title": "Floor for Sale | Ready",
+      "title": "Chalet for Daily Rental",
       "beds": 4,
       "baths": 5,
       "area": "79 Sq. M.",
@@ -218,7 +218,9 @@
       "posted": "Sep 07, 2026",
       "views": "1,600",
       "clicks": "18",
-      "leads": "0"
+      "leads": "0",
+      "purpose": "daily-rental",
+      "_purpose": "daily-rental makes the seventh row action (Mark as Booked) render — listingUtilities.js:238"
     },
     {
       "images": 31,

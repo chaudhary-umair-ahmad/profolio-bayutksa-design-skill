@@ -6,7 +6,7 @@
       "id": "shell.content",
       "prop": "height",
       "live": "1817.62px",
-      "ours": "1791.02px",
+      "ours": "1797.3px",
       "w": 3
     },
     {
@@ -27,14 +27,14 @@
       "id": "table",
       "prop": "height",
       "live": "1572.8px",
-      "ours": "1553.17px",
+      "ours": "1559.45px",
       "w": 2
     },
     {
       "id": "table.card",
       "prop": "height",
       "live": "1618.78px",
-      "ours": "1600.17px",
+      "ours": "1606.45px",
       "w": 2
     },
     {
@@ -97,7 +97,7 @@
       "id": "pager",
       "prop": "box.y",
       "live": 1818,
-      "ours": 1791,
+      "ours": 1797,
       "w": 1
     },
     {
@@ -108,5 +108,5 @@
       "w": 1
     }
   ],
-  "at": "2026-09-22T07:16:35.641Z"
+  "at": "2026-09-22T07:29:37.531Z"
 }

@@ -467,7 +467,8 @@
      walking from .ant-layout before any of it could be measured. */
   --mask-bg:rgba(0, 0, 0, 0.45);       /* .ant-modal-mask and .ant-drawer-mask, identical */
   --modal-w:620px;                     /* the listing modals; antd's default is 520 */
-  --modal-w-sm:360px;                  /* Download App */
+  --modal-w-sm:360px;
+  --modal-w-lg:800px;                  /* Mark as Booked — data/live/design-capture-flows-only-booking */
   --modal-radius:8px;                  /* .ant-modal-content */
   --modal-shadow:0 2px 8px rgba(0, 0, 0, 0.15);
   --modal-top:250px;                   /* measured y of a 400-tall modal in a 900 viewport */
@@ -485,6 +486,11 @@
   --drawer-head-h:63px;
   --drawer-head-pad:16px 24px;
   --drawer-head-h-filters:91px;        /* title + subtitle, data/live/listings--drawer-filters */
+  /* the listing-detail drawer is wider than the filters drawer and titles
+     bigger — data/live/design-capture-flows-only-listing-detail-drawer */
+  --drawer-w-detail:576px;
+  --drawer-head-h-detail:59px;
+  --fs-drawer-title-detail:20px;
   --drawer-head-pad-filters:16px;
   --drawer-body-pad:16px;
   --drawer-foot-pad:24px 16px;
@@ -1834,6 +1840,7 @@ table{border-collapse:collapse}
   max-height:calc(100vh - var(--sp-48));
 }
 .pf-modal[data-size="small"]{width:var(--modal-w-sm)}
+.pf-modal[data-size="large"]{width:var(--modal-w-lg)}
 .pf-modal-head{
   display:flex;
   align-items:center;
@@ -1890,6 +1897,17 @@ table{border-collapse:collapse}
   gap:var(--sp-16);
   font-size:var(--fs-card-title);
 }
+/* the listing-detail drawer: 576 wide, a 59 head and a 20/600 title */
+.pf-drawer[data-kind="detail"]{inline-size:var(--drawer-w-detail)}
+.pf-drawer[data-kind="detail"] .pf-drawer-head{min-block-size:var(--drawer-head-h-detail)}
+.pf-drawer[data-kind="detail"] .pf-drawer-head .pf-modal-title{
+  font-size:var(--fs-drawer-title-detail);font-weight:var(--fw-600);
+}
+/* what the drawer shows before its listing arrives — measured from the render,
+   which is the loading state because the capture route has no server */
+.pf-detail-skeleton{display:grid;grid-template-columns:351fr 169fr;gap:var(--sp-8)}
+.pf-detail-skeleton > :first-child{grid-row:span 2}
+
 /* the filters drawer is the one instance that deviates, and it deviates twice */
 .pf-drawer[data-kind="filters"] .pf-drawer-head{
   min-block-size:var(--drawer-head-h-filters);

@@ -72,15 +72,26 @@ const UPGRADES = (product, applicable = true) => [
      [3] MdEdit              edit
      [4] IconSellRentListing sell-rent-listing — the "%" glyph
      [5] HiOutlineTrash      delete                                        */
-const ACTIONS = [
+/* THE ORDER IS THE PRODUCT'S — listingUtilities.js:9 listingRowActions.ksa:
+
+     trucheck · listing_detail · listing_detail_drawer · edit_listing ·
+     sell_rent_listing · booking · delete_listing
+
+   Seven entries, and `booking` returns null unless the listing is a daily
+   rental (listingUtilities.js:238). That is why the real page shows six on
+   every row: the seventh is conditional, not missing. A daily-rental row
+   here shows all seven, in this order, which is the only way to see that
+   the rule is a rule. */
+const ACTIONS = (row) => [
   ['TruCheck',            'TruCheckIcon',        'modal-trucheck'],
   ['Preview on Bayut',    'FiArrowUpRight',      null],
-  ['Listing details',     'IoMdEye',             null],
+  ['Listing details',     'IoMdEye',             'drawer-listing-detail'],
   ['Edit',                'MdEdit',              null],
   /* the tooltip says "Apply Discount" (listingUtilities.js:222), even though
      the icon type is sell-rent-listing and the generic label map calls it
      "Sell or Rent Property". The tooltip is what a user reads. */
   ['Apply Discount',      'IconSellRentListing', null],
+  ...(row.purpose === 'daily-rental' ? [['Mark as Booked', 'MdDateRange', 'modal-booking']] : []),
   ['Delete',              'HiOutlineTrash',      'modal-delete'],
 ];
 const [beds, baths, area] = ['IconBedroom', 'IconBathroom', 'IconAreaSize'];
@@ -146,9 +157,15 @@ ${UPGRADES(r.product, r.upgradesApplicable !== false).map(([tone, label, ic, app
 }).join('\n')}
               </div>
             </td>`,
-  actions: () => `            <td class="col-actions">
+  actions: (r) => `            <td class="col-actions">
               <div class="pf-action-grid">
-${ACTIONS.map(([label, ic, opens]) => `                <button class="pf-round-action" type="button" aria-label="${label}"${opens ? ` data-open="${opens}"` : ''}>${icon(ic)}</button>`).join('\n')}
+${ACTIONS(r).map(([label, ic, opens]) => opens
+  /* an action that opens an overlay is a button; one that NAVIGATES is a link,
+     the same way the rail handles a screen we have not built. Preview leaves
+     for the classified site, Edit and Apply Discount go to /post-listing/:id —
+     none of them is an overlay, and none of them should be a dead click. */
+  ? `                <button class="pf-round-action" type="button" aria-label="${label}" data-open="${opens}">${icon(ic)}</button>`
+  : `                <a class="pf-round-action" aria-label="${label}" href="not-built.html?screen=${encodeURIComponent(label)}">${icon(ic)}</a>`).join('\n')}
               </div>
             </td>`,
 };
@@ -226,6 +243,47 @@ ${['Property is no longer available', 'Rented out through Bayut', 'Sold through 
     </div>
     <div class="pf-modal-foot">
       <button class="pf-btn" type="button" data-close><span>Close</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- data/live/design-capture-flows-only-booking — 800 wide, head 57, body 104,
+     foot 73. Reachable only from a daily-rental row, which is the product's
+     own rule (listingUtilities.js:238) rather than a simplification here. -->
+<div class="pf-mask" id="modal-booking" hidden>
+  <div class="pf-modal" data-size="large" role="dialog" aria-modal="true" aria-labelledby="bk-title">
+    <div class="pf-modal-head">
+      <span class="pf-modal-title" id="bk-title">Mark as Booked</span>
+      <button class="pf-overlay-close" type="button" aria-label="Close" data-close>${icon('IoMdClose', 16)}</button>
+    </div>
+    <div class="pf-modal-body">
+      <div class="pf-field">
+        <label class="pf-field-label" for="bk-range">Booked dates</label>
+        <button class="pf-select" id="bk-range" type="button"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow">${icon('MdDateRange', 16)}</span></button>
+      </div>
+    </div>
+    <div class="pf-modal-foot">
+      <button class="pf-btn" type="button" data-close><span>Cancel</span></button>
+      <button class="pf-btn" data-variant="primary" type="button" data-close><span>Add Range</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- data/live/design-capture-flows-only-listing-detail-drawer — 576 wide, head
+     59, title 20/600. The body is the SKELETON, because that is the state the
+     product renders before the listing arrives and the only one captured; the
+     loaded drawer needs a listing-detail fixture. -->
+<div class="pf-mask" id="drawer-listing-detail-mask" hidden></div>
+<div class="pf-drawer" data-kind="detail" id="drawer-listing-detail" data-mask="drawer-listing-detail-mask" role="dialog" aria-modal="true" aria-labelledby="ld-title" hidden>
+  <div class="pf-drawer-head">
+    <div class="pf-modal-title" id="ld-title">Listing Details</div>
+    <button class="pf-overlay-close" type="button" aria-label="Close" data-close>${icon('IoMdClose', 16)}</button>
+  </div>
+  <div class="pf-drawer-body">
+    <div class="pf-detail-skeleton">
+      <span class="pf-skeleton"></span>
+      <span class="pf-skeleton"></span>
+      <span class="pf-skeleton"></span>
     </div>
   </div>
 </div>
