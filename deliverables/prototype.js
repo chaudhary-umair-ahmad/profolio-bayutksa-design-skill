@@ -168,7 +168,10 @@
     /* two skins: an upgrade circle shows ActionPopOver's h6, a row action shows
        a plain string. The trigger says which. */
     tip.setAttribute('data-kind', trigger.getAttribute('data-tip-kind') || 'panel');
+    /* keep the arrow; only the text is replaced */
+    var arrow = tip.querySelector('.pf-arrow');
     tip.textContent = '';
+    if (arrow) tip.appendChild(arrow);
     /* a two-line tip — the Booked chip's is a 13-tall CAPTION ABOVE a 22-tall
        value, in that order */
     var cap = trigger.getAttribute('data-tip-caption');

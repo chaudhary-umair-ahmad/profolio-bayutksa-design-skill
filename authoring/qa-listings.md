@@ -514,3 +514,24 @@ argument for comparing bands rather than boxes.
   navigation into a link where the product uses a Button with an onClick, and
   antd puts a search input inside every Select where we use a button that opens
   a listbox.
+
+## The arrow
+
+Every anchored overlay in the product draws a **16×16 arrow** pointing back at
+whatever opened it — eleven of them on this screen. **This page shipped none.**
+`--popover-arrow:16px` was declared in the stylesheet and never used once.
+
+It is the first thing a reviewer notices and the last thing any of this
+system's checks could see:
+
+- the **region diff** compares a popover's bounding box, and the arrow is
+  outside it;
+- the **overlay comparator** walks `.ant-popover-inner`, and antd makes the
+  arrow a SIBLING of that, not a child.
+
+So the comparator now looks for an arrow near the overlay on each side, and
+compares the surface's paint as well — background, radius, shadow, border. That
+found two more things immediately: the **health popover's radius is 10, not the
+component's 8** (the account menu does the same, so two of the three popovers on
+this screen override the default), and the **select dropdown has no arrow at
+all**, which we had given it.

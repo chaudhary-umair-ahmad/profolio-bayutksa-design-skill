@@ -537,7 +537,7 @@ const tableOverlays = `
      the product's own title string (products.js, table-actions.js:62-109).
      data/live/listings--tooltip-action — 132x40, WHITE with #5A5F7D text and a
      hairline border. antd ships a dark pill; the product overrides it. -->
-<div class="pf-tip" id="pf-tip" role="tooltip" hidden></div>
+<div class="pf-tip" id="pf-tip" role="tooltip" hidden><span class="pf-arrow" aria-hidden="true"></span></div>
 
 <!-- data/live/listings--popover-health — 440x352, placement right.
        header  440x83  — a 16/600 title and a 14px subtitle in a 320-wide
@@ -548,6 +548,7 @@ const tableOverlays = `
      of health.js read quickly rather than the shape the product renders:
      Bayut shows Exterior, Interior and Duplicate image rows, not one. -->
 <div class="pf-popover" data-kind="health" id="popover-health" data-anchor="trigger" data-placement="right" role="dialog" aria-label="Overall Quality" hidden>
+  <span class="pf-arrow" aria-hidden="true"></span>
   <div class="pf-popover-body">
     <div class="pf-health-head">
       <div class="pf-health-head-text">
@@ -584,11 +585,13 @@ ${action ? (action[0] === 'refresh'
 
 <!-- data/live/listings--popover-timeline — 180x54, pad 16 -->
 <div class="pf-popover" data-kind="anchored" id="popover-timeline" data-anchor="trigger" data-placement="top" role="dialog" aria-label="Posted on" hidden>
+  <span class="pf-arrow" aria-hidden="true"></span>
   <div class="pf-popover-body">12:00 am, Sep 20, 2026</div>
 </div>
 
 <!-- data/live/listings--popover-rega — 191x54, pad 16 -->
 <div class="pf-popover" data-kind="anchored" id="popover-rega" data-anchor="trigger" data-placement="top" role="dialog" aria-label="REGA expiry" hidden>
+  <span class="pf-arrow" aria-hidden="true"></span>
   <div class="pf-popover-body">Expiring on: Jan 20, 2027</div>
 </div>
 
@@ -596,6 +599,7 @@ ${action ? (action[0] === 'refresh'
      right, and it opens on CLICK. The only click-triggered popover in the
      table body (platforms-status.js:16). -->
 <div class="pf-popover" data-kind="anchored" id="popover-status" data-states="popover-status-rejected" data-anchor="trigger" data-placement="right" role="dialog" aria-label="Rejection reasons" hidden>
+  <span class="pf-arrow" aria-hidden="true"></span>
   <div class="pf-popover-body">Images do not match the property, Price is outside the expected range</div>
 </div>
 
@@ -604,6 +608,7 @@ ${action ? (action[0] === 'refresh'
      1px dashed rule costing 9 between them: 4x44 + 3x9 = 203. This was built
      with padded groups and came out 298. -->
 <div class="pf-popover" data-kind="leads" id="popover-leads" data-anchor="trigger" data-placement="top" role="dialog" aria-label="Leads breakdown" hidden>
+  <span class="pf-arrow" aria-hidden="true"></span>
   <div class="pf-popover-body">
 ${[['GrNotification', 'Calls', 'Calls Clicked', '0'],
    ['GrNotification', 'Whatsapp', 'WhatsApp Clicked', '0'],
@@ -641,6 +646,7 @@ ${['Apartment', 'Villa', 'Floor', 'Chalet', 'Townhouse', 'Duplex', 'Penthouse'].
      by side and a list of static ranges. The capture has 70 .rdrDay and no
      .ant-picker, which is the only reason this is not drawn as one. -->
 <div class="pf-popover" data-kind="date" id="popover-date-range" data-states="date-posted-on" data-state-with="drawer-filters" data-anchor="trigger" data-placement="bottom" role="dialog" aria-label="Search by Calendar" hidden>
+  <span class="pf-arrow" aria-hidden="true"></span>
   <div class="pf-popover-title">Search by Calendar</div>
   <div class="pf-popover-body">
     <div class="pf-daterange">

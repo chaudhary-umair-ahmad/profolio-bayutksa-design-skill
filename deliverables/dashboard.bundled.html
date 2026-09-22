@@ -540,7 +540,13 @@
      account menu's, which carries .menu-main; the notification centre keeps
      the default. Another instance promoted to a default. */
   --popover-radius:8px;
+  /* EVERY popover and tooltip in the product has one, 16x16, and this page
+     shipped none — the token was declared and never used. It is the first
+     thing a reviewer notices and the last thing a box diff can see, because
+     the arrow is a SIBLING of .ant-popover-inner and sits outside the subtree
+     the overlay comparator walks. */
   --popover-arrow:16px;
+  --popover-arrow-reach:8px;           /* how far it stands off the surface */
   --popover-shadow:0 6px 16px rgba(0,0,0,.08), 0 3px 6px -4px rgba(0,0,0,.12), 0 9px 28px 8px rgba(0,0,0,.05);
   /* MEASURED, and it corrects an assumption. Both masks compute z-index 1000
      (antd's zIndexPopupBase) — and the rail is 1002, so THE RAIL STAYS BRIGHT
@@ -2414,7 +2420,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 .pf-popover[data-kind="anchored"] .pf-popover-body,
 .pf-popover[data-kind="leads"] .pf-popover-body,
 .pf-popover[data-kind="date"] .pf-popover-body{padding:var(--popover-pad)}
-.pf-popover[data-kind="health"]{width:var(--popover-w-health)}
+/* radius 10, not the component default 8 — measured on the panel itself. The
+   account menu does the same; two of the three popovers on this screen
+   override the default, which is worth knowing before anyone calls 8 the rule. */
+.pf-popover[data-kind="health"]{width:var(--popover-w-health);border-radius:var(--popover-radius-account)}
 /* the health panel styles its own content, so the inner padding is zero —
    measured: inner 440x352 and inner-content 440x352, the same box */
 .pf-popover[data-kind="health"] .pf-popover-body{padding:var(--sp-0)}
@@ -2760,6 +2769,64 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 .pf-tc-text{margin:var(--sp-0);color:var(--gray-700)}
 .pf-tc-text + .pf-tc-text{margin-block-start:var(--sp-16)}
 
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · the popover / tooltip arrow
+   .ant-popover-arrow and .ant-tooltip-arrow, both 16x16, on every overlay
+   that is anchored to something. It points at whatever opened the overlay,
+   which is the whole reason an anchored overlay reads as anchored.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-arrow{
+  position:absolute;
+  inline-size:var(--popover-arrow);
+  block-size:var(--popover-arrow);
+  pointer-events:none;
+}
+.pf-arrow::before{
+  content:"";
+  position:absolute;
+  inset-block-start:50%;
+  inset-inline-start:50%;
+  inline-size:var(--popover-arrow);
+  block-size:var(--popover-arrow);
+  transform:translate(-50%,-50%) rotate(45deg);
+  background:var(--card-bg);
+  border-radius:var(--sp-2);
+}
+/* the tooltip is the one surface with a hairline border, so its arrow needs
+   two of that border's edges to carry the line round the point */
+.pf-tip .pf-arrow::before{border:var(--border-w) solid var(--tip-border)}
+
+[data-placement="top"] > .pf-arrow{
+  inset-block-end:calc(var(--popover-arrow-reach) * -1);
+  inset-inline-start:50%;margin-inline-start:calc(var(--popover-arrow) / -2);
+}
+[data-placement="bottom"] > .pf-arrow{
+  inset-block-start:calc(var(--popover-arrow-reach) * -1);
+  inset-inline-start:50%;margin-inline-start:calc(var(--popover-arrow) / -2);
+}
+[data-placement="right"] > .pf-arrow{
+  inset-inline-start:calc(var(--popover-arrow-reach) * -1);
+  inset-block-start:50%;margin-block-start:calc(var(--popover-arrow) / -2);
+}
+[data-placement="left"] > .pf-arrow{
+  inset-inline-end:calc(var(--popover-arrow-reach) * -1);
+  inset-block-start:50%;margin-block-start:calc(var(--popover-arrow) / -2);
+}
+/* the surface has to let the arrow out of its box */
+/* the surface has to let the arrow out of its box. A listbox has no arrow —
+   antd's select dropdown never draws one — so it keeps its clip. */
+.pf-popover[data-anchor="trigger"],
+.pf-popover[data-anchor="header-end"],
+.pf-tip{overflow:visible}
+/* the two shell popovers hang under the header, so their arrow points up at
+   the bell or the avatar and sits inset from the end rather than centred */
+.pf-popover[data-anchor="header-end"] > .pf-arrow{
+  inset-inline-start:auto;
+  inset-inline-end:var(--sp-24);
+  margin-inline-start:var(--sp-0);
+}
+
 </style>
 <style>
 /* ── INSTANCE DATA ──────────────────────────────────────────────────────
@@ -2943,7 +3010,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     /* two skins: an upgrade circle shows ActionPopOver's h6, a row action shows
        a plain string. The trigger says which. */
     tip.setAttribute('data-kind', trigger.getAttribute('data-tip-kind') || 'panel');
+    /* keep the arrow; only the text is replaced */
+    var arrow = tip.querySelector('.pf-arrow');
     tip.textContent = '';
+    if (arrow) tip.appendChild(arrow);
     /* a two-line tip — the Booked chip's is a 13-tall CAPTION ABOVE a 22-tall
        value, in that order */
     var cap = trigger.getAttribute('data-tip-caption');
@@ -4379,7 +4449,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 
 <!-- Notification centre. Unread rows are #F7FCFC, read rows white; the
      timestamp is 12px #9D9D9D and the glyph is the primary colour. -->
-<div class="pf-popover" data-kind="notifications" id="popover-notifications" data-anchor="header-end" role="dialog" aria-label="Notifications" hidden>
+<div class="pf-popover" data-kind="notifications" id="popover-notifications" data-anchor="header-end" data-placement="bottom" role="dialog" aria-label="Notifications" hidden>
+  <!-- the product draws one on every anchored overlay, pointing back at
+       the header control that opened it. These two shipped without. -->
+  <span class="pf-arrow" aria-hidden="true"></span>
   <div class="pf-noti">
     <div class="pf-noti-head">
       <div class="pf-noti-head-start">
@@ -4415,7 +4488,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
      the two list items carry a 1px gray400 top border, which is where the
      rules under the badges come from. The Nafath wordmark is the product's
      own 20x9 SVG and is not in our sprite; the label stands in for it. -->
-<div class="pf-popover" data-kind="account" id="popover-account" data-anchor="header-end" role="dialog" aria-label="Account" hidden>
+<div class="pf-popover" data-kind="account" id="popover-account" data-anchor="header-end" data-placement="bottom" role="dialog" aria-label="Account" hidden>
+  <!-- the product draws one on every anchored overlay, pointing back at
+       the header control that opened it. These two shipped without. -->
+  <span class="pf-arrow" aria-hidden="true"></span>
   <div class="pf-user-info">
     <div class="pf-user-row">
       <span class="pf-user-avatar"><svg class="i i-20"><use href="#pf-FiUser"/></svg></span>

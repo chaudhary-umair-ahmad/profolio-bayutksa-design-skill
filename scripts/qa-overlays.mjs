@@ -106,6 +106,9 @@ function inset(root) {
   const walk = (n, d = 0) => {
     if (d > 4) return;
     const b = n.box;
+    /* an absolutely-positioned child is not content — the arrow sits at 50%
+       and made a 16px inset read as 86 */
+    if (n.style?.position === 'absolute' || n.style?.position === 'fixed') return;
     if (b && b.w > 0 && b.h > 0 && b.w < O.w - 4) {
       const dx = Math.round(b.x - O.x);
       if (dx > 0 && (best === null || dx < best)) best = dx;
@@ -156,7 +159,32 @@ function parts(root) {
 const SIZE_TOL = 4;        /* px on width or height */
 const BAND_TOL = 6;        /* px on a single band */
 
-function compare(name, kind, a, b) {
+/* The arrow lives OUTSIDE the box this tool walks — antd makes it a sibling of
+   .ant-popover-inner — which is exactly why eleven overlays shipped without one
+   and nothing caught it. Look for it in the whole capture instead: a state
+   opens one overlay, so one arrow is unambiguous. */
+function arrowOf(tree, re, near) {
+  /* NEAR the overlay, not anywhere in the capture: a state can leave another
+     popover's arrow mounted, and an unscoped search reported a missing arrow
+     on three modals, which have never had one. */
+  const found = findAll(tree, re)
+    .filter((n) => n.box && n.box.w > 0)
+    .filter((n) => n.box.x > near.x - 40 && n.box.x < near.x + near.w + 40
+                && n.box.y > near.y - 40 && n.box.y < near.y + near.h + 40);
+  return found.length ? found[0].box : null;
+}
+
+/* What the overlay is PAINTED with. Geometry can match exactly while the
+   surface is the wrong colour, radius or shadow, and a band profile says
+   nothing about any of it. */
+const PAINT = ['backgroundColor', 'borderTopLeftRadius', 'boxShadow', 'borderTopWidth', 'borderTopColor'];
+function paint(n) {
+  const out = {};
+  for (const k of PAINT) if (n.style?.[k] !== undefined) out[k] = n.style[k];
+  return out;
+}
+
+function compare(name, kind, a, b, trees) {
   const faults = [];
   const A = a.box, B = b.box;
   if (Math.abs(A.w - B.w) > SIZE_TOL) faults.push({ w: 3, m: `width ${Math.round(B.w)} vs ${Math.round(A.w)} (${B.w > A.w ? '+' : ''}${Math.round(B.w - A.w)})` });
@@ -182,6 +210,30 @@ function compare(name, kind, a, b) {
 
   const ia = inset(a), ib = inset(b);
   if (ia !== null && ib !== null && Math.abs(ia - ib) > 2) faults.push({ w: 2, m: `content inset ${ib} vs ${ia}` });
+
+  /* only an ANCHORED overlay has an arrow; a modal and a drawer never do */
+  if (trees && (kind === 'popover' || kind === 'tooltip' || kind === 'listbox')) {
+    const aArrow = arrowOf(trees[0], /(popover|tooltip)-arrow$/, A);
+    const bArrow = arrowOf(trees[1], /^pf-arrow$/, B);
+    if (aArrow && !bArrow) faults.push({ w: 4, m: `the product draws a ${Math.round(aArrow.w)}x${Math.round(aArrow.h)} arrow and our overlay has none` });
+    else if (!aArrow && bArrow) faults.push({ w: 2, m: 'our overlay draws an arrow and the product does not' });
+    else if (aArrow && bArrow && Math.abs(aArrow.w - bArrow.w) > 2) faults.push({ w: 2, m: `arrow ${Math.round(bArrow.w)} wide against ${Math.round(aArrow.w)}` });
+  }
+
+  const pA = paint(a), pB = paint(b);
+  for (const k of PAINT) {
+    if (pA[k] === undefined || pB[k] === undefined) continue;
+    /* a shadow is a long string that antd and a stylesheet spell differently;
+       compare only whether BOTH have one */
+    if (k === 'boxShadow') { if ((pA[k] === 'none') !== (pB[k] === 'none')) faults.push({ w: 2, m: `box-shadow ${pB[k] === 'none' ? 'missing' : 'present'} where the product has ${pA[k] === 'none' ? 'none' : 'one'}` }); continue; }
+    /* a border COLOUR on a surface with no border is just the inherited text
+       colour, and comparing it flagged every overlay in the set */
+    if (/^borderTop(Width|Color)$/.test(k)) {
+      const wA = parseFloat(pA.borderTopWidth) || 0, wB = parseFloat(pB.borderTopWidth) || 0;
+      if (!wA && !wB) continue;
+    }
+    if (pA[k] !== pB[k]) faults.push({ w: 2, m: `${k} ${pB[k]} against ${pA[k]}` });
+  }
 
   const pa = parts(a), pb = parts(b);
   /* Count what is INTERACTIVE, not what tag it is. This prototype turns a
@@ -218,7 +270,7 @@ for (const state of states) {
     if (!a) continue;
     const b = find(O, ours);
     if (!b) { results.push({ name: state, kind, faults: [{ w: 5, m: `the product opens a ${kind} here and our page has none` }] }); matched = true; break; }
-    results.push(compare(state, kind, a, b));
+    results.push(compare(state, kind, a, b, [L, O]));
     matched = true;
     break;
   }

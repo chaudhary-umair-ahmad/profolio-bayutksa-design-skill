@@ -176,7 +176,10 @@ export function shellOverlays() {
 
 <!-- Notification centre. Unread rows are #F7FCFC, read rows white; the
      timestamp is 12px #9D9D9D and the glyph is the primary colour. -->
-<div class="pf-popover" data-kind="notifications" id="popover-notifications" data-anchor="header-end" role="dialog" aria-label="Notifications" hidden>
+<div class="pf-popover" data-kind="notifications" id="popover-notifications" data-anchor="header-end" data-placement="bottom" role="dialog" aria-label="Notifications" hidden>
+  <!-- the product draws one on every anchored overlay, pointing back at
+       the header control that opened it. These two shipped without. -->
+  <span class="pf-arrow" aria-hidden="true"></span>
   <div class="pf-noti">
     <div class="pf-noti-head">
       <div class="pf-noti-head-start">
@@ -212,7 +215,10 @@ export function shellOverlays() {
      the two list items carry a 1px gray400 top border, which is where the
      rules under the badges come from. The Nafath wordmark is the product's
      own 20x9 SVG and is not in our sprite; the label stands in for it. -->
-<div class="pf-popover" data-kind="account" id="popover-account" data-anchor="header-end" role="dialog" aria-label="Account" hidden>
+<div class="pf-popover" data-kind="account" id="popover-account" data-anchor="header-end" data-placement="bottom" role="dialog" aria-label="Account" hidden>
+  <!-- the product draws one on every anchored overlay, pointing back at
+       the header control that opened it. These two shipped without. -->
+  <span class="pf-arrow" aria-hidden="true"></span>
   <div class="pf-user-info">
     <div class="pf-user-row">
       <span class="pf-user-avatar">${icon('FiUser', 20)}</span>

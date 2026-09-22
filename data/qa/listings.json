@@ -1,6 +1,6 @@
 {
   "route": "listings",
-  "at": "2026-09-22T10:42:31.352Z",
+  "at": "2026-09-22T10:55:29.721Z",
   "shellFails": [],
   "diffs": [
     {
@@ -446,7 +446,7 @@
         },
         {
           "id": "shell.header",
-          "diff": 47.7
+          "diff": 47.8
         },
         {
           "id": "filter.showmore",
@@ -1306,7 +1306,7 @@
         },
         {
           "id": "table.card.head",
-          "diff": 7.3
+          "diff": 7.5
         },
         {
           "id": "popover",
@@ -1314,7 +1314,7 @@
         },
         {
           "id": "filter.bar",
-          "diff": 6.7
+          "diff": 6.6
         },
         {
           "id": "table.card",
@@ -1630,7 +1630,7 @@
         },
         {
           "id": "filter.select",
-          "diff": 3.8
+          "diff": 3.9
         }
       ],
       "notModelled": [
@@ -2756,7 +2756,7 @@
         },
         {
           "id": "table.row",
-          "diff": 11.5
+          "diff": 11.4
         },
         {
           "id": "shell.content",
