@@ -1,0 +1,35 @@
+{
+  "name": "profolio-ksa-design-skill",
+  "private": true,
+  "type": "module",
+  "description": "Design system for Profolio KSA, generated from the product's own source.",
+  "scripts": {
+    "icons": "node scripts/icons.mjs --repo ../profolio-reactjs-copy",
+    "fonts": "node scripts/fonts.mjs --repo ../profolio-reactjs-copy --tenant bayut",
+    "antd": "node scripts/antd-tokens.mjs --repo ../profolio-reactjs-copy",
+    "build": "node scripts/build.mjs --repo ../profolio-reactjs-copy",
+    "combine": "node scripts/combine.mjs",
+    "bundle": "node scripts/bundle.mjs",
+    "check": "node scripts/sync.mjs --check && node scripts/check.mjs && node scripts/test-capture.mjs",
+    "diff": "node scripts/reconcile.mjs --diff",
+    "all": "npm run icons && npm run fonts && npm run antd && npm run antd-css && npm run layers && npm run build && npm run kb && npm run pages && npm run sync && npm run bundle && npm run combine && npm run check",
+    "layers": "node scripts/extract-layers.mjs --repo ../profolio-reactjs-copy --tenant bayut",
+    "antd-css": "node scripts/antd-css.mjs --repo ../profolio-reactjs-copy",
+    "test-capture": "node scripts/test-capture.mjs",
+    "kb": "node scripts/kb.mjs",
+    "harness:install": "node harness/install.mjs",
+    "harness:capture": "node harness/capture.mjs",
+    "pages": "node scripts/pages/listings.mjs",
+    "layout": "node scripts/derive-layout.mjs",
+    "qa": "node scripts/qa-design.mjs",
+    "sync": "node scripts/sync.mjs",
+    "qa-body": "node scripts/qa-body.mjs",
+    "qa-overlays": "node scripts/qa-overlays.mjs",
+    "outline": "node scripts/outline.mjs"
+  },
+  "devDependencies": {
+    "antd": "5.22.1",
+    "chroma-js": "^3.2.0",
+    "react-icons": "^5.7.0"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "url": "http://127.0.0.1:3000/en/lms/truleads",
+  "finalPath": "/en/lms/truleads",
+  "shell": true,
+  "errorCard": false,
+  "spinning": false,
+  "pageHeight": 2157,
+  "answered": [
+    "GET /api/surge/users/current",
+    "GET /api/surge/users/88010234",
+    "GET /api/surge/languages",
+    "GET /api/surge/area_units",
+    "GET /api/surge/experience_list",
+    "GET /api/surge/lms/leads/stats",
+    "GET /api/surge/notifications/stats",
+    "GET /api/surge/products",
+    "GET /api/surge/agencies/880042",
+    "GET /api/surge/lms/stats/product_stats",
+    "GET /api/surge/lms/stats/insights",
+    "GET /api/surge/lms/stats/response_time_metrics"
+  ],
+  "unanswered": [
+    "GET /api/surge/lms/leads/user_performance",
+    "GET /api/surge/lms/leads"
+  ],
+  "errors": [],
+  "blocked": 8,
+  "ms": 22321
+}

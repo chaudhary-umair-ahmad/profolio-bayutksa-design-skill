@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": true,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1926,
+  "note": "header Download App — 360×409 “Get the Bayut KSA App”",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

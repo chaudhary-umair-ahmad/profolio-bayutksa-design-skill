@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Which fonts actually load — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#design-system">Design system</a> › Which fonts actually load</nav>
+<main>
+<h1>Which fonts actually load</h1>
+<p>Read from:</p>
+<ul><li><code>src/hooks/useAppInit.js</code></li><li><code>src/theme/index.js</code></li><li><code>public/profolio-assets/bayut/fonts/</code></li></ul>
+<p><strong>Profolio KSA paints in Figtree.</strong></p>
+<p>This page said the opposite until the design QA's pixel diff caught it, so the evidence is worth stating plainly. In the product's own render (<code>data/live/listings.capture.json</code>), <strong>1,698 of 1,708 elements</strong> compute</p>
+<pre class="code"><code>Figtree, "Droid Arabic Kufi", sans-serif</code></pre>
+<p>The other ten are <code>icomoon</code>, the currency glyph font. <strong>Nothing computes Lato.</strong></p>
+<h2>Where each one comes from</h2>
+<table><tr><th></th><th></th></tr><tr><td><code>src/theme/index.js:306</code></td><td>the antd v5 token <code>fontFamily: 'Figtree, Droid Arabic Kufi, sans-serif'</code> — applied through <code>ConfigProvider</code> with <code>cssVar</code>, so it reaches everything</td></tr><tr><td><code>src/hooks/useAppInit.js</code></td><td>fetches <strong>Mukta + Figtree</strong> from Google Fonts whenever <code>!isMemberArea</code> — i.e. for Profolio proper</td></tr><tr><td><code>src/hooks/useAppInit.js</code></td><td>also injects <code>arabic-font.css</code>, <code>currency-font.css</code>, <code>lato-font.css</code> for every bayut session</td></tr><tr><td><code>constants.js</code> <code>FONT_FAMILY_LITE</code></td><td><code>Lato, Droid Arabic Kufi, sans-serif</code> — the <strong>lite / member area</strong>, not this product</td></tr></table>
+<p>So Lato <em>is</em> downloaded, and paints nothing here: only <code>FONT_FAMILY_LITE</code> and the lite footer in <code>layout/styled.js</code> name it.</p>
+<h2>Weights</h2>
+<p>Figtree is a <strong>variable font, 300–900</strong>. Every weight in that range is a real face. <code>.fw-500</code> and <code>.fw-600</code> are <strong>not</strong> synthesised — an earlier version of this page said they were, which was true of Lato and never true of what ships.</p>
+<h2>Arabic</h2>
+<p><code>Droid Arabic Kufi</code> is second in the stack and KSA ships Arabic first (<code>LANGUAGES[0]</code> is <code>ar</code>), so every Arabic string lands on it.</p>
+<h2>The currency mark</h2>
+<p><code>currency-font.css</code> is an <strong>icomoon glyph font</strong>, keyed on <code>[class^="currency-"]</code>. ر.س is an icon, not Arabic text — which is why it sits left of the number in an LTR row without any bidi handling.</p>
+</main>
+</body>
+</html>

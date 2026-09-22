@@ -1,0 +1,1019 @@
+[
+  {
+    "name": "action-detail-drawer",
+    "kind": "drawer",
+    "faults": [],
+    "theirs": {
+      "x": 864,
+      "y": 0,
+      "w": 576,
+      "h": 900,
+      "bands": [
+        63,
+        837
+      ],
+      "button": 1,
+      "link": 0,
+      "input": 0,
+      "icon": 10,
+      "text": 24
+    },
+    "ours": {
+      "x": 864,
+      "y": 0,
+      "w": 576,
+      "h": 900,
+      "bands": [
+        63,
+        837
+      ],
+      "button": 1,
+      "link": 0,
+      "input": 0,
+      "icon": 5,
+      "text": 21
+    }
+  },
+  {
+    "name": "action-discount",
+    "skip": "no overlay in the product capture"
+  },
+  {
+    "name": "date-posted-on",
+    "kind": "drawer",
+    "faults": [
+      {
+        "w": 0,
+        "m": "note: 9 field(s) against 11 — antd puts a search input in every Select"
+      }
+    ],
+    "theirs": {
+      "x": 990,
+      "y": 0,
+      "w": 450,
+      "h": 900,
+      "bands": [
+        91,
+        718,
+        91
+      ],
+      "button": 5,
+      "link": 0,
+      "input": 11,
+      "icon": 32,
+      "text": 34
+    },
+    "ours": {
+      "x": 990,
+      "y": 0,
+      "w": 450,
+      "h": 900,
+      "bands": [
+        91,
+        721,
+        88
+      ],
+      "button": 5,
+      "link": 0,
+      "input": 9,
+      "icon": 7,
+      "text": 24
+    }
+  },
+  {
+    "name": "drawer-filters",
+    "kind": "drawer",
+    "faults": [
+      {
+        "w": 0,
+        "m": "note: 9 field(s) against 11 — antd puts a search input in every Select"
+      }
+    ],
+    "theirs": {
+      "x": 990,
+      "y": 0,
+      "w": 450,
+      "h": 900,
+      "bands": [
+        91,
+        718,
+        91
+      ],
+      "button": 5,
+      "link": 0,
+      "input": 11,
+      "icon": 32,
+      "text": 34
+    },
+    "ours": {
+      "x": 990,
+      "y": 0,
+      "w": 450,
+      "h": 900,
+      "bands": [
+        91,
+        721,
+        88
+      ],
+      "button": 5,
+      "link": 0,
+      "input": 9,
+      "icon": 7,
+      "text": 24
+    }
+  },
+  {
+    "name": "error",
+    "skip": "no overlay in the product capture"
+  },
+  {
+    "name": "loading",
+    "skip": "no overlay in the product capture"
+  },
+  {
+    "name": "modal-booking",
+    "kind": "modal",
+    "faults": [],
+    "theirs": {
+      "x": 320,
+      "y": 333,
+      "w": 800,
+      "h": 234,
+      "bands": [
+        57,
+        104,
+        73
+      ],
+      "button": 3,
+      "link": 0,
+      "input": 0,
+      "icon": 2,
+      "text": 4
+    },
+    "ours": {
+      "x": 320,
+      "y": 331,
+      "w": 800,
+      "h": 238,
+      "bands": [
+        57,
+        108,
+        73
+      ],
+      "button": 3,
+      "link": 0,
+      "input": 0,
+      "icon": 2,
+      "text": 4
+    }
+  },
+  {
+    "name": "modal-delete",
+    "kind": "modal",
+    "faults": [],
+    "theirs": {
+      "x": 410,
+      "y": 250,
+      "w": 620,
+      "h": 400,
+      "bands": [
+        57,
+        270,
+        73
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 5,
+      "icon": 2,
+      "text": 14
+    },
+    "ours": {
+      "x": 410,
+      "y": 251,
+      "w": 620,
+      "h": 398,
+      "bands": [
+        57,
+        272,
+        69
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 5,
+      "icon": 1,
+      "text": 9
+    }
+  },
+  {
+    "name": "modal-download-app",
+    "kind": "modal",
+    "faults": [],
+    "theirs": {
+      "x": 540,
+      "y": 245,
+      "w": 360,
+      "h": 409,
+      "bands": [
+        63,
+        346
+      ],
+      "button": 0,
+      "link": 2,
+      "input": 0,
+      "icon": 4,
+      "text": 4
+    },
+    "ours": {
+      "x": 540,
+      "y": 245,
+      "w": 360,
+      "h": 409,
+      "bands": [
+        63,
+        346
+      ],
+      "button": 0,
+      "link": 2,
+      "input": 0,
+      "icon": 1,
+      "text": 4
+    }
+  },
+  {
+    "name": "modal-trucheck",
+    "kind": "modal",
+    "faults": [
+      {
+        "w": 0,
+        "m": "note: 4 band(s) against 1 — same box outside, a wrapper or scroll holder counts differently inside"
+      }
+    ],
+    "theirs": {
+      "x": 410,
+      "y": 262,
+      "w": 620,
+      "h": 376,
+      "bands": [
+        328
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 5,
+      "text": 2
+    },
+    "ours": {
+      "x": 410,
+      "y": 263,
+      "w": 620,
+      "h": 375,
+      "bands": [
+        157,
+        20,
+        44,
+        44
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 3,
+      "text": 3
+    }
+  },
+  {
+    "name": "popover-account",
+    "kind": "popover",
+    "faults": [],
+    "theirs": {
+      "x": 1040,
+      "y": 60,
+      "w": 400,
+      "h": 233,
+      "bands": [
+        132,
+        100
+      ],
+      "button": 0,
+      "link": 2,
+      "input": 0,
+      "icon": 13,
+      "text": 5
+    },
+    "ours": {
+      "x": 1024,
+      "y": 60,
+      "w": 400,
+      "h": 232,
+      "bands": [
+        132,
+        100
+      ],
+      "button": 0,
+      "link": 2,
+      "input": 0,
+      "icon": 6,
+      "text": 6
+    }
+  },
+  {
+    "name": "popover-health",
+    "kind": "popover",
+    "faults": [],
+    "theirs": {
+      "x": 427,
+      "y": 138,
+      "w": 440,
+      "h": 352,
+      "bands": [
+        83,
+        269
+      ],
+      "button": 1,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 13
+    },
+    "ours": {
+      "x": 444,
+      "y": 140,
+      "w": 440,
+      "h": 352,
+      "bands": [
+        83,
+        269
+      ],
+      "button": 1,
+      "link": 0,
+      "input": 0,
+      "icon": 5,
+      "text": 15
+    }
+  },
+  {
+    "name": "popover-leads",
+    "kind": "popover",
+    "faults": [
+      {
+        "w": 0,
+        "m": "note: 4 band(s) against 1 — same box outside, a wrapper or scroll holder counts differently inside"
+      }
+    ],
+    "theirs": {
+      "x": 674,
+      "y": 126,
+      "w": 216,
+      "h": 235,
+      "bands": [
+        203
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 8,
+      "text": 16
+    },
+    "ours": {
+      "x": 670,
+      "y": 107,
+      "w": 216,
+      "h": 235,
+      "bands": [
+        44,
+        44,
+        44,
+        44
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 4,
+      "text": 13
+    }
+  },
+  {
+    "name": "popover-notifications",
+    "kind": "popover",
+    "faults": [],
+    "theirs": {
+      "x": 770,
+      "y": 59,
+      "w": 590,
+      "h": 776,
+      "bands": [
+        36,
+        700
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 0,
+      "icon": 8,
+      "text": 9
+    },
+    "ours": {
+      "x": 834,
+      "y": 60,
+      "w": 590,
+      "h": 776,
+      "bands": [
+        36,
+        700
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 0,
+      "icon": 4,
+      "text": 9
+    }
+  },
+  {
+    "name": "popover-rega",
+    "kind": "popover",
+    "faults": [],
+    "theirs": {
+      "x": 333,
+      "y": 640,
+      "w": 191,
+      "h": 54,
+      "bands": [
+        22
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 1
+    },
+    "ours": {
+      "x": 331,
+      "y": 641,
+      "w": 189,
+      "h": 54,
+      "bands": [
+        22
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 2
+    }
+  },
+  {
+    "name": "popover-status-rejected",
+    "kind": "popover",
+    "faults": [],
+    "theirs": {
+      "x": 440,
+      "y": 485,
+      "w": 472,
+      "h": 54,
+      "bands": [
+        22
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 1
+    },
+    "ours": {
+      "x": 960,
+      "y": 439,
+      "w": 472,
+      "h": 54,
+      "bands": [
+        22
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 2
+    }
+  },
+  {
+    "name": "popover-timeline",
+    "kind": "popover",
+    "faults": [],
+    "theirs": {
+      "x": 573,
+      "y": 279,
+      "w": 180,
+      "h": 54,
+      "bands": [
+        22
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 1
+    },
+    "ours": {
+      "x": 587,
+      "y": 242,
+      "w": 180,
+      "h": 54,
+      "bands": [
+        22
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 2
+    }
+  },
+  {
+    "name": "select-property-type",
+    "kind": "listbox",
+    "faults": [
+      {
+        "w": 0,
+        "m": "note: 8 band(s) against 1 — same box outside, a wrapper or scroll holder counts differently inside"
+      }
+    ],
+    "theirs": {
+      "x": 843,
+      "y": 155,
+      "w": 245,
+      "h": 278,
+      "bands": [
+        256
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 9
+    },
+    "ours": {
+      "x": 834,
+      "y": 159,
+      "w": 245,
+      "h": 278,
+      "bands": [
+        35,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 1
+    }
+  },
+  {
+    "name": "select-purpose",
+    "kind": "listbox",
+    "faults": [
+      {
+        "w": 0,
+        "m": "note: 3 band(s) against 1 — same box outside, a wrapper or scroll holder counts differently inside"
+      }
+    ],
+    "theirs": {
+      "x": 590,
+      "y": 155,
+      "w": 245,
+      "h": 137,
+      "bands": [
+        115
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 3
+    },
+    "ours": {
+      "x": 584,
+      "y": 159,
+      "w": 245,
+      "h": 136,
+      "bands": [
+        38,
+        38,
+        38
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 0
+    }
+  },
+  {
+    "name": "tab-ad-license-requests",
+    "skip": "no overlay in the product capture"
+  },
+  {
+    "name": "tab-draft",
+    "skip": "no overlay in the product capture"
+  },
+  {
+    "name": "tab-pending",
+    "skip": "no overlay in the product capture"
+  },
+  {
+    "name": "tab-removed",
+    "skip": "no overlay in the product capture"
+  },
+  {
+    "name": "tooltip-action",
+    "kind": "tooltip",
+    "faults": [],
+    "theirs": {
+      "x": 1156,
+      "y": 318,
+      "w": 132,
+      "h": 40,
+      "bands": [
+        28
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 1
+    },
+    "ours": {
+      "x": 1146,
+      "y": 299,
+      "w": 132,
+      "h": 40,
+      "bands": [
+        22
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 2
+    }
+  },
+  {
+    "name": "tooltip-booked",
+    "kind": "tooltip",
+    "faults": [
+      {
+        "w": 3,
+        "m": "width 250 vs 230 (+20)"
+      }
+    ],
+    "theirs": {
+      "x": 26,
+      "y": 1169,
+      "w": 230,
+      "h": 40,
+      "bands": [
+        13,
+        22
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 2,
+      "text": 1
+    },
+    "ours": {
+      "x": 8,
+      "y": 1159,
+      "w": 250,
+      "h": 40,
+      "bands": [
+        13,
+        20
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 3
+    }
+  },
+  {
+    "name": "tooltip-upgrade",
+    "kind": "tooltip",
+    "faults": [],
+    "theirs": {
+      "x": 1009,
+      "y": 268,
+      "w": 153,
+      "h": 40,
+      "bands": [
+        20
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 1
+    },
+    "ours": {
+      "x": 1016,
+      "y": 253,
+      "w": 153,
+      "h": 40,
+      "bands": [
+        20
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 2
+    }
+  },
+  {
+    "name": "tooltip-upgrade-applied",
+    "kind": "tooltip",
+    "faults": [],
+    "theirs": {
+      "x": 1003,
+      "y": 723,
+      "w": 165,
+      "h": 40,
+      "bands": [
+        20
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 1
+    },
+    "ours": {
+      "x": 1010,
+      "y": 853,
+      "w": 165,
+      "h": 40,
+      "bands": [
+        20
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 2
+    }
+  },
+  {
+    "name": "tooltip-upgrade-none",
+    "skip": "no overlay in the product capture"
+  },
+  {
+    "name": "tooltip-upgrade-pending",
+    "kind": "tooltip",
+    "faults": [],
+    "theirs": {
+      "x": 961,
+      "y": 753,
+      "w": 250,
+      "h": 54,
+      "bands": [
+        40
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 1
+    },
+    "ours": {
+      "x": 967,
+      "y": 729,
+      "w": 250,
+      "h": 54,
+      "bands": [
+        40
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 2
+    }
+  },
+  {
+    "name": "tooltip-upgrade-service",
+    "kind": "tooltip",
+    "faults": [],
+    "theirs": {
+      "x": 961,
+      "y": 298,
+      "w": 250,
+      "h": 54,
+      "bands": [
+        40
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 1
+    },
+    "ours": {
+      "x": 967,
+      "y": 279,
+      "w": 250,
+      "h": 54,
+      "bands": [
+        40
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 2
+    }
+  },
+  {
+    "name": "tooltip-upgrade-unavailable",
+    "kind": "tooltip",
+    "faults": [],
+    "theirs": {
+      "x": 961,
+      "y": 1512,
+      "w": 250,
+      "h": 58,
+      "bands": [
+        46
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 1
+    },
+    "ours": {
+      "x": 967,
+      "y": 1484,
+      "w": 250,
+      "h": 54,
+      "bands": [
+        40
+      ],
+      "button": 0,
+      "link": 0,
+      "input": 0,
+      "icon": 0,
+      "text": 2
+    }
+  },
+  {
+    "name": "upgrade-hot",
+    "kind": "modal",
+    "faults": [],
+    "theirs": {
+      "x": 366,
+      "y": 243,
+      "w": 708,
+      "h": 414,
+      "bands": [
+        57,
+        284,
+        73
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 2,
+      "icon": 6,
+      "text": 15
+    },
+    "ours": {
+      "x": 366,
+      "y": 243,
+      "w": 708,
+      "h": 414,
+      "bands": [
+        57,
+        284,
+        73
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 2,
+      "icon": 2,
+      "text": 10
+    }
+  },
+  {
+    "name": "upgrade-photography",
+    "kind": "modal",
+    "faults": [],
+    "theirs": {
+      "x": 366,
+      "y": 177,
+      "w": 708,
+      "h": 546,
+      "bands": [
+        57,
+        416,
+        73
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 4,
+      "icon": 6,
+      "text": 16
+    },
+    "ours": {
+      "x": 366,
+      "y": 177,
+      "w": 708,
+      "h": 546,
+      "bands": [
+        57,
+        416,
+        73
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 4,
+      "icon": 2,
+      "text": 12
+    }
+  },
+  {
+    "name": "upgrade-refresh",
+    "kind": "modal",
+    "faults": [],
+    "theirs": {
+      "x": 366,
+      "y": 243,
+      "w": 708,
+      "h": 414,
+      "bands": [
+        57,
+        284,
+        73
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 2,
+      "icon": 6,
+      "text": 15
+    },
+    "ours": {
+      "x": 366,
+      "y": 243,
+      "w": 708,
+      "h": 414,
+      "bands": [
+        57,
+        284,
+        73
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 2,
+      "icon": 2,
+      "text": 10
+    }
+  },
+  {
+    "name": "upgrade-signature",
+    "kind": "modal",
+    "faults": [],
+    "theirs": {
+      "x": 366,
+      "y": 243,
+      "w": 708,
+      "h": 414,
+      "bands": [
+        57,
+        284,
+        73
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 2,
+      "icon": 6,
+      "text": 15
+    },
+    "ours": {
+      "x": 366,
+      "y": 243,
+      "w": 708,
+      "h": 414,
+      "bands": [
+        57,
+        284,
+        73
+      ],
+      "button": 2,
+      "link": 0,
+      "input": 2,
+      "icon": 2,
+      "text": 10
+    }
+  }
+]

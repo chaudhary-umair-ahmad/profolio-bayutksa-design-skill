@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Colour maps resolved at runtime — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#design-system">Design system</a> › Colour maps resolved at runtime</nav>
+<main>
+<h1>Colour maps resolved at runtime</h1>
+<p>Read from:</p>
+<ul><li><code>src/tenant/common/data/staticLists.js</code></li><li><code>src/tenant/bayut/data/packages.js</code></li><li><code>src/tenant/bayut/data/staticLists.js</code></li></ul>
+<p>None of these is a theme token. Each is a lookup the product performs against a string the API supplies, which is why reading <a href="../design/foundations.html"><code>foundations.html</code></a> alone leaves them looking like gaps.</p>
+<h2>Profile completion ring</h2>
+<p><code>tenantData.getClassificationColor(user.profile_completion.classification)</code>. The classification word comes from the API; the mapping does not.</p>
+<table><tr><th>classification</th><th>colour</th></tr><tr><td><code>high</code></td><td><code>theme['success-color']</code></td></tr><tr><td><code>low</code></td><td><code>theme['error-color']</code></td></tr><tr><td><code>medium</code></td><td><code>theme['warning-color']</code></td></tr></table>
+<h2>Package tiers</h2>
+<p><code>tenantData.packages[tenantData.slugToType[slug]]</code>. Drives the plan badge in Credits Balance.</p>
+<table><tr><th>tier</th><th>icon</th><th>packageColor</th><th>textColor</th></tr><tr><td><code>bronze</code></td><td><code>IconPkgBronze</code></td><td><code>#FFF3E8</code></td><td><code>#B85E39</code></td></tr><tr><td><code>silver</code></td><td><code>IconPkgSilver</code></td><td><code>tenantTheme.gray600</code></td><td><code>#9C9C9C</code></td></tr><tr><td><code>gold</code></td><td><code>IconPkgGold</code></td><td><code>#FBEFD9</code></td><td><code>#F2910A</code></td></tr><tr><td><code>platinum</code></td><td><code>IconPkgPlatinum</code></td><td><code>#E7F3FB</code></td><td><code>#5CB2F8</code></td></tr><tr><td><code>platinum-plus</code></td><td><code>IconPkgPlatinumPlus</code></td><td><code>#FFD1002B</code></td><td><code>#DFBC21</code></td></tr><tr><td><code>starter</code></td><td><code>IconPkgStarter</code></td><td><code>#44C1812B</code></td><td><code>#32BF77</code></td></tr><tr><td><code>starter-pro</code></td><td><code>IconPkgStarterPro</code></td><td><code>#A97BEA2B</code></td><td><code>#A97BEA</code></td></tr><tr><td><code>titanium</code></td><td><code>IconPkgTitanium</code></td><td><code>#F7E7FF</code></td><td><code>#DFBC21</code></td></tr></table>
+<h2>Platform brand colour</h2>
+<p><code>platformList[].brandColor</code> = <code>tenantTheme['primary-color']</code></p>
+<p>This is the accent behind the chart line, the credit meter and the tab ink bar. For <strong>bayut</strong> it is not API-supplied — it resolves to the primary colour. (zameen hardcodes its own per platform; bayut does not.)</p>
+</main>
+</body>
+</html>

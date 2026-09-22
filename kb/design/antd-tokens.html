@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>antd resolved tokens — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#design-system">Design system</a> › antd resolved tokens</nav>
+<main>
+<h1>antd resolved tokens</h1>
+<p>Everything the product leaves to antd. These are not in its source because it never overrides them: antd v5 computes them at runtime from the seed config in <code>src/theme/index.js</code>. Running that algorithm here is how they stop being guesses.</p>
+<p>Installed antd <strong>5.22.1</strong>; the app pins <code>^5.20.0</code>.</p>
+<p>Full output: <code>data/antd-tokens.json</code> (502 tokens).</p>
+<blockquote>These are antd's <strong>global</strong> tokens. Per-component overrides in the product's <code>components:</code> block (Card.paddingLG, Button.controlHeight and so on) are the app's own and are already in <a href="../design/foundations.html"><code>foundations.html</code></a>; they are not re-derived here.</blockquote>
+<h2>Table cell padding</h2>
+<table><tr><th>token</th><th>resolved</th></tr><tr><td><code>paddingContentVerticalLG</code></td><td><code>16</code></td></tr><tr><td><code>padding</code></td><td><code>16</code></td></tr><tr><td><code>paddingLG</code></td><td><code>24</code></td></tr><tr><td><code>paddingSM</code></td><td><code>12</code></td></tr></table>
+<h2>Row / column dividers</h2>
+<table><tr><th>token</th><th>resolved</th></tr><tr><td><code>colorSplit</code></td><td><code>rgba(5, 5, 5, 0.06)</code></td></tr><tr><td><code>colorBorderSecondary</code></td><td><code>#f0f0f0</code></td></tr><tr><td><code>colorBorder</code></td><td><code>#d9d9d9</code></td></tr><tr><td><code>lineWidth</code></td><td><code>1</code></td></tr></table>
+<h2>Card</h2>
+<table><tr><th>token</th><th>resolved</th></tr><tr><td><code>borderRadiusLG</code></td><td><code>8</code></td></tr><tr><td><code>paddingLG</code></td><td><code>24</code></td></tr><tr><td><code>colorBgContainer</code></td><td><code>#ffffff</code></td></tr><tr><td><code>boxShadowTertiary</code></td></tr></table>
+<p>      0 1px 2px 0 rgba(0, 0, 0, 0.03),       0 1px 6px -1px rgba(0, 0, 0, 0.02),       0 2px 4px 0 rgba(0, 0, 0, 0.02)     ` |</p>
+<h2>Badge</h2>
+<table><tr><th>token</th><th>resolved</th></tr><tr><td><code>fontSizeSM</code></td><td><code>12</code></td></tr><tr><td><code>lineHeightSM</code></td><td><code>1.6666666666666667</code></td></tr><tr><td><code>controlHeightXS</code></td><td><code>16</code></td></tr><tr><td><code>colorError</code></td><td><code>#f73131</code></td></tr></table>
+<h2>Progress</h2>
+<table><tr><th>token</th><th>resolved</th></tr><tr><td><code>fontSize</code></td><td><code>14</code></td></tr><tr><td><code>colorFillSecondary</code></td><td><code>rgba(0, 0, 0, 0.06)</code></td></tr><tr><td><code>colorSuccess</code></td><td><code>#28b16d</code></td></tr><tr><td><code>borderRadiusSM</code></td><td><code>4</code></td></tr></table>
+<h2>Segmented</h2>
+<table><tr><th>token</th><th>resolved</th></tr><tr><td><code>controlHeight</code></td><td><code>32</code></td></tr><tr><td><code>controlHeightSM</code></td><td><code>24</code></td></tr><tr><td><code>borderRadiusSM</code></td><td><code>4</code></td></tr><tr><td><code>colorBgLayout</code></td><td><code>#f5f5f5</code></td></tr></table>
+<h2>Disabled states</h2>
+<table><tr><th>token</th><th>resolved</th></tr><tr><td><code>colorTextDisabled</code></td><td><code>rgba(0, 0, 0, 0.25)</code></td></tr><tr><td><code>colorBgContainerDisabled</code></td><td><code>rgba(0, 0, 0, 0.04)</code></td></tr><tr><td><code>colorBorder</code></td><td><code>#d9d9d9</code></td></tr><tr><td><code>opacityLoading</code></td><td><code>0.65</code></td></tr></table>
+<h2>Controls</h2>
+<table><tr><th>token</th><th>resolved</th></tr><tr><td><code>controlHeight</code></td><td><code>32</code></td></tr><tr><td><code>controlHeightLG</code></td><td><code>40</code></td></tr><tr><td><code>controlHeightSM</code></td><td><code>24</code></td></tr><tr><td><code>controlHeightXS</code></td><td><code>16</code></td></tr><tr><td><code>controlPaddingHorizontal</code></td><td><code>12</code></td></tr><tr><td><code>controlPaddingHorizontalSM</code></td><td><code>8</code></td></tr></table>
+<h2>Type scale</h2>
+<table><tr><th>token</th><th>resolved</th></tr><tr><td><code>fontSize</code></td><td><code>14</code></td></tr><tr><td><code>fontSizeSM</code></td><td><code>12</code></td></tr><tr><td><code>fontSizeLG</code></td><td><code>16</code></td></tr><tr><td><code>fontSizeXL</code></td><td><code>20</code></td></tr><tr><td><code>lineHeight</code></td><td><code>1.571</code></td></tr><tr><td><code>lineHeightSM</code></td><td><code>1.6666666666666667</code></td></tr></table>
+<h2>Motion</h2>
+<table><tr><th>token</th><th>resolved</th></tr><tr><td><code>motionDurationFast</code></td><td><code>0.1s</code></td></tr><tr><td><code>motionDurationMid</code></td><td><code>0.2s</code></td></tr><tr><td><code>motionEaseInOut</code></td><td><code>cubic-bezier(0.645, 0.045, 0.355, 1)</code></td></tr></table>
+</main>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "score": 87.3,
+  "checks": 142,
+  "disagreements": [
+    {
+      "id": "shell.content",
+      "prop": "height",
+      "live": "958.016px",
+      "ours": "890.125px",
+      "w": 3
+    },
+    {
+      "id": "shell.title",
+      "prop": "box.w",
+      "live": 79,
+      "ours": 76,
+      "w": 3
+    },
+    {
+      "id": "settings.main",
+      "prop": "box.h",
+      "live": 918,
+      "ours": 850,
+      "w": 2
+    },
+    {
+      "id": "settings.side",
+      "prop": "height",
+      "live": "918.016px",
+      "ours": "850.125px",
+      "w": 2
+    },
+    {
+      "id": "table.thumb",
+      "prop": "(region)",
+      "live": "present",
+      "ours": "MISSING",
+      "w": 2
+    }
+  ],
+  "at": "2026-09-22T11:34:39.941Z"
+}

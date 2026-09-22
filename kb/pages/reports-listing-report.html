@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reports · reports-listing-report — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#pages">Pages</a> › Reports · reports-listing-report</nav>
+<main>
+<p class="open"><a href="reports-listing-report.board.html">Open the artboard →</a> <a href="../../data/live/reports-listing-report.png">Open the harness render →</a></p><h1>Reports</h1>
+<blockquote><strong>Derived, not designed.</strong> Fields below were read out of the page directory. Purpose, layout intent and the artboard are still to be written — that is the designer's work, and this header is the proposal to get approved first.</blockquote>
+<pre class="code"><code>shell     default
+route     /reports/listing-report
+source    src/container/pages/reports
+purpose   TODO — one sentence, user-side
+roles     no role branching found in this directory
+flags     none referenced directly
+states    loading · error
+lang      en pending · ar pending
+ga4       — product supplies in the PRD
+shot      `data/live/reports-listing-report.png` — the harness render, OPEN IT BEFORE DESIGNING
+board     `kb/pages/reports-listing-report.board.html` — the screen as an artboard</code></pre>
+<h2>Reference screenshot</h2>
+<p><code>data/live/reports-listing-report.png</code> — the product rendered by the harness. <strong>Open it before you design.</strong> The skeleton gives structure, the component specs give values, this gives the truth. If your output disagrees with it, your output is wrong.</p>
+<h2>Composition</h2>
+<p>Documented components this page already imports:</p>
+<ul><li><a href="../design/components/radio.html"><code>radio.html</code></a> (Radio)</li><li><a href="../design/components/dashboard.html"><code>dashboard.html</code></a> (Dashboard widgets)</li></ul>
+<p>Imported but <strong>not in the component register</strong> — undocumented surface:</p>
+<ul><li><code>Group</code></li><li><code>platform-switch</code></li><li><code>listing-container</code></li></ul>
+<h2>Layout skeleton</h2>
+<p>Nesting and layout props read out of <code>src/container/pages/reports/leads-reports.js</code>. This is the shipped structure — <strong>match it rather than inventing a new one</strong>, unless the PRD changes it.</p>
+<pre class="code"><code>      Main
+            PlatfromSwitch
+        Group gap="24px"
+          ReportsLeadsTrafficSection
+          TenantComponents
+        /Group
+      /Main</code></pre>
+<h2>Before designing</h2>
+<ol><li>Fill in <code>purpose</code> and confirm <code>roles</code>.</li><li>Check every flag above in <a href="../product/flags.html"><code>flags.html</code></a> — a false flag removes the surface.</li><li>Start from <a href="../pages/_shell.html"><code>_shell.html</code></a> default unless the PRD says otherwise.</li><li>Get this header approved, then design.</li></ol>
+</main>
+</body>
+</html>

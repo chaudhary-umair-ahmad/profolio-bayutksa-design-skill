@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lms · lms-leads — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#pages">Pages</a> › Lms · lms-leads</nav>
+<main>
+<p class="open"><a href="lms-leads.board.html">Open the artboard →</a> <a href="../../data/live/lms-leads.png">Open the harness render →</a></p><h1>Lms</h1>
+<blockquote><strong>Derived, not designed.</strong> Fields below were read out of the page directory. Purpose, layout intent and the artboard are still to be written — that is the designer's work, and this header is the proposal to get approved first.</blockquote>
+<pre class="code"><code>shell     default
+route     /lms/leads
+source    src/container/pages/lms
+purpose   TODO — one sentence, user-side
+roles     role-aware — agency owner / agency staff / individual seller differ; confirm which
+flags     LMS_ENABLED · COUNTRY_CODE · PHONE_REGEX · DAILY_RENTAL_ENABLED · LEAD_NUDGE_TOAST_ENABLED · BAYUT_MATCHING_LEAD
+states    loading · empty · error · flag-off · no-permission
+lang      en pending · ar pending
+ga4       — product supplies in the PRD
+shot      `data/live/lms-leads.png` — the harness render, OPEN IT BEFORE DESIGNING
+board     `kb/pages/lms-leads.board.html` — the screen as an artboard</code></pre>
+<h2>Reference screenshot</h2>
+<p><code>data/live/lms-leads.png</code> — the product rendered by the harness. <strong>Open it before you design.</strong> The skeleton gives structure, the component specs give values, this gives the truth. If your output disagrees with it, your output is wrong.</p>
+<h2>Composition</h2>
+<p>Documented components this page already imports:</p>
+<ul><li><a href="../design/components/avatar.html"><code>avatar.html</code></a> (Avatar &amp; badge)</li><li><a href="../design/components/empty.html"><code>empty.html</code></a> (Empty states)</li><li><a href="../design/components/button.html"><code>button.html</code></a> (Button)</li><li><a href="../design/components/modal.html"><code>modal.html</code></a> (Modal)</li><li><a href="../design/components/dropdown.html"><code>dropdown.html</code></a> (Dropdown)</li><li><a href="../design/components/icon.html"><code>icon.html</code></a> (Icon container)</li><li><a href="../design/components/card.html"><code>card.html</code></a> (Card frame)</li><li><a href="../design/components/drawer.html"><code>drawer.html</code></a> (Drawer)</li><li><a href="../design/components/input.html"><code>input.html</code></a> (Text input)</li></ul>
+<p>Imported but <strong>not in the component register</strong> — undocumented surface:</p>
+<ul><li><code>Flex</code></li><li><code>Group</code></li><li><code>LinkWithIcon</code></li><li><code>Text</code></li><li><code>leads-management</code></li><li><code>tour</code></li><li><code>listing-container</code></li><li><code>call-recording</code></li><li><code>listing-purpose</code></li><li><code>listing-detail-compact</code></li><li><code>date-time</code></li><li><code>source-content</code></li><li><code>lead-info</code></li><li><code>task-detail</code></li></ul>
+<h2>Layout skeleton</h2>
+<p>Nesting and layout props read out of <code>src/container/pages/lms/leads-dashboard.js</code>. This is the shipped structure — <strong>match it rather than inventing a new one</strong>, unless the PRD changes it.</p>
+<pre class="code"><code>      Flex
+        CardMetaStyled
+            Avatar
+            Flex gap="8px" align="center" justify="center"
+                Dropdown
+            /Flex
+      /Flex
+    Main
+        EmptyState
+              Tour
+          Group
+                TotalLeadsCardSkeleton
+                LeadsDashboardCardSkeleton
+                TotalLeadsCard
+                LeadsDashboardCard
+            ViewTrendsGraph
+              LeadsBreakdownGraph
+                AgentPerformanceListingsMobile
+                ListingContainer
+                LinkWithIcon
+                Modal
+                ListingContainer
+                /Modal
+            LeadListingsTable
+          /Group
+    /Main</code></pre>
+<h2>Before designing</h2>
+<ol><li>Fill in <code>purpose</code> and confirm <code>roles</code>.</li><li>Check every flag above in <a href="../product/flags.html"><code>flags.html</code></a> — a false flag removes the surface.</li><li>Start from <a href="../pages/_shell.html"><code>_shell.html</code></a> default unless the PRD says otherwise.</li><li>Get this header approved, then design.</li></ol>
+</main>
+</body>
+</html>

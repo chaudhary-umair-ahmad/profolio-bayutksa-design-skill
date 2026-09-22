@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1926,
+  "note": "row 8, Upgrades[2] — refresh is not applicable and is not an add-on service, so platformActions.js:115-136 gives it NO tooltip at all. A disabled circle is not always a circle with an explanation",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

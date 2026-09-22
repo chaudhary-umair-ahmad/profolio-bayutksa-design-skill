@@ -1,0 +1,42 @@
+{
+  "score": 88.4,
+  "checks": 112,
+  "disagreements": [
+    {
+      "id": "sfield",
+      "prop": "box.w",
+      "live": 592,
+      "ours": 413,
+      "w": 3
+    },
+    {
+      "id": "sfield.control",
+      "prop": "box.w",
+      "live": 592,
+      "ours": 413,
+      "w": 3
+    },
+    {
+      "id": "shell.content",
+      "prop": "height",
+      "live": "814px",
+      "ours": "799px",
+      "w": 3
+    },
+    {
+      "id": "settings.main",
+      "prop": "box.h",
+      "live": 794,
+      "ours": 465,
+      "w": 2
+    },
+    {
+      "id": "settings.main",
+      "prop": "width",
+      "live": "1035px",
+      "ours": "1332px",
+      "w": 2
+    }
+  ],
+  "at": "2026-09-22T11:34:39.791Z"
+}

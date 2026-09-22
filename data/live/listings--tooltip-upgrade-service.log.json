@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1926,
+  "note": "hover Upgrades[3] — 250x54 \"Request Photography Service\", the two-line tooltip the three add-on services share",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

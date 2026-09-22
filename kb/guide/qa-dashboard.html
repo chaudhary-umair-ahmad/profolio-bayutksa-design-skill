@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QA — `/dashboard` against live — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#guide">Guide</a> › QA — `/dashboard` against live</nav>
+<main>
+<h1>QA — <code>/dashboard</code> against live</h1>
+<p>Method: measure, don't squint. Every row below is a computed value from the rendered page set against what the codebase declares, not an impression of a screenshot. Where the codebase declares nothing, the row says so and stays open.</p>
+<p>Status at the time of writing: <strong>5 defects found and fixed, 4 open, 3 of the open ones need one live measurement.</strong></p>
+<hr>
+<h2>Header — fixed</h2>
+<table><tr><th></th><th>was</th><th>is</th><th>source</th></tr><tr><td>brand mark</td><td>invisible</td><td>the green mark, clipped by the rail</td><td>—</td></tr><tr><td>brand inset</td><td>8px</td><td><strong>20px</strong></td><td><code>withAdminLayout.js:177</code> <code>--sidebar-brand-inset</code></td></tr><tr><td>classified pill icon</td><td>inherited grey <code>#767676</code></td><td><strong><code>#28B16D</code></strong></td><td><code>SidebarClassifiedLinkIcon</code> default prop</td></tr></table>
+<p>The brand is not a square logo. It is the full <strong>205×33 "Profolio KSA" wordmark</strong> inset 20px into a 60px rail, so only the mark shows. At 8px inset you got a sliced "P" as well; at 20px you get what live shows.</p>
+<p>Verified now: height 60, <code>padding-inline-start</code> 85px (<code>sidebarOffset + 25</code>), title 20/700 <code>#000</code>, pill 149×36, primary button 36 tall, badge 16, avatar ring 34.</p>
+<h2>Rail — fixed</h2>
+<table><tr><th></th><th>was</th><th>is</th><th>source</th></tr><tr><td>item pitch</td><td>36px</td><td><strong>44px</strong></td><td>antd Menu <code>itemMarginBlock: marginXXS</code> = 4, so 36 + 2×4</td></tr></table>
+<p>This was the most visible thing wrong with the rail and the easiest to miss: every item was individually the right height, and the column was still too tight.</p>
+<p>Verified now: 60px wide, 11 items in the order <code>menuList.js</code> declares, icons 20px at <code>#707070</code>, selected on <code>#F2FAFA</code> at <code>#006169</code>, two bottom actions.</p>
+<h2>The one that matters more than any pixel</h2>
+<p><strong>The pages carry an inlined copy of the sprite, and it had fallen four regenerations behind.</strong> The pill icon was fixed in <a href="../../deliverables/sprite.svg"><code>deliverables/sprite.svg</code></a> and the page kept rendering the old symbol. Nothing catches that by eye, so it is now <code>scripts/sync.mjs</code> and <code>npm run check</code> fails on drift.</p>
+<p>Any generated asset that gets embedded rather than linked can do this. There are two: the sprite and the brand wordmark. Both are covered.</p>
+<hr>
+<h2>Still open</h2>
+<h3>Needs one live measurement</h3>
+<table><tr><th>token</th><th>current</th><th>why it cannot be sourced</th></tr><tr><td><code>--chart-h</code></td><td><code>300px</code></td><td>Chart.js canvas at <code>height=64</code> with <code>maintainAspectRatio</code>, so the painted height is a ratio of width at runtime</td></tr><tr><td><code>--meter-h</code></td><td><code>8px</code></td><td>antd <code>Progress</code> stroke width, never overridden</td></tr><tr><td><code>--listing-row-h</code></td><td><code>auto</code></td><td>content-driven; no row height is declared anywhere</td></tr><tr><td><code>--feedback-tab-w</code></td><td><code>28px</code></td><td>third-party widget, no source in <code>profolio-reactjs</code></td></tr></table>
+<p>Paste <code>scripts/probe.js</code> on live once and <code>node scripts/reconcile.mjs</code> fills all four. Until then they are marked <code>TBC</code> in the stylesheet, which is the point of the marker.</p>
+<h3>Known approximations</h3>
+<ol><li><strong>The chart series is traced from the screenshot</strong>, not sourced. 30 points,</li></ol>
+<p>   each ±40. The shape is right; no individual value is.</p>
+<ol><li><strong>The listing rows carry real account data</strong> — agency name, ten Bayut and REGA</li></ol>
+<p>   ids, prices, locations. No phone numbers or emails. Swap for fixtures before    this leaves the team.</p>
+<ol><li><strong><code>.fw-500</code> and <code>.fw-600</code> are synthesised</strong>, here and in production, because</li></ol>
+<p>   only Lato 300/400/700 ship. That is correct, not a defect, and it is why the    deliverables must not request a real 500 from a font service.</p>
+<ol><li><strong>The purpose chip</strong> (<code>Floor for Sale | Ready</code>) renders as a Tag on</li></ol>
+<p>   <code>--primary-light-4</code>. On a white row that ground is nearly invisible, which    matches <code>listing-purpose.js</code>, but it is worth a look on the real screen.</p>
+<hr>
+<h2>What belongs in this HTML — and what does not</h2>
+<p>The rule that keeps it honest: <strong>the page composes, the catalogue defines, the stylesheet holds every value.</strong></p>
+<p><strong>In:</strong></p>
+<ul><li>one <code>&lt;link&gt;</code> to <code>profolio.css</code> and one to <code>fonts.css</code>, nothing else external</li><li>the sprite, inline, synced by <code>scripts/sync.mjs</code></li><li>markup composed only of classes that exist in <code>components.html</code></li><li><code>data-*</code> attributes for variants and states, so a state is inspectable</li><li>one <code>&lt;style&gt;</code> block of <em>instance data</em> — <code>--ring-pct</code>, <code>--meter-pct</code> — which is</li></ul>
+<p>  data, not presentation, and keeps the body free of style attributes</p>
+<ul><li>verbatim product copy</li></ul>
+<p><strong>Out:</strong></p>
+<ul><li>style attributes in the body — <code>npm run check</code> fails on them</li><li>raw hex, rgb or px outside <code>:root</code> — likewise</li><li>any glyph not from the sprite</li><li>invented copy, invented numbers, and any value that should carry a <code>TBC</code></li></ul>
+<p>  instead</p>
+<p><strong>Enforced, not hoped for:</strong> <code>npm run check</code> verifies all of the above plus every path <code>SKILL.md</code> routes to, every <code>var()</code> resolving, and every icon reference existing.</p>
+</main>
+</body>
+</html>

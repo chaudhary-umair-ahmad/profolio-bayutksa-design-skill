@@ -1,0 +1,32 @@
+{
+  "url": "http://127.0.0.1:3000/en/agent-performance",
+  "finalPath": "/en/agent-performance",
+  "shell": true,
+  "errorCard": false,
+  "spinning": false,
+  "pageHeight": 900,
+  "answered": [
+    "GET /api/surge/users/current",
+    "GET /api/surge/users/88010234",
+    "GET /api/surge/languages",
+    "GET /api/surge/area_units",
+    "GET /api/surge/experience_list",
+    "GET /api/surge/lms/leads/stats",
+    "GET /api/surge/notifications/stats",
+    "GET /api/surge/products",
+    "GET /api/surge/agencies/880042"
+  ],
+  "unanswered": [
+    "GET /api/surge/users/user_badge_eligibility",
+    "GET /api/surge/users/trubroker/leader_board",
+    "GET /api/surge/users/tru_points",
+    "GET /api/surge/users/88010234/trubroker/tru_point_activities",
+    "GET /api/surge/users/team_performance"
+  ],
+  "errors": [
+    "Error: <svg> attribute width: Expected length, \"[object Object]\".",
+    "Error: <svg> attribute height: Expected length, \"[object Object]\"."
+  ],
+  "blocked": 8,
+  "ms": 16854
+}

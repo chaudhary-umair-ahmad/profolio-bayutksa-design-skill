@@ -1,0 +1,136 @@
+{
+  "route": "reports-leads-reports",
+  "at": "2026-09-22T12:17:14.126Z",
+  "shellFails": [
+    {
+      "id": "shell.title",
+      "diff": 37.2
+    },
+    {
+      "id": "shell.header",
+      "diff": 10
+    }
+  ],
+  "diffs": [
+    {
+      "id": "shell.title",
+      "diff": 37.2
+    },
+    {
+      "id": "filter.clear",
+      "diff": 25.3
+    },
+    {
+      "id": "filter.search",
+      "diff": 16.1
+    },
+    {
+      "id": "filter.field",
+      "diff": 14.7
+    },
+    {
+      "id": "shell.header",
+      "diff": 10
+    },
+    {
+      "id": "filter.bar",
+      "diff": 5.6
+    },
+    {
+      "id": "shell.sider",
+      "diff": 4.6
+    },
+    {
+      "id": "shell.content",
+      "diff": 3.6
+    },
+    {
+      "id": "pager.active",
+      "diff": 3.1
+    },
+    {
+      "id": "shell.footer",
+      "diff": 2.1
+    },
+    {
+      "id": "table",
+      "diff": 1.1
+    },
+    {
+      "id": "pager.item",
+      "diff": 0.8
+    },
+    {
+      "id": "pager",
+      "diff": 0.5
+    },
+    {
+      "id": "pager.nav",
+      "diff": 0
+    }
+  ],
+  "offScale": {
+    "size": [],
+    "weight": [],
+    "space": []
+  },
+  "literals": [
+    ".i-17 { width: 17px }",
+    ".i-17 { height: 17px }",
+    ".pf-settings-head + .pf-settings-form { --form-inset: 41px }",
+    ".pf-agency { --form-inset: 17px }",
+    ".pf-upload-btn { block-size: 55px }",
+    ".pf-block-row[data-cols=\"533 783\"] { grid-template-columns: 533px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"449 899\"] { grid-template-columns: 449px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"narrow\"] { grid-template-columns: minmax(var(--sp-0),1035px) }",
+    ".pf-datefield { inline-size: var(--field-w, 345px) }",
+    ".pf-pill { block-size: 29px }",
+    ".pf-stat-lead { inline-size: 103px }",
+    ".pf-tl-thumb { inline-size: 120px }",
+    ".pf-tl-thumb { block-size: 82px }",
+    ".pf-proptable .pf-td-prop { inline-size: 475px }",
+    ".pf-page-lead { inline-size: 1035px }",
+    ".pf-wsection-title { inline-size: 195px }",
+    ".pf-wsection-title { block-size: 105px }",
+    ".pf-wsection-icon { inline-size: 56px }",
+    ".pf-wsection-icon { block-size: 56px }",
+    ".pf-wsection-fields { max-inline-size: 640px }",
+    ".pf-compound .pf-select { inline-size: 82px }",
+    ".pf-plot[data-h=\"160\"] { block-size: 160px }",
+    ".pf-plot[data-h=\"440\"] { block-size: 440px }",
+    ".pf-tab[data-tabw=\"200\"] { inline-size: 200px }",
+    ".pf-tab[data-tabw=\"94\"] { inline-size: 94px }",
+    ".pf-table-card[data-h=\"528\"] { block-size: 528px }",
+    ".pf-filter-bar[data-in-head=\"true\"] { block-size: 78px }"
+  ],
+  "lowContrast": 2,
+  "contrastMatchingProduct": 15,
+  "productLow": [
+    {
+      "col": "rgb(255,255,255)",
+      "n": 13,
+      "ratio": 1
+    },
+    {
+      "col": "rgb(157,157,157)",
+      "n": 1,
+      "ratio": 2.71
+    },
+    {
+      "col": "rgb(247,49,49)",
+      "n": 2,
+      "ratio": 3.86
+    }
+  ],
+  "notModelled": [
+    "table.card",
+    "table.card.head",
+    "tabs.nav",
+    "tabs.tab",
+    "tabs.active",
+    "tabs.ink"
+  ],
+  "rtlOverflow": false,
+  "physical": 0,
+  "states": []
+}

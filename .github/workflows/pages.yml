@@ -1,0 +1,64 @@
+# Publishes the knowledge base so the HTML is actually readable.
+#
+# GitHub serves committed .html as source, so a link into the repo shows markup.
+# Pages fixes that: after this runs, every kb/ page, the dashboard, the component
+# catalogue and the harness renders have a URL a designer can open.
+#
+# One-time setup: Settings -> Pages -> Source: GitHub Actions.
+
+name: Publish the design system
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'kb/**'
+      - 'deliverables/**'
+      - 'data/live/*.png'
+      - 'scripts/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The generated files are committed, so this only proves they are current.
+      # It does not regenerate them: that needs the product checkout, which is
+      # not available here.
+      - name: Check every routed path exists
+        run: node scripts/check.mjs
+
+      - name: Assemble the site
+        run: |
+          mkdir -p _site/data/live
+          cp -r kb/*              _site/
+          cp -r deliverables      _site/deliverables
+          cp data/live/*.png      _site/data/live/ 2>/dev/null || true
+          # kb/index.html is the landing page; kb.css imports ../deliverables/fonts.css,
+          # so deliverables must sit beside it exactly as in the repo
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

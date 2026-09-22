@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Foundations — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#design-system">Design system</a> › Foundations</nav>
+<main>
+<h1>Foundations</h1>
+<p><strong>This file is complete.</strong> Colour, typography, spacing, radius, elevation and iconography are all here. Do not conclude something is undocumented without reading to the bottom.</p>
+<p>Cite token names, not hex values. The cascade resolves in three layers, last wins: <code>src/theme/index.js</code> → styled-components → <code>src/static/less/style.less</code>.</p>
+<h2>Typography</h2>
+<p>Font stacks found in <code>src/static/less/style.less</code>:</p>
+<ul><li><code>'Lato'</code></li><li><code>'Droid Arabic Kufi'</code></li><li><code>Droid Arabic Kufi, sans-serif !important</code></li></ul>
+<p>Lite / member-area surfaces swap family via <code>FONT_FAMILY_LITE</code> = <code>'Lato, Droid Arabic Kufi, sans-serif'</code>.</p>
+<p>Ant tokens declare Figtree , the LESS layer Lato — both pair with Droid Arabic Kufi for Arabic. Base 14px / line-height 1.571. Lite &amp; marketing surfaces swap family via <code>FONT_FAMILY_LITE</code>.</p>
+<ul><li>Weights — <code>.fw-400 … .fw-900</code></li></ul>
+<h2>Colour tokens</h2>
+<table><tr><th>Token</th><th>Value</th></tr><tr><td><code>gray900</code></td><td><code>#4f4f4f</code></td></tr><tr><td><code>gray800</code></td><td><code>#626262</code></td></tr><tr><td><code>gray700</code></td><td><code>#707070</code></td></tr><tr><td><code>gray600</code></td><td><code>#9D9D9D</code></td></tr><tr><td><code>gray550</code></td><td><code>#BABABA</code></td></tr><tr><td><code>gray500</code></td><td><code>#C2C2C2</code></td></tr><tr><td><code>gray400</code></td><td><code>#DEDEDE</code></td></tr><tr><td><code>gray300</code></td><td><code>#E6E6E6</code></td></tr><tr><td><code>gray200</code></td><td><code>#f5f5f5</code></td></tr><tr><td><code>gray100</code></td><td><code>#f0f0f0</code></td></tr><tr><td><code>primaryColor</code></td><td><code>#006169</code></td></tr><tr><td><code>primaryHover</code></td><td><code>#006169</code></td></tr><tr><td><code>primaryLight</code></td><td><code>#F7FCFC</code></td></tr><tr><td><code>primaryLight1</code></td><td><code>#A6C8CA</code></td></tr><tr><td><code>primaryLight2</code></td><td><code>#CCDFE1</code></td></tr><tr><td><code>primaryLight3</code></td><td><code>#E1F2F0</code></td></tr><tr><td><code>primaryLight4</code></td><td><code>#F2FAFA</code></td></tr><tr><td><code>secondaryColor</code></td><td><code>#28b16d</code></td></tr><tr><td><code>secondaryHover</code></td><td><code>#28b16d</code></td></tr><tr><td><code>linkColor</code></td><td><code>#1890ff</code></td></tr><tr><td><code>linkHover</code></td><td><code>#0D79DF</code></td></tr><tr><td><code>baseColor</code></td><td><code>#222</code></td></tr><tr><td><code>headingColor</code></td><td><code>#222</code></td></tr><tr><td><code>successColor</code></td><td><code>#28b16d</code></td></tr><tr><td><code>successHover</code></td><td><code>#0CAB7C</code></td></tr><tr><td><code>warningColor</code></td><td><code>#f0a742</code></td></tr><tr><td><code>warningHover</code></td><td><code>#D47407</code></td></tr><tr><td><code>dangerColor</code></td><td><code>#f73131</code></td></tr><tr><td><code>errorColor</code></td><td><code>#f73131</code></td></tr><tr><td><code>errorHover</code></td><td><code>#df4d4f</code></td></tr><tr><td><code>infoColor</code></td><td><code>#2C99FF</code></td></tr><tr><td><code>infoHover</code></td><td><code>#0D79DF</code></td></tr><tr><td><code>infoColorAlt</code></td><td><code>#479eeb</code></td></tr><tr><td><code>darkColor</code></td><td><code>#272B41</code></td></tr><tr><td><code>darkHover</code></td><td><code>#131623</code></td></tr><tr><td><code>grayColor</code></td><td><code>#5A5F7D</code></td></tr><tr><td><code>grayLightestColor</code></td><td><code>#bdbdbd</code></td></tr><tr><td><code>grayDarkColor</code></td><td><code>#707070</code></td></tr><tr><td><code>grayHover</code></td><td><code>#363A51</code></td></tr><tr><td><code>lightColor</code></td><td><code>#9D9D9D</code></td></tr><tr><td><code>lightHover</code></td><td><code>#e2e6ea</code></td></tr><tr><td><code>whiteColor</code></td><td><code>#fff</code></td></tr><tr><td><code>dashColor</code></td><td><code>#f0f0f0</code></td></tr><tr><td><code>whiteHover</code></td><td><code>#5A5F7D</code></td></tr><tr><td><code>extraLightColor</code></td><td><code>#ADB4D2</code></td></tr><tr><td><code>borderColorLight</code></td><td><code>#F1F2F6</code></td></tr><tr><td><code>borderColorNormal</code></td><td><code>#DEDEDE</code></td></tr><tr><td><code>borderColorDeep</code></td><td><code>#C6D0DC</code></td></tr><tr><td><code>bgGrayColorDeep</code></td><td><code>#EFF0F3</code></td></tr><tr><td><code>bgGrayColorLight</code></td><td><code>#F8F9FB</code></td></tr><tr><td><code>bgGrayColorNormal</code></td><td><code>#F4F5F7</code></td></tr><tr><td><code>lightGrayColor</code></td><td><code>#868EAE</code></td></tr><tr><td><code>sliderRailColor</code></td><td><code>rgba(95,99,242,0.2)</code></td></tr><tr><td><code>graySolid</code></td><td><code>#9D9D9D</code></td></tr><tr><td><code>healthColorLow</code></td><td><code>#FF7258</code></td></tr><tr><td><code>healthColorAvg</code></td><td><code>#FFDC65</code></td></tr><tr><td><code>healthColorGood</code></td><td><code>#98DAB9</code></td></tr><tr><td><code>healthColorDefault</code></td><td><code>#C1BFBF</code></td></tr><tr><td><code>placeholderColor</code></td><td><code>#9D9D9D</code></td></tr><tr><td><code>labelMuted</code></td><td><code>#707070</code></td></tr><tr><td><code>dubizzlePrimary</code></td><td><code>#E00000</code></td></tr><tr><td><code>btnlg</code></td><td><code>48px</code></td></tr><tr><td><code>btnsm</code></td><td><code>36px</code></td></tr><tr><td><code>btnxs</code></td><td><code>29px</code></td></tr><tr><td><code>black</code></td><td><code>#000</code></td></tr></table>
+<h2>Color</h2>
+<p>Overridable per tenant/platform at runtime via <code>getColors()</code>; below are the Bayut defaults in <code>themeColors</code>.</p>
+<ul><li>Primary — Bayut teal</li><li>Semantic &amp; brand</li><li>Neutrals &amp; surfaces</li><li>Data, health &amp; product colors</li></ul>
+<h2>Spacing &amp; layout</h2>
+<p>The scale is the set generated by the utility loops in <code>utils.less</code>; layout metrics come from the Layout theme tokens.</p>
+<ul><li>Scale — 0 2 4 8 12 16 20 24 25 30 32 40 48 54</li></ul>
+<h2>Radius &amp; elevation</h2>
+<p>Radius is fixed per component family; there are two shadow recipes plus the raised-button glow.</p>
+<h2>Control sizes</h2>
+<p>Two sets coexist: the LESS <code>btn-height-*</code> tokens and the Ant <code>controlHeight</code> overrides. Inputs, selects and date pickers share a height scale.</p>
+<h2>Iconography</h2>
+<p>The <code>&lt;Icon icon="MdEdit" /&gt;</code> atom resolves a string name against four sources in this order : <code>components/icons.js</code> (react-icons re-exports) → <code>components/svg.js</code> (local product artwork: brand marks, empty-state illustrations, <code>BayutMatchIcon</code>) → <code>widgets/AmenitiesSvg</code> → <code>widgets/NewAmenitiesSvg</code>. Passing <code>styled</code> wraps the glyph in the icon container tile. Country flags come from <code>country-flag-icons</code> (3×2).</p>
+<blockquote>Product artwork is not drawn in components: illustrations come from <code>svg.js</code> exports (<code>EmptyListing</code>, <code>EmptyListingWidget</code>, <code>NetworkError</code>, <code>NoRecord</code>) and from <code>public/profolio-assets/</code> (188 files — per-tenant favicons and logos, <code>images/maintenance.svg</code>, <code>ph-listings.svg</code>, <code>limit-credits.svg</code>, REGA / ministry badges, <code>lite/banner-faces.png</code>). Use those files rather than redrawing.</blockquote>
+<h2>System structure</h2>
+<p>How the four layers map back onto the codebase, so the system stays in step with the product.</p>
+<blockquote>Full pass over <code>src/theme/index.js</code>, <code>static/less/{style,utils,antd-customized}.less</code>, <code>components/common/**</code>, <code>components/skeleton</code>, <code>dataTable/style.js</code>, <code>utility/env.js</code>, <code>public/profolio-assets</code> and <code>features-overview.md</code>. Corrections applied in this pass:</blockquote>
+<ul><li>Audit trail — cross-check against the codebase</li></ul>
+<h2>Radius in use</h2>
+<p>15px · 10px · 4px · 6px · 3px · 5px · 8px</p>
+<h2>Breakpoints in use</h2>
+<p>18 · 25 · 40 · 60 · 80 · 90 · 120 · 130 · 140 · 160 · 190 · 200 · 210 · 220 · 250 · 320 · 379 · 400 · 450 · 479 · 575 · 767 · 768 · 786 · 800 · 991 · 992 · 1199 · 1350 · 1366 · 1399 · 1400 · 1500 · 1599 · 1600 px</p>
+<p>Inconsistent by inheritance — 991/992, 767/768, 575/576 and 479/480 all appear. Until a canonical scale is agreed, match the value already used by the surface you are changing.</p>
+<h2>z-index in use</h2>
+<p>0 · 1 · 2 · 99 · 105 · 999 · 9999 · 99999 · 99999999</p>
+<p>No layer model. The <code>2147483647</code> is real and is in the codebase.</p>
+</main>
+</body>
+</html>

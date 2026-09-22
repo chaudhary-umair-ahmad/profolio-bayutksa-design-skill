@@ -1,0 +1,4305 @@
+{
+  "route": "listings",
+  "at": "2026-09-22T12:17:11.370Z",
+  "shellFails": [],
+  "diffs": [
+    {
+      "id": "table.cell",
+      "diff": 27.9
+    },
+    {
+      "id": "filter.clear",
+      "diff": 22.9
+    },
+    {
+      "id": "filter.showmore",
+      "diff": 20.7
+    },
+    {
+      "id": "filter.search",
+      "diff": 15.3
+    },
+    {
+      "id": "tabs.active",
+      "diff": 13
+    },
+    {
+      "id": "table",
+      "diff": 11.9
+    },
+    {
+      "id": "table.card",
+      "diff": 11.7
+    },
+    {
+      "id": "table.row",
+      "diff": 11.4
+    },
+    {
+      "id": "shell.content",
+      "diff": 10.3
+    },
+    {
+      "id": "tabs.nav",
+      "diff": 9.7
+    },
+    {
+      "id": "filter.bar",
+      "diff": 5.4
+    },
+    {
+      "id": "shell.sider",
+      "diff": 4.5
+    },
+    {
+      "id": "table.card.head",
+      "diff": 4
+    },
+    {
+      "id": "tabs.tab",
+      "diff": 3.4
+    },
+    {
+      "id": "pager",
+      "diff": 3.2
+    },
+    {
+      "id": "shell.header",
+      "diff": 2.7
+    },
+    {
+      "id": "shell.title",
+      "diff": 2.7
+    },
+    {
+      "id": "shell.footer",
+      "diff": 1.6
+    },
+    {
+      "id": "filter.select",
+      "diff": 0.5
+    },
+    {
+      "id": "table.head",
+      "diff": 0.3
+    },
+    {
+      "id": "filter.input",
+      "diff": 0.3
+    },
+    {
+      "id": "filter.field",
+      "diff": 0.2
+    },
+    {
+      "id": "filter.label",
+      "diff": 0
+    },
+    {
+      "id": "pager.item",
+      "diff": 0
+    },
+    {
+      "id": "pager.active",
+      "diff": 0
+    },
+    {
+      "id": "pager.nav",
+      "diff": 0
+    },
+    {
+      "id": "table.thumb",
+      "diff": 95.1
+    }
+  ],
+  "offScale": {
+    "size": [],
+    "weight": [],
+    "space": []
+  },
+  "literals": [
+    ".i-17 { width: 17px }",
+    ".i-17 { height: 17px }",
+    ".pf-settings-head + .pf-settings-form { --form-inset: 41px }",
+    ".pf-agency { --form-inset: 17px }",
+    ".pf-upload-btn { block-size: 55px }",
+    ".pf-block-row[data-cols=\"533 783\"] { grid-template-columns: 533px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"449 899\"] { grid-template-columns: 449px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"narrow\"] { grid-template-columns: minmax(var(--sp-0),1035px) }",
+    ".pf-datefield { inline-size: var(--field-w, 345px) }",
+    ".pf-pill { block-size: 29px }",
+    ".pf-stat-lead { inline-size: 103px }",
+    ".pf-tl-thumb { inline-size: 120px }",
+    ".pf-tl-thumb { block-size: 82px }",
+    ".pf-proptable .pf-td-prop { inline-size: 475px }",
+    ".pf-page-lead { inline-size: 1035px }",
+    ".pf-wsection-title { inline-size: 195px }",
+    ".pf-wsection-title { block-size: 105px }",
+    ".pf-wsection-icon { inline-size: 56px }",
+    ".pf-wsection-icon { block-size: 56px }",
+    ".pf-wsection-fields { max-inline-size: 640px }",
+    ".pf-compound .pf-select { inline-size: 82px }",
+    ".pf-plot[data-h=\"160\"] { block-size: 160px }",
+    ".pf-plot[data-h=\"440\"] { block-size: 440px }",
+    ".pf-tab[data-tabw=\"200\"] { inline-size: 200px }",
+    ".pf-tab[data-tabw=\"94\"] { inline-size: 94px }",
+    ".pf-table-card[data-h=\"528\"] { block-size: 528px }",
+    ".pf-filter-bar[data-in-head=\"true\"] { block-size: 78px }"
+  ],
+  "lowContrast": 0,
+  "contrastMatchingProduct": 74,
+  "productLow": [
+    {
+      "col": "rgb(255,255,255)",
+      "n": 88,
+      "ratio": 1
+    },
+    {
+      "col": "rgb(121,205,209)",
+      "n": 28,
+      "ratio": 1.83
+    },
+    {
+      "col": "rgb(255,169,0)",
+      "n": 28,
+      "ratio": 1.92
+    },
+    {
+      "col": "rgb(240,167,66)",
+      "n": 11,
+      "ratio": 2.04
+    },
+    {
+      "col": "rgb(173,180,210)",
+      "n": 16,
+      "ratio": 2.05
+    },
+    {
+      "col": "rgb(157,157,157)",
+      "n": 75,
+      "ratio": 2.71
+    },
+    {
+      "col": "rgb(40,177,109)",
+      "n": 8,
+      "ratio": 2.76
+    },
+    {
+      "col": "rgb(71,158,235)",
+      "n": 28,
+      "ratio": 2.85
+    },
+    {
+      "col": "rgb(175,111,255)",
+      "n": 32,
+      "ratio": 3.21
+    },
+    {
+      "col": "rgb(24,144,255)",
+      "n": 1,
+      "ratio": 3.24
+    },
+    {
+      "col": "rgb(247,49,49)",
+      "n": 35,
+      "ratio": 3.86
+    },
+    {
+      "col": "rgb(255,0,0)",
+      "n": 1,
+      "ratio": 4
+    }
+  ],
+  "notModelled": [
+    "tabs.ink"
+  ],
+  "rtlOverflow": false,
+  "physical": 0,
+  "states": [
+    {
+      "state": "action-detail-drawer",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 14.3
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 7.6
+        },
+        {
+          "id": "drawer.head",
+          "diff": 4.5
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "drawer",
+          "diff": 3.2
+        },
+        {
+          "id": "drawer.body",
+          "diff": 3.1
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.1
+        },
+        {
+          "id": "table.card",
+          "diff": 3
+        },
+        {
+          "id": "table",
+          "diff": 3
+        },
+        {
+          "id": "shell.content",
+          "diff": 2.6
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.1
+        },
+        {
+          "id": "shell.title",
+          "diff": 0
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.field",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "filter.input",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 31.3
+        },
+        {
+          "id": "table.row",
+          "diff": 5.8
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.4
+        },
+        {
+          "id": "filter.bar",
+          "diff": 2
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 0
+        },
+        {
+          "id": "filter.clear",
+          "diff": 0
+        },
+        {
+          "id": "filter.search",
+          "diff": 0
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "action-discount",
+      "shellFails": [
+        "shell.title"
+      ],
+      "diffs": [
+        {
+          "id": "shell.title",
+          "diff": 36.5
+        },
+        {
+          "id": "shell.content",
+          "diff": 5.1
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 3.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        }
+      ],
+      "notModelled": []
+    },
+    {
+      "state": "date-posted-on",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "shell.content",
+          "diff": 15.3
+        },
+        {
+          "id": "table.card",
+          "diff": 13
+        },
+        {
+          "id": "table",
+          "diff": 11.8
+        },
+        {
+          "id": "drawer.body",
+          "diff": 8.1
+        },
+        {
+          "id": "drawer",
+          "diff": 7.5
+        },
+        {
+          "id": "drawer.head",
+          "diff": 6.6
+        },
+        {
+          "id": "popover",
+          "diff": 6.2
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 100
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 100
+        },
+        {
+          "id": "tabs.active",
+          "diff": 100
+        },
+        {
+          "id": "filter.field",
+          "diff": 99.9
+        },
+        {
+          "id": "filter.input",
+          "diff": 99.9
+        },
+        {
+          "id": "table.head",
+          "diff": 99.5
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 99.4
+        },
+        {
+          "id": "shell.title",
+          "diff": 97.8
+        },
+        {
+          "id": "table.thumb",
+          "diff": 93.4
+        },
+        {
+          "id": "filter.select",
+          "diff": 92.5
+        },
+        {
+          "id": "table.cell",
+          "diff": 78.3
+        },
+        {
+          "id": "filter.bar",
+          "diff": 56.9
+        },
+        {
+          "id": "table.card.head",
+          "diff": 56
+        },
+        {
+          "id": "table.row",
+          "diff": 52.1
+        },
+        {
+          "id": "shell.header",
+          "diff": 47.8
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 6.3
+        },
+        {
+          "id": "filter.clear",
+          "diff": 6.3
+        },
+        {
+          "id": "shell.sider",
+          "diff": 6.2
+        },
+        {
+          "id": "filter.search",
+          "diff": 5
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "drawer-filters",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 14.4
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 7.6
+        },
+        {
+          "id": "drawer.body",
+          "diff": 7.2
+        },
+        {
+          "id": "drawer.head",
+          "diff": 7.1
+        },
+        {
+          "id": "drawer",
+          "diff": 6.9
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card",
+          "diff": 3.3
+        },
+        {
+          "id": "table",
+          "diff": 3.3
+        },
+        {
+          "id": "shell.content",
+          "diff": 3.2
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.1
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.1
+        },
+        {
+          "id": "shell.title",
+          "diff": 0
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.field",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "filter.input",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 31.3
+        },
+        {
+          "id": "table.row",
+          "diff": 7.4
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 6.3
+        },
+        {
+          "id": "filter.clear",
+          "diff": 6.3
+        },
+        {
+          "id": "filter.search",
+          "diff": 5
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4.1
+        },
+        {
+          "id": "filter.bar",
+          "diff": 4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.8
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "error",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.clear",
+          "diff": 21.2
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 19.6
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.1
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 14.4
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 12.6
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.3
+        },
+        {
+          "id": "table.card.head",
+          "diff": 5.1
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.cell",
+          "diff": 3.1
+        },
+        {
+          "id": "table.card",
+          "diff": 3
+        },
+        {
+          "id": "table",
+          "diff": 2.8
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.content",
+          "diff": 2.5
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "table.head",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "loading",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 12.6
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "shell.content",
+          "diff": 0.7
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.6
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.4
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        }
+      ],
+      "notModelled": [
+        "table",
+        "table.head",
+        "table.cell"
+      ]
+    },
+    {
+      "state": "modal-booking",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.showmore",
+          "diff": 16.8
+        },
+        {
+          "id": "filter.clear",
+          "diff": 16
+        },
+        {
+          "id": "table.cell",
+          "diff": 14.4
+        },
+        {
+          "id": "filter.search",
+          "diff": 13
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 7.6
+        },
+        {
+          "id": "modal.mask",
+          "diff": 5.1
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "filter.bar",
+          "diff": 3.9
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.2
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.1
+        },
+        {
+          "id": "table.card",
+          "diff": 2.7
+        },
+        {
+          "id": "table",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.content",
+          "diff": 2.5
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
+        },
+        {
+          "id": "modal",
+          "diff": 1.9
+        },
+        {
+          "id": "modal.foot",
+          "diff": 1.5
+        },
+        {
+          "id": "modal.body",
+          "diff": 1.4
+        },
+        {
+          "id": "modal.head",
+          "diff": 0.6
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.1
+        },
+        {
+          "id": "shell.title",
+          "diff": 0
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.field",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "filter.input",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "modal.title",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 31.3
+        },
+        {
+          "id": "table.row",
+          "diff": 6.9
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "modal-delete",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.showmore",
+          "diff": 16.8
+        },
+        {
+          "id": "table.cell",
+          "diff": 16.1
+        },
+        {
+          "id": "filter.clear",
+          "diff": 16
+        },
+        {
+          "id": "filter.search",
+          "diff": 13
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 7.6
+        },
+        {
+          "id": "modal.mask",
+          "diff": 5.5
+        },
+        {
+          "id": "modal.body",
+          "diff": 5.2
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "modal",
+          "diff": 4.2
+        },
+        {
+          "id": "filter.bar",
+          "diff": 3.9
+        },
+        {
+          "id": "modal.foot",
+          "diff": 3.5
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.2
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.1
+        },
+        {
+          "id": "table.card",
+          "diff": 2.9
+        },
+        {
+          "id": "table",
+          "diff": 2.9
+        },
+        {
+          "id": "shell.content",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
+        },
+        {
+          "id": "table.head",
+          "diff": 1.8
+        },
+        {
+          "id": "modal.head",
+          "diff": 0.8
+        },
+        {
+          "id": "tabs.active",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.1
+        },
+        {
+          "id": "shell.title",
+          "diff": 0
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.field",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "filter.input",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "modal.title",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 31.3
+        },
+        {
+          "id": "table.row",
+          "diff": 8.2
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "modal-download-app",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.showmore",
+          "diff": 16.8
+        },
+        {
+          "id": "modal.body",
+          "diff": 16.7
+        },
+        {
+          "id": "filter.clear",
+          "diff": 16
+        },
+        {
+          "id": "table.cell",
+          "diff": 14.4
+        },
+        {
+          "id": "modal",
+          "diff": 14.3
+        },
+        {
+          "id": "filter.search",
+          "diff": 13
+        },
+        {
+          "id": "table.row",
+          "diff": 8.5
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 7.6
+        },
+        {
+          "id": "modal.mask",
+          "diff": 6.3
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "filter.bar",
+          "diff": 3.9
+        },
+        {
+          "id": "table",
+          "diff": 3.4
+        },
+        {
+          "id": "table.card",
+          "diff": 3.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.content",
+          "diff": 3.1
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.1
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
+        },
+        {
+          "id": "modal.head",
+          "diff": 1.3
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.1
+        },
+        {
+          "id": "shell.title",
+          "diff": 0
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.field",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "filter.input",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "modal.title",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 31.3
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "modal-trucheck",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.showmore",
+          "diff": 16.8
+        },
+        {
+          "id": "filter.clear",
+          "diff": 16
+        },
+        {
+          "id": "table.cell",
+          "diff": 14.1
+        },
+        {
+          "id": "filter.search",
+          "diff": 13
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 7.6
+        },
+        {
+          "id": "modal",
+          "diff": 6.6
+        },
+        {
+          "id": "modal.body",
+          "diff": 6.6
+        },
+        {
+          "id": "modal.mask",
+          "diff": 5.8
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "filter.bar",
+          "diff": 3.9
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.2
+        },
+        {
+          "id": "table",
+          "diff": 3.1
+        },
+        {
+          "id": "table.card",
+          "diff": 3.1
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.1
+        },
+        {
+          "id": "shell.content",
+          "diff": 2.9
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
+        },
+        {
+          "id": "table.head",
+          "diff": 0.7
+        },
+        {
+          "id": "tabs.active",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.1
+        },
+        {
+          "id": "shell.title",
+          "diff": 0
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.field",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "filter.input",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 31.3
+        },
+        {
+          "id": "table.row",
+          "diff": 7.2
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "popover-account",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table.row",
+          "diff": 11.5
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "table.card.head",
+          "diff": 7.5
+        },
+        {
+          "id": "popover",
+          "diff": 6.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 6.6
+        },
+        {
+          "id": "table.card",
+          "diff": 4.6
+        },
+        {
+          "id": "table",
+          "diff": 4.6
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 4.4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.9
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 15.9
+        },
+        {
+          "id": "filter.search",
+          "diff": 0.4
+        },
+        {
+          "id": "filter.clear",
+          "diff": 0.4
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "popover-health",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 29.3
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "popover",
+          "diff": 7.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 6.2
+        },
+        {
+          "id": "table.card",
+          "diff": 4.7
+        },
+        {
+          "id": "table",
+          "diff": 4.7
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 4.4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "table.head",
+          "diff": 2.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        },
+        {
+          "id": "table.row",
+          "diff": 12.7
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.9
+        },
+        {
+          "id": "table.card.head",
+          "diff": 5.8
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "popover-leads",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table.row",
+          "diff": 12.3
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "table.card.head",
+          "diff": 6.6
+        },
+        {
+          "id": "filter.bar",
+          "diff": 6
+        },
+        {
+          "id": "table.card",
+          "diff": 4.7
+        },
+        {
+          "id": "table",
+          "diff": 4.6
+        },
+        {
+          "id": "popover",
+          "diff": 4.5
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 4.3
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 3.9
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "popover-notifications",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card",
+          "diff": 4.2
+        },
+        {
+          "id": "table",
+          "diff": 4.2
+        },
+        {
+          "id": "shell.content",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "filter.select",
+          "diff": 2.8
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "popover",
+          "diff": 1.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        },
+        {
+          "id": "filter.search",
+          "diff": 38.5
+        },
+        {
+          "id": "table.row",
+          "diff": 10
+        },
+        {
+          "id": "table.card.head",
+          "diff": 7.1
+        },
+        {
+          "id": "filter.bar",
+          "diff": 7
+        },
+        {
+          "id": "filter.clear",
+          "diff": 2.8
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 0
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "popover-rega",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table.row",
+          "diff": 11.4
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "popover",
+          "diff": 5
+        },
+        {
+          "id": "table",
+          "diff": 4.5
+        },
+        {
+          "id": "table.card",
+          "diff": 4.5
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 4.1
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "popover-status-rejected",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table.row",
+          "diff": 11.4
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "table",
+          "diff": 4.7
+        },
+        {
+          "id": "table.card",
+          "diff": 4.7
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 4.3
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "popover",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "popover-timeline",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table.row",
+          "diff": 12.1
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "table",
+          "diff": 4.6
+        },
+        {
+          "id": "table.card",
+          "diff": 4.6
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 4.2
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "popover",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "select-property-type",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table.row",
+          "diff": 12.3
+        },
+        {
+          "id": "table",
+          "diff": 12
+        },
+        {
+          "id": "table.card",
+          "diff": 11.8
+        },
+        {
+          "id": "shell.content",
+          "diff": 10.5
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "table.card.head",
+          "diff": 6.4
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.8
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "select-purpose",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table",
+          "diff": 11.9
+        },
+        {
+          "id": "table.card",
+          "diff": 11.7
+        },
+        {
+          "id": "table.row",
+          "diff": 11.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 10.4
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 10.1
+        },
+        {
+          "id": "filter.bar",
+          "diff": 6
+        },
+        {
+          "id": "filter.select",
+          "diff": 5.6
+        },
+        {
+          "id": "table.card.head",
+          "diff": 5.2
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tab-ad-license-requests",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.clear",
+          "diff": 23.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.1
+        },
+        {
+          "id": "tabs.active",
+          "diff": 14.8
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 10
+        },
+        {
+          "id": "filter.bar",
+          "diff": 6.4
+        },
+        {
+          "id": "filter.label",
+          "diff": 6.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4.2
+        },
+        {
+          "id": "table.cell",
+          "diff": 3.6
+        },
+        {
+          "id": "filter.field",
+          "diff": 3.5
+        },
+        {
+          "id": "table.card",
+          "diff": 3.4
+        },
+        {
+          "id": "table",
+          "diff": 3.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 2.8
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "filter.select",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.content",
+          "diff": 2.6
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 1.9
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "table.head",
+          "diff": 0.4
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tab-draft",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 23.2
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "tabs.active",
+          "diff": 18.4
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "table.row",
+          "diff": 10.7
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.4
+        },
+        {
+          "id": "table",
+          "diff": 8.1
+        },
+        {
+          "id": "table.card",
+          "diff": 7.3
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.8
+        },
+        {
+          "id": "shell.content",
+          "diff": 3.4
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "table.head",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tab-pending",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "tabs.active",
+          "diff": 18.8
+        },
+        {
+          "id": "table.cell",
+          "diff": 18.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "table.row",
+          "diff": 10
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.1
+        },
+        {
+          "id": "table",
+          "diff": 7.6
+        },
+        {
+          "id": "shell.content",
+          "diff": 7.3
+        },
+        {
+          "id": "table.card",
+          "diff": 6.8
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.7
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "table.head",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tab-removed",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.clear",
+          "diff": 21.2
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 19.6
+        },
+        {
+          "id": "tabs.active",
+          "diff": 18.6
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.1
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.5
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.3
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.9
+        },
+        {
+          "id": "table.cell",
+          "diff": 3.3
+        },
+        {
+          "id": "table.card",
+          "diff": 3.1
+        },
+        {
+          "id": "table",
+          "diff": 3
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.content",
+          "diff": 2.6
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 1.9
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "table.head",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tooltip-action",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table",
+          "diff": 11.9
+        },
+        {
+          "id": "table.card",
+          "diff": 11.7
+        },
+        {
+          "id": "table.row",
+          "diff": 11.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 10.3
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tooltip-booked",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table",
+          "diff": 11.8
+        },
+        {
+          "id": "table.card",
+          "diff": 11.6
+        },
+        {
+          "id": "table.row",
+          "diff": 11.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 10.3
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.7
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tooltip-upgrade",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table",
+          "diff": 12
+        },
+        {
+          "id": "table.card",
+          "diff": 11.7
+        },
+        {
+          "id": "table.row",
+          "diff": 11.7
+        },
+        {
+          "id": "shell.content",
+          "diff": 10.4
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tooltip-upgrade-applied",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table",
+          "diff": 12
+        },
+        {
+          "id": "table.card",
+          "diff": 11.7
+        },
+        {
+          "id": "table.row",
+          "diff": 11.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 10.4
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tooltip-upgrade-none",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table",
+          "diff": 12.1
+        },
+        {
+          "id": "table.card",
+          "diff": 11.9
+        },
+        {
+          "id": "table.row",
+          "diff": 11.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 10.5
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tooltip-upgrade-pending",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table",
+          "diff": 12
+        },
+        {
+          "id": "table.card",
+          "diff": 11.8
+        },
+        {
+          "id": "table.row",
+          "diff": 11.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 10.4
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tooltip-upgrade-service",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table.row",
+          "diff": 12.3
+        },
+        {
+          "id": "table",
+          "diff": 12
+        },
+        {
+          "id": "table.card",
+          "diff": 11.8
+        },
+        {
+          "id": "shell.content",
+          "diff": 10.4
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "tooltip-upgrade-unavailable",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "table.cell",
+          "diff": 27.9
+        },
+        {
+          "id": "filter.clear",
+          "diff": 22.9
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 20.7
+        },
+        {
+          "id": "filter.search",
+          "diff": 15.3
+        },
+        {
+          "id": "tabs.active",
+          "diff": 13
+        },
+        {
+          "id": "table",
+          "diff": 12.2
+        },
+        {
+          "id": "table.card",
+          "diff": 12
+        },
+        {
+          "id": "table.row",
+          "diff": 11.4
+        },
+        {
+          "id": "shell.content",
+          "diff": 10.6
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 9.7
+        },
+        {
+          "id": "filter.bar",
+          "diff": 5.4
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 4
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.title",
+          "diff": 2.7
+        },
+        {
+          "id": "shell.footer",
+          "diff": 1.6
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.5
+        },
+        {
+          "id": "table.head",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.input",
+          "diff": 0.3
+        },
+        {
+          "id": "filter.field",
+          "diff": 0.2
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 95.1
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "upgrade-hot",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "modal.title",
+          "diff": 29.6
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 16.8
+        },
+        {
+          "id": "table.cell",
+          "diff": 16.2
+        },
+        {
+          "id": "filter.clear",
+          "diff": 16
+        },
+        {
+          "id": "filter.search",
+          "diff": 13
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 7.6
+        },
+        {
+          "id": "modal.mask",
+          "diff": 5.9
+        },
+        {
+          "id": "modal.body",
+          "diff": 5.9
+        },
+        {
+          "id": "modal",
+          "diff": 5.4
+        },
+        {
+          "id": "modal.foot",
+          "diff": 5
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "filter.bar",
+          "diff": 3.9
+        },
+        {
+          "id": "table.head",
+          "diff": 3.5
+        },
+        {
+          "id": "modal.head",
+          "diff": 3.5
+        },
+        {
+          "id": "table",
+          "diff": 3.2
+        },
+        {
+          "id": "table.card",
+          "diff": 3.2
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.2
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.1
+        },
+        {
+          "id": "shell.content",
+          "diff": 2.9
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
+        },
+        {
+          "id": "tabs.active",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.1
+        },
+        {
+          "id": "shell.title",
+          "diff": 0
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.field",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "filter.input",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 31.3
+        },
+        {
+          "id": "table.row",
+          "diff": 10
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "upgrade-photography",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "filter.showmore",
+          "diff": 16.8
+        },
+        {
+          "id": "table.cell",
+          "diff": 16.4
+        },
+        {
+          "id": "filter.clear",
+          "diff": 16
+        },
+        {
+          "id": "filter.search",
+          "diff": 13
+        },
+        {
+          "id": "modal.mask",
+          "diff": 6.2
+        },
+        {
+          "id": "modal.body",
+          "diff": 5.6
+        },
+        {
+          "id": "modal.foot",
+          "diff": 5
+        },
+        {
+          "id": "modal",
+          "diff": 5
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "filter.bar",
+          "diff": 3.9
+        },
+        {
+          "id": "table",
+          "diff": 3.4
+        },
+        {
+          "id": "table.card",
+          "diff": 3.3
+        },
+        {
+          "id": "table.head",
+          "diff": 3.1
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.1
+        },
+        {
+          "id": "shell.content",
+          "diff": 3
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
+        },
+        {
+          "id": "modal.head",
+          "diff": 0.7
+        },
+        {
+          "id": "tabs.active",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.1
+        },
+        {
+          "id": "shell.title",
+          "diff": 0
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.field",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "filter.input",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "modal.title",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 31.3
+        },
+        {
+          "id": "table.row",
+          "diff": 12.6
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 2.4
+        },
+        {
+          "id": "table.card.head",
+          "diff": 1.4
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "upgrade-refresh",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "modal.title",
+          "diff": 32.5
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 16.8
+        },
+        {
+          "id": "table.cell",
+          "diff": 16.2
+        },
+        {
+          "id": "filter.clear",
+          "diff": 16
+        },
+        {
+          "id": "filter.search",
+          "diff": 13
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 7.6
+        },
+        {
+          "id": "modal.mask",
+          "diff": 6.1
+        },
+        {
+          "id": "modal.body",
+          "diff": 6
+        },
+        {
+          "id": "modal",
+          "diff": 5.6
+        },
+        {
+          "id": "modal.foot",
+          "diff": 5
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "modal.head",
+          "diff": 4.1
+        },
+        {
+          "id": "table.head",
+          "diff": 3.9
+        },
+        {
+          "id": "filter.bar",
+          "diff": 3.9
+        },
+        {
+          "id": "table",
+          "diff": 3.3
+        },
+        {
+          "id": "table.card",
+          "diff": 3.2
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.2
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.1
+        },
+        {
+          "id": "shell.content",
+          "diff": 3
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
+        },
+        {
+          "id": "tabs.active",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.1
+        },
+        {
+          "id": "shell.title",
+          "diff": 0
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.field",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "filter.input",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 31.3
+        },
+        {
+          "id": "table.row",
+          "diff": 10.5
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    },
+    {
+      "state": "upgrade-signature",
+      "shellFails": [],
+      "diffs": [
+        {
+          "id": "modal.title",
+          "diff": 33.4
+        },
+        {
+          "id": "filter.showmore",
+          "diff": 16.8
+        },
+        {
+          "id": "table.cell",
+          "diff": 16.2
+        },
+        {
+          "id": "filter.clear",
+          "diff": 16
+        },
+        {
+          "id": "filter.search",
+          "diff": 13
+        },
+        {
+          "id": "tabs.nav",
+          "diff": 7.6
+        },
+        {
+          "id": "modal.body",
+          "diff": 5.9
+        },
+        {
+          "id": "modal.mask",
+          "diff": 5.6
+        },
+        {
+          "id": "modal",
+          "diff": 5.6
+        },
+        {
+          "id": "modal.foot",
+          "diff": 5
+        },
+        {
+          "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "modal.head",
+          "diff": 4.4
+        },
+        {
+          "id": "table.head",
+          "diff": 4
+        },
+        {
+          "id": "filter.bar",
+          "diff": 3.9
+        },
+        {
+          "id": "table.card.head",
+          "diff": 3.2
+        },
+        {
+          "id": "tabs.tab",
+          "diff": 3.1
+        },
+        {
+          "id": "table",
+          "diff": 3
+        },
+        {
+          "id": "table.card",
+          "diff": 3
+        },
+        {
+          "id": "shell.content",
+          "diff": 2.8
+        },
+        {
+          "id": "shell.header",
+          "diff": 2.2
+        },
+        {
+          "id": "tabs.active",
+          "diff": 0.1
+        },
+        {
+          "id": "filter.select",
+          "diff": 0.1
+        },
+        {
+          "id": "shell.title",
+          "diff": 0
+        },
+        {
+          "id": "shell.footer",
+          "diff": 0
+        },
+        {
+          "id": "filter.field",
+          "diff": 0
+        },
+        {
+          "id": "filter.label",
+          "diff": 0
+        },
+        {
+          "id": "filter.input",
+          "diff": 0
+        },
+        {
+          "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
+          "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
+          "diff": 0
+        },
+        {
+          "id": "table.thumb",
+          "diff": 31.3
+        },
+        {
+          "id": "table.row",
+          "diff": 8.7
+        }
+      ],
+      "notModelled": [
+        "tabs.ink"
+      ]
+    }
+  ]
+}

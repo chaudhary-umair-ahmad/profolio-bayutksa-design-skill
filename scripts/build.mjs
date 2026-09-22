@@ -10,14 +10,19 @@
  * Usage:  node scripts/build.mjs --repo ../profolio-reactjs-copy
  */
 
-import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, rmSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
-const REFS = join(ROOT, 'references');
+/* Markdown is staging, not the deliverable: scripts/kb.mjs renders it to kb/.
+   Hand-written prose lives in authoring/ and is copied in so cross-references
+   resolve the same way generated ones do. */
+const REFS = join(ROOT, '.build', 'references');
+mkdirSync(join(REFS, 'tenants'), { recursive: true });
+if (existsSync(join(ROOT, 'authoring', 'ksa.md'))) copyFileSync(join(ROOT, 'authoring', 'ksa.md'), join(REFS, 'tenants', 'ksa.md'));
 const CANVAS = join(ROOT, 'canvas');
 
 const argRepo = process.argv.indexOf('--repo');
@@ -103,6 +108,13 @@ for (const [file, layer] of LAYERS) {
   }
 }
 
+/* Foundation sections live in the canvas alongside components but are NOT components.
+   Filing them under components/ is what made an agent report the font stack as
+   undocumented while components/type.md carried it. They go into foundations.md. */
+const FOUNDATION_IDS = new Set(['color','type','space','radius','control','iconography','structure']);
+const foundationSections = components.filter((c) => FOUNDATION_IDS.has(c.id));
+const componentList = components.filter((c) => !FOUNDATION_IDS.has(c.id));
+
 /* ─────────────────────────────────────────────────────────────────────────────
    2. USAGE — which barrel exports are actually imported anywhere
    ───────────────────────────────────────────────────────────────────────── */
@@ -186,6 +198,44 @@ const flagSurfaces = Object.fromEntries(
 );
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   4b. THE SHELL — menu entries, widths, header parts, read from source
+   ───────────────────────────────────────────────────────────────────────── */
+const menuFile = read(join(REPO, 'src/tenant/common/menuList/menuList.js'));
+const layoutFile = read(join(REPO, 'src/layout/withAdminLayout.js'));
+
+/* Walk menuList in source order. Guards open at `...(cond ?` and close at `: []),`.
+   Children live inside `list: [`. Role gating rides on permission/isAgencyPage. */
+const menuEntries = [];
+{
+  let guard = '', inList = false, pending = null;
+  const push = () => { if (pending && pending.title) menuEntries.push(pending); pending = null; };
+  for (const raw of menuFile.split('\n')) {
+    const line = raw.trimEnd();
+    const g = line.match(/\.\.\.\(\s*(.+?)\s*$/);
+    if (g) guard = g[1].replace(/\?\s*$/, '').replace(/tenantConstants[?.]*\./g, '').trim();
+    if (/:\s*\[\]\)/.test(line)) { push(); guard = ''; }
+    if (/\blist:\s*\[/.test(line)) { push(); inList = true; }
+    else if (inList && /^\s{12}\],\s*$/.test(line)) { push(); inList = false; }
+
+    if (/^\s*\{\s*$/.test(line)) { push(); pending = { title: '', path: '', guard, child: inList, roles: [] }; }
+    if (!pending) continue;
+    const t = line.match(/title:\s*t\(\s*'([^']+)'/);           if (t) pending.title = t[1];
+    const pth = line.match(/path:\s*'([^']+)'/);                 if (pth && !pending.path) pending.path = pth[1];
+    const perm = line.match(/permission:\s*PERMISSIONS_TYPE\.(\w+)/); if (perm) pending.roles.push(perm[1].toLowerCase());
+    if (/isAgencyPage:\s*true/.test(line)) pending.roles.push('agency only');
+    if (/isPremiumUserPage:\s*true/.test(line)) pending.roles.push('premium');
+  }
+  push();
+}
+
+const shellConst = (name) => {
+  const m = layoutFile.match(new RegExp(`${name}\\s*=\\s*(\\d+)`));
+  return m ? m[1] : '?';
+};
+const SIDER_W = shellConst('SIDEBAR_EXPANDED_WIDTH');
+const SIDER_COLLAPSED_W = shellConst('SIDEBAR_COLLAPSED_WIDTH');
+
+/* ─────────────────────────────────────────────────────────────────────────────
    5. TOKENS
    ───────────────────────────────────────────────────────────────────────── */
 const themeSrc = read(join(REPO, 'src/theme/index.js'));
@@ -199,6 +249,13 @@ const lessAll = lessDirs.map(read).join('\n');
 const breakpoints = [...new Set([...lessAll.matchAll(/(?:max|min)-width:\s*(\d+)px/g)].map((m) => +m[1]))]
   .sort((a, b) => a - b);
 
+const fontFamilies = [...new Set(
+  [...lessAll.matchAll(/font-family:\s*([^;]+);/g)].map((m) => m[1].replace(/\s+/g, ' ').trim())
+)].filter((f) => f.length < 90 && !f.startsWith('@')).slice(0, 6);
+const liteFont = (flags.find((f) => f.key === 'FONT_FAMILY_LITE') || {}).value || '';
+const radii = [...new Set([...lessAll.matchAll(/border-radius:\s*(\d+px)/g)].map((m) => m[1]))].slice(0, 10);
+const zIndexes = [...new Set([...lessAll.matchAll(/z-index:\s*(\d+)/g)].map((m) => +m[1]))].sort((a, b) => a - b);
+
 /* ─────────────────────────────────────────────────────────────────────────────
    EMIT
    ───────────────────────────────────────────────────────────────────────── */
@@ -211,14 +268,14 @@ sizes['components/index.md'] = write(
   'components/index.md',
   `# Component register
 
-${components.length} entries. Load \`components/<id>.md\` for the one you need — never the whole folder,
+${componentList.length} entries. Load \`components/<id>.md\` for the one you need — never the whole folder,
 and never the files in \`canvas/\`.
 
 Design name is canonical. \`source\` is provenance for a developer, not something to fetch.
 
 | Design name | id | Layer | Source | Status |
 |---|---|---|---|---|
-${components
+${componentList
   .map((c) => {
     const st = usage[c.name.replace(/\s+/g, '')] || usage[c.name] || '';
     return `| ${c.name} | \`${c.id}\` | ${c.layer} | ${c.source ? '`' + c.source + '`' : '—'} | ${st || 'n/a'} |`;
@@ -235,7 +292,7 @@ ${exported.filter((n) => usage[n] === 'unreferenced').map((n) => `- \`${n}\``).j
 );
 
 // components/<id>.md ────────────────────────────────────────────────────────
-for (const c of components) {
+for (const c of componentList) {
   sizes[`components/${c.id}.md`] = write(
     `components/${c.id}.md`,
     `# ${c.name}
@@ -280,7 +337,7 @@ const filesIn = (dir) => {
   return out;
 };
 
-const componentByName = new Map(components.map((c) => [c.name.toLowerCase(), c]));
+const componentByName = new Map(componentList.map((c) => [c.name.toLowerCase(), c]));
 const ALIAS = {
   EmptyState: 'empty', JSONForm: 'form', Spinner: 'feedback', Skeleton: 'feedback',
   TextInput: 'input', Select: 'select', Cards: 'card', Card: 'card', DataTable: 'table',
@@ -296,10 +353,10 @@ const ALIAS = {
 };
 const resolveComp = (n) => {
   const id = ALIAS[n] || ALIAS[n.replace(/s$/, '')];
-  if (id) return components.find((c) => c.id === id);
+  if (id) return componentList.find((c) => c.id === id);
   return componentByName.get(n.toLowerCase())
-      || components.find((c) => c.id === slug(n))
-      || components.find((c) => slug(c.name) === slug(n));
+      || componentList.find((c) => c.id === slug(n))
+      || componentList.find((c) => slug(c.name) === slug(n));
 };
 const TITLECASE = (s) => s.replace(/[-/]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()).trim();
 
@@ -357,12 +414,13 @@ for (const route of routes) {
   );
 
   // map to documented entries where we can
-  const docd = [...named, ...direct]
+  const docd = [...new Set([...named, ...direct])]
     .map((n) => {
       const hit = resolveComp(n);
       return hit ? `\`components/${hit.id}.md\` (${hit.name})` : null;
     })
     .filter(Boolean);
+  const docdUniq = [...new Set(docd)];
   const undoc = [...new Set([...named, ...direct].filter((n) => !resolveComp(n)))];
 
   // Flags that gate the ROUTE itself live in menuList/appRoutes, not in the page.
@@ -387,6 +445,31 @@ for (const route of routes) {
     roleAware && 'no-permission',
   ].filter(Boolean);
 
+  /* Layout skeleton — the JSX nesting IS the layout. Keep structural tags and the
+     props that carry layout intent; drop handlers, data and styling noise. */
+  const LAYOUT_PROPS = /\b(template|gap|vertical|justify|align|span|cols?|direction|wrap|width|height|type|shape|size)=(?:"[^"]*"|\{[^}]{0,40}\})/g;
+  const skeletonOf = (code) => {
+    const out = [];
+    for (const line of code.split('\n')) {
+      const m = line.match(/^(\s*)<\/?([A-Z][A-Za-z0-9]*)([^>]*)>?/);
+      if (!m) continue;
+      const [, indent, tag, rest] = m;
+      if (/^(Trans|Fragment|React)$/.test(tag)) continue;
+      const closing = /^\s*<\//.test(line);
+      const props = closing ? [] : (rest.match(LAYOUT_PROPS) || []).slice(0, 3);
+      const depth = Math.min(Math.floor(indent.length / 2), 8);
+      out.push(`${'  '.repeat(depth)}${closing ? '/' : ''}${tag}${props.length ? ' ' + props.join(' ') : ''}`);
+    }
+    // collapse consecutive duplicates (repeated list items render identically)
+    return out.filter((l, i) => l !== out[i - 1]).slice(0, 70).join('\n');
+  };
+  const mainFile = pageFiles.find((f) => /\/(index|[a-z-]+)\.js$/.test(f) && !/style|util|helper/i.test(f))
+                || pageFiles[0];
+  const skeleton = skeletonOf(read(mainFile));
+
+  const shotFile = `data/live/${slug(route)}.png`;
+  const hasShot = existsSync(join(ROOT, shotFile));
+
   const body = `# ${designName}
 
 > **Derived, not designed.** Fields below were read out of the page directory. Purpose, layout
@@ -403,15 +486,39 @@ flags     ${[...gateFlags.map((f) => f + ' (gates the route)'), ...usedFlags].jo
 states    ${states.length ? states.join(' · ') : 'none detected — confirm with the designer'}
 lang      en pending · ar pending
 ga4       — product supplies in the PRD
+shot      ${hasShot ? '`' + shotFile + '` — the harness render, OPEN IT BEFORE DESIGNING' : 'not captured — run node harness/capture.mjs'}
+board     \`kb/pages/${slug(route)}.board.html\` — the screen as an artboard
 \`\`\`
+${hasShot ? `
+## Reference screenshot
+
+\`${shotFile}\` — the product rendered by the harness. **Open it before you design.** The skeleton gives
+structure, the component specs give values, this gives the truth. If your output disagrees
+with it, your output is wrong.
+` : `
+## Reference screenshot
+
+**Not captured yet.** Run \`node scripts/capture.mjs --login\` once, then
+\`node scripts/capture.mjs\`, then re-run the build. Until then you have structure and values
+but no visual reference — say so rather than implying your output matches the live screen.
+`}
 
 ## Composition
 
 Documented components this page already imports:
 
-${docd.length ? docd.map((d) => `- ${d}`).join('\n') : '- none resolved automatically — check `components/index.md`'}
+${docdUniq.length ? docdUniq.map((d) => `- ${d}`).join('\n') : '- none resolved automatically — check `components/index.md`'}
 
 ${undoc.length ? `Imported but **not in the component register** — undocumented surface:\n\n${undoc.slice(0, 14).map((n) => `- \`${n}\``).join('\n')}\n` : ''}
+## Layout skeleton
+
+Nesting and layout props read out of \`${mainFile.replace(REPO + '/', '')}\`. This is the
+shipped structure — **match it rather than inventing a new one**, unless the PRD changes it.
+
+\`\`\`
+${skeleton || '(no JSX structure resolved — check the source directly)'}
+\`\`\`
+
 ## Before designing
 
 1. Fill in \`purpose\` and confirm \`roles\`.
@@ -474,14 +581,36 @@ sizes['foundations.md'] = write(
   'foundations.md',
   `# Foundations
 
+**This file is complete.** Colour, typography, spacing, radius, elevation and iconography are
+all here. Do not conclude something is undocumented without reading to the bottom.
+
 Cite token names, not hex values. The cascade resolves in three layers, last wins:
 \`src/theme/index.js\` → styled-components → \`src/static/less/style.less\`.
 
-## Tokens
+## Typography
+
+Font stacks found in \`src/static/less/style.less\`:
+
+${fontFamilies.map((f) => `- \`${f}\``).join('\n')}
+
+Lite / member-area surfaces swap family via \`FONT_FAMILY_LITE\` = \`${liteFont}\`.
+
+${foundationSections.filter((f) => f.id === 'type').map((f) => f.description + (f.variants.length ? '\n\n' + f.variants.map((v) => `- ${v}`).join('\n') : '')).join('\n\n')}
+
+## Colour tokens
 
 | Token | Value |
 |---|---|
 ${tokens.map((t) => `| \`${t.key}\` | \`${t.value}\` |`).join('\n')}
+
+${foundationSections
+  .filter((f) => f.id !== 'type')
+  .map((f) => `## ${f.name}\n\n${f.description}${f.notes.length ? '\n\n' + f.notes.map((n) => `> ${n}`).join('\n\n') : ''}${f.variants.length ? '\n\n' + f.variants.map((v) => `- ${v}`).join('\n') : ''}`)
+  .join('\n\n')}
+
+## Radius in use
+
+${radii.join(' · ') || '—'}
 
 ## Breakpoints in use
 
@@ -489,8 +618,401 @@ ${breakpoints.join(' · ')} px
 
 Inconsistent by inheritance — 991/992, 767/768, 575/576 and 479/480 all appear. Until a
 canonical scale is agreed, match the value already used by the surface you are changing.
+
+## z-index in use
+
+${zIndexes.join(' · ')}
+
+No layer model. The \`2147483647\` is real and is in the codebase.
 `
 );
+
+// pages/_shell.md — GENERATED; supersedes the hand-written version ──────────
+const navRows = menuEntries.map((e) =>
+  `| ${e.child ? '&nbsp;&nbsp;↳ ' : ''}**${e.title}** | \`${e.path || '— (parent)'}\` | ${e.guard ? '`' + e.guard + '`' : 'always'} | ${e.roles.length ? e.roles.join(', ') : 'all'} |`
+).join('\n');
+
+const navHtml = menuEntries.filter((e) => !e.child)
+  .map((e, i) => {
+    const kids = e.path ? '' : menuEntries.filter((k) => k.child)
+      .map((k) => `\n      <a href="${k.path}">${k.title}</a>`).join('');
+    return e.path
+      ? `    <a href="${e.path}"${i === 0 ? ' class="on"' : ''}>${e.title}</a>`
+      : `    <div class="grp"><span>${e.title}</span>${kids}\n    </div>`;
+  }).join('\n');
+
+sizes['pages/_shell.md'] = write(
+  'pages/_shell.md',
+  `# The Profolio shell
+
+**Every Profolio KSA screen starts here.** There is no blank canvas. A screen that does not
+exist yet still has the header, side navigation and footer — so the worst case a designer
+receives is correct chrome around an empty content area, never an improvised layout.
+
+Source: \`src/layout/withAdminLayout.js\` · \`src/tenant/common/menuList/menuList.js\`
+
+## Measurements — use these, do not estimate
+
+| Part | Value | Source |
+|---|---|---|
+| Sider width, expanded | **${SIDER_W}px** | \`SIDEBAR_EXPANDED_WIDTH\` |
+| Sider width, collapsed | **${SIDER_COLLAPSED_W}px** | \`SIDEBAR_COLLAPSED_WIDTH\` |
+| Header height | **74px** | layout |
+| Content ground | \`#F6F7FB\` | layout |
+| Page header padding | \`24px 32px\` (\`26px 15px\` ≤768px, \`16px 20px\` ≤576px) | style.less |
+| Footer | \`#fafafa\` · \`24px 15px\` | layout |
+| Mobile sider drawer | 280px at \`top: 75px\`, 0.35s ease-in | layout |
+
+## The sidebar — these exact ${menuEntries.length} entries, these exact labels
+
+Never invent, rename, reorder or omit one. "TruLeads" is not "Leads"; "Credits & Packages" is
+not "Packages"; there is no top-level "Licenses" entry.
+
+| Label | Path | Shown when | Roles |
+|---|---|---|---|
+${navRows}
+
+## Header parts, in order
+
+1. Logo — Bayut + KSA lockup
+2. Header search — **hidden on KSA**, \`SHOW_SEARCH_HEADER: false\`
+3. Platform segmented control — multi-platform users only
+4. Credits summary
+5. Notification bell with unread badge
+6. **Classified pill** — a link out to the classified site, min-width 148.71px, 1px \`#f0f0f0\`
+   border, radius 6px, 36px tall. It is a bordered link, **not a solid primary button**, and
+   it is not "Post a Listing".
+7. Account dropdown — avatar plus name
+
+## Starting markup
+
+Copy this. It is the shell at the measurements above, with the real nav. Replace only the
+content area.
+
+\`\`\`html
+<div class="pf">
+  <header class="pf-header">
+    <div class="pf-logo">bayut <span>KSA</span></div>
+    <div class="pf-spacer"></div>
+    <div class="pf-credits"><em>Credits</em><b>1,280</b></div>
+    <button class="pf-bell" aria-label="Notifications">7</button>
+    <a class="pf-classified" href="#">Go to Bayut.sa</a>
+    <div class="pf-account"><span class="av">SA</span> Saad Al-Harbi</div>
+  </header>
+  <nav class="pf-sider">
+${navHtml}
+  </nav>
+  <main class="pf-content"><!-- the screen goes here --></main>
+  <footer class="pf-footer">
+    <small>© 2026 Bayut KSA</small>
+    <span class="rega">Licensed by <b>REGA</b> · <a href="#">Report to REGA</a></span>
+  </footer>
+</div>
+
+<style>
+.pf{display:grid;grid-template-columns:${SIDER_W}px 1fr;background:#F6F7FB;
+    font-family:Lato,'Droid Arabic Kufi',sans-serif;font-size:14px;line-height:1.571;color:#222}
+.pf-header{grid-column:1/-1;height:74px;background:#fff;border-bottom:1px solid #F1F2F6;
+    display:flex;align-items:center;gap:18px;padding:0 24px}
+.pf-logo{width:${SIDER_W - 24}px;flex:none;font-weight:900;color:#006169;font-size:19px}
+.pf-logo span{font-weight:400;font-size:12px;color:#9D9D9D;text-transform:uppercase}
+.pf-spacer{flex:1}
+.pf-credits{display:flex;flex-direction:column;padding-inline-end:18px;border-right:1px solid #f0f0f0}
+.pf-credits em{font-style:normal;font-size:10.5px;color:#9D9D9D;text-transform:uppercase}
+.pf-credits b{font-size:14px;color:#222}
+.pf-bell{background:none;border:0;color:#5A5F7D;cursor:pointer}
+.pf-classified{min-width:148.71px;height:36px;border:1px solid #f0f0f0;border-radius:6px;
+    display:grid;place-items:center;padding:0 16px;color:#767676;text-decoration:none;font-size:13px}
+.pf-account{display:flex;align-items:center;gap:9px;font-size:13px;color:#4f4f4f}
+.pf-account .av{width:36px;height:36px;border-radius:50%;background:#E1F2F0;color:#006169;
+    display:grid;place-items:center;font-weight:700;font-size:13px}
+.pf-sider{background:#fff;border-right:1px solid #F1F2F6;padding:30px 0 0}
+.pf-sider a{display:block;padding:8px 16px;margin:0 15px 8px;border-radius:4px;
+    font-weight:500;color:#222;text-decoration:none}
+.pf-sider a:hover{background:#F8F9FB;color:#006169}
+.pf-sider a.on{background:#F7FCFC;color:#006169;font-weight:600}
+.pf-sider .grp>span{display:block;padding:8px 16px;margin:0 15px;font-weight:500;color:#222}
+.pf-sider .grp a{font-weight:400;padding-block:7px;margin-inline-start:31px}
+.pf-content{padding:24px 32px;display:grid;grid-template-rows:auto 1fr;gap:16px}
+.pf-footer{grid-column:1/-1;background:#fafafa;padding:24px 15px;border-top:1px solid #F1F2F6;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11.5px;color:#707070}
+.pf-footer b{color:#006169}
+@media (max-width:992px){.pf{grid-template-columns:1fr}.pf-sider{display:none}}
+</style>
+\`\`\`
+
+## Variants
+
+\`withAdminLayout.js\` branches four ways. Name which one you are designing.
+
+| Variant | Condition | What changes |
+|---|---|---|
+| \`isMobile\` | ≤992px | Sider → 280px drawer at \`top:75px\`. \`lite-header-dropdown\` replaces the account menu; \`lite-sidebar-drawer\` replaces the sider. Cards lose their border; selects shrink to 40px. |
+| \`isMemberArea\` | \`HAS_MEMBER_AREA: true\` on KSA | Reduced chrome. **This is the lite surface — v2, not specified.** Stop and say so. |
+| \`topMenu\` | layout preference | Horizontal nav replaces the sider. |
+| \`isWebView\` | embedded in the app | Chrome suppressed entirely. |
+
+## Page template header
+
+Every \`pages/<route>.md\` opens with these fields. Filling it in **is** the proposal.
+
+\`\`\`
+shell     default | isMobile | isMemberArea | topMenu | isWebView
+route     /the-route
+source    src/container/pages/<dir>
+purpose   one sentence, user-side
+roles     agency owner · agency staff · individual seller — and what differs
+flags     tenant constants that change or remove it
+uses      documented components it composes
+states    loading · empty · error · flag-off · no-permission
+lang      en <draft|approved> · ar <pending|passed>
+ga4       event names, when product supplies them
+\`\`\`
+`
+);
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   7. COPY — the real product strings, grouped by the area that uses them
+   The skill shipped none of these, which is why an agent invented every label.
+   ───────────────────────────────────────────────────────────────────────── */
+const enCopy = (() => { try { return JSON.parse(read(join(REPO, 'src/locales/en/translation.json'))); } catch { return {}; } })();
+const arCopy = (() => { try { return JSON.parse(read(join(REPO, 'src/locales/ar/translation.json'))); } catch { return {}; } })();
+
+/* Which area does a source file belong to? */
+const areaOf = (path) => {
+  const rel = path.replace(REPO + '/src/', '');
+  let m = rel.match(/^container\/pages\/([^/]+)/);      if (m) return `page-${m[1]}`;
+  m = rel.match(/^components\/common\/([^/]+)/);         if (m) return `common-${m[1]}`;
+  m = rel.match(/^components\/([^/.]+)/);                if (m) return m[1];
+  m = rel.match(/^tenant\/[^/]+\/components\/([^/]+)/);  if (m) return `tenant-${m[1]}`;
+  if (rel.startsWith('layout')) return 'shell';
+  return '';
+};
+
+/* t('…') and t("…") calls, per area, in first-seen order. */
+const copyByArea = new Map();
+for (const f of srcFiles) {
+  const area = areaOf(f);
+  if (!area) continue;
+  const src = read(f);
+  const keys = [...src.matchAll(/\bt\(\s*['"]([^'"]{2,120})['"]/g)].map((m) => m[1]);
+  if (!keys.length) continue;
+  if (!copyByArea.has(area)) copyByArea.set(area, new Set());
+  const bucket = copyByArea.get(area);
+  for (const k of keys) if (enCopy[k] !== undefined) bucket.add(k);
+}
+
+const copyAreas = [...copyByArea.entries()]
+  .map(([area, set]) => ({ area, keys: [...set].sort() }))
+  .filter((a) => a.keys.length)
+  .sort((a, b) => b.keys.length - a.keys.length);
+
+for (const { area, keys } of copyAreas) {
+  sizes[`copy/${area}.md`] = write(
+    `copy/${area}.md`,
+    `# Copy — ${area}
+
+${keys.length} strings shipped in this area. **Use these exact words.** If a label you need is
+not here, say so rather than writing one — invented copy is how "Post a Listing" ended up on
+the classified pill.
+
+| English | Arabic |
+|---|---|
+${keys.map((k) => `| ${enCopy[k].replace(/\|/g, '\\|')} | ${(arCopy[k] || '—').replace(/\|/g, '\\|')} |`).join('\n')}
+`
+  );
+}
+
+sizes['copy/index.md'] = write(
+  'copy/index.md',
+  `# Product copy
+
+Every user-facing string in Profolio, grouped by the area that renders it, English beside
+Arabic. Load the one area you are designing — never the whole folder.
+
+**Rule: never invent a label.** If the string is not in the relevant file, say which file you
+checked and ask. A plausible-sounding invented label is the failure mode this layer exists to
+stop.
+
+${enCopy && Object.keys(enCopy).length} strings total in \`src/locales/en/translation.json\`.
+
+| Area | Strings | File |
+|---|---|---|
+${copyAreas.map((a) => `| ${a.area} | ${a.keys.length} | \`copy/${a.area}.md\` |`).join('\n')}
+`
+);
+console.log(`copy areas       ${copyAreas.length}`);
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   8. FEATURE COMPONENTS — one entry per real component dir, from its own source
+   The canvas documented 57 generic components. The product has far more, and the
+   ones a PRD actually names (TruPoints, Bayut Match, credits quota) were blanks.
+   ───────────────────────────────────────────────────────────────────────── */
+const covered = new Set(componentList.map((c) => slug(c.name)));
+for (const c of componentList) covered.add(c.id);
+
+const compDirs = [];
+for (const base of ['components', 'components/common']) {
+  const dir = join(REPO, 'src', base);
+  if (!existsSync(dir)) continue;
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (e.isDirectory()) compDirs.push({ name: e.name, base, dir: join(dir, e.name) });
+  }
+}
+
+/* Pull real declarations out of styled-components template literals. */
+const cssOf = (src) => {
+  const decls = new Set();
+  for (const m of src.matchAll(/styled\.[a-zA-Z]+`([\s\S]*?)`|styled\([^)]+\)`([\s\S]*?)`|css`([\s\S]*?)`/g)) {
+    const body = m[1] || m[2] || m[3] || '';
+    for (const d of body.matchAll(/([a-z-]{3,})\s*:\s*([^;{}\n]{1,60});/g)) {
+      const [, prop, val] = d;
+      if (/\$\{/.test(val) && !/tenantTheme|theme\./.test(val)) continue;   // skip opaque interpolation
+      decls.add(`${prop}: ${val.trim().replace(/\$\{[^}]*?([a-zA-Z0-9_'\[\]-]+)\}/g, '$1')}`);
+    }
+  }
+  return [...decls];
+};
+
+let featureCount = 0;
+for (const { name, base, dir } of compDirs) {
+  const id = slug(name);
+  if (covered.has(id)) continue;                         // canvas already documents it
+
+  const files = [];
+  (function walk(d) {
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      const q = join(d, e.name);
+      if (e.isDirectory()) walk(q); else if (e.name.endsWith('.js')) files.push(q);
+    }
+  })(dir);
+  if (!files.length) continue;
+
+  const all = files.map(read).join('\n');
+  const css = cssOf(all);
+  const props = [...new Set(
+    [...all.matchAll(/(?:const|function)\s+[A-Z]\w*\s*=?\s*\(?\s*\{([^}]{5,400})\}/g)]
+      .flatMap((m) => m[1].split(','))
+      .map((x) => x.split(/[:=]/)[0].trim())
+      .filter((x) => /^[a-z]\w{1,28}$/.test(x))
+  )].slice(0, 18);
+  const strings = [...new Set([...all.matchAll(/\bt\(\s*['"]([^'"]{2,60})['"]/g)].map((m) => m[1]))].slice(0, 10);
+  const usesFlags = [...new Set([...all.matchAll(/tenantConstants[?.]*\.([A-Z][A-Z0-9_]+)/g)].map((m) => m[1]))];
+
+
+  sizes[`components/${id}.md`] = write(
+    `components/${id}.md`,
+    `# ${name}
+
+- **layer** feature
+- **source** \`src/${base}/${name}\`
+- **derived from** the component's own source, not the design canvas
+
+${props.length ? `## Props\n\n${props.map((x) => `\`${x}\``).join(' · ')}\n` : ''}
+${!css.length && !strings.length ? `> No styling or copy of its own — it composes other components. Check its source for what it wraps.
+` : ''}
+${css.length ? `## Measured CSS\n\nRead out of this component's styled rules — these are the shipped values.\n\n\`\`\`css\n${css.slice(0, 28).join(';\n')};\n\`\`\`\n` : ''}
+${strings.length ? `## Copy it renders\n\n${strings.map((x) => `- ${x}`).join('\n')}\n\nFull list with Arabic: \`copy/${areaOf(files[0]) || id}.md\`\n` : ''}
+${usesFlags.length ? `## Flags\n\n${usesFlags.map((f) => `\`${f}\``).join(' · ')}\n` : ''}`
+  );
+  featureCount++;
+}
+console.log(`feature comps    ${featureCount}`);
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   9. PAGE ARTBOARDS — a viewable .html beside every page's .md
+   The markdown says what a screen is; this shows it. Shell chrome is real,
+   the content area is blocked out from the layout skeleton so a designer
+   starts from the right structure rather than an empty box.
+   ───────────────────────────────────────────────────────────────────────── */
+const shellMd = read(join(REFS, 'pages/_shell.md'));
+const shellHtml = (shellMd.match(/```html\n([\s\S]*?)```/) || [, ''])[1];
+
+/* Turn a skeleton line into a blocked-out region. */
+const blockFor = (tag, props) => {
+  const t = tag.toLowerCase();
+  if (/card|widget|container|section|quota|breakdown|status/.test(t)) return 'card';
+  if (/table|list/.test(t)) return 'table';
+  if (/chart|graph|traffic/.test(t)) return 'chart';
+  if (/stat|points|metric|credit/.test(t)) return 'stat';
+  if (/button|btn|cta/.test(t)) return 'btn';
+  if (/select|dropdown|filter/.test(t)) return 'field';
+  if (/group|flex|row|col|main/.test(t)) return props.includes('template') ? 'grid' : 'flow';
+  return 'blk';
+};
+
+let boards = 0;
+for (const route of routes) {
+  const dir = pageFor(route);
+  if (!dir || !shellHtml) continue;
+  const mdPath = join(REFS, `pages/${slug(route)}.md`);
+  if (!existsSync(mdPath)) continue;
+
+  const pageMd = read(mdPath);
+  const skel = (pageMd.match(/## Layout skeleton[\s\S]*?```\n([\s\S]*?)```/) || [, ''])[1];
+  const title = (pageMd.match(/^#\s+(.+)$/m) || [, route])[1];
+  const flags = (pageMd.match(/^flags\s+(.+)$/m) || [, '—'])[1];
+  const roles = (pageMd.match(/^roles\s+(.+)$/m) || [, '—'])[1];
+
+  /* Build content blocks from the skeleton's top-level structure. */
+  const seen = new Set();
+  const regions = skel.split('\n')
+    .map((l) => l.match(/^(\s*)([A-Z][A-Za-z0-9]*)(.*)$/))
+    .filter(Boolean)
+    .filter((m) => m[1].length <= 14)
+    /* wrappers and loading plumbing are not content — skip them */
+    .filter((m) => !/^(Flex|Main|Spinner|Skeleton|LoaderWrapper|Row|Col|Trans|Fragment|Group)$/.test(m[2])
+                || /template=/.test(m[3] || ''))
+    .map((m) => ({ depth: m[1].length, tag: m[2], props: m[3] || '' }))
+    .filter((r) => { if (seen.has(r.tag)) return false; seen.add(r.tag); return true; })
+    .slice(0, 9);
+
+  const content = regions.length ? regions.map((r) => {
+    const kind = blockFor(r.tag, r.props);
+    const gridProp = (r.props.match(/template="([^"]+)"/) || [, ''])[1];
+    return `      <div class="ab ab-${kind}"${gridProp ? ` style="--tpl:${gridProp}"` : ''}>
+        <span class="ab-tag">${r.tag}</span>${gridProp ? `<span class="ab-note">${gridProp}</span>` : ''}
+      </div>`;
+  }).join('\n') : '      <div class="ab ab-blk"><span class="ab-tag">content</span></div>';
+
+  const board = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title} — Profolio KSA artboard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap">
+<style>
+body{margin:0;background:#e9edee;font-family:Lato,Arial,sans-serif}
+.meta{max-width:1440px;margin:0 auto;padding:18px 20px 0;font:12px ui-monospace,monospace;color:#5c716e;line-height:1.9}
+.meta b{color:#006169;font-weight:600}
+.frame{max-width:1440px;margin:12px auto 40px;border:1px solid #ccd8d5;background:#fff;overflow:hidden}
+.ab{border:1.5px dashed #b9c9c6;border-radius:8px;background:
+ repeating-linear-gradient(-45deg,#fbfcfc 0 10px,#f4f7f7 10px 20px);
+ min-height:96px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:16px}
+.ab-tag{font:600 11px ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase;color:#6f817d}
+.ab-note{font:11px ui-monospace,monospace;color:#9aa8a5}
+.ab-card{min-height:150px}.ab-table{min-height:230px}.ab-chart{min-height:210px}
+.ab-stat{min-height:86px}.ab-btn{min-height:48px;max-width:190px}.ab-field{min-height:44px;max-width:230px}
+.ab-grid{min-height:150px}
+</style></head><body>
+<div class="meta">
+  <b>${title}</b> · ${route}<br>
+  roles ${roles}<br>
+  flags ${flags}<br>
+  <i>Artboard — real shell chrome, content blocked out from the layout skeleton. Replace the blocks.</i>
+</div>
+<div class="frame">
+${shellHtml.replace('<main class="pf-content"><!-- the screen goes here --></main>', `<main class="pf-content">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <h3 style="margin:0;font-size:20px;font-weight:700;color:#222">${title}</h3>
+      </div>
+${content}
+    </main>`)}
+</div>
+</body></html>`;
+
+  writeFileSync(join(REFS, `pages/${slug(route)}.board.html`), board);
+  boards++;
+}
+console.log(`artboards        ${boards}`);
 
 /* report ------------------------------------------------------------------- */
 const total = Object.values(sizes).reduce((a, b) => a + b, 0);

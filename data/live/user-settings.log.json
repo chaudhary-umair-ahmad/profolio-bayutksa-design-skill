@@ -1,0 +1,27 @@
+{
+  "url": "http://127.0.0.1:3000/en/user-settings",
+  "finalPath": "/en/user-settings/user-profile",
+  "shell": true,
+  "errorCard": false,
+  "spinning": false,
+  "pageHeight": 1681,
+  "answered": [
+    "GET /api/surge/users/current",
+    "GET /api/surge/users/88010234",
+    "GET /api/surge/languages",
+    "GET /api/surge/area_units",
+    "GET /api/surge/experience_list",
+    "GET /api/surge/lms/leads/stats",
+    "GET /api/surge/notifications/stats",
+    "GET /api/surge/products",
+    "GET /api/surge/agencies/880042"
+  ],
+  "unanswered": [],
+  "errors": [
+    "Failed to fetch city: Unreachable hosts - your application id may be incorrect. If the error persists, please reach out to the Algolia Support team: https://alg.li/support .",
+    "Error fetching cities: {name: RetryError, message: Unreachable hosts - your application id may be inc…he Algolia Support team: https://alg.li/support ., transporterStackTrace: Array(4)}",
+    "Failed to fetch cities: Unreachable hosts - your application id may be incorrect. If the error persists, please reach out to the Algolia Support team: https://alg.li/support ."
+  ],
+  "blocked": 17,
+  "ms": 7141
+}

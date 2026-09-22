@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QA — the page bodies, and the number that was measuring nothing — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#guide">Guide</a> › QA — the page bodies, and the number that was measuring nothing</nav>
+<main>
+<h1>QA — the page bodies, and the number that was measuring nothing</h1>
+<p>Nine pages were reported here at 77–96% while being, in the user's words, "not 10% similar to live". Both statements were true, and the gap between them is the finding.</p>
+<h2>What the old number measured</h2>
+<p><code>scripts/qa-design.mjs</code> scores <strong>regions</strong>, and a region is a <strong>bounding box</strong> plus an allow-list of computed styles. Two pages that are both "a card on the left, a card on the right" at the same sizes, with the same card radius, border and shadow, score in the high eighties — whatever is inside them.</p>
+<p>So this passed:</p>
+<table><tr><th>page</th><th>what the product shows</th><th>what this system showed</th></tr><tr><td>Credits Usage</td><td>a 300px ring, a three-up Available/Used/Total strip, a five-row legend, and a timeline of dated property cards</td><td>a four-column stat grid and an empty table with a pager</td></tr><tr><td>Reports Summary</td><td>a purpose segmented control, a date-range field, three metric tabs with deltas, a channel strip, product pills and a 30-point line chart</td><td>two grey rectangles captioned "Chart"</td></tr><tr><td>Ad License</td><td>a 1035-wide wizard: a Back pill, an H2, three sections each a title column beside stepped fields with choice pills</td><td>a two-column form of six invented fields</td></tr><tr><td>Agency Settings</td><td>an in-card agency header, a phone field with a country box, an Agency Description textarea</td><td>an invented "Commercial Registration Number", no header, no textarea</td></tr></table>
+<p>None of that is a styling mistake. It is <strong>content that was written rather than measured</strong> — the failure the repo's own plan names as its spine, applied to the one layer no check was looking at.</p>
+<h2>The check that would have caught it</h2>
+<p><code>scripts/qa-body.mjs</code>. It is <code>qa-overlays.mjs</code> one level up: it walks the content region on both sides and compares what the body is <strong>made of</strong>.</p>
+<pre class="code"><code>node scripts/qa-body.mjs               every page that has both captures
+node scripts/qa-body.mjs credits       only pages matching "credits"</code></pre>
+<table><tr><th>signal</th><th>what it catches</th></tr><tr><td><strong>cards</strong></td><td>a whole card missing, at a 400px floor so a chip is not counted as one</td></tr><tr><td><strong>charts</strong></td><td>a real <code>&lt;svg&gt;</code>/<code>&lt;canvas&gt;</code>, so a grey rectangle scores zero — the empty-state illustration and nested <code>&lt;svg&gt;</code> are excluded</td></tr><tr><td><strong>empty states</strong></td><td>ours empty where the product has data: a fixture answered with nothing</td></tr><tr><td><strong>parts</strong></td><td>buttons, links, fields and icons, under the conventions below</td></tr><tr><td><strong>nodes</strong></td><td>how much is in there at all — context on every line, a fault below 50%</td></tr></table>
+<p><strong>Conventions it is taught, because they are deliberate and not defects:</strong></p>
+<ul><li>a navigation is <code>&lt;a href="not-built.html"&gt;</code> here and a Button in the product</li><li>a select trigger is <code>&lt;button class="pf-select"&gt;</code> here and a div wrapping an</li></ul>
+<p>  input in antd</p>
+<ul><li>a segmented control, a product pill, a wizard choice and a metric tab are all</li></ul>
+<p>  antd <code>Radio</code>/<code>Tabs</code> — real <code>&lt;input&gt;</code>s — and <code>&lt;button role="radio|tab"&gt;</code> here</p>
+<p><strong>What the node ratio does NOT mean.</strong> antd wraps generously and draws its charts with a library; a hand-written page reproduces the same design with fewer nodes and one <code>&lt;svg&gt;</code>. Reports Summary sits at 57% with every card, chart and control matching. The ratio is context; the counts are the gate.</p>
+<h2>Where the content comes from now</h2>
+<p><code>scripts/outline.mjs</code> prints a capture's content region as a readable tree — every box, its size, its position and the styles that decide whether it is a card, a pill, a field or a divider:</p>
+<pre class="code"><code>node scripts/outline.mjs live/credits-usage --depth 12</code></pre>
+<p>Each page was rebuilt from three sources, in this order:</p>
+<ol><li><strong>the capture</strong> (<code>data/live/&lt;route&gt;.capture.json</code>) for geometry</li><li><strong>the product's own field definitions</strong> — <code>profileFields.js</code>,</li></ol>
+<p>   <code>agencySettingsFields.js</code>, <code>create-ad-license.js</code> — for labels, types and    which controls are disabled</p>
+<ol><li><strong>the render</strong> (<code>data/live/&lt;route&gt;.png</code>) for order and state</li></ol>
+<p>Source (2) is what caught the inverse of the usual error: Agency Settings carried a <strong>Commercial Registration Number</strong> field unconditionally, when <code>agencySettingsFields.js:28</code> gates it on <code>typeofBuisness === 'Agency Broker'</code>. The account is not one, so the product does not draw it — an instance-promoted-to-default, arrived at from the other direction.</p>
+<h2>Still open</h2>
+<ul><li><strong>The range calendar is fabricated.</strong> Both of its months share one invented</li></ul>
+<p>  day grid. The two new date fields on LMS Leads and Leads &amp; Reach are   therefore <code>data-noop</code> rather than wired to it: spreading a known-wrong   component across three pages is worse than one honest gap.</p>
+<ul><li><strong>Ad License is one card against the product's four</strong>, and its choice groups</li></ul>
+<p>  count 24 controls against 6 — the product's capture of that page is shallower   than the form it renders, so the tail of the wizard is unverified.</p>
+<ul><li><strong>Listings and Dashboard</strong> predate this check and carry their own gaps:</li></ul>
+<p>  Listings 35 links against 2, Dashboard 12 unmatched fields.</p>
+<ul><li><strong>The illustration's own drawing instructions.</strong> <code>svg.js</code> paints two of</li></ul>
+<p>  EmptyListing's shapes through <code>mask-type</code> and <code>mix-blend-mode</code> and three more   through <code>style={{ fill: tenantTheme[…] }}</code>. The icon extractor dropped all of   them and the art rendered near-black where the product's is nearly white; it   now resolves the product's theme and keeps those two presentation styles.   <code>scripts/check.mjs</code>'s no-inline-style rule exempts inlined <code>&lt;svg&gt;</code> for that   reason and no other.</p>
+</main>
+</body>
+</html>

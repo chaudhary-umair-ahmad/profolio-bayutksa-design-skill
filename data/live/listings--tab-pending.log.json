@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 967,
+  "note": "Pending (1) — columns Property · Timeline · Status · Actions",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

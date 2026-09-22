@@ -1,0 +1,26 @@
+{
+  "url": "http://127.0.0.1:3000/en/packages",
+  "finalPath": "/en/packages",
+  "shell": true,
+  "errorCard": false,
+  "spinning": false,
+  "pageHeight": 922,
+  "answered": [
+    "GET /api/surge/users/current",
+    "GET /api/surge/users/88010234",
+    "GET /api/surge/languages",
+    "GET /api/surge/area_units",
+    "GET /api/surge/experience_list",
+    "GET /api/surge/lms/leads/stats",
+    "GET /api/surge/notifications/stats",
+    "GET /api/surge/products",
+    "GET /api/surge/agencies/880042",
+    "GET /api/surge/credits/summary"
+  ],
+  "unanswered": [
+    "GET /api/surge/packages"
+  ],
+  "errors": [],
+  "blocked": 4,
+  "ms": 5908
+}

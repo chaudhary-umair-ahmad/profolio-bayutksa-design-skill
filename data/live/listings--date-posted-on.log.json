@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": true,
+    "popover": true,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1926,
+  "note": "filters drawer → Posted On — a DrawerPopover holding DateRangePickerOne (DateFilter.js:71-105). Click, not hover",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1926,
+  "note": "hover Actions[1] — 132x40 \"View on Bayut\". The seven labels measure 66-137 wide (table-actions.js:62-109)",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

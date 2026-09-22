@@ -1,0 +1,30 @@
+{
+  "url": "http://127.0.0.1:3000/en/dashboard",
+  "finalPath": "/en/dashboard",
+  "shell": true,
+  "errorCard": false,
+  "spinning": false,
+  "pageHeight": 2647,
+  "answered": [
+    "GET /api/surge/users/current",
+    "GET /api/surge/notifications/stats",
+    "GET /api/surge/users/88010234",
+    "GET /api/surge/languages",
+    "GET /api/surge/area_units",
+    "GET /api/surge/experience_list",
+    "GET /api/surge/lms/leads/stats",
+    "GET /api/surge/products",
+    "GET /api/surge/agencies/880042",
+    "GET /api/surge/dashboard/listing_stats",
+    "GET /api/surge/credits/summary",
+    "GET /api/surge/listings/summary",
+    "GET /api/surge/listings",
+    "GET /api/surge/ovation/stats/trends",
+    "GET /api/surge/ovation/stats/product_stats"
+  ],
+  "unanswered": [],
+  "errors": [],
+  "blocked": 3,
+  "fonts": "served from deliverables/fonts.css",
+  "ms": 12108
+}

@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": true,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 900,
+  "note": "row 4, Actions — Mark as Booked, which renders only on a daily-rental listing (listingUtilities.js:238). Captured in context rather than from the design-capture route",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

@@ -1,0 +1,66 @@
+{
+  "_": "GENERATED-SHAPE fixture for /listings. Invented KSA data at the same shapes and string lengths as the real account, so the layout under test is the layout that ships. The ten rows are the dashboard's (data/fixtures/dashboard.json) — one dataset, two pages, so the two tables cannot drift. Labels and placeholders are the product's own strings from src/tenant/common/filters/listingFilters.js and components/common/filters/filters.js.",
+  "route": "/listings",
+  "title": "My Listings",
+  "railCurrent": "My Listings",
+  "rowsFrom": "dashboard.json",
+  "filters": [
+    {
+      "type": "input",
+      "label": "Listing ID",
+      "placeholder": "Enter Listing ID",
+      "key": "listing_id"
+    },
+    {
+      "type": "input",
+      "label": "REGA Ad License Number",
+      "placeholder": "Enter REGA Ad License Number",
+      "key": "ad_license"
+    },
+    {
+      "type": "select",
+      "label": "Purpose",
+      "placeholder": "Select Purpose",
+      "key": "purpose_id"
+    },
+    {
+      "type": "select",
+      "label": "Property Type",
+      "placeholder": "Select Property Types",
+      "key": "type_id"
+    }
+  ],
+  "actions": {
+    "showMore": "Show More",
+    "clear": "Clear filters",
+    "search": "Search"
+  },
+  "tabs": [
+    {
+      "label": "Active",
+      "count": 20,
+      "current": true
+    },
+    {
+      "label": "Draft",
+      "count": 2
+    },
+    {
+      "label": "Pending",
+      "count": 1
+    },
+    {
+      "label": "Removed",
+      "count": 0
+    },
+    {
+      "label": "Ad License Requests",
+      "count": 0
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "pages": 6
+  },
+  "bookedRange": "Sep 21, 2026 – Sep 28, 2026"
+}

@@ -1,0 +1,38 @@
+/* Documentation chrome for kb/ — linked once by every page, inlined by none.
+   Deliberately not the product's tokens: a reference page is not a Profolio
+   screen. The type is the product's, though: the same three Lato faces. */
+@import url("../deliverables/fonts.css");
+:root{--bg:#f4f6f6;--paper:#fff;--ink:#16211f;--ink2:#41544f;--mute:#6f817d;--rule:#e2e8e7;--accent:#006169;--tint:#f2fafa;--code:#f1f4f4}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--ink);font:15px/1.6 Lato,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+nav{max-width:960px;margin:0 auto;padding:18px 24px 0;font-size:13px;color:var(--mute)}
+nav a{color:var(--accent);text-decoration:none}
+main{max-width:960px;margin:12px auto 0;padding:32px 40px 48px;background:var(--paper);border:1px solid var(--rule);border-radius:10px}
+footer{max-width:960px;margin:0 auto;padding:16px 24px 48px;font-size:12px;color:var(--mute)}
+h1{font-size:28px;line-height:1.2;margin:0 0 16px;letter-spacing:-.01em}
+h2{font-size:19px;margin:36px 0 10px;padding-top:18px;border-top:1px solid var(--rule)}
+h3{font-size:16px;margin:26px 0 8px}
+h4{font-size:14px;margin:20px 0 6px;color:var(--ink2)}
+p,li{color:var(--ink2)}
+a{color:var(--accent)}
+code{font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:1px 5px;border-radius:4px}
+pre.code{background:#101817;color:#e6efed;padding:14px 16px;border-radius:8px;overflow:auto;font-size:12.5px;line-height:1.55}
+pre.code code{background:none;padding:0;color:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0 18px;font-size:13.5px}
+th,td{text-align:start;vertical-align:top;padding:7px 10px;border-bottom:1px solid var(--rule)}
+th{color:var(--mute);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+table.kv th{width:140px;text-transform:none;letter-spacing:0;font-size:13px}
+blockquote{margin:0 0 14px;padding:10px 16px;background:var(--tint);border-inline-start:3px solid var(--accent);border-radius:0 6px 6px 0}
+hr{border:0;border-top:1px solid var(--rule);margin:24px 0}
+p.open a{display:inline-block;margin:0 12px 8px 0;padding:6px 12px;border:1px solid var(--accent);border-radius:6px;text-decoration:none;font-size:13px;font-weight:700}
+.index section{margin-top:8px}
+.index ul{columns:2;column-gap:32px;padding-inline-start:20px}
+.index ul.routes{columns:2}
+.index li{break-inside:avoid;margin:2px 0}
+.index small{color:var(--mute)}
+.index details{margin:8px 0 0}
+.index summary{cursor:pointer;color:var(--ink2);font-weight:700}
+.index summary span{color:var(--mute);font-weight:400}
+.lead{font-size:16px}
+@media (max-width:720px){main{padding:20px 16px;border-radius:0;border-inline:0}.index ul{columns:1}}

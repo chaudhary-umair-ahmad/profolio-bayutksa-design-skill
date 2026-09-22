@@ -1,0 +1,31 @@
+{
+  "url": "http://127.0.0.1:3000/en/ad-license",
+  "finalPath": "/en/ad-license",
+  "shell": true,
+  "errorCard": false,
+  "spinning": false,
+  "pageHeight": 914,
+  "answered": [
+    "GET /api/surge/users/current",
+    "GET /api/surge/users/88010234",
+    "GET /api/surge/languages",
+    "GET /api/surge/area_units",
+    "GET /api/surge/experience_list",
+    "GET /api/surge/lms/leads/stats",
+    "GET /api/surge/notifications/stats",
+    "GET /api/surge/products",
+    "GET /api/surge/agencies/880042"
+  ],
+  "unanswered": [
+    "GET /api/surge/listing_age",
+    "GET /api/surge/ad_license_products"
+  ],
+  "errors": [
+    "Failed to load Google Maps script, retrying in 2 ms.",
+    "Failed to fetch cities: Unreachable hosts - your application id may be incorrect. If the error persists, please reach out to the Algolia Support team: https://alg.li/support .",
+    "Failed to load Google Maps script, retrying in 8 ms.",
+    "Failed to load Google Maps script, retrying in 24 ms."
+  ],
+  "blocked": 14,
+  "ms": 6315
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>User Settings — Profolio KSA</title>
+<link rel="stylesheet" href="../kb.css">
+</head>
+<body>
+<nav><a href="../index.html">Profolio KSA</a> › <a href="../index.html#pages">Pages</a> › User Settings</nav>
+<main>
+<p class="open"><a href="user-settings.board.html">Open the artboard →</a> <a href="../../data/live/user-settings.png">Open the harness render →</a></p><h1>User Settings</h1>
+<blockquote><strong>Derived, not designed.</strong> Fields below were read out of the page directory. Purpose, layout intent and the artboard are still to be written — that is the designer's work, and this header is the proposal to get approved first.</blockquote>
+<pre class="code"><code>shell     default
+route     /user-settings/*
+source    src/container/pages/user-settings
+purpose   TODO — one sentence, user-side
+roles     role-aware — agency owner / agency staff / individual seller differ; confirm which
+flags     KC_ENABLED · PROFILE_COMPLETION_APPLICABLE · TRU_BROKER_ENABLED · CONVERT_TO_AGENCY · SHOW_PAGE_ALERTS
+states    loading · empty · error · flag-off · no-permission
+lang      en pending · ar pending
+ga4       — product supplies in the PRD
+shot      `data/live/user-settings.png` — the harness render, OPEN IT BEFORE DESIGNING
+board     `kb/pages/user-settings.board.html` — the screen as an artboard</code></pre>
+<h2>Reference screenshot</h2>
+<p><code>data/live/user-settings.png</code> — the product rendered by the harness. <strong>Open it before you design.</strong> The skeleton gives structure, the component specs give values, this gives the truth. If your output disagrees with it, your output is wrong.</p>
+<h2>Composition</h2>
+<p>Documented components this page already imports:</p>
+<ul><li><a href="../design/components/card.html"><code>card.html</code></a> (Card frame)</li><li><a href="../design/components/button.html"><code>button.html</code></a> (Button)</li><li><a href="../design/components/textwithicon.html"><code>textwithicon.html</code></a> (Text with icon)</li><li><a href="../design/components/icon.html"><code>icon.html</code></a> (Icon container)</li><li><a href="../design/components/tag.html"><code>tag.html</code></a> (Tag)</li><li><a href="../design/components/empty.html"><code>empty.html</code></a> (Empty states)</li><li><a href="../design/components/alert.html"><code>alert.html</code></a> (Alert)</li><li><a href="../design/components/input.html"><code>input.html</code></a> (Text input)</li><li><a href="../design/components/avatar.html"><code>avatar.html</code></a> (Avatar &amp; badge)</li><li><a href="../design/components/form.html"><code>form.html</code></a> (Post-listing form)</li><li><a href="../design/components/navitem.html"><code>navitem.html</code></a> (Nav item)</li></ul>
+<p>Imported but <strong>not in the component register</strong> — undocumented surface:</p>
+<ul><li><code>ConfirmationModal</code></li><li><code>LoaderWrapper</code></li><li><code>Group</code></li><li><code>Flex</code></li><li><code>DrawerModal</code></li><li><code>LicenseSkeleton</code></li><li><code>agency-staff-header</code></li><li><code>license-card</code></li><li><code>add-license</code></li><li><code>convert-to-agency</code></li><li><code>profile-completion</code></li><li><code>listing</code></li></ul>
+<h2>Layout skeleton</h2>
+<p>Nesting and layout props read out of <code>src/container/pages/user-settings/agancy-settings.js</code>. This is the shipped structure — <strong>match it rather than inventing a new one</strong>, unless the PRD changes it.</p>
+<pre class="code"><code>    Card
+        LoaderWrapper
+          JSONFormStyled
+        /LoaderWrapper
+      ConfirmationModal
+      /ConfirmationModal
+      Row
+        Col align="end"
+          Button
+          /Button
+        /Col
+      /Row
+    /Card</code></pre>
+<h2>Before designing</h2>
+<ol><li>Fill in <code>purpose</code> and confirm <code>roles</code>.</li><li>Check every flag above in <a href="../product/flags.html"><code>flags.html</code></a> — a false flag removes the surface.</li><li>Start from <a href="../pages/_shell.html"><code>_shell.html</code></a> default unless the PRD says otherwise.</li><li>Get this header approved, then design.</li></ol>
+</main>
+</body>
+</html>
