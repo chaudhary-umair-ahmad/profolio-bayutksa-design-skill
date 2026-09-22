@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": true,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1926,
+  "note": "row 1, Status cell — CLICK the info icon beside a red Rejected pill (platforms-status.js:16). The only click-triggered popover in the table body",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

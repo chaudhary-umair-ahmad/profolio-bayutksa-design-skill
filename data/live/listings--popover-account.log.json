@@ -9,7 +9,7 @@
     "dropdown": false
   },
   "spinning": false,
-  "pageHeight": 1918,
+  "pageHeight": 1926,
   "note": "header avatar — 400×233 popover: name, role, email, verified badges, Account Settings, Sign Out",
   "url": "http://127.0.0.1:3000/en/listings"
 }

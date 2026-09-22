@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1926,
+  "note": "row 3, Upgrades[3] — Photography is requested, so RequestedStateIcon overlays the circle in the warning colour and the panel adds \"Selected Date & Time\"",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

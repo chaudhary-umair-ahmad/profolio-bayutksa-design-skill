@@ -140,7 +140,7 @@ The four inline filters stay in the bar and are **not** repeated here.
 |---|---|---|---|---|
 | thumbnail | **opens the Listing Detail Drawer** (`cursor:pointer`) | `listing-purpose.js:79-82, 236-241` | dead | `listings--action-detail-drawer` |
 | image-count Badge | inert (`stopPropagation` only) | `listing-purpose.js:207-215` | built, inert — correct | `listings.capture.json` |
-| "Booked" chip | Tooltip "Booked Until \<date\>" | `listing-purpose.js:217-234` | missing | unmeasured |
+| "Booked" chip | Tooltip "Booked Until \<date\>" | `listing-purpose.js:217-234` | missing | `listings--tooltip-booked` — **230×40** |
 | discount tag | inert | `listing-purpose.js:242-254` | built, inert — correct | `listings.capture.json` |
 | listing price / title | **not a link** in the product | `listing-purpose.js:261` | dead — 13 × `href="#"`; the product has no link here, so it should be inert text | — |
 | external-link icon | `target="_blank"` to `props.url` | `listing-purpose.js:282-284` | N/A — `showExternalLink` never set by the Bayut transformer | — |
@@ -152,7 +152,7 @@ The four inline filters stay in the bar and are **not** repeated here.
 | purpose / type Tag | inert | `listing-purpose.js:288-304` | built, inert — correct | `listings.capture.json` |
 | spec icons + area | inert | `listing-purpose.js:306-329` | built, inert — correct | `listings.capture.json` |
 | Bayut ID | inert text | `listing-purpose.js:334-335` | built, inert — correct | `listings.capture.json` |
-| REGA ID · `AiOutlineInfoCircle` | **hover Popover** "Expiring on: \<date\>" | `listing-purpose.js:346-358` | missing | unmeasured — the probe hovered all 23 candidates in row 0 and this one never opened: the fixture row carries no `regaExpiryDate` |
+| REGA ID · `AiOutlineInfoCircle` | **hover Popover** "Expiring on: \<date\>". It is the **last** icon in the cell; a row without a rega expiry has only the four spec icons | `listing-purpose.js:346-358` | missing | `listings--popover-rega` — **191×54**, pad 16 |
 | Permit No / "Unlicensed" Tag | inert | `listing-purpose.js:363-379` | built, inert — correct | `listings.capture.json` |
 
 ## H · Timeline cell — `user.isCurrencyUser` only
@@ -177,7 +177,7 @@ The four inline filters stay in the bar and are **not** repeated here.
 | element | product behaviour | source | our state | measured from |
 |---|---|---|---|---|
 | status pill | **inert Tag** | `platforms-status.js:12-14` | built, inert — correct | `listings.capture.json` |
-| rejection `AiOutlineInfoCircle` | **click Popover**, placement right, reasons list — the only click popover in the table body; only when the disposition carries `comments` | `platforms-status.js:16-33`, `listingUtilities.js:100` | missing | unmeasured — no fixture row is `rejected` with `comments`, so the icon does not render |
+| rejection `AiOutlineInfoCircle` | **click Popover**, placement right, reasons joined by commas — the only click popover in the table body; only when the disposition carries `comments` | `platforms-status.js:16-33`, `listingUtilities.js:100` | missing | `listings--popover-status-rejected` — **472×54**, pad 16 |
 
 ## K · Upgrades cell — 6 circles, 4 states
 
@@ -195,14 +195,17 @@ instead (`listingUtilities.js:42-49`).
 | Drone Footage circle | → QuotaCreditModal + ServiceOptions | `products.js:210-232` | dead | `listings--upgrade-photography` (same shape) |
 | circle · enabled | clickable only when `!applied && canApply` | `upgrade-icons.js:33-49` | built | `listings.real.capture.json` |
 | circle · applied | green `HiCheck` overlay, disabled | `upgrade-icons.js:50-57` | built | `listings.real.capture.json` |
-| circle · pending | `RequestedStateIcon`, warning colour | `upgrade-icons.js:58-65` | missing | unmeasured |
+| circle · pending | `RequestedStateIcon`, warning colour. Pending is `is_applied && status === 'requested'` — **both together** (`products.js:5-9`); either alone renders an ordinary circle | `upgrade-icons.js:58-65` | missing | `listings--tooltip-upgrade-pending` |
 | circle · disabled | `#F4F5F7` / `rgb(173,180,210)` at 0.54 | `platformActions.js:142` | built | `listings.real.capture.json` |
-| circle tooltip · unavailable add-on | plain string "This service is not available in your region yet." | `platformActions.js:115-136` | missing | `listings--upgrade-*` (109–250 wide) |
-| circle tooltip · **ActionPopOver panel** | title / applied / pending heading + "Expiring on" + "Selected Date & Time" | `listingActionPopover/popoverContent.js:159-169` | missing | **unmeasured** |
+| circle tooltip · default | the `ActionPopOver` showing its title — "Mark Signature" 153×40, "Mark Hot" 109×40, "Mark Refresh" 138×40, "Request Photography/Videography Service" 250×54, "Request Drone Footage" 213×40. **White**, `#5A5F7D`, pad 6/20 | `platformActions.js:115-136` | missing | `listings--tooltip-upgrade`, `listings--tooltip-upgrade-service` |
+| circle tooltip · applied | the applied title — "Signature Listing" **165×40**, not "Mark Signature" | `platformActions.js:124` | missing | `listings--tooltip-upgrade-applied` |
+| circle tooltip · pending | the pending title — **250×54** | `platformActions.js:124` | missing | `listings--tooltip-upgrade-pending` |
+| circle tooltip · unavailable add-on | plain string "This service is not available in your region yet." — **250×58** | `platformActions.js:115-136` | missing | `listings--tooltip-upgrade-unavailable` |
+| circle · disabled with **no tooltip at all** | a non-applicable circle that is not an add-on service gets nothing — a disabled circle is not always a circle with an explanation | `platformActions.js:115-136` | missing | `listings--tooltip-upgrade-none` — nothing opens, which is the measurement |
 | **QuotaCreditModal** · plain | credits table, payment radios, Submit | `quotaCreditModal.js` | missing | `listings--upgrade-signature` — **708×414**, head 57, body 284, foot 73, centered |
 | **QuotaCreditModal** · with ServiceOptions | + requested date + comments | `quotaCreditModal.js:103-110` | missing | `listings--upgrade-photography` — **708×546**, body 416 |
 | Publish Now | navigates `/post-listing/:id`, or OTP modal, or applies | `platformActions.js:46-73, 147-163` | dead (Draft/Removed tabs) | `listings--tab-draft` |
-| **OtpVerificationModal** | OTP entry, resend, 429 rate-limit | `platformActions.js:174-213` | missing | **unmeasured** |
+| OtpVerificationModal | OTP entry, resend, 429 rate-limit | `platformActions.js:174-213` | missing | unmeasured — a `pending-otp-verification` row now exists and renders Publish Now, but clicking it takes the currency-user branch and navigates (`platformActions.js:68-71`) rather than sending an OTP. The modal needs the FAL-OTP branch, not just the disposition |
 | Publish suppressed | `pending-otp-verification` + `otp_attempts >= 3` | `listingUtilities.js:143-150` | missing | unmeasured |
 | `Zameen Stories` remove + confirm | not reachable on Bayut | `popoverContent.js:43-98` | N/A | — |
 
@@ -219,7 +222,7 @@ kebab Dropdown (`:111-126`).
 | 3 | Preview | → **ListingDrawer** `.open(id)` | `listingUtilities.js:265-277` | built → `drawer-listing-detail`, **skeleton only** | `listings--action-detail-drawer` |
 | 4 | Edit | navigates `/post-listing/:property_id` | `listingUtilities.js:204-216` | dead — should be a stub link | — |
 | 5 | Apply Discount | stores the discount session, then navigates. **`null` unless `discount_applicable`** | `listingUtilities.js:217-237` | dead — should be a stub link | `listings--action-discount` |
-| 6 | Mark as Booked | → **BookingModal**. **Only `listing_purpose.slug === 'daily-rental'`** | `listingUtilities.js:238-250` | built → `modal-booking`, **1 entry point in 13 rows** | `design-capture-flows-only-booking.real` |
+| 6 | Mark as Booked | → **BookingModal**. **Only `listing_purpose.slug === 'daily-rental'`** | `listingUtilities.js:238-250` | built → `modal-booking`, **1 entry point in 13 rows** | `listings--modal-booking` — **800×234** in context, head 57 pad 16/24, body 104 pad 24, foot 73 |
 | 7 | Delete | → **ConfirmationModal** + reason Radio.Group + "other" free text | `listingUtilities.js:314-334`, `listing-row-actions.js:157-198` | built → `modal-delete` | `listings--modal-delete` |
 | — | per-button Tooltip ×7 | Edit 66×40 / Preview 92×40 / View on Bayut 132×40 / Delete 84×40 / Apply Discount 137×40 / Mark as Booked / TruCheck \<status\>. Placement left, white, pad 6/20 | `table-actions.js:62-109`, `listingUtilities.js:158-175` | missing | `listings--tooltip-action` |
 | — | Delete suppressed | `pending-otp-verification` + `otp_attempts >= 3` | `listingUtilities.js:316-322` | missing | unmeasured |
@@ -277,21 +280,36 @@ building gap, not a measuring one.
 
 ### What is still unmeasured, and why
 
-Almost none of it is a capture problem now. It is that **this account cannot
-produce the state**:
+Almost none of it was a capture problem. It was that the account could not
+produce the state. `harness/fixtures.mjs` now gives each of the ten rows a job —
+row 1 is rejected, row 2 has a REGA expiry, row 3 has an applied product and a
+requested service, row 6 is booked, row 7 is pending OTP, row 8 has services
+that are not applicable — and eight more states came back:
 
-| unmeasured | what it needs |
+| now measured | size |
 |---|---|
-| REGA "Expiring on" popover | a row with `regaExpiryDate` |
-| status rejection-reasons popover | a `rejected` row carrying `comments` |
-| applied / pending circle tooltip | a row with an applied and a pending product |
-| "not available in your region" tooltip | a service that is not applicable |
-| `+N` overflow popover | more property types selected than fit |
-| Booked chip tooltip | a row with booked ranges |
-| OtpVerificationModal, Publish/Delete suppression | a row in `pending-otp-verification` |
-| banner, CreditsQuota, CreditInfoDrawer | a **member-area** user — `is_package_user: false` |
+| REGA "Expiring on" popover | 191×54 |
+| status rejection-reasons popover | 472×54, **click**, placement right |
+| applied circle tooltip | 165×40, and it reads "Signature Listing", not "Mark Signature" |
+| pending circle tooltip | 250×54 |
+| "not available in your region" tooltip | 250×58 |
+| a disabled non-service circle | **no tooltip at all** — which is the measurement |
+| Booked chip tooltip | 230×40 |
+| BookingModal, in context | 800×234, head 57, body 104, foot 73 |
 
-That is the fixture work, and it is what makes the rest of this file finishable.
+One correction came out of that: **pending is `is_applied && status ===
+'requested'`, both together** (`products.js:5-9`). A first attempt set
+`is_applied: false` and the circle rendered as an ordinary one.
+
+What is left, and what each still needs:
+
+| still unmeasured | what it needs |
+|---|---|
+| `OtpVerificationModal`, Publish/Delete suppression | the FAL-OTP branch, not just the disposition — a `pending-otp-verification` row now renders Publish Now and it navigates instead |
+| `+N` overflow popover | more property types selected than fit |
+| banner, CreditsQuota, CreditInfoDrawer | more than a member-area user. With `is_package_user:false` the app never paints `.ant-layout`: the member area mounts the **classified site's** header, which wants `/api/user/favorites`, `/api/user/searches/saved` and an off-origin bookings endpoint. Answering the first two is not enough |
+| the pager as a real account renders it | more than one page of listings |
+| tabs while loading, stats skeleton | the `loading` state with its tab panels built |
 
 ---
 

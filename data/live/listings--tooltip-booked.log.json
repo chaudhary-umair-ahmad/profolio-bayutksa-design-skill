@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1926,
+  "note": "row 6, Property cell — hover the Booked chip over the thumbnail for \"Booked Until <date>\" (listing-purpose.js:217)",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

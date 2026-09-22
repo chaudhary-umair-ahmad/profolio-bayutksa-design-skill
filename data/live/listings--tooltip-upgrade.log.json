@@ -9,7 +9,7 @@
     "dropdown": false
   },
   "spinning": false,
-  "pageHeight": 1918,
+  "pageHeight": 1926,
   "note": "hover Upgrades[0] — 153x40 \"Mark Signature\". This is ActionPopOver in its default state (platformActions.js:124); applied and pending add an \"Expiring on\" line and need a fixture row in those states",
   "url": "http://127.0.0.1:3000/en/listings"
 }

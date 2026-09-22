@@ -74,12 +74,70 @@ const listings = page.recentListings.map((r, i) => {
      (data/live/listings.real.capture.json) and one row with three disabled,
      so row 8 keeps its services unavailable and the page carries all three
      states, as the real one does.                                         */
+  /* ── what each row is FOR ──────────────────────────────────────────────
+     Ten rows that are all the same row prove one thing ten times. Every state
+     this design system could not measure traced back to that: no listing was
+     ever rejected, so the rejection popover never rendered and its size was
+     invented; no listing carried a REGA expiry, so that popover did not exist
+     either; nothing was ever booked, applied or pending.
+
+     So each row now has a job. Row 0 is deliberately ORDINARY and stays that
+     way — it is what every interaction step in harness/interactions/listings.mjs
+     hovers and clicks, and a row that keeps changing shape is a row whose
+     captures cannot be compared with yesterday's.
+
+       0  the plain live listing — six enabled circles, seven row actions
+       1  REJECTED, with reasons → the click popover in the Status cell, and
+          the row shape a non-live listing has: 3 actions, NO upgrades cell
+       2  a REGA expiry date → the "Expiring on" popover in the Property cell
+       3  one product APPLIED and one service REQUESTED → the green tick, the
+          warning badge, and the ActionPopOver with its expiry line
+       4  DAILY RENTAL → Mark as Booked, the seventh row action
+       5  discount_applicable FALSE → the six-action row, which is what made
+          "five row actions" look like a rule for a week
+       6  BOOKED dates → the Booked chip over the thumbnail and its tooltip
+       7  PENDING-OTP-VERIFICATION → Publish Now instead of six circles, and
+          the OTP modal behind it (otp_attempts 1; at >= 3 the product hides
+          Publish and Delete entirely, which is a separate row worth having
+          once there is somewhere to put it)
+       8  services NOT applicable → the muted circle, and the one tooltip that
+          is a plain string rather than a panel
+       9  DAILY RENTAL again → so Mark as Booked has more than one entry point
+
+     Everything else about a row is unchanged, so a change here moves exactly
+     one thing on the screen. */
+  const rejected = i === 1;
+  const otpPending = i === 7;
+  const dailyRental = i === 4 || i === 9;
+  const disposition = rejected
+    ? { slug: 'rejected', name: 'Rejected' }
+    : otpPending
+      ? { slug: 'pending-otp-verification', name: 'Pending OTP Verification' }
+      : { slug: 'live', name: 'Live' };
+
   const applied = (slug) => r.product === slug.replace('-listing', '') || slug === 'basic-listing';
   const product = (slug) => ({ slug, is_applied: applied(slug), is_applicable: !applied(slug) });
+  /* row 3 carries a real expiry so ActionPopOver has its "Expiring on" line
+     (popoverContent.js:159) rather than rendering title-only */
+  const appliedProduct = (slug) => ({
+    slug, is_applied: true, is_applicable: false,
+    expiry_date: day(-21).toISOString(),
+    auto_renewable_item: { renewing_on: day(-21).toISOString() },
+  });
   /* a service is applied only when its status is 'completed' (products.js:7);
      'requested' is the pending state, which draws RequestedStateIcon in the
      warning colour */
   const service = (slug, is_applicable = true) => ({ slug, status: null, is_applied: false, is_applicable });
+  /* PENDING is `is_applied && status === 'requested'` — both, together
+     (products.js:5-9). is_applied alone with status 'completed' is APPLIED;
+     is_applied false makes the status field irrelevant, which is why a first
+     attempt at this row came back reading "Request Photography Service" like
+     any other. Nothing in this account had ever been requested, so
+     RequestedStateIcon (upgrade-icons.js:58) had never rendered at all. */
+  const requested = (slug) => ({
+    slug, status: 'requested', is_applied: true, is_applicable: false,
+    requested_at: day(2).toISOString(),
+  });
   const servicesOff = i === 8;
   return {
     id: num(r.bayutId),
@@ -105,7 +163,19 @@ const listings = page.recentListings.map((r, i) => {
        (SHOW_LISTING_DISCOUNT_TAG is true for bayut). It was missing here, so
        the harness rendered five buttons and I wrote "five" into the design
        system. The action was reachable all along; the fixture hid it. */
-    discount_applicable: true,
+    /* listingUtilities.js:220 — the sixth row action renders only when the
+       backend says the listing is discountable. Row 5 says no, so the
+       six-action row and the seven-action row are both on screen. */
+    discount_applicable: i !== 5,
+    /* listingDispositionMapper reads `rejection_reason` off the LISTING, not
+       the platform listing (listingUtilities.js:100), and it is the presence
+       of this array that makes the info icon render beside the Status pill */
+    ...(rejected && { rejection_reason: ['Images do not match the property', 'Price is outside the expected range'] }),
+    /* listingUtilities.js:238 gates Mark as Booked on this slug alone */
+    ...(dailyRental && { listing_purpose: { id: 3, slug: 'daily-rental', title: 'Daily Rental', title_l1: 'إيجار يومي', name: 'Daily Rental' } }),
+    /* a booked range puts the "Booked Until" chip over the thumbnail
+       (listing-purpose.js:217) and is what its tooltip reads */
+    ...(i === 6 && { additional_details: { booked_dates: [{ start_date: day(1).toISOString(), end_date: day(-6).toISOString() }] } }),
     expiry_days: 30,
     posted_at: posted.toISOString(),
     created_at: posted.toISOString(),
@@ -132,16 +202,26 @@ const listings = page.recentListings.map((r, i) => {
       platform_listing_id: num(r.bayutId),
       contact_details: { id: U.id, external_id: U.platform_mapping.bayut.external_id },
       status: { slug: 'active', name: 'Active' },
-      disposition: { slug: 'live', name: 'Live' },
+      disposition,
+      ...(otpPending && { otp_attempts: 1 }),
+      /* transformers/listings.js:227 reads the expiry from here; without it
+         the info icon beside the REGA id never renders at all */
+      ...(i === 2 && { rega_info: { rega_details: { expiry_date: day(-120).toISOString() } } }),
       posted_at: posted.toISOString(),
       expiry_date: day(-28).toISOString(),
-      products_information: [
-        product('basic-listing'), product('hot-listing'), product('signature-listing'),
-        service('refresh', !servicesOff),
-        service('photography-service', !servicesOff),
-        service('videography-service', !servicesOff),
-        service('drone-footage-service', !servicesOff),
-      ],
+      products_information: i === 3
+        ? [
+            product('basic-listing'), product('hot-listing'), appliedProduct('signature-listing'),
+            service('refresh'), requested('photography-service'),
+            service('videography-service'), service('drone-footage-service'),
+          ]
+        : [
+            product('basic-listing'), product('hot-listing'), product('signature-listing'),
+            service('refresh', !servicesOff),
+            service('photography-service', !servicesOff),
+            service('videography-service', !servicesOff),
+            service('drone-footage-service', !servicesOff),
+          ],
     }],
     _row: r,   /* stripped before sending; used to build the stats overlay */
   };
@@ -187,8 +267,34 @@ const C = page.credits;
 const products = Object.fromEntries(page.listings.products.map((p) => [p.title.toLowerCase(), p.value]));
 const purposes = Object.fromEntries(page.listings.purposes.map((p) => [p.title, p.value]));
 
+/* ── the member-area variant ───────────────────────────────────────────────
+   appRoutes.js:83 — `isMemberArea = user && !user.is_package_user`. It is not
+   a detail: the two variants share almost nothing at the top of the page.
+   A member-area user gets the promo banner and the CreditsQuota widgets and
+   NO FILTER BAR (ListingContainer.js:96 gates the bar on !isMemberArea); a
+   package user gets the bar and neither of the others.
+
+   The design system had only ever seen the package-user screen, so the banner,
+   the credits card, its info drawer and its product tabs were not missing from
+   the deliverable by oversight — nothing had ever rendered them to measure. */
+const memberUser = {
+  ...user,
+  user: { ...user.user, is_package_user: false },
+  banners: [{
+    id: 1,
+    title: 'Get a business package and enjoy exclusive benefits',
+    description: 'Reach more buyers with more listings, more credits and priority support',
+    cta_text: 'Buy Package',
+  }],
+};
+
 const ROUTES = [
-  [/^\/api\/surge\/users\/current$/,                 () => user],
+  [/^\/api\/surge\/users\/current$/,                 (search, mode) => (mode === 'member' ? memberUser : user)],
+  /* the member area mounts the classified site's own header, which asks for
+     these three before it will paint. A package user never calls them. */
+  [/^\/api\/user\/favorites/,                        () => ({ favorites: [], pagination: { total_count: 0 } })],
+  [/^\/api\/user\/searches\/saved/,                  () => ({ searches: [], pagination: { total_count: 0 } })],
+  [/^\/api\/user\/bookings/,                         () => ({ bookings: [], count: 0, pagination: { total_count: 0 } })],
   [/^\/api\/surge\/users\/\d+$/,                     () => ({ user: { ...U, profile_image: AVATAR } })],
   [/^\/api\/surge\/agencies\/\d+\/licenses$/,          () => ({ licenses: [], pagination: {} })],
   /* Clicking an upgrade circle calls this before anything opens:
@@ -263,8 +369,14 @@ const ROUTES = [
   ], pagination: { current_page: 1, total_pages: 1, total_count: 3, per_page: 10 } })],
 ];
 
-export function answer(method, pathname, search = '') {
-  for (const [re, fn] of ROUTES) if (re.test(pathname)) return fn(search);
+/**
+ * @param mode  the answer-set variant a capture step is running under.
+ *   'member' makes /users/current a member-area user, which is the only way
+ *   to render the banner and the CreditsQuota widgets. Handlers that do not
+ *   care simply ignore it.
+ */
+export function answer(method, pathname, search = '', mode = null) {
+  for (const [re, fn] of ROUTES) if (re.test(pathname)) return fn(search, mode);
   return undefined;
 }
 

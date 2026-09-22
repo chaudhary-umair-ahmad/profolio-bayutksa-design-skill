@@ -9,7 +9,7 @@
     "dropdown": false
   },
   "spinning": false,
-  "pageHeight": 1918,
+  "pageHeight": 1926,
   "note": "header bell — 590×330 popover, NOT a drawer. Empty state: “No notifications found”",
   "url": "http://127.0.0.1:3000/en/listings"
 }

@@ -158,7 +158,7 @@ async function captureRoute(browser, base, route, locale) {
         log.mode = 'listings held open';
         return new Promise(() => {});      /* never settles; the step snaps the skeleton */
       }
-      const body = answer(r.request().method(), u.pathname, u.search);
+      const body = answer(r.request().method(), u.pathname, u.search, MODE);
       (body === undefined ? log.unanswered : log.answered).push(`${r.request().method()} ${u.pathname}`);
       /* never abort an API call: an aborted request pins a skeleton forever, a 200 lands in an empty state */
       return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body ?? {}) });
@@ -218,8 +218,10 @@ async function captureRoute(browser, base, route, locale) {
           MODE = step.mode || null;
           await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60_000 });
           await page.waitForSelector('.ant-layout', { timeout: 30_000 });
-          /* a held-open or failed query never settles — that is the point */
-          if (!step.mode) await settle(page);
+          /* a held-open or failed query never settles — that is the point.
+             'member' is a different answer SET, not a broken one, so it waits
+             like any other step. */
+          if (step.mode !== 'slow' && step.mode !== 'error') await settle(page);
           if (step.do) await step.do(page);
           await page.waitForTimeout(600);
           const r = await snap(page, `${name}--${step.name}`, captureSrc, locale, { note: step.note, url });
