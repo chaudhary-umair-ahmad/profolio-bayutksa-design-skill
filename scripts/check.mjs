@@ -19,6 +19,7 @@
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { census, declaredCensus } from './census.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fails = [], warns = [];
@@ -216,6 +217,56 @@ for (const page of ['dashboard.html', 'listings.html']) {
 
   if (/prototype\.js/.test(readFileSync(join(D, page), 'utf8')) === false && opens.length)
     bad(`${page} has overlay triggers but never loads prototype.js`);
+}
+
+/* ── 3d · the audit matrix must still describe the page ────────────────────
+   authoring/listings-buttons.md is one row per interactive element the product
+   renders, and it is only worth having if something proves it is still
+   complete. The failure it has to catch is a control nobody wrote down: a
+   button added to the page that never got a row. So the matrix records the
+   page's census and this recomputes it — add a control and the numbers stop
+   matching until someone opens the matrix and says what it is. */
+const matrixPath = join(ROOT, 'authoring', 'listings-buttons.md');
+if (existsSync(matrixPath)) {
+  const md = readFileSync(matrixPath, 'utf8');
+  const want = declaredCensus(md);
+  if (!want) {
+    bad('authoring/listings-buttons.md carries no ```census block');
+  } else {
+    const got = census(readFileSync(join(D, 'listings.html'), 'utf8'));
+    const off = Object.entries(want).filter(([k, v]) => got[k] !== v);
+    off.length
+      ? bad(`listings.html census disagrees with the matrix — ${off.map(([k, v]) => `${k} ${got[k]} vs ${v}`).join(', ')}. `
+            + 'A control changed; give it a row in authoring/listings-buttons.md and update the census.')
+      : ok(`listings.html census matches the matrix (${got.total} elements, ${got.dead} dead)`);
+  }
+
+  /* every row has to name where its value came from, or it is a drawing */
+  const rows = md.split('\n').filter((l) => /^\|/.test(l) && !/^\|\s*-+/.test(l));
+  let counted = 0, covered = 0, unmeasured = 0, sourceless = 0;
+  for (const line of rows) {
+    const cells = line.split('|').slice(1, -1).map((c) => c.trim());
+    if (cells.length < 5 || /^element$|^#$/.test(cells[0])) continue;
+    const our = cells[cells.length - 2], from = cells[cells.length - 1], src = cells[cells.length - 3];
+    /* classify on the FIRST word only: "dead — should be a stub link" is dead,
+       and a substring search would have called it covered */
+    const mark = (/^(built|stub|dead|missing|N\/A)\b/.exec(our) || [])[1];
+    if (!mark) { if (/built|stub|dead|missing|N\/A/.test(our)) bad(`matrix row "${cells[0]}" does not start with a state mark`); continue; }
+    counted++;
+    if (mark !== 'dead' && mark !== 'missing') covered++;
+    if (/unmeasured/.test(from)) unmeasured++;
+    if (!src) sourceless++;
+  }
+  if (sourceless) bad(`${sourceless} matrix row(s) name no source file:line — an unsourced row is a guess`);
+  ok(`matrix — ${counted} rows, ${covered} covered (${((covered / counted) * 100).toFixed(1)}%), ${unmeasured} unmeasured`);
+
+  /* the overlays the page can open must all be spoken for */
+  const html = readFileSync(join(D, 'listings.html'), 'utf8');
+  const opens = [...new Set([...html.matchAll(/data-open="([^"]+)"/g)].map((m) => m[1]))];
+  const unlisted = opens.filter((o) => !md.includes(o));
+  if (unlisted.length) bad(`listings.html opens overlays the matrix never mentions — ${unlisted.join(', ')}`);
+} else {
+  bad('authoring/listings-buttons.md missing — it is the definition of done for Listings');
 }
 
 /* ── 4 · verdict ───────────────────────────────────────────────────────── */
