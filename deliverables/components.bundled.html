@@ -597,6 +597,16 @@
   /* the LOADED listing-detail drawer, measured from
      data/live/listings--action-detail-drawer.capture.json: body 576x837 over a
      528 content column, gallery 528x424, price 20/700, spec row 299x20 */
+  /* the three filter controls that had no analogue in this stylesheet, all
+     measured from data/live/listings--drawer-filters.capture.json */
+  --switch-w:35px;
+  --switch-h:18px;
+  --switch-knob:14px;
+  --switch-off:rgba(0, 0, 0, 0.25);
+  --slider-rail-h:4px;
+  --slider-rail:rgba(95, 99, 242, 0.2);
+  --slider-knob:8px;
+  --numinput-h:44px;
   --detail-col:528px;
   --detail-gallery-h:424px;
   --fs-detail-price:20px;
@@ -2475,6 +2485,58 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 .pf-detail-row dt{color:var(--gray-600);margin:var(--sp-0)}
 .pf-detail-row dd{margin:var(--sp-0);text-align:end}
 .pf-detail-about{color:var(--gray-700);margin:var(--sp-0)}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · the three filter controls in the Show More drawer
+   Show Discounted Listings Only (a Switch), Price Range and Area Range (a
+   two-handle Slider between two InputNumbers, with a Reset, and a unit
+   Dropdown on Area). None of them existed here; all of them are measured.
+   data/live/listings--drawer-filters.capture.json
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-switch-row{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-16)}
+.pf-switch{
+  inline-size:var(--switch-w);block-size:var(--switch-h);min-inline-size:var(--switch-w);
+  padding:var(--sp-0);border:0;
+  border-radius:var(--radius-pill-full);
+  background:var(--switch-off);
+  position:relative;cursor:pointer;flex:none;
+}
+.pf-switch::after{
+  content:"";position:absolute;inset-block-start:var(--sp-2);inset-inline-start:var(--sp-2);
+  inline-size:var(--switch-knob);block-size:var(--switch-knob);
+  border-radius:var(--radius-round);background:var(--white);
+}
+.pf-switch[aria-checked="true"]{background:var(--primary)}
+.pf-switch[aria-checked="true"]::after{inset-inline-start:auto;inset-inline-end:var(--sp-2)}
+.pf-switch:focus-visible{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
+
+.pf-range-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-8)}
+.pf-range-inputs{display:flex;align-items:center;gap:var(--sp-12);margin-block:var(--sp-8)}
+.pf-numinput{
+  flex:1;block-size:var(--numinput-h);
+  padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--input-border);
+  border-radius:var(--radius-control);
+  background:var(--white);color:var(--base);
+  font:inherit;
+}
+.pf-slider{
+  position:relative;
+  block-size:var(--slider-rail-h);
+  margin-block:var(--sp-16) var(--sp-8);
+  border-radius:var(--radius-control);
+  background:var(--slider-rail);
+}
+.pf-slider::before,
+.pf-slider::after{
+  content:"";position:absolute;inset-block-start:calc((var(--slider-rail-h) - var(--slider-knob)) / 2);
+  inline-size:var(--slider-knob);block-size:var(--slider-knob);
+  border-radius:var(--radius-round);background:var(--primary);
+}
+.pf-slider::before{inset-inline-start:0}
+.pf-slider::after{inset-inline-end:0}
+.pf-slider-marks{display:flex;justify-content:space-between;color:var(--gray-600);font-size:var(--fs-12)}
 
 </style>
 <style>

@@ -105,11 +105,11 @@ The four inline filters stay in the bar and are **not** repeated here.
 | City | Algolia SelectSearch, multiple, clearable | `cityLocationFilter.js:155-200` | built → a listbox | `listings--drawer-filters` |
 | Location | same, **disabled until a City is chosen** | `cityLocationFilter.js:200` | built — disabled until a City is chosen, which is the product's rule | `listings--drawer-filters` |
 | Posted By | Select of agency users | `listingFilters.js:100-116` | N/A here — one agency user | — |
-| Show Discounted Listings Only | antd Switch | `listingFilters.js:132-142`, `filters.js:344-363` | missing | `listings--drawer-filters` (35×18) |
-| Price Range · min / max InputNumber | numeric steppers | `rangeSlider.js:47-84` | missing | `listings--drawer-filters` |
-| Price Range · Slider | two-handle range, marked | `rangeSlider.js:47-84` | missing | `listings--drawer-filters` (408×12) |
-| Price Range · Reset | link button | `rangeSlider.js:39-41` | missing | `listings--drawer-filters` |
-| Area Range · the same three | + a **unit Dropdown** (sq m / sq ft) | `unitRangeSlider/unitRangeSider.js` | missing | `listings--drawer-filters` |
+| Show Discounted Listings Only | antd Switch | `listingFilters.js:132-142`, `filters.js:344-363` | built — 35×18, 14px knob, `rgba(0,0,0,.25)` off | `listings--drawer-filters` (35×18) |
+| Price Range · min / max InputNumber | numeric steppers | `rangeSlider.js:47-84` | built — 186×44, radius 6 | `listings--drawer-filters` |
+| Price Range · Slider | two-handle range, marked | `rangeSlider.js:47-84` | built — rail 408×4 at `rgba(95,99,242,.2)`, 8px handles | `listings--drawer-filters` (408×12) |
+| Price Range · Reset | link button | `rangeSlider.js:39-41` | noop — clears this range only | `listings--drawer-filters` |
+| Area Range · the same three | + a **unit Dropdown** (sq m / sq ft) | `unitRangeSlider/unitRangeSider.js` | built, and the unit Dropdown with them | `listings--drawer-filters` |
 | footer · Reset Filters | clears all | `filters.js:527-529` | noop — clears form state and URL params | `listings--drawer-filters` |
 | footer · Search | applies | `filters.js:530` | built — closes the drawer | `listings--drawer-filters` |
 
@@ -318,20 +318,26 @@ What is left, and what each still needs:
 Quoted instead of vague claims about what is "still open". Both are recomputed
 by `npm run check`, which fails when the page and this file disagree.
 
-**Elements covered — 101 of 127 rows, 79.5%.** A row counts as covered when its
+**Elements covered — 106 of 127 rows, 83.5%.** A row counts as covered when its
 state mark is `built`, `stub`, `noop` or `N/A`.
 
 | state | rows |
 |---|---|
-| built | 65 |
+| built | 69 |
 | stub — a link to `not-built.html` | 10 |
-| noop — cannot work here, and says why | 7 |
+| noop — cannot work here, and says why | 8 |
 | N/A — verified absent from this screen | 19 |
 | dead | 0 |
-| missing | 26 |
+| missing | 21 |
 
-**Elements measured — 88 rows name a capture file, 14 are `unmeasured`.** The
-remaining 25 have nothing to measure — a link, or an N/A.
+**Elements measured — 14 rows are `unmeasured`**, and every one of them is
+listed above with what it needs.
+
+The 21 `missing` rows are, in order of what they are waiting on: the
+**member-area variant** (7 rows, blocked on the classified header's endpoints),
+per-tab row sets and a multi-page pager (4), `OtpVerificationModal` and the
+suppression states (3), the `+N` overflow popover, the thumbnail as a second
+entry point to the detail drawer, and the Ad License empty state.
 
 `npm run check` recomputes both and prints them. It is the authority: it fails
 on a row whose state cell does not begin with one of the six marks, so these
@@ -345,14 +351,14 @@ numbers. Add a control to the page and the check fails until it has a row here.
 `dead` is the number this file exists to drive to zero.
 
 ```census
-button 198
+button 202
 a 57
-input 12
-total 267
-reachable 221
+input 16
+total 275
+reachable 222
 disabled 15
-field 12
-acknowledged 19
+field 16
+acknowledged 22
 dead 0
 hashHref 0
 ```

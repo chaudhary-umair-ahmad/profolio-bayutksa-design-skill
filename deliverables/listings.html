@@ -1801,6 +1801,47 @@
         <label class="pf-field-label" for="dflt-3">TruCheck Status</label>
         <button class="pf-select" id="dflt-3" type="button" data-open="listbox-purpose" data-placement="bottom"><span class="pf-placeholder">Select TruCheck Status</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
       </div>
+      <!-- listingFilters.js:132 — an antd Switch, measured 35x18 with a 14px
+           knob and rgba(0,0,0,.25) when off -->
+      <div class="pf-field">
+        <div class="pf-switch-row">
+          <label class="pf-field-label" for="dflt-discount">Show Discounted Listings Only</label>
+          <button class="pf-switch" id="dflt-discount" type="button" role="switch" aria-checked="false" data-noop="a filter toggle; applying it is a URL push and a refetch"></button>
+        </div>
+      </div>
+      <!-- rangeSlider.js:39-84 and unitRangeSider.js — two InputNumbers, a
+           two-handle Slider (rail 408x4 at rgba(95,99,242,.2)) and a Reset
+           link; Area Range adds a sq m / sq ft Dropdown -->
+      <div class="pf-field">
+        <div class="pf-range-head">
+          <label class="pf-field-label" for="rng-0-min">Price Range</label>
+          <div class="pf-range-head">
+
+            <button class="pf-btn" data-variant="link" data-size="small" type="button" data-noop="Reset clears this range only; there is nothing to clear in a static page"><span>Reset</span></button>
+          </div>
+        </div>
+        <div class="pf-range-inputs">
+          <input class="pf-numinput" id="rng-0-min" type="text" placeholder="Min">
+          <input class="pf-numinput" id="rng-0-max" type="text" placeholder="Max">
+        </div>
+        <div class="pf-slider" role="presentation"></div>
+        <div class="pf-slider-marks"><span>0</span><span>10,000,000</span></div>
+      </div>
+      <div class="pf-field">
+        <div class="pf-range-head">
+          <label class="pf-field-label" for="rng-1-min">Area Range</label>
+          <div class="pf-range-head">
+            <button class="pf-select" type="button" data-open="listbox-purpose" data-placement="bottom"><span>Sq. M.</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+            <button class="pf-btn" data-variant="link" data-size="small" type="button" data-noop="Reset clears this range only; there is nothing to clear in a static page"><span>Reset</span></button>
+          </div>
+        </div>
+        <div class="pf-range-inputs">
+          <input class="pf-numinput" id="rng-1-min" type="text" placeholder="Min">
+          <input class="pf-numinput" id="rng-1-max" type="text" placeholder="Max">
+        </div>
+        <div class="pf-slider" role="presentation"></div>
+        <div class="pf-slider-marks"><span>0</span><span>5,000 Sq. M.</span></div>
+      </div>
     </div>
   </div>
   <div class="pf-drawer-foot">

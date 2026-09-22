@@ -470,6 +470,33 @@ ${/* the NON-INLINE filters — the four in the bar are not repeated here
         <label class="pf-field-label" for="dflt-${i}">${label}</label>
         <button class="pf-select" id="dflt-${i}" type="button"${opens ? ` data-open="${opens}" data-placement="bottom"` : ' disabled'}><span class="pf-placeholder">${ph}</span><span class="pf-select-arrow">${icon(ic, 12)}</span></button>
       </div>`).join('\n')}
+      <!-- listingFilters.js:132 — an antd Switch, measured 35x18 with a 14px
+           knob and rgba(0,0,0,.25) when off -->
+      <div class="pf-field">
+        <div class="pf-switch-row">
+          <label class="pf-field-label" for="dflt-discount">Show Discounted Listings Only</label>
+          <button class="pf-switch" id="dflt-discount" type="button" role="switch" aria-checked="false" data-noop="a filter toggle; applying it is a URL push and a refetch"></button>
+        </div>
+      </div>
+      <!-- rangeSlider.js:39-84 and unitRangeSider.js — two InputNumbers, a
+           two-handle Slider (rail 408x4 at rgba(95,99,242,.2)) and a Reset
+           link; Area Range adds a sq m / sq ft Dropdown -->
+${[['Price Range', null, '0', '10,000,000'], ['Area Range', 'Sq. M.', '0', '5,000 Sq. M.']]
+  .map(([label, unit, lo, hi], i) => `      <div class="pf-field">
+        <div class="pf-range-head">
+          <label class="pf-field-label" for="rng-${i}-min">${label}</label>
+          <div class="pf-range-head">
+${unit ? `            <button class="pf-select" type="button" data-open="listbox-purpose" data-placement="bottom"><span>${unit}</span><span class="pf-select-arrow">${icon('DownOutlined', 12)}</span></button>` : ''}
+            <button class="pf-btn" data-variant="link" data-size="small" type="button" data-noop="Reset clears this range only; there is nothing to clear in a static page"><span>Reset</span></button>
+          </div>
+        </div>
+        <div class="pf-range-inputs">
+          <input class="pf-numinput" id="rng-${i}-min" type="text" placeholder="Min">
+          <input class="pf-numinput" id="rng-${i}-max" type="text" placeholder="Max">
+        </div>
+        <div class="pf-slider" role="presentation"></div>
+        <div class="pf-slider-marks"><span>${lo}</span><span>${hi}</span></div>
+      </div>`).join('\n')}
     </div>
   </div>
   <div class="pf-drawer-foot">

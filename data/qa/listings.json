@@ -1,6 +1,6 @@
 {
   "route": "listings",
-  "at": "2026-09-22T08:47:24.053Z",
+  "at": "2026-09-22T08:51:36.714Z",
   "shellFails": [],
   "diffs": [
     {
@@ -474,16 +474,16 @@
           "diff": 7.6
         },
         {
+          "id": "drawer.body",
+          "diff": 7.2
+        },
+        {
           "id": "drawer.head",
           "diff": 7.1
         },
         {
-          "id": "drawer.body",
-          "diff": 5.8
-        },
-        {
           "id": "drawer",
-          "diff": 5.8
+          "diff": 6.9
         },
         {
           "id": "shell.sider",
@@ -491,19 +491,19 @@
         },
         {
           "id": "table.card",
-          "diff": 3.1
+          "diff": 3.3
         },
         {
           "id": "table",
-          "diff": 3.1
+          "diff": 3.3
+        },
+        {
+          "id": "shell.content",
+          "diff": 3.2
         },
         {
           "id": "tabs.tab",
           "diff": 3.1
-        },
-        {
-          "id": "shell.content",
-          "diff": 3
         },
         {
           "id": "table.head",
