@@ -11,27 +11,54 @@
  * matrix and says what it is. That is the whole mechanism.
  *
  * REACHABLE means the prototype layer can actually do something with it:
- *   data-open / data-close      an overlay
+ *   data-open / data-close         an overlay (data-close is a bare attribute)
  *   data-panel / data-state-panel  a tab or a page state
- *   href that is not "#"        a link, including the stubs to not-built.html
+ *   data-state-set                the prototype bar's own state buttons
+ *   data-tip                       a tooltip, which is a real product overlay
+ *   href that is not "#"           a link, including the stubs to not-built.html
+ *
+ * DISABLED is a control the product itself disables — an applied upgrade
+ * circle, Clear filters with no filter applied. It cannot be clicked in the
+ * product either, so counting it as a dead click would be counting the
+ * product's own behaviour as our gap.
+ *
+ * FIELD is an <input>, <select> or <textarea> with no target. A text box takes
+ * typing; it is not a click that should lead somewhere.
+ *
+ * ACKNOWLEDGED is `data-noop="<why>"`: a control that cannot do anything in a
+ * static page and says so — a pager that is a server round-trip, a "mark all
+ * as read" that mutates data. Without this category those are indistinguishable
+ * from the ones nobody has got to yet, and the dead count stops meaning
+ * anything. A data-noop with no reason does not count; the reason is the point.
+ *
  * Everything else is DEAD, and dead is the number the matrix exists to drive
- * down. `data-nav` is deliberately NOT reachable: prototype.js does not read
+ * to zero. `data-nav` is deliberately NOT reachable: prototype.js does not read
  * it, so a control carrying only that is dead however it looks.
  */
 
+/* Naive on purpose: a regex, not a parser, so that this file has no
+   dependencies and runs anywhere. The cost is that a `>` inside an attribute
+   VALUE ends the tag as far as it is concerned. Keep angle brackets out of
+   data-noop text and it is exact. */
 const TAGS = /<(button|a|input|select|textarea)\b([^>]*)>/g;
 
 export function census(html) {
   const body = html.slice(Math.max(0, html.indexOf('<body'))).replace(/<!--[\s\S]*?-->/g, '');
-  const out = { button: 0, a: 0, input: 0, select: 0, textarea: 0, reachable: 0, dead: 0, hashHref: 0 };
+  const out = { button: 0, a: 0, input: 0, select: 0, textarea: 0, reachable: 0, disabled: 0, field: 0, acknowledged: 0, dead: 0, hashHref: 0 };
   let m;
   while ((m = TAGS.exec(body))) {
     const [, tag, attrs] = m;
     out[tag]++;
     const href = (/\shref="([^"]*)"/.exec(attrs) || [, null])[1];
-    const wired = /\sdata-(open|close|panel|state-panel)="/.test(attrs);
+    /* data-close carries no value, so the `="` a first draft matched never
+       appeared and nine working close buttons counted as dead */
+    const wired = /\sdata-(open|close|panel|state-panel|state-set|tip)(=|[\s/>]|$)/.test(attrs);
+    const noop = /\sdata-noop="[^"]+"/.test(attrs);
     if (href === '#') out.hashHref++;
     if (wired || (href !== null && href !== '#')) out.reachable++;
+    else if (/\sdisabled(=|[\s/>]|$)/.test(attrs)) out.disabled++;
+    else if (noop) out.acknowledged++;
+    else if (tag !== 'button' && tag !== 'a') out.field++;
     else out.dead++;
   }
   out.total = out.button + out.a + out.input + out.select + out.textarea;

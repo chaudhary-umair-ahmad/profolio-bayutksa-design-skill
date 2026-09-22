@@ -56,7 +56,27 @@ for (const name of pages) {
     const target = await page.$(`#${t.id}`);
     if (!target) { bad(`${t.label} → #${t.id} does not exist`); continue; }
 
-    await page.click(`[data-open="${t.id}"]`);
+    /* NESTED TRIGGERS. Some overlays are only reachable from inside another
+       one — the date range opens from the booking modal's date field and from
+       the filters drawer's Posted On, and both of those start closed. Clicking
+       the first matching trigger therefore clicks an invisible element and
+       waits thirty seconds for it. So: prefer a visible trigger, and if there
+       is none, open whatever overlay the trigger sits in first. */
+    let trigger = page.locator(`[data-open="${t.id}"]:visible`).first();
+    if (!(await trigger.count())) {
+      const parent = await page.evaluate((id) => {
+        const el = document.querySelector(`[data-open="${id}"]`);
+        const host = el && el.closest('.pf-mask, .pf-drawer, .pf-popover');
+        return host ? host.id : null;
+      }, t.id);
+      if (!parent) { bad(`${t.label} → no visible trigger for #${t.id} and it sits in no overlay`); continue; }
+      await page.locator(`[data-open="${parent}"]:visible`).first().click();
+      await page.waitForTimeout(220);
+      trigger = page.locator(`[data-open="${t.id}"]:visible`).first();
+      if (!(await trigger.count())) { bad(`${t.label} → #${t.id}'s trigger is still not visible after opening #${parent}`); continue; }
+    }
+
+    await trigger.click();
     await page.waitForTimeout(220);
     let vis = await page.isVisible(`#${t.id}`);
     if (!vis) { bad(`${t.label} → #${t.id} did not open`); continue; }
@@ -76,14 +96,23 @@ for (const name of pages) {
     vis = await page.isVisible(`#${t.id}`);
     if (vis) { bad(`${t.label} → #${t.id} did not close on Escape`); continue; }
 
-    const returned = await page.evaluate((id) =>
-      document.activeElement === document.querySelector(`[data-open="${id}"]`), t.id);
+    const returned = await page.evaluate((id) => {
+      var els = document.querySelectorAll(`[data-open="${id}"]`);
+      return Array.prototype.indexOf.call(els, document.activeElement) > -1;
+    }, t.id);
 
     ok(`${t.label} → #${t.id} opens, Escape closes` +
        (!focusable ? ', nothing focusable inside (fine)' : inside ? ', focus enters' : ', BUT focus did not enter') +
        (returned ? ', focus returns' : focusable ? ', BUT focus did not return' : ''));
     if (focusable && !inside) bad(`${t.id}: focus did not move into the overlay`);
     if (focusable && !returned) bad(`${t.id}: focus did not return to the trigger`);
+
+    /* Escape closes the TOPMOST overlay, so a nested one leaves its parent
+       open and the next click lands on that parent's mask. Clear the stack. */
+    for (let i = 0; i < 4 && await page.locator('.pf-mask:visible, .pf-drawer:visible, .pf-popover:visible').count(); i++) {
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(120);
+    }
   }
 
   /* ── tabs ─────────────────────────────────────────────────────────── */

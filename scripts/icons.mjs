@@ -95,7 +95,13 @@ const REACT_ICONS = {
   FiLogOut: 'Sign Out',
   IoAddCircleOutline: 'Top-Up your Credits',
   PiClockClockwiseFill: 'Credits Usage',
-  BsInfoLg: 'credits info',
+  BsInfoLg: 'credits info — the CreditsQuota card, and the ONLY BsInfoLg on Listings',
+  /* the info glyph in the table body is this one, not BsInfoLg: it sits beside
+     the REGA id (listing-purpose.js:346), beside Timeline's posted-on
+     (expiry-renewal.js:60), beside Leads (listing-stats.js:93) and beside a
+     rejected Status pill (platforms-status.js:26). Four popovers hang off it
+     and the design system was drawing BsInfoLg for all of them. */
+  AiOutlineInfoCircle: 'the table-body info icon — four popovers hang off it',
   IoSettingsOutline: 'Settings',
   GoDotFill: 'separator dot',
   PiSealCheckFill: 'verified',

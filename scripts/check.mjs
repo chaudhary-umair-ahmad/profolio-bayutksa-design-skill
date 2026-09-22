@@ -250,8 +250,8 @@ if (existsSync(matrixPath)) {
     const our = cells[cells.length - 2], from = cells[cells.length - 1], src = cells[cells.length - 3];
     /* classify on the FIRST word only: "dead — should be a stub link" is dead,
        and a substring search would have called it covered */
-    const mark = (/^(built|stub|dead|missing|N\/A)\b/.exec(our) || [])[1];
-    if (!mark) { if (/built|stub|dead|missing|N\/A/.test(our)) bad(`matrix row "${cells[0]}" does not start with a state mark`); continue; }
+    const mark = (/^(built|stub|noop|dead|missing|N\/A)\b/.exec(our) || [])[1];
+    if (!mark) { if (/built|stub|noop|dead|missing|N\/A/.test(our)) bad(`matrix row "${cells[0]}" does not start with a state mark`); continue; }
     counted++;
     if (mark !== 'dead' && mark !== 'missing') covered++;
     if (/unmeasured/.test(from)) unmeasured++;

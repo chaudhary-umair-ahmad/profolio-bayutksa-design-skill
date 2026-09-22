@@ -107,8 +107,8 @@ ${comment}
 ${NAV.map(([label, ic, page]) => `      <a class="pf-rail-item"${label === current ? ' aria-current="page"' : ''} href="${href(page, label)}" title="${esc(label)}">${icon(ic, 20)}</a>`).join('\n')}
     </nav>
     <div class="pf-rail-bottom">
-      <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="العربية">${icon('LanguageSwitcherIcon', 20)}</button>
-      <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="Help &amp; Support">${icon('HelpSupportIcon', 20)}</button>
+      <a class="pf-btn" data-variant="ghost" data-block="true" title="العربية" href="not-built.html?screen=${encodeURIComponent('Arabic')}">${icon('LanguageSwitcherIcon', 20)}</a>
+      <a class="pf-btn" data-variant="ghost" data-block="true" title="Help &amp; Support" href="not-built.html?screen=${encodeURIComponent('Help & Support')}">${icon('HelpSupportIcon', 20)}</a>
     </div>
   </div>
   <div class="pf-main">
@@ -117,8 +117,10 @@ ${NAV.map(([label, ic, page]) => `      <a class="pf-rail-item"${label === curre
       <div class="pf-header-brand"><span class="pf-page-title">${esc(title)}</span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app">${icon('MdPhoneIphone')}<span>Download App</span></button>
-        <a class="pf-classified-pill" href="#">${icon('SidebarClassifiedLinkIcon', 18)}Go to Bayut.sa</a>
-        <button class="pf-btn" data-variant="primary" type="button">${icon('PostListingIcon')}<span>Post Listing</span></button>
+        <!-- the one link in the shell that LEAVES the product. It carried
+             href="#", which is a dead click dressed as a destination. -->
+        <a class="pf-classified-pill" href="https://www.bayut.sa/" target="_blank" rel="noopener">${icon('SidebarClassifiedLinkIcon', 18)}Go to Bayut.sa</a>
+        <a class="pf-btn" data-variant="primary" href="not-built.html?screen=Post%20Listing">${icon('PostListingIcon')}<span>Post Listing</span></a>
         <button class="pf-bell" type="button" aria-label="Notifications" data-open="popover-notifications">${icon('GrNotification', 20)}<span class="pf-badge">${badge}</span></button>
         <button class="pf-avatar-button" type="button" aria-label="Account" data-open="popover-account"><span class="pf-progress-ring pct-${pct}"><span class="pf-avatar">${icon('FiUser')}</span></span></button>
       </div>
@@ -172,9 +174,9 @@ export function shellOverlays() {
     <div class="pf-noti-head">
       <div class="pf-noti-head-start">
         <h5 class="pf-noti-title">Notifications</h5>
-        <button class="pf-btn" data-variant="ghost" type="button" aria-label="Refresh">${icon('MdRefresh', 16)}</button>
+        <button class="pf-btn" data-variant="ghost" type="button" aria-label="Refresh" data-noop="refetches the notification list; there is no server behind this page">${icon('MdRefresh', 16)}</button>
       </div>
-      <button class="pf-btn" data-variant="link" type="button">Mark all as read</button>
+      <button class="pf-btn" data-variant="link" type="button" data-noop="marks every notification read; a data mutation, not a navigation">Mark all as read</button>
     </div>
     <div class="pf-noti-card" data-unread>
       <div class="pf-noti-card-meta">${icon('IoRefreshSharp', 20)}<span class="pf-noti-card-title">Your listing is live</span></div>

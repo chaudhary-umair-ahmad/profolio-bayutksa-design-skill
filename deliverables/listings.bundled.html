@@ -534,6 +534,59 @@
        data/live/listings--popover-account.capture.json .ant-popover   z 99999 */
   --overlay-z:1000;
   --popover-z:99999;
+  /* ── the table-body overlays ────────────────────────────────────────────
+     Six popovers, a tooltip and two select listboxes live inside the listing
+     table, and none of them had ever been captured before — every value the
+     design system had for them was invented. These are measured, one state
+     per line, from the harness captures named beside them.
+
+     The TOOLTIP is the correction worth reading twice: the product's tooltip
+     is WHITE with a hairline border and #5A5F7D text. antd ships a dark pill.
+     Anything drawn from the antd default would have been the wrong colour.
+       data/live/listings--tooltip-action.capture.json  132x40 */
+  --tip-fg:#5A5F7D;
+  --tip-border:#F1F2F6;
+  --tip-radius:6px;
+  --tip-pad:6px 20px;
+  --tip-h:40px;                        /* min-height; a two-line tip is 54 */
+  --tip-shadow:0 8px 15px rgba(146,153,184,.082);
+  --tip-maxw:250px;                    /* the widest measured — the service tips */
+  /* the popovers, by the width each one measured at */
+  --popover-w-health:440px;            /* listings--popover-health   440x352 */
+  --popover-w-leads:216px;             /* listings--popover-leads    216x235 */
+  --popover-w-date:802px;              /* listings--date-posted-on   802x381 */
+  --popover-pad:16px;                  /* .ant-popover-inner on every one of
+                                          them EXCEPT health, which pads its
+                                          own panel and leaves the inner at 0 */
+  /* the open Select. No capture in this system had ever contained one, and six
+     filter controls could only be drawn shut for want of it.
+       data/live/listings--select-purpose.capture.json        245x137, 3 flat
+       data/live/listings--select-property-type.capture.json  245x278, 1 group */
+  --listbox-w:245px;
+  --listbox-pad:11px;
+  --listbox-radius:8px;
+  --listbox-shadow:0 5px 20px rgba(146,153,184,.125);
+  --listbox-item-h:38px;
+  --listbox-item-pad:8px 12px;
+  --listbox-item-indent:25px;          /* an option under a group header */
+  --listbox-item-active:rgba(95,99,242,.02);
+  --listbox-group-h:35px;
+  --listbox-z:1050;
+  /* QuotaCreditModal, the overlay all 72 upgrade circles open. Two shapes, one
+     width: the three SERVICES add the ServiceOptions form and grow the body.
+       data/live/listings--upgrade-signature.capture.json    708x414, body 284
+       data/live/listings--upgrade-photography.capture.json  708x546, body 416 */
+  --modal-w-quota:708px;
+  /* the react-date-range panel inside the Posted On popover, measured from
+     data/live/listings--date-posted-on.capture.json:
+       .rdrDefinedRangesWrapper 226 wide · .rdrStaticRange 225x36
+       .rdrMonth 272x247 · .rdrDay 36x36 */
+  --daterange-static-w:226px;
+  --daterange-day:36px;
+  /* UNMEASURED — OtpVerificationModal has never been opened by a capture in
+     this system. authoring/listings-buttons.md carries the row that says so.
+     48 is the input height this stylesheet already uses, squared. */
+  --otp-box:48px;
   /* MEASURED now, from the product's own empty tab — these were [TBC] guesses.
      data/live/listings--tab-removed.capture.json: the wrapper is a grid with
      32px gaps and a 300px minimum, the illustration is 164x89 intrinsic and
@@ -1522,6 +1575,19 @@ table{border-collapse:collapse}
   display:grid;place-items:center;
 }
 .pf-applied-check svg{inline-size:var(--sp-8);block-size:var(--sp-8)}
+/* the third circle state. upgrade-icons.js:58 draws RequestedStateIcon in the
+   warning colour where :50 draws the green tick — same box, same inset.
+   data/live/listings--tooltip-upgrade-pending */
+.pf-pending-mark{
+  position:absolute;
+  inset-block-end:var(--applied-check-inset);
+  inset-inline-end:var(--applied-check-inset);
+  inline-size:var(--applied-check);block-size:var(--applied-check);
+  border-radius:var(--radius-round);
+  background:var(--tag-warning-fg);color:var(--white);
+  display:grid;place-items:center;
+}
+.pf-pending-mark svg{inline-size:var(--sp-8);block-size:var(--sp-8)}
 .pf-round-action[data-state="disabled"]{opacity:var(--disabled-opacity);cursor:not-allowed}
 .pf-round-action:hover,
 .pf-round-action[data-state="hover"]{filter:brightness(.96)}
@@ -2181,6 +2247,181 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 }
 .pf-radio input:focus-visible{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
 
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · tooltip (antd Tooltip)
+   NOT .pf-tooltip — that one is the CHART's tooltip, a different component
+   with a different skin. This is the tooltip on every upgrade circle and
+   every row action: white, hairline-bordered, #5A5F7D.
+   data/live/listings--tooltip-action.capture.json · --upgrade · --upgrade-service
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-tip{
+  position:absolute;
+  z-index:var(--popover-z);
+  max-width:var(--tip-maxw);
+  min-height:var(--tip-h);
+  display:flex;
+  align-items:center;
+  padding:var(--tip-pad);
+  border:var(--border-w) solid var(--tip-border);
+  border-radius:var(--tip-radius);
+  background:var(--white);
+  color:var(--tip-fg);
+  box-shadow:var(--tip-shadow);
+  font-size:var(--fs-base);
+  line-height:var(--lh-base);
+  pointer-events:none;
+}
+.pf-tip[hidden]{display:none}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · the table-body popovers
+   Five of them, all anchored to something inside a row. Four open on HOVER;
+   the Status one opens on CLICK and is the only click-triggered popover in
+   the table body (platforms-status.js:16).
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-popover[data-kind="anchored"]{
+  width:max-content;
+  max-width:var(--popover-w-date);
+  box-shadow:var(--popover-shadow);
+}
+.pf-popover[data-kind="anchored"] .pf-popover-body{padding:var(--popover-pad)}
+.pf-popover[data-kind="health"]{width:var(--popover-w-health)}
+/* the health panel styles its own content, so the inner padding is zero —
+   measured: inner 440x352 and inner-content 440x352, the same box */
+.pf-popover[data-kind="health"] .pf-popover-body{padding:var(--sp-0)}
+.pf-popover[data-kind="leads"]{width:var(--popover-w-leads)}
+.pf-popover[data-kind="date"]{width:var(--popover-w-date)}
+
+/* the health panel */
+.pf-health-head{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12);
+  padding:var(--popover-pad);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+}
+.pf-health-row{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12);
+  padding:var(--sp-12) var(--popover-pad);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+}
+.pf-health-row:last-child{border-block-end:0}
+.pf-health-label{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-600)}
+
+/* the leads breakdown — a dashed rule between groups, as listing-stats.js draws */
+.pf-lead-group{padding-block:var(--sp-8);border-block-end:var(--border-w) dashed var(--drawer-border)}
+.pf-lead-group:last-child{border-block-end:0}
+.pf-lead-row{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12)}
+.pf-lead-title{color:var(--gray-600);font-size:var(--fs-12)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · select listbox (.ant-select-dropdown)
+   data/live/listings--select-purpose · --select-property-type
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-listbox{
+  position:absolute;
+  z-index:var(--listbox-z);
+  width:var(--listbox-w);
+  padding:var(--listbox-pad);
+  border-radius:var(--listbox-radius);
+  background:var(--white);
+  box-shadow:var(--listbox-shadow);
+  overflow:hidden;
+}
+.pf-listbox[hidden]{display:none}
+.pf-listbox-option{
+  display:flex;align-items:center;gap:var(--sp-8);
+  min-height:var(--listbox-item-h);
+  padding:var(--listbox-item-pad);
+  border-radius:var(--radius-control);   /* measured 6 on the option */
+  color:var(--base);
+  background:none;border:0;width:100%;font:inherit;text-align:start;cursor:pointer;
+}
+.pf-listbox-option[aria-selected="true"],
+.pf-listbox-option:hover{background:var(--listbox-item-active)}
+.pf-listbox-group{
+  min-height:var(--listbox-group-h);
+  padding:var(--listbox-item-pad);
+  font-size:var(--fs-12);
+  color:var(--gray-600);
+}
+/* an option that belongs to a group is indented — measured 25 against 12 */
+.pf-listbox-group ~ .pf-listbox-option{padding-inline-start:var(--listbox-item-indent)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · QuotaCreditModal — what an upgrade circle opens
+   data/live/listings--upgrade-signature (708x414) · --upgrade-photography (708x546)
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-modal[data-size="quota"]{width:var(--modal-w-quota)}
+.pf-credit-table{width:100%;border-collapse:collapse;margin-block:var(--sp-16)}
+.pf-credit-table th,.pf-credit-table td{
+  padding:var(--sp-8) var(--sp-12);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+  text-align:start;
+}
+.pf-credit-table th{color:var(--gray-600);font-weight:var(--fw-400)}
+.pf-credit-total td{font-weight:var(--fw-600);border-block-end:0}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · the info icon in a table cell
+   AiOutlineInfoCircle, the trigger for four of the five table-body popovers:
+   REGA expiry, Timeline's posted-on, Leads, and a rejected Status pill. It is
+   a button because three of those open on hover and one on click, and a
+   tooltip nobody can reach with a keyboard is not a component.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-info{
+  display:inline-grid;place-items:center;
+  inline-size:var(--sp-16);block-size:var(--sp-16);
+  padding:var(--sp-0);margin-inline-start:var(--sp-4);
+  border:0;background:none;color:var(--gray-600);cursor:pointer;
+  vertical-align:middle;
+}
+.pf-info[data-tone="danger"]{color:var(--danger)}
+.pf-info:focus-visible{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · the date range panel (react-date-range)
+   NOT an antd picker. datePicker.js:15 imports react-date-range and its own
+   stylesheet, so the calendar in the Posted On popover is .rdr* markup with a
+   static-range list beside two months.
+   data/live/listings--date-posted-on.capture.json — 802x381, 70 days, 5 ranges
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-daterange{display:flex;gap:var(--sp-16)}
+.pf-daterange-static{
+  list-style:none;margin:var(--sp-0);padding:var(--sp-0);
+  min-width:var(--daterange-static-w);
+  border-inline-end:var(--border-w) solid var(--drawer-border);
+}
+.pf-daterange-months{display:flex;gap:var(--sp-24);flex:1}
+.pf-daterange-month{flex:1}
+.pf-daterange-name{text-align:center;font-weight:var(--fw-600);margin-block-end:var(--sp-8)}
+.pf-daterange-weekdays,
+.pf-daterange-days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+.pf-daterange-weekdays{color:var(--gray-600);font-size:var(--fs-12)}
+.pf-daterange-day{
+  block-size:var(--daterange-day);
+  display:grid;place-items:center;
+  border-radius:var(--radius-round);
+  font-size:var(--fs-12);
+}
+.pf-daterange-day:hover{background:var(--primary-light-4)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · OTP entry — platformActions.js:174
+   UNMEASURED. No capture in this system has opened OtpVerificationModal, and
+   authoring/listings-buttons.md says so in its own row. These are the modal's
+   own tokens, not this overlay's.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-otp{display:flex;gap:var(--sp-12);margin-block:var(--sp-16)}
+.pf-otp-box{
+  inline-size:var(--otp-box);block-size:var(--otp-box);
+  text-align:center;font-size:var(--fs-18);
+  border:var(--border-w) solid var(--input-border);
+  border-radius:var(--radius-control);
+  background:var(--white);color:var(--base);
+}
+.pf-otp-box:focus-visible{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
+
 </style>
 <style>
 /* ── INSTANCE DATA ──────────────────────────────────────────────────────
@@ -2213,6 +2454,20 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
  *
  *   <div data-state-panel="empty">           a page state; the bar switches between them
  *
+ *   <button data-tip="Mark Signature">        shows the shared #pf-tip beside it
+ *   <button data-open="popover-leads" data-hover>   opens on hover, not click
+ *   <div class="pf-popover" data-anchor="trigger" data-placement="right">
+ *                                            positioned beside whatever opened it
+ *   <button data-noop="the pager is a URL push">
+ *                                            does nothing ON PURPOSE, and says why
+ *
+ * The last one matters more than it looks. A prototype has controls that
+ * cannot do anything here — a pager that is a server round-trip, a "mark all
+ * as read" that mutates data. Leaving them inert makes them indistinguishable
+ * from the ones nobody has got to yet, so scripts/census.mjs counts a
+ * data-noop as ACKNOWLEDGED and everything else without a target as DEAD.
+ * Dead is the number authoring/listings-buttons.md exists to drive to zero.
+ *
  * Esc closes the topmost overlay, focus is trapped while one is open and
  * restored to the trigger on close — the product's behaviour, and the part
  * most prototypes skip.
@@ -2232,17 +2487,53 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     return el.closest('.pf-mask, .pf-drawer, .pf-popover');
   }
 
+  /* ── anchoring ────────────────────────────────────────────────────────
+     A shell popover sits at a fixed corner, so a CSS rule places it. The
+     table-body popovers cannot: there are thirteen rows and one popover of
+     each kind, so where it goes depends on which trigger opened it. This is
+     the one piece of geometry the prototype computes rather than declares. */
+
+  var GAP = 8;   /* the arrow's reach — antd's popover sits clear of its anchor */
+
+  function anchor(el, trigger, placement) {
+    if (!trigger) return;
+    var r = trigger.getBoundingClientRect();
+    var sx = window.pageXOffset, sy = window.pageYOffset;
+    /* measure the panel where it already is, before moving it */
+    var w = el.offsetWidth, h = el.offsetHeight;
+    var top, left;
+
+    if (placement === 'right')      { top = r.top + sy + r.height / 2 - h / 2; left = r.right + sx + GAP; }
+    else if (placement === 'left')  { top = r.top + sy + r.height / 2 - h / 2; left = r.left + sx - w - GAP; }
+    else if (placement === 'bottom'){ top = r.bottom + sy + GAP;               left = r.left + sx + r.width / 2 - w / 2; }
+    else                            { top = r.top + sy - h - GAP;              left = r.left + sx + r.width / 2 - w / 2; }
+
+    /* keep it on the page — a popover half off the right edge is not a
+       measurement anybody can use */
+    var maxLeft = document.documentElement.scrollWidth - w - GAP;
+    el.style.top = Math.max(GAP, top) + 'px';
+    el.style.left = Math.max(GAP, Math.min(left, maxLeft)) + 'px';
+  }
+
   function open(id, trigger) {
     var el = document.getElementById(id);
     if (!el) return;
     el.hidden = false;
+    if (el.getAttribute('data-anchor') === 'trigger') {
+      anchor(el, trigger, (trigger && trigger.getAttribute('data-placement')) || el.getAttribute('data-placement'));
+    }
     openStack.push({ el: el, trigger: trigger || null });
     /* a drawer needs its own mask; a modal's mask IS the element */
     var mask = el.getAttribute('data-mask');
     if (mask) { var m = document.getElementById(mask); if (m) m.hidden = false; }
-    document.body.style.overflow = 'hidden';
-    var first = el.querySelector(FOCUSABLE);
-    if (first) first.focus();
+    /* only a MASKED overlay locks the page; a popover leaves it scrollable,
+       which is what the product does */
+    if (el.classList.contains('pf-mask') || el.hasAttribute('data-mask')) document.body.style.overflow = 'hidden';
+    /* a hover popover must not steal focus — the pointer is still moving */
+    if (!el.hasAttribute('data-hovered')) {
+      var first = el.querySelector(FOCUSABLE);
+      if (first) first.focus();
+    }
   }
 
   function close(el) {
@@ -2250,6 +2541,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     if (i < 0) return;
     var rec = openStack.splice(i, 1)[0];
     el.hidden = true;
+    el.removeAttribute('data-hovered');
     var mask = el.getAttribute('data-mask');
     if (mask) { var m = document.getElementById(mask); if (m) m.hidden = true; }
     if (!openStack.length) document.body.style.overflow = '';
@@ -2298,13 +2590,97 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     try { history.replaceState(null, '', '#state=' + name); } catch (e) { /* file:// refuses */ }
   }
 
+  /* ── the shared tooltip ───────────────────────────────────────────────
+     One element for the whole page. The product has a Tooltip on all six
+     upgrade circles and all seven row actions of every row — ninety on this
+     screen — and ninety copies of the same markup would be a worse reference
+     than one, not a better one. The text is the trigger's own data-tip. */
+
+  function tipFor(trigger) {
+    var tip = document.getElementById('pf-tip');
+    if (!tip) return;
+    tip.textContent = trigger.getAttribute('data-tip');
+    tip.hidden = false;
+    anchor(tip, trigger, trigger.getAttribute('data-placement') || 'top');
+  }
+
+  function hideTip() {
+    var tip = document.getElementById('pf-tip');
+    if (tip) tip.hidden = true;
+  }
+
   /* ── wiring ──────────────────────────────────────────────────────────── */
+
+  /* Hover, for the six popovers and the tooltip that open that way in the
+     product. mouseover/mouseout rather than mouseenter, because these are
+     delegated from the document and enter does not bubble. */
+  document.addEventListener('mouseover', function (e) {
+    var tipped = e.target.closest('[data-tip]');
+    if (tipped) tipFor(tipped);
+
+    var t = e.target.closest('[data-open][data-hover]');
+    if (!t) return;
+    var id = t.getAttribute('data-open');
+    var el = document.getElementById(id);
+    if (!el || !el.hidden) return;
+    el.setAttribute('data-hovered', '');
+    open(id, t);
+  });
+
+  document.addEventListener('mouseout', function (e) {
+    var tipped = e.target.closest('[data-tip]');
+    if (tipped && !tipped.contains(e.relatedTarget)) hideTip();
+
+    var t = e.target.closest('[data-open][data-hover]');
+    if (!t) return;
+    var el = document.getElementById(t.getAttribute('data-open'));
+    if (!el || el.hidden) return;
+    /* moving INTO the popover keeps it open — the product's popovers are
+       interactive, and the health one has three buttons in it */
+    if (e.relatedTarget && (t.contains(e.relatedTarget) || el.contains(e.relatedTarget))) return;
+    close(el);
+  });
+
+  /* leaving the popover itself closes it, unless the pointer went back to the
+     thing that opened it */
+  document.addEventListener('mouseout', function (e) {
+    var el = e.target.closest('.pf-popover[data-hovered]');
+    if (!el || (e.relatedTarget && el.contains(e.relatedTarget))) return;
+    var rec = openStack[openStack.length - 1];
+    if (rec && rec.el === el && !(e.relatedTarget && rec.trigger && rec.trigger.contains(e.relatedTarget))) close(el);
+  });
+
+  /* keyboard parity: a tooltip that only exists on hover is not reachable */
+  document.addEventListener('focusin', function (e) {
+    var t = e.target.closest('[data-tip]');
+    if (t) tipFor(t); else hideTip();
+  });
+
 
   document.addEventListener('click', function (e) {
     var t = e.target.closest('[data-open],[data-close],[data-panel],[data-state-set]');
 
     if (t) {
-      if (t.hasAttribute('data-open')) { e.preventDefault(); open(t.getAttribute('data-open'), t); return; }
+      if (t.hasAttribute('data-open')) {
+        e.preventDefault();
+        var el = document.getElementById(t.getAttribute('data-open'));
+        /* a hover trigger has already opened it; clicking must not stack it.
+           But clicking (or Entering) a hover popover is how a keyboard or
+           touch user gets INTO it — the health panel has three buttons — so
+           the click takes it out of hover mode and moves focus in. Leaving it
+           in hover mode would mean the only way to reach those buttons is a
+           mouse, which is not a component anybody can ship. */
+        if (el && !el.hidden) {
+          if (el.hasAttribute('data-hovered')) {
+            el.removeAttribute('data-hovered');
+            var f = el.querySelector(FOCUSABLE);
+            if (f) f.focus();
+          }
+        } else {
+          open(t.getAttribute('data-open'), t);
+        }
+        return;
+      }
       if (t.hasAttribute('data-close')) { e.preventDefault(); var o = overlayOf(t); if (o) close(o); return; }
       if (t.hasAttribute('data-panel')) { e.preventDefault(); selectTab(t); return; }
       if (t.hasAttribute('data-state-set')) { e.preventDefault(); setState(t.getAttribute('data-state-set')); return; }
@@ -2722,9 +3098,13 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   <symbol id="pf-PiClockClockwiseFill" viewBox="0 0 256 256" fill="currentColor" stroke="currentColor" stroke-width="0">
     <path d="M136,80v43.47l36.12,21.67a8,8,0,0,1-8.24,13.72l-40-24A8,8,0,0,1,120,128V80a8,8,0,0,1,16,0Zm91.06-23.39a8,8,0,0,0-8.72,1.73L206,70.71c-3.23-3.51-6.56-7-10.1-10.59a96,96,0,1,0-2,137.7,8,8,0,0,0-11-11.64A80,80,0,1,1,184.54,71.4c3.54,3.58,6.87,7.1,10.11,10.63L178.34,98.34A8,8,0,0,0,184,112h40a8,8,0,0,0,8-8V64A8,8,0,0,0,227.06,56.61Z"/>
   </symbol>
-  <!-- credits info · react-icons/bs -->
+  <!-- credits info — the CreditsQuota card, and the ONLY BsInfoLg on Listings · react-icons/bs -->
   <symbol id="pf-BsInfoLg" viewBox="0 0 16 16" fill="currentColor" stroke="currentColor" stroke-width="0">
     <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"/>
+  </symbol>
+  <!-- the table-body info icon — four popovers hang off it · react-icons/ai -->
+  <symbol id="pf-AiOutlineInfoCircle" viewBox="0 0 1024 1024" fill="currentColor" stroke="currentColor" stroke-width="0">
+    <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"/><path d="M464 336a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"/>
   </symbol>
   <!-- Settings · react-icons/io5 -->
   <symbol id="pf-IoSettingsOutline" viewBox="0 0 512 512" fill="currentColor" stroke="currentColor" stroke-width="0">
@@ -2909,8 +3289,8 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
       <a class="pf-rail-item" href="not-built.html?screen=Credits%20%26%20Packages" title="Credits &amp; Packages"><svg class="i i-20"><use href="#pf-SideMenuPropShop"/></svg></a>
     </nav>
     <div class="pf-rail-bottom">
-      <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="العربية"><svg class="i i-20"><use href="#pf-LanguageSwitcherIcon"/></svg></button>
-      <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="Help &amp; Support"><svg class="i i-20"><use href="#pf-HelpSupportIcon"/></svg></button>
+      <a class="pf-btn" data-variant="ghost" data-block="true" title="العربية" href="not-built.html?screen=Arabic"><svg class="i i-20"><use href="#pf-LanguageSwitcherIcon"/></svg></a>
+      <a class="pf-btn" data-variant="ghost" data-block="true" title="Help &amp; Support" href="not-built.html?screen=Help%20%26%20Support"><svg class="i i-20"><use href="#pf-HelpSupportIcon"/></svg></a>
     </div>
   </div>
   <div class="pf-main">
@@ -2919,8 +3299,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
       <div class="pf-header-brand"><span class="pf-page-title">My Listings</span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
-        <a class="pf-classified-pill" href="#"><svg class="i i-18"><use href="#pf-SidebarClassifiedLinkIcon"/></svg>Go to Bayut.sa</a>
-        <button class="pf-btn" data-variant="primary" type="button"><svg class="i i-16"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></button>
+        <!-- the one link in the shell that LEAVES the product. It carried
+             href="#", which is a dead click dressed as a destination. -->
+        <a class="pf-classified-pill" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-18"><use href="#pf-SidebarClassifiedLinkIcon"/></svg>Go to Bayut.sa</a>
+        <a class="pf-btn" data-variant="primary" href="not-built.html?screen=Post%20Listing"><svg class="i i-16"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></a>
         <button class="pf-bell" type="button" aria-label="Notifications" data-open="popover-notifications"><svg class="i i-20"><use href="#pf-GrNotification"/></svg><span class="pf-badge">46</span></button>
         <button class="pf-avatar-button" type="button" aria-label="Account" data-open="popover-account"><span class="pf-progress-ring pct-90"><span class="pf-avatar"><svg class="i i-16"><use href="#pf-FiUser"/></svg></span></span></button>
       </div>
@@ -2939,11 +3321,11 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
         </div>
         <div class="pf-field">
           <label class="pf-field-label" for="f-purpose_id">Purpose</label>
-          <button class="pf-select" id="f-purpose_id" type="button" aria-haspopup="listbox"><span class="pf-placeholder">Select Purpose</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+          <button class="pf-select" id="f-purpose_id" type="button" aria-haspopup="listbox" data-open="listbox-purpose" data-placement="bottom"><span class="pf-placeholder">Select Purpose</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
         </div>
         <div class="pf-field">
           <label class="pf-field-label" for="f-type_id">Property Type</label>
-          <button class="pf-select" id="f-type_id" type="button" aria-haspopup="listbox"><span class="pf-placeholder">Select Property Types</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+          <button class="pf-select" id="f-type_id" type="button" aria-haspopup="listbox" data-open="listbox-property-type" data-placement="bottom"><span class="pf-placeholder">Select Property Types</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
         </div>
         </div>
         <div class="pf-filter-actions">
@@ -2951,7 +3333,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
           <!-- filters.js:641 disables it while no filter is applied, and
                utils.less:142 dims anything disabled to 0.54 -->
           <button class="pf-btn" data-variant="link-danger" data-size="small" type="button" disabled><span>Clear filters</span></button>
-          <button class="pf-btn" data-variant="primary" data-size="large" type="button"><svg class="i"><use href="#pf-FiSearch"/></svg><span>Search</span></button>
+          <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-noop="Search pushes the filter values into the URL and refetches; this page has one fixed result set"><svg class="i"><use href="#pf-FiSearch"/></svg><span>Search</span></button>
         </div>
       </div>
       <!-- ── the three page states ──────────────────────────────────────
@@ -2986,39 +3368,44 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">21</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,250,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium">62%</span></div>
-                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,250,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">62%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Floor for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 64 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, North Riyadh, Al Wurud</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88240117</span><span>REGA ID: 7201340882</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Sep 09, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Sep 09, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">896</span></div></div>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">35</span></div></div>
-              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">2</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads <button class="pf-info" type="button" aria-label="Leads breakdown" data-open="popover-leads" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span><span class="pf-stat-value">2</span></div></div>
             </td>
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Signature"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Mark Signature" data-open="modal-quota"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Hot"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Mark Hot" data-open="modal-quota"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Photography Service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
             </td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3027,39 +3414,35 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">18</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,399,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium">62%</span></div>
-                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,399,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">62%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Floor for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 73 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, North Riyadh, Al Masif</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88240112</span><span>REGA ID: 7201340856</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Sep 09, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Sep 09, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">796</span></div></div>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">17</span></div></div>
-              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">1</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads <button class="pf-info" type="button" aria-label="Leads breakdown" data-open="popover-leads" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span><span class="pf-stat-value">1</span></div></div>
             </td>
-            <td><span class="pf-status-pill" data-status="green">Live</span></td>
-            <td class="col-upgrades">
-              <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
-              </div>
-            </td>
+            <td><span class="pf-status-pill" data-status="red">Rejected</span> <button class="pf-info" data-tone="danger" type="button" aria-label="Rejection reasons" data-open="popover-status" data-placement="right"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
+            <td class="col-upgrades"></td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3068,40 +3451,44 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">26</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,999,000 <span class="pf-tag" data-tone="hot"><svg class="i i-14"><use href="#pf-IconSuperHot"/></svg>Hot</span> <span class="pf-score" data-band="medium">54%</span></div>
-                  <a class="pf-listing-title" href="#">Chalet for Daily Rental</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,999,000 <span class="pf-tag" data-tone="hot"><svg class="i i-14"><use href="#pf-IconSuperHot"/></svg>Hot</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">54%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Chalet for Daily Rental</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 4</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 5</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 79 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, North Riyadh, Al Mughrizat</div>
-                  <div class="pf-listing-ids"><span>Bayut ID: 88238421</span><span>REGA ID: 7201340887</span></div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88238421</span><span>REGA ID: 7201340887 <button class="pf-info" type="button" aria-label="REGA expiry" data-open="popover-rega" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Sep 07, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Sep 07, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,600</span></div></div>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">18</span></div></div>
-              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads <button class="pf-info" type="button" aria-label="Leads breakdown" data-open="popover-leads" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span><span class="pf-stat-value">0</span></div></div>
             </td>
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" data-applied type="button" aria-label="Hot" disabled><svg class="i"><use href="#pf-IconSuperHot"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Signature"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Mark Signature" data-open="modal-quota"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Hot Listing"><button class="pf-round-action" data-tone="hot" data-applied type="button" aria-label="Hot Listing" disabled><svg class="i"><use href="#pf-IconSuperHot"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Photography Service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
             </td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Mark as Booked" data-open="modal-booking"><svg class="i i-16"><use href="#pf-MdDateRange"/></svg></button>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3110,39 +3497,44 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">31</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,049,000 <span class="pf-tag" data-tone="hot"><svg class="i i-14"><use href="#pf-IconSuperHot"/></svg>Hot</span> <span class="pf-score" data-band="medium">50%</span></div>
-                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,049,000 <span class="pf-tag" data-tone="hot"><svg class="i i-14"><use href="#pf-IconSuperHot"/></svg>Hot</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">50%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Apartment for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 79 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, East Riyadh, Al Rawabi</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88236048</span><span>REGA ID: 7201340868</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Sep 06, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Sep 06, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">2,015</span></div></div>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">18</span></div></div>
-              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads <button class="pf-info" type="button" aria-label="Leads breakdown" data-open="popover-leads" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span><span class="pf-stat-value">0</span></div></div>
             </td>
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" data-applied type="button" aria-label="Hot" disabled><svg class="i"><use href="#pf-IconSuperHot"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Signature"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Mark Signature" data-open="modal-quota"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Hot Listing"><button class="pf-round-action" data-tone="hot" data-applied type="button" aria-label="Hot Listing" disabled><svg class="i"><use href="#pf-IconSuperHot"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Photography Service Requested"><button class="pf-round-action" data-tone="photo" data-pending type="button" aria-label="Photography Service Requested" disabled><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button><span class="pf-pending-mark"><svg class="i"><use href="#pf-MdRefresh"/></svg></span></span>
+                <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
             </td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3151,39 +3543,45 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">38</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 2,330,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">43%</span></div>
-                  <a class="pf-listing-title" href="#">Villa for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 2,330,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">43%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Villa for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 5</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 6</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 79 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, East Riyadh, Al Nahdah</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88235710</span><span>REGA ID: 7201340875</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Sep 05, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Sep 05, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">2,669</span></div></div>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">36</span></div></div>
-              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">2</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads <button class="pf-info" type="button" aria-label="Leads breakdown" data-open="popover-leads" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span><span class="pf-stat-value">2</span></div></div>
             </td>
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Signature Listing"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature Listing" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Hot"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Mark Hot" data-open="modal-quota"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Photography Service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
             </td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Mark as Booked" data-tip="Mark as Booked" data-placement="left" data-open="modal-booking"><svg class="i i-16"><use href="#pf-MdDateRange"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3192,80 +3590,89 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">47</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 4,900,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">46%</span></div>
-                  <a class="pf-listing-title" href="#">Villa for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 4,900,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">46%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Villa for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> Studio</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 399 Sq. M.</span></div>
                   <div class="pf-listing-loc">Al Diriyah, As Sulaymaniyah</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88234837</span><span>REGA ID: 7201351018</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Sep 02, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Sep 02, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">2,386</span></div></div>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">66</span></div></div>
-              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">1</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads <button class="pf-info" type="button" aria-label="Leads breakdown" data-open="popover-leads" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span><span class="pf-stat-value">1</span></div></div>
             </td>
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Signature Listing"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature Listing" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Hot"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Mark Hot" data-open="modal-quota"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Photography Service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
             </td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
           <tr>
             <td class="col-property">
               <div class="pf-listing">
-                <span class="pf-listing-thumb"><span class="pf-listing-count">18</span></span>
+                <span class="pf-listing-thumb"><span class="pf-listing-count">18</span><span class="pf-tag" data-tone="booked" data-tip="Booked Until Aug 31, 2026">Booked</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 870,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">31%</span></div>
-                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 870,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">31%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Apartment for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 131 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88232857</span><span>REGA ID: 7201347658</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Aug 31, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,192</span></div></div>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">13</span></div></div>
-              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads <button class="pf-info" type="button" aria-label="Leads breakdown" data-open="popover-leads" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span><span class="pf-stat-value">0</span></div></div>
             </td>
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Signature Listing"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature Listing" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Hot"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Mark Hot" data-open="modal-quota"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Photography Service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
             </td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3274,39 +3681,37 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">19</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 920,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">34%</span></div>
-                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 920,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">34%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Apartment for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 140 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88230489</span><span>REGA ID: 7201347647</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Aug 31, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,050</span></div></div>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">6</span></div></div>
-              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads <button class="pf-info" type="button" aria-label="Leads breakdown" data-open="popover-leads" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span><span class="pf-stat-value">0</span></div></div>
             </td>
-            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td><span class="pf-status-pill">Pending OTP Verification</span></td>
             <td class="col-upgrades">
-              <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
-              </div>
+              <button class="pf-btn" data-variant="tint" data-block="true" type="button" data-open="modal-otp"><span>Publish Now</span></button>
             </td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3315,39 +3720,44 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">20</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 995,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">39%</span></div>
-                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 995,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">39%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Apartment for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 150 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88230479</span><span>REGA ID: 7201347611</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Aug 31, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,007</span></div></div>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">3</span></div></div>
-              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads <button class="pf-info" type="button" aria-label="Leads breakdown" data-open="popover-leads" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span><span class="pf-stat-value">0</span></div></div>
             </td>
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Signature Listing"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature Listing" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Hot"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Mark Hot" data-open="modal-quota"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
+                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="muted" type="button" aria-label="refresh" disabled><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="This service is not available in your region yet."><button class="pf-round-action" data-tone="muted" type="button" aria-label="This service is not available in your region yet." disabled><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="This service is not available in your region yet."><button class="pf-round-action" data-tone="muted" type="button" aria-label="This service is not available in your region yet." disabled><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="This service is not available in your region yet."><button class="pf-round-action" data-tone="muted" type="button" aria-label="This service is not available in your region yet." disabled><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
             </td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3356,39 +3766,45 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">24</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,050,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">33%</span></div>
-                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,050,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">33%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Apartment for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 156 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88230478</span><span>REGA ID: 7201347593</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Aug 31, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">749</span></div></div>
               <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">5</span></div></div>
-              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads <button class="pf-info" type="button" aria-label="Leads breakdown" data-open="popover-leads" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></span><span class="pf-stat-value">0</span></div></div>
             </td>
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Signature Listing"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature Listing" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Hot"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Mark Hot" data-open="modal-quota"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Photography Service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
             </td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Mark as Booked" data-tip="Mark as Booked" data-placement="left" data-open="modal-booking"><svg class="i i-16"><use href="#pf-MdDateRange"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3406,34 +3822,39 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">21</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,250,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium">62%</span></div>
-                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,250,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">62%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Floor for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 64 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, North Riyadh, Al Wurud</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88240117</span><span>REGA ID: 7201340882</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Sep 09, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Sep 09, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Signature"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Mark Signature" data-open="modal-quota"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Hot"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Mark Hot" data-open="modal-quota"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Photography Service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
             </td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3442,34 +3863,30 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">18</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,399,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium">62%</span></div>
-                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,399,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">62%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Floor for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 73 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, North Riyadh, Al Masif</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88240112</span><span>REGA ID: 7201340856</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Sep 09, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
-            <td><span class="pf-status-pill" data-status="green">Live</span></td>
-            <td class="col-upgrades">
-              <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
-              </div>
-            </td>
+            <td>Posted on Sep 09, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
+            <td><span class="pf-status-pill" data-status="red">Rejected</span> <button class="pf-info" data-tone="danger" type="button" aria-label="Rejection reasons" data-open="popover-status" data-placement="right"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
+            <td class="col-upgrades"></td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3487,24 +3904,29 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-listing">
                 <span class="pf-listing-thumb"><span class="pf-listing-count">21</span></span>
                 <div>
-                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,250,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium">62%</span></div>
-                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,250,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">62%</span></div>
+                  <!-- NOT A LINK. listing-purpose.js:261 renders the price and
+                       title as plain text; the product gives a listing no title
+                       link at all on this screen. This carried href="#" on
+                       thirteen rows, which is a dead click pretending to be a
+                       feature the product does not have. -->
+                  <span class="pf-listing-title">Floor for Sale | Ready</span>
                   <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 64 Sq. M.</span></div>
                   <div class="pf-listing-loc">Riyadh, North Riyadh, Al Wurud</div>
                   <div class="pf-listing-ids"><span>Bayut ID: 88240117</span><span>REGA ID: 7201340882</span></div>
                 </div>
               </div>
             </td>
-            <td>Posted on Sep 09, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>Posted on Sep 09, 2026 <button class="pf-info" type="button" aria-label="Posted on" data-open="popover-timeline" data-hover data-placement="top"><svg class="i i-14"><use href="#pf-AiOutlineInfoCircle"/></svg></button></td>
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-actions">
               <div class="pf-action-grid">
-                <button class="pf-round-action" type="button" aria-label="TruCheck" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="Preview on Bayut" href="not-built.html?screen=Preview%20on%20Bayut"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Listing details" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
-                <a class="pf-round-action" aria-label="Edit" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
-                <a class="pf-round-action" aria-label="Apply Discount" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
-                <button class="pf-round-action" type="button" aria-label="Delete" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
+                <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
+                <button class="pf-round-action" type="button" aria-label="Delete" data-tip="Delete" data-placement="left" data-open="modal-delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
               </div>
             </td>
           </tr>
@@ -3610,7 +4032,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   </defs>
 </svg>
                     <div><div class="pf-empty-title">No Record Found</div></div>
-                    <button class="pf-btn" data-variant="primary" data-size="large" type="button"><svg class="i"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></button>
+                    <a class="pf-btn" data-variant="primary" data-size="large" href="not-built.html?screen=Post%20Listing"><svg class="i"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></a>
                   </div>
                 </td>
               </tr>
@@ -3716,7 +4138,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   </defs>
 </svg>
                     <div><div class="pf-empty-title">No Record Found</div></div>
-                    <button class="pf-btn" data-variant="primary" data-size="large" type="button"><svg class="i"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></button>
+                    <a class="pf-btn" data-variant="primary" data-size="large" href="not-built.html?screen=Post%20Listing"><svg class="i"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></a>
                   </div>
                 </td>
               </tr>
@@ -3725,10 +4147,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
         </div>
       </section>
       <ul class="pf-pagination">
-        <li class="pf-page-item" data-nav="prev" aria-disabled="true"><button type="button" aria-label="Previous page" disabled><svg class="i i-12"><use href="#pf-LeftOutlined"/></svg></button></li>
-        <li class="pf-page-item" aria-current="page"><a href="#">1</a></li>
-        <li class="pf-page-item"><a href="#">2</a></li>
-        <li class="pf-page-item" data-nav="next"><button type="button" aria-label="Next page"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
+        <li class="pf-page-item" aria-disabled="true"><button type="button" aria-label="Previous page" disabled><svg class="i i-12"><use href="#pf-LeftOutlined"/></svg></button></li>
+        <li class="pf-page-item" aria-current="page"><button type="button" data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows">1</button></li>
+        <li class="pf-page-item"><button type="button" data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows">2</button></li>
+        <li class="pf-page-item"><button type="button" aria-label="Next page" data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
       </ul>
       </div><!-- /default -->
 
@@ -3753,11 +4175,11 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
                  state's card, and sharing the panel names would let a click
                  here reveal the default state's table underneath -->
             <div class="pf-tabs" role="tablist">
-              <button class="pf-tab" role="tab" aria-selected="true" type="button"><span class="pf-tab-label">Active (20)</span></button>
-              <button class="pf-tab" role="tab" type="button"><span class="pf-tab-label">Draft (2)</span></button>
-              <button class="pf-tab" role="tab" type="button"><span class="pf-tab-label">Pending (1)</span></button>
-              <button class="pf-tab" role="tab" type="button"><span class="pf-tab-label">Removed (0)</span></button>
-              <button class="pf-tab" role="tab" type="button"><span class="pf-tab-label">Ad License Requests (0)</span></button>
+              <button class="pf-tab" role="tab" aria-selected="true" type="button" data-noop="this state's tabs share no panel names with the default state's, so that a click here cannot reveal the table underneath"><span class="pf-tab-label">Active (20)</span></button>
+              <button class="pf-tab" role="tab" type="button" data-noop="this state's tabs share no panel names with the default state's, so that a click here cannot reveal the table underneath"><span class="pf-tab-label">Draft (2)</span></button>
+              <button class="pf-tab" role="tab" type="button" data-noop="this state's tabs share no panel names with the default state's, so that a click here cannot reveal the table underneath"><span class="pf-tab-label">Pending (1)</span></button>
+              <button class="pf-tab" role="tab" type="button" data-noop="this state's tabs share no panel names with the default state's, so that a click here cannot reveal the table underneath"><span class="pf-tab-label">Removed (0)</span></button>
+              <button class="pf-tab" role="tab" type="button" data-noop="this state's tabs share no panel names with the default state's, so that a click here cannot reveal the table underneath"><span class="pf-tab-label">Ad License Requests (0)</span></button>
             </div>
           </div>
           <table class="pf-table">
@@ -3856,7 +4278,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   </defs>
 </svg>
                 <div><div class="pf-empty-title">No Record Found</div></div>
-                <button class="pf-btn" data-variant="primary" data-size="large" type="button"><svg class="i"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></button>
+                <a class="pf-btn" data-variant="primary" data-size="large" href="not-built.html?screen=Post%20Listing"><svg class="i"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></a>
               </div>
             </td></tr></tbody>
           </table>
@@ -3906,9 +4328,9 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     <div class="pf-noti-head">
       <div class="pf-noti-head-start">
         <h5 class="pf-noti-title">Notifications</h5>
-        <button class="pf-btn" data-variant="ghost" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+        <button class="pf-btn" data-variant="ghost" type="button" aria-label="Refresh" data-noop="refetches the notification list; there is no server behind this page"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
       </div>
-      <button class="pf-btn" data-variant="link" type="button">Mark all as read</button>
+      <button class="pf-btn" data-variant="link" type="button" data-noop="marks every notification read; a data mutation, not a navigation">Mark all as read</button>
     </div>
     <div class="pf-noti-card" data-unread>
       <div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">Your listing is live</span></div>
@@ -4002,7 +4424,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     <div class="pf-modal-body">
       <div class="pf-field">
         <label class="pf-field-label" for="bk-range">Booked dates</label>
-        <button class="pf-select" id="bk-range" type="button"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow"><svg class="i i-16"><use href="#pf-MdDateRange"/></svg></span></button>
+        <button class="pf-select" id="bk-range" type="button" data-open="popover-date-range" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow"><svg class="i i-16"><use href="#pf-MdDateRange"/></svg></span></button>
       </div>
     </div>
     <div class="pf-modal-foot">
@@ -4045,25 +4467,230 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     <div class="pf-stack">
       <div class="pf-field">
         <label class="pf-field-label" for="dflt-0">Posted On</label>
-        <button class="pf-select" id="dflt-0" type="button"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+        <button class="pf-select" id="dflt-0" type="button" data-open="popover-date-range" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-MdDateRange"/></svg></span></button>
       </div>
       <div class="pf-field">
         <label class="pf-field-label" for="dflt-1">City</label>
-        <button class="pf-select" id="dflt-1" type="button"><span class="pf-placeholder">Select City</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+        <button class="pf-select" id="dflt-1" type="button" data-open="listbox-purpose" data-placement="bottom"><span class="pf-placeholder">Select City</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
       </div>
       <div class="pf-field">
         <label class="pf-field-label" for="dflt-2">Location</label>
-        <button class="pf-select" id="dflt-2" type="button"><span class="pf-placeholder">Select City First</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+        <button class="pf-select" id="dflt-2" type="button" disabled><span class="pf-placeholder">Select City First</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
       </div>
       <div class="pf-field">
         <label class="pf-field-label" for="dflt-3">TruCheck Status</label>
-        <button class="pf-select" id="dflt-3" type="button"><span class="pf-placeholder">Select TruCheck Status</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+        <button class="pf-select" id="dflt-3" type="button" data-open="listbox-purpose" data-placement="bottom"><span class="pf-placeholder">Select TruCheck Status</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
       </div>
     </div>
   </div>
   <div class="pf-drawer-foot">
-    <button class="pf-btn" data-variant="link-danger" data-size="small" type="button"><span>Clear filters</span></button>
+    <button class="pf-btn" data-variant="link-danger" data-size="small" type="button" data-noop="Reset Filters clears the form and the URL params; there is nothing to clear in a static page"><span>Clear filters</span></button>
     <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-close><svg class="i"><use href="#pf-FiSearch"/></svg><span>Search</span></button>
+  </div>
+</div>
+<!-- the shared tooltip. Its text comes from the trigger's data-tip, which is
+     the product's own title string (products.js, table-actions.js:62-109).
+     data/live/listings--tooltip-action — 132x40, WHITE with #5A5F7D text and a
+     hairline border. antd ships a dark pill; the product overrides it. -->
+<div class="pf-tip" id="pf-tip" role="tooltip" hidden></div>
+
+<!-- data/live/listings--popover-health — 440x352, placement right. The inner
+     carries NO padding: this panel dresses its own rows. Three buttons live in
+     it, which is why it is a popover and not a tooltip. -->
+<div class="pf-popover" data-kind="health" id="popover-health" data-anchor="trigger" data-placement="right" role="dialog" aria-label="Overall Quality" hidden>
+  <div class="pf-popover-body">
+    <div class="pf-health-head">
+      <div>
+        <div class="pf-modal-title">Overall Quality</div>
+        <div class="pf-listing-loc">Higher quality means more listing visibility &amp; leads</div>
+      </div>
+      <span class="pf-score" data-band="medium">62%</span>
+    </div>
+    <div class="pf-health-row">
+      <span class="pf-health-label"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg> Freshness</span>
+      <!-- health.js:110 — this opens QuotaCreditModal, the same overlay the
+           Refresh circle opens -->
+      <button class="pf-btn" data-variant="link" data-size="small" type="button" data-open="modal-quota"><span>Refresh</span></button>
+    </div>
+    <div class="pf-health-row">
+      <span class="pf-health-label"><svg class="i i-16"><use href="#pf-HiCamera"/></svg> Images</span>
+      <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Post%20Listing%20%E2%80%94%20Images"><span>Add</span></a>
+    </div>
+    <div class="pf-health-row">
+      <span class="pf-health-label"><svg class="i i-16"><use href="#pf-PiSealCheckFill"/></svg> Features</span>
+      <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Post%20Listing%20%E2%80%94%20Amenities"><span>Add</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- data/live/listings--popover-timeline — 180x54, pad 16 -->
+<div class="pf-popover" data-kind="anchored" id="popover-timeline" data-anchor="trigger" data-placement="top" role="dialog" aria-label="Posted on" hidden>
+  <div class="pf-popover-body">12:00 am, Sep 20, 2026</div>
+</div>
+
+<!-- data/live/listings--popover-rega — 191x54, pad 16 -->
+<div class="pf-popover" data-kind="anchored" id="popover-rega" data-anchor="trigger" data-placement="top" role="dialog" aria-label="REGA expiry" hidden>
+  <div class="pf-popover-body">Expiring on: Jan 20, 2027</div>
+</div>
+
+<!-- data/live/listings--popover-status-rejected — 472x54, pad 16, placement
+     right, and it opens on CLICK. The only click-triggered popover in the
+     table body (platforms-status.js:16). -->
+<div class="pf-popover" data-kind="anchored" id="popover-status" data-anchor="trigger" data-placement="right" role="dialog" aria-label="Rejection reasons" hidden>
+  <div class="pf-popover-body">Images do not match the property, Price is outside the expected range</div>
+</div>
+
+<!-- data/live/listings--popover-leads — 216x235, pad 16. The LMS breakdown;
+     a non-LMS account gets a plainer 120px list (listing-stats.js:97). -->
+<div class="pf-popover" data-kind="leads" id="popover-leads" data-anchor="trigger" data-placement="top" role="dialog" aria-label="Leads breakdown" hidden>
+  <div class="pf-popover-body">
+    <div class="pf-lead-group">
+      <div class="pf-lead-title">Calls</div>
+      <div class="pf-lead-row"><span>Calls Clicked</span><span>0</span></div>
+    </div>
+    <div class="pf-lead-group">
+      <div class="pf-lead-title">Whatsapp</div>
+      <div class="pf-lead-row"><span>WhatsApp Clicked</span><span>0</span></div>
+      <div class="pf-lead-row"><span>Chats Initiated</span><span>0</span></div>
+    </div>
+    <div class="pf-lead-group">
+      <div class="pf-lead-title">Emails</div>
+      <div class="pf-lead-row"><span>Emails Clicked</span><span>0</span></div>
+      <div class="pf-lead-row"><span>Emails Received</span><span>0</span></div>
+    </div>
+    <div class="pf-lead-group">
+      <div class="pf-lead-title">SMS</div>
+      <div class="pf-lead-row"><span>SMS Clicked</span><span>0</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- data/live/listings--select-purpose — 245x137, pad 11, options 223x38 -->
+<div class="pf-listbox" id="listbox-purpose" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Purpose" hidden>
+  <button class="pf-listbox-option" role="option" type="button" aria-selected="true" data-close>Sale</button>
+  <button class="pf-listbox-option" role="option" type="button" data-close>Rent</button>
+  <button class="pf-listbox-option" role="option" type="button" data-close>Daily Rental</button>
+</div>
+
+<!-- data/live/listings--select-property-type — 245x278. A GROUPED panel, not
+     the same one taller: a 223x35 group header at 12px, and its options
+     indented to 25 instead of 12. -->
+<div class="pf-listbox" id="listbox-property-type" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Property Type" hidden>
+  <div class="pf-listbox-group" role="presentation">Residential</div>
+  <button class="pf-listbox-option" role="option" type="button" data-close>Apartment</button>
+  <button class="pf-listbox-option" role="option" type="button" data-close>Villa</button>
+  <button class="pf-listbox-option" role="option" type="button" data-close>Floor</button>
+  <button class="pf-listbox-option" role="option" type="button" data-close>Chalet</button>
+  <button class="pf-listbox-option" role="option" type="button" data-close>Townhouse</button>
+  <button class="pf-listbox-option" role="option" type="button" data-close>Duplex</button>
+  <button class="pf-listbox-option" role="option" type="button" data-close>Penthouse</button>
+</div>
+
+<!-- data/live/listings--date-posted-on — the popover is 802x381 and holds
+     REACT-DATE-RANGE, not an antd picker (datePicker.js:15): two months side
+     by side and a list of static ranges. The capture has 70 .rdrDay and no
+     .ant-picker, which is the only reason this is not drawn as one. -->
+<div class="pf-popover" data-kind="date" id="popover-date-range" data-anchor="trigger" data-placement="bottom" role="dialog" aria-label="Search by Calendar" hidden>
+  <div class="pf-popover-title">Search by Calendar</div>
+  <div class="pf-popover-body">
+    <div class="pf-daterange">
+      <ul class="pf-daterange-static">
+        <li><button class="pf-btn" data-variant="link" data-size="small" type="button" aria-pressed="true" data-noop="a static range sets the two dates in the calendar; the calendar here is a reproduction, not a date picker"><span>Today</span></button></li>
+        <li><button class="pf-btn" data-variant="link" data-size="small" type="button" data-noop="a static range sets the two dates in the calendar; the calendar here is a reproduction, not a date picker"><span>Yesterday</span></button></li>
+        <li><button class="pf-btn" data-variant="link" data-size="small" type="button" data-noop="a static range sets the two dates in the calendar; the calendar here is a reproduction, not a date picker"><span>This Week</span></button></li>
+        <li><button class="pf-btn" data-variant="link" data-size="small" type="button" data-noop="a static range sets the two dates in the calendar; the calendar here is a reproduction, not a date picker"><span>Last Week</span></button></li>
+        <li><button class="pf-btn" data-variant="link" data-size="small" type="button" data-noop="a static range sets the two dates in the calendar; the calendar here is a reproduction, not a date picker"><span>This Month</span></button></li>
+      </ul>
+      <div class="pf-daterange-months">
+        <div class="pf-daterange-month">
+          <div class="pf-daterange-name">September 2026</div>
+          <div class="pf-daterange-weekdays"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+          <div class="pf-daterange-days"><span class="pf-daterange-day"></span><span class="pf-daterange-day"></span><span class="pf-daterange-day">1</span><span class="pf-daterange-day">2</span><span class="pf-daterange-day">3</span><span class="pf-daterange-day">4</span><span class="pf-daterange-day">5</span><span class="pf-daterange-day">6</span><span class="pf-daterange-day">7</span><span class="pf-daterange-day">8</span><span class="pf-daterange-day">9</span><span class="pf-daterange-day">10</span><span class="pf-daterange-day">11</span><span class="pf-daterange-day">12</span><span class="pf-daterange-day">13</span><span class="pf-daterange-day">14</span><span class="pf-daterange-day">15</span><span class="pf-daterange-day">16</span><span class="pf-daterange-day">17</span><span class="pf-daterange-day">18</span><span class="pf-daterange-day">19</span><span class="pf-daterange-day">20</span><span class="pf-daterange-day">21</span><span class="pf-daterange-day">22</span><span class="pf-daterange-day">23</span><span class="pf-daterange-day">24</span><span class="pf-daterange-day">25</span><span class="pf-daterange-day">26</span><span class="pf-daterange-day">27</span><span class="pf-daterange-day">28</span><span class="pf-daterange-day">29</span><span class="pf-daterange-day">30</span><span class="pf-daterange-day"></span><span class="pf-daterange-day"></span><span class="pf-daterange-day"></span></div>
+        </div>
+        <div class="pf-daterange-month">
+          <div class="pf-daterange-name">October 2026</div>
+          <div class="pf-daterange-weekdays"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+          <div class="pf-daterange-days"><span class="pf-daterange-day"></span><span class="pf-daterange-day"></span><span class="pf-daterange-day">1</span><span class="pf-daterange-day">2</span><span class="pf-daterange-day">3</span><span class="pf-daterange-day">4</span><span class="pf-daterange-day">5</span><span class="pf-daterange-day">6</span><span class="pf-daterange-day">7</span><span class="pf-daterange-day">8</span><span class="pf-daterange-day">9</span><span class="pf-daterange-day">10</span><span class="pf-daterange-day">11</span><span class="pf-daterange-day">12</span><span class="pf-daterange-day">13</span><span class="pf-daterange-day">14</span><span class="pf-daterange-day">15</span><span class="pf-daterange-day">16</span><span class="pf-daterange-day">17</span><span class="pf-daterange-day">18</span><span class="pf-daterange-day">19</span><span class="pf-daterange-day">20</span><span class="pf-daterange-day">21</span><span class="pf-daterange-day">22</span><span class="pf-daterange-day">23</span><span class="pf-daterange-day">24</span><span class="pf-daterange-day">25</span><span class="pf-daterange-day">26</span><span class="pf-daterange-day">27</span><span class="pf-daterange-day">28</span><span class="pf-daterange-day">29</span><span class="pf-daterange-day">30</span><span class="pf-daterange-day"></span><span class="pf-daterange-day"></span><span class="pf-daterange-day"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pf-drawer-foot">
+    <button class="pf-btn" type="button" data-close><span>Cancel</span></button>
+    <button class="pf-btn" data-variant="primary" type="button" data-close><span>Confirm</span></button>
+  </div>
+</div>
+<div class="pf-mask" id="modal-quota" hidden>
+  <div class="pf-modal" data-size="quota" role="dialog" aria-modal="true" aria-labelledby="modal-quota-title">
+    <div class="pf-modal-head">
+      <span class="pf-modal-title" id="modal-quota-title">Mark Signature</span>
+      <button class="pf-overlay-close" type="button" aria-label="Close" data-close><svg class="i i-16"><use href="#pf-IoMdClose"/></svg></button>
+    </div>
+    <div class="pf-modal-body">
+      <div class="pf-alert" data-tone="info"><svg class="i i-16"><use href="#pf-AiOutlineInfoCircle"/></svg><span>Credits will be deducted from your account once the request is approved.</span></div>
+
+      <table class="pf-credit-table">
+        <thead><tr><th>Product</th><th>Credits required</th><th>Credits available</th></tr></thead>
+        <tbody>
+          <tr><td>Signature</td><td>1</td><td>34</td></tr>
+          <tr class="pf-credit-total"><td>Total</td><td>1</td><td>34</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pf-modal-foot">
+      <button class="pf-btn" type="button" data-close><span>Cancel</span></button>
+      <button class="pf-btn" data-variant="primary" type="button" data-close><span>Request Now</span></button>
+    </div>
+  </div>
+</div>
+<div class="pf-mask" id="modal-quota-service" hidden>
+  <div class="pf-modal" data-size="quota" role="dialog" aria-modal="true" aria-labelledby="modal-quota-service-title">
+    <div class="pf-modal-head">
+      <span class="pf-modal-title" id="modal-quota-service-title">Request Photography Service</span>
+      <button class="pf-overlay-close" type="button" aria-label="Close" data-close><svg class="i i-16"><use href="#pf-IoMdClose"/></svg></button>
+    </div>
+    <div class="pf-modal-body">
+      <div class="pf-alert" data-tone="info"><svg class="i i-16"><use href="#pf-AiOutlineInfoCircle"/></svg><span>Credits will be deducted from your account once the request is approved.</span></div>
+      <div class="pf-stack">
+        <div class="pf-field">
+          <label class="pf-field-label" for="svc-date">Requested date</label>
+          <button class="pf-select" id="svc-date" type="button" data-open="popover-date-range" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow"><svg class="i i-16"><use href="#pf-MdDateRange"/></svg></span></button>
+        </div>
+        <div class="pf-field">
+          <label class="pf-field-label" for="svc-note">Comments</label>
+          <span class="pf-input"><input id="svc-note" type="text" placeholder="Anything the crew should know"><span class="pf-input-suffix"></span></span>
+        </div>
+      </div>
+
+      <table class="pf-credit-table">
+        <thead><tr><th>Product</th><th>Credits required</th><th>Credits available</th></tr></thead>
+        <tbody>
+          <tr><td>Photography Service</td><td>1</td><td>34</td></tr>
+          <tr class="pf-credit-total"><td>Total</td><td>1</td><td>34</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pf-modal-foot">
+      <button class="pf-btn" type="button" data-close><span>Cancel</span></button>
+      <button class="pf-btn" data-variant="primary" type="button" data-close><span>Request Now</span></button>
+    </div>
+  </div>
+</div>
+<div class="pf-mask" id="modal-otp" hidden>
+  <div class="pf-modal" role="dialog" aria-modal="true" aria-labelledby="otp-title">
+    <div class="pf-modal-head">
+      <span class="pf-modal-title" id="otp-title">Verify your licence</span>
+      <button class="pf-overlay-close" type="button" aria-label="Close" data-close><svg class="i i-16"><use href="#pf-IoMdClose"/></svg></button>
+    </div>
+    <div class="pf-modal-body">
+      <p>Enter the code we sent to the mobile number registered with your FAL licence.</p>
+      <div class="pf-otp"><input class="pf-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 1"><input class="pf-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2"><input class="pf-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3"><input class="pf-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4"></div>
+      <button class="pf-btn" data-variant="link" data-size="small" type="button" data-noop="resend is a server call; this page has no server"><span>Resend code</span></button>
+    </div>
+    <div class="pf-modal-foot">
+      <button class="pf-btn" type="button" data-close><span>Cancel</span></button>
+      <button class="pf-btn" data-variant="primary" type="button" data-close><span>Verify</span></button>
+    </div>
   </div>
 </div>
 

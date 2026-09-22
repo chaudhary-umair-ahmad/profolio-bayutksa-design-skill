@@ -18,6 +18,20 @@
  *
  *   <div data-state-panel="empty">           a page state; the bar switches between them
  *
+ *   <button data-tip="Mark Signature">        shows the shared #pf-tip beside it
+ *   <button data-open="popover-leads" data-hover>   opens on hover, not click
+ *   <div class="pf-popover" data-anchor="trigger" data-placement="right">
+ *                                            positioned beside whatever opened it
+ *   <button data-noop="the pager is a URL push">
+ *                                            does nothing ON PURPOSE, and says why
+ *
+ * The last one matters more than it looks. A prototype has controls that
+ * cannot do anything here — a pager that is a server round-trip, a "mark all
+ * as read" that mutates data. Leaving them inert makes them indistinguishable
+ * from the ones nobody has got to yet, so scripts/census.mjs counts a
+ * data-noop as ACKNOWLEDGED and everything else without a target as DEAD.
+ * Dead is the number authoring/listings-buttons.md exists to drive to zero.
+ *
  * Esc closes the topmost overlay, focus is trapped while one is open and
  * restored to the trigger on close — the product's behaviour, and the part
  * most prototypes skip.
@@ -37,17 +51,53 @@
     return el.closest('.pf-mask, .pf-drawer, .pf-popover');
   }
 
+  /* ── anchoring ────────────────────────────────────────────────────────
+     A shell popover sits at a fixed corner, so a CSS rule places it. The
+     table-body popovers cannot: there are thirteen rows and one popover of
+     each kind, so where it goes depends on which trigger opened it. This is
+     the one piece of geometry the prototype computes rather than declares. */
+
+  var GAP = 8;   /* the arrow's reach — antd's popover sits clear of its anchor */
+
+  function anchor(el, trigger, placement) {
+    if (!trigger) return;
+    var r = trigger.getBoundingClientRect();
+    var sx = window.pageXOffset, sy = window.pageYOffset;
+    /* measure the panel where it already is, before moving it */
+    var w = el.offsetWidth, h = el.offsetHeight;
+    var top, left;
+
+    if (placement === 'right')      { top = r.top + sy + r.height / 2 - h / 2; left = r.right + sx + GAP; }
+    else if (placement === 'left')  { top = r.top + sy + r.height / 2 - h / 2; left = r.left + sx - w - GAP; }
+    else if (placement === 'bottom'){ top = r.bottom + sy + GAP;               left = r.left + sx + r.width / 2 - w / 2; }
+    else                            { top = r.top + sy - h - GAP;              left = r.left + sx + r.width / 2 - w / 2; }
+
+    /* keep it on the page — a popover half off the right edge is not a
+       measurement anybody can use */
+    var maxLeft = document.documentElement.scrollWidth - w - GAP;
+    el.style.top = Math.max(GAP, top) + 'px';
+    el.style.left = Math.max(GAP, Math.min(left, maxLeft)) + 'px';
+  }
+
   function open(id, trigger) {
     var el = document.getElementById(id);
     if (!el) return;
     el.hidden = false;
+    if (el.getAttribute('data-anchor') === 'trigger') {
+      anchor(el, trigger, (trigger && trigger.getAttribute('data-placement')) || el.getAttribute('data-placement'));
+    }
     openStack.push({ el: el, trigger: trigger || null });
     /* a drawer needs its own mask; a modal's mask IS the element */
     var mask = el.getAttribute('data-mask');
     if (mask) { var m = document.getElementById(mask); if (m) m.hidden = false; }
-    document.body.style.overflow = 'hidden';
-    var first = el.querySelector(FOCUSABLE);
-    if (first) first.focus();
+    /* only a MASKED overlay locks the page; a popover leaves it scrollable,
+       which is what the product does */
+    if (el.classList.contains('pf-mask') || el.hasAttribute('data-mask')) document.body.style.overflow = 'hidden';
+    /* a hover popover must not steal focus — the pointer is still moving */
+    if (!el.hasAttribute('data-hovered')) {
+      var first = el.querySelector(FOCUSABLE);
+      if (first) first.focus();
+    }
   }
 
   function close(el) {
@@ -55,6 +105,7 @@
     if (i < 0) return;
     var rec = openStack.splice(i, 1)[0];
     el.hidden = true;
+    el.removeAttribute('data-hovered');
     var mask = el.getAttribute('data-mask');
     if (mask) { var m = document.getElementById(mask); if (m) m.hidden = true; }
     if (!openStack.length) document.body.style.overflow = '';
@@ -103,13 +154,97 @@
     try { history.replaceState(null, '', '#state=' + name); } catch (e) { /* file:// refuses */ }
   }
 
+  /* ── the shared tooltip ───────────────────────────────────────────────
+     One element for the whole page. The product has a Tooltip on all six
+     upgrade circles and all seven row actions of every row — ninety on this
+     screen — and ninety copies of the same markup would be a worse reference
+     than one, not a better one. The text is the trigger's own data-tip. */
+
+  function tipFor(trigger) {
+    var tip = document.getElementById('pf-tip');
+    if (!tip) return;
+    tip.textContent = trigger.getAttribute('data-tip');
+    tip.hidden = false;
+    anchor(tip, trigger, trigger.getAttribute('data-placement') || 'top');
+  }
+
+  function hideTip() {
+    var tip = document.getElementById('pf-tip');
+    if (tip) tip.hidden = true;
+  }
+
   /* ── wiring ──────────────────────────────────────────────────────────── */
+
+  /* Hover, for the six popovers and the tooltip that open that way in the
+     product. mouseover/mouseout rather than mouseenter, because these are
+     delegated from the document and enter does not bubble. */
+  document.addEventListener('mouseover', function (e) {
+    var tipped = e.target.closest('[data-tip]');
+    if (tipped) tipFor(tipped);
+
+    var t = e.target.closest('[data-open][data-hover]');
+    if (!t) return;
+    var id = t.getAttribute('data-open');
+    var el = document.getElementById(id);
+    if (!el || !el.hidden) return;
+    el.setAttribute('data-hovered', '');
+    open(id, t);
+  });
+
+  document.addEventListener('mouseout', function (e) {
+    var tipped = e.target.closest('[data-tip]');
+    if (tipped && !tipped.contains(e.relatedTarget)) hideTip();
+
+    var t = e.target.closest('[data-open][data-hover]');
+    if (!t) return;
+    var el = document.getElementById(t.getAttribute('data-open'));
+    if (!el || el.hidden) return;
+    /* moving INTO the popover keeps it open — the product's popovers are
+       interactive, and the health one has three buttons in it */
+    if (e.relatedTarget && (t.contains(e.relatedTarget) || el.contains(e.relatedTarget))) return;
+    close(el);
+  });
+
+  /* leaving the popover itself closes it, unless the pointer went back to the
+     thing that opened it */
+  document.addEventListener('mouseout', function (e) {
+    var el = e.target.closest('.pf-popover[data-hovered]');
+    if (!el || (e.relatedTarget && el.contains(e.relatedTarget))) return;
+    var rec = openStack[openStack.length - 1];
+    if (rec && rec.el === el && !(e.relatedTarget && rec.trigger && rec.trigger.contains(e.relatedTarget))) close(el);
+  });
+
+  /* keyboard parity: a tooltip that only exists on hover is not reachable */
+  document.addEventListener('focusin', function (e) {
+    var t = e.target.closest('[data-tip]');
+    if (t) tipFor(t); else hideTip();
+  });
+
 
   document.addEventListener('click', function (e) {
     var t = e.target.closest('[data-open],[data-close],[data-panel],[data-state-set]');
 
     if (t) {
-      if (t.hasAttribute('data-open')) { e.preventDefault(); open(t.getAttribute('data-open'), t); return; }
+      if (t.hasAttribute('data-open')) {
+        e.preventDefault();
+        var el = document.getElementById(t.getAttribute('data-open'));
+        /* a hover trigger has already opened it; clicking must not stack it.
+           But clicking (or Entering) a hover popover is how a keyboard or
+           touch user gets INTO it — the health panel has three buttons — so
+           the click takes it out of hover mode and moves focus in. Leaving it
+           in hover mode would mean the only way to reach those buttons is a
+           mouse, which is not a component anybody can ship. */
+        if (el && !el.hidden) {
+          if (el.hasAttribute('data-hovered')) {
+            el.removeAttribute('data-hovered');
+            var f = el.querySelector(FOCUSABLE);
+            if (f) f.focus();
+          }
+        } else {
+          open(t.getAttribute('data-open'), t);
+        }
+        return;
+      }
       if (t.hasAttribute('data-close')) { e.preventDefault(); var o = overlayOf(t); if (o) close(o); return; }
       if (t.hasAttribute('data-panel')) { e.preventDefault(); selectTab(t); return; }
       if (t.hasAttribute('data-state-set')) { e.preventDefault(); setState(t.getAttribute('data-state-set')); return; }

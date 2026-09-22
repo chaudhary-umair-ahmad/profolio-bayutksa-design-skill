@@ -533,6 +533,59 @@
        data/live/listings--popover-account.capture.json .ant-popover   z 99999 */
   --overlay-z:1000;
   --popover-z:99999;
+  /* ── the table-body overlays ────────────────────────────────────────────
+     Six popovers, a tooltip and two select listboxes live inside the listing
+     table, and none of them had ever been captured before — every value the
+     design system had for them was invented. These are measured, one state
+     per line, from the harness captures named beside them.
+
+     The TOOLTIP is the correction worth reading twice: the product's tooltip
+     is WHITE with a hairline border and #5A5F7D text. antd ships a dark pill.
+     Anything drawn from the antd default would have been the wrong colour.
+       data/live/listings--tooltip-action.capture.json  132x40 */
+  --tip-fg:#5A5F7D;
+  --tip-border:#F1F2F6;
+  --tip-radius:6px;
+  --tip-pad:6px 20px;
+  --tip-h:40px;                        /* min-height; a two-line tip is 54 */
+  --tip-shadow:0 8px 15px rgba(146,153,184,.082);
+  --tip-maxw:250px;                    /* the widest measured — the service tips */
+  /* the popovers, by the width each one measured at */
+  --popover-w-health:440px;            /* listings--popover-health   440x352 */
+  --popover-w-leads:216px;             /* listings--popover-leads    216x235 */
+  --popover-w-date:802px;              /* listings--date-posted-on   802x381 */
+  --popover-pad:16px;                  /* .ant-popover-inner on every one of
+                                          them EXCEPT health, which pads its
+                                          own panel and leaves the inner at 0 */
+  /* the open Select. No capture in this system had ever contained one, and six
+     filter controls could only be drawn shut for want of it.
+       data/live/listings--select-purpose.capture.json        245x137, 3 flat
+       data/live/listings--select-property-type.capture.json  245x278, 1 group */
+  --listbox-w:245px;
+  --listbox-pad:11px;
+  --listbox-radius:8px;
+  --listbox-shadow:0 5px 20px rgba(146,153,184,.125);
+  --listbox-item-h:38px;
+  --listbox-item-pad:8px 12px;
+  --listbox-item-indent:25px;          /* an option under a group header */
+  --listbox-item-active:rgba(95,99,242,.02);
+  --listbox-group-h:35px;
+  --listbox-z:1050;
+  /* QuotaCreditModal, the overlay all 72 upgrade circles open. Two shapes, one
+     width: the three SERVICES add the ServiceOptions form and grow the body.
+       data/live/listings--upgrade-signature.capture.json    708x414, body 284
+       data/live/listings--upgrade-photography.capture.json  708x546, body 416 */
+  --modal-w-quota:708px;
+  /* the react-date-range panel inside the Posted On popover, measured from
+     data/live/listings--date-posted-on.capture.json:
+       .rdrDefinedRangesWrapper 226 wide · .rdrStaticRange 225x36
+       .rdrMonth 272x247 · .rdrDay 36x36 */
+  --daterange-static-w:226px;
+  --daterange-day:36px;
+  /* UNMEASURED — OtpVerificationModal has never been opened by a capture in
+     this system. authoring/listings-buttons.md carries the row that says so.
+     48 is the input height this stylesheet already uses, squared. */
+  --otp-box:48px;
   /* MEASURED now, from the product's own empty tab — these were [TBC] guesses.
      data/live/listings--tab-removed.capture.json: the wrapper is a grid with
      32px gaps and a 300px minimum, the illustration is 164x89 intrinsic and
@@ -1521,6 +1574,19 @@ table{border-collapse:collapse}
   display:grid;place-items:center;
 }
 .pf-applied-check svg{inline-size:var(--sp-8);block-size:var(--sp-8)}
+/* the third circle state. upgrade-icons.js:58 draws RequestedStateIcon in the
+   warning colour where :50 draws the green tick — same box, same inset.
+   data/live/listings--tooltip-upgrade-pending */
+.pf-pending-mark{
+  position:absolute;
+  inset-block-end:var(--applied-check-inset);
+  inset-inline-end:var(--applied-check-inset);
+  inline-size:var(--applied-check);block-size:var(--applied-check);
+  border-radius:var(--radius-round);
+  background:var(--tag-warning-fg);color:var(--white);
+  display:grid;place-items:center;
+}
+.pf-pending-mark svg{inline-size:var(--sp-8);block-size:var(--sp-8)}
 .pf-round-action[data-state="disabled"]{opacity:var(--disabled-opacity);cursor:not-allowed}
 .pf-round-action:hover,
 .pf-round-action[data-state="hover"]{filter:brightness(.96)}
@@ -2179,6 +2245,181 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   box-shadow:inset 0 0 0 4px var(--primary);
 }
 .pf-radio input:focus-visible{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · tooltip (antd Tooltip)
+   NOT .pf-tooltip — that one is the CHART's tooltip, a different component
+   with a different skin. This is the tooltip on every upgrade circle and
+   every row action: white, hairline-bordered, #5A5F7D.
+   data/live/listings--tooltip-action.capture.json · --upgrade · --upgrade-service
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-tip{
+  position:absolute;
+  z-index:var(--popover-z);
+  max-width:var(--tip-maxw);
+  min-height:var(--tip-h);
+  display:flex;
+  align-items:center;
+  padding:var(--tip-pad);
+  border:var(--border-w) solid var(--tip-border);
+  border-radius:var(--tip-radius);
+  background:var(--white);
+  color:var(--tip-fg);
+  box-shadow:var(--tip-shadow);
+  font-size:var(--fs-base);
+  line-height:var(--lh-base);
+  pointer-events:none;
+}
+.pf-tip[hidden]{display:none}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · the table-body popovers
+   Five of them, all anchored to something inside a row. Four open on HOVER;
+   the Status one opens on CLICK and is the only click-triggered popover in
+   the table body (platforms-status.js:16).
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-popover[data-kind="anchored"]{
+  width:max-content;
+  max-width:var(--popover-w-date);
+  box-shadow:var(--popover-shadow);
+}
+.pf-popover[data-kind="anchored"] .pf-popover-body{padding:var(--popover-pad)}
+.pf-popover[data-kind="health"]{width:var(--popover-w-health)}
+/* the health panel styles its own content, so the inner padding is zero —
+   measured: inner 440x352 and inner-content 440x352, the same box */
+.pf-popover[data-kind="health"] .pf-popover-body{padding:var(--sp-0)}
+.pf-popover[data-kind="leads"]{width:var(--popover-w-leads)}
+.pf-popover[data-kind="date"]{width:var(--popover-w-date)}
+
+/* the health panel */
+.pf-health-head{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12);
+  padding:var(--popover-pad);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+}
+.pf-health-row{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12);
+  padding:var(--sp-12) var(--popover-pad);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+}
+.pf-health-row:last-child{border-block-end:0}
+.pf-health-label{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-600)}
+
+/* the leads breakdown — a dashed rule between groups, as listing-stats.js draws */
+.pf-lead-group{padding-block:var(--sp-8);border-block-end:var(--border-w) dashed var(--drawer-border)}
+.pf-lead-group:last-child{border-block-end:0}
+.pf-lead-row{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12)}
+.pf-lead-title{color:var(--gray-600);font-size:var(--fs-12)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · select listbox (.ant-select-dropdown)
+   data/live/listings--select-purpose · --select-property-type
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-listbox{
+  position:absolute;
+  z-index:var(--listbox-z);
+  width:var(--listbox-w);
+  padding:var(--listbox-pad);
+  border-radius:var(--listbox-radius);
+  background:var(--white);
+  box-shadow:var(--listbox-shadow);
+  overflow:hidden;
+}
+.pf-listbox[hidden]{display:none}
+.pf-listbox-option{
+  display:flex;align-items:center;gap:var(--sp-8);
+  min-height:var(--listbox-item-h);
+  padding:var(--listbox-item-pad);
+  border-radius:var(--radius-control);   /* measured 6 on the option */
+  color:var(--base);
+  background:none;border:0;width:100%;font:inherit;text-align:start;cursor:pointer;
+}
+.pf-listbox-option[aria-selected="true"],
+.pf-listbox-option:hover{background:var(--listbox-item-active)}
+.pf-listbox-group{
+  min-height:var(--listbox-group-h);
+  padding:var(--listbox-item-pad);
+  font-size:var(--fs-12);
+  color:var(--gray-600);
+}
+/* an option that belongs to a group is indented — measured 25 against 12 */
+.pf-listbox-group ~ .pf-listbox-option{padding-inline-start:var(--listbox-item-indent)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · QuotaCreditModal — what an upgrade circle opens
+   data/live/listings--upgrade-signature (708x414) · --upgrade-photography (708x546)
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-modal[data-size="quota"]{width:var(--modal-w-quota)}
+.pf-credit-table{width:100%;border-collapse:collapse;margin-block:var(--sp-16)}
+.pf-credit-table th,.pf-credit-table td{
+  padding:var(--sp-8) var(--sp-12);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+  text-align:start;
+}
+.pf-credit-table th{color:var(--gray-600);font-weight:var(--fw-400)}
+.pf-credit-total td{font-weight:var(--fw-600);border-block-end:0}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · the info icon in a table cell
+   AiOutlineInfoCircle, the trigger for four of the five table-body popovers:
+   REGA expiry, Timeline's posted-on, Leads, and a rejected Status pill. It is
+   a button because three of those open on hover and one on click, and a
+   tooltip nobody can reach with a keyboard is not a component.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-info{
+  display:inline-grid;place-items:center;
+  inline-size:var(--sp-16);block-size:var(--sp-16);
+  padding:var(--sp-0);margin-inline-start:var(--sp-4);
+  border:0;background:none;color:var(--gray-600);cursor:pointer;
+  vertical-align:middle;
+}
+.pf-info[data-tone="danger"]{color:var(--danger)}
+.pf-info:focus-visible{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · the date range panel (react-date-range)
+   NOT an antd picker. datePicker.js:15 imports react-date-range and its own
+   stylesheet, so the calendar in the Posted On popover is .rdr* markup with a
+   static-range list beside two months.
+   data/live/listings--date-posted-on.capture.json — 802x381, 70 days, 5 ranges
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-daterange{display:flex;gap:var(--sp-16)}
+.pf-daterange-static{
+  list-style:none;margin:var(--sp-0);padding:var(--sp-0);
+  min-width:var(--daterange-static-w);
+  border-inline-end:var(--border-w) solid var(--drawer-border);
+}
+.pf-daterange-months{display:flex;gap:var(--sp-24);flex:1}
+.pf-daterange-month{flex:1}
+.pf-daterange-name{text-align:center;font-weight:var(--fw-600);margin-block-end:var(--sp-8)}
+.pf-daterange-weekdays,
+.pf-daterange-days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+.pf-daterange-weekdays{color:var(--gray-600);font-size:var(--fs-12)}
+.pf-daterange-day{
+  block-size:var(--daterange-day);
+  display:grid;place-items:center;
+  border-radius:var(--radius-round);
+  font-size:var(--fs-12);
+}
+.pf-daterange-day:hover{background:var(--primary-light-4)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · OTP entry — platformActions.js:174
+   UNMEASURED. No capture in this system has opened OtpVerificationModal, and
+   authoring/listings-buttons.md says so in its own row. These are the modal's
+   own tokens, not this overlay's.
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-otp{display:flex;gap:var(--sp-12);margin-block:var(--sp-16)}
+.pf-otp-box{
+  inline-size:var(--otp-box);block-size:var(--otp-box);
+  text-align:center;font-size:var(--fs-18);
+  border:var(--border-w) solid var(--input-border);
+  border-radius:var(--radius-control);
+  background:var(--white);color:var(--base);
+}
+.pf-otp-box:focus-visible{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
 
 </style>
 <style>
