@@ -34,7 +34,7 @@ export const NAV = [
   ['Overview',           'SideMenuDashboard',    'dashboard.html'],
   ['Post Listing',       'PostListingIcon',      null],
   ['My Listings',        'MyListingIcon',        'listings.html'],
-  ['Credits Usage',      'SideMenuQuota',        null],
+  ['Credits Usage',      'SideMenuQuota',        'credits-usage.html'],
   ['Agent Performance',  'AgentPerformanceIcon', null],
   ['Reports',            'SideMenuReports',      'reports-summary.html'],
   ['Agency Staff',       'SideMenuAgency',       null],

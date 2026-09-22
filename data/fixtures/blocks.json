@@ -404,6 +404,89 @@
         }
       ],
       "column": true
+    },
+    {
+      "slug": "credits-usage",
+      "route": "credits-usage",
+      "title": "Credits Usage",
+      "rail": "Credits Usage",
+      "notes": [
+        "content 1380x856 · a row 1348x816 of two antd columns",
+        "left ant-col-lg-8 449 wide holding a 433-wide block",
+        "right ant-col-lg-16 899 wide holding a card 883x790: head 57, body 732"
+      ],
+      "rows": [
+        {
+          "cols": "449 899",
+          "blocks": [
+            {
+              "title": "Credits Summary",
+              "w": 433,
+              "body": [
+                {
+                  "kind": "stats",
+                  "items": [
+                    {
+                      "icon": "IconBasic",
+                      "label": "Basic",
+                      "value": "980"
+                    },
+                    {
+                      "icon": "IconSuperHot",
+                      "label": "Hot",
+                      "value": "640"
+                    },
+                    {
+                      "icon": "BsFillLightningChargeFill",
+                      "label": "Signature",
+                      "value": "320"
+                    },
+                    {
+                      "icon": "MdRefresh",
+                      "label": "Refresh",
+                      "value": "120"
+                    },
+                    {
+                      "icon": "HiCamera",
+                      "label": "Photography",
+                      "value": "60"
+                    },
+                    {
+                      "icon": "SideMenuQuota",
+                      "label": "Used",
+                      "value": "2,120"
+                    },
+                    {
+                      "icon": "GoDotFill",
+                      "label": "Available",
+                      "value": "34"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Consumption History",
+              "headAction": "Download",
+              "w": 883,
+              "body": [
+                {
+                  "kind": "table",
+                  "columns": [
+                    "Product",
+                    "Listing",
+                    "Credits",
+                    "Used on",
+                    "By"
+                  ],
+                  "empty": "No Record Found"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pager": 6
     }
   ]
 }

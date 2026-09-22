@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Listing Report — Profolio KSA</title>
+<title>Credits Usage — Profolio KSA</title>
 <!-- the product's own faces, embedded; no network -->
 <style>
 /* inlined from fonts.css — see scripts/bundle.mjs */
@@ -3935,11 +3935,11 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   </symbol>
 </defs></svg>
 <!-- ═══════════════════════════════════════════════════════════════════
-     LISTING REPORT — scripts/pages/blocks.mjs from data/fixtures/blocks.json
-     Every size below is read off data/live/reports-listing-report.capture.json:
-       content 1380x1780 · the same 1332x240 header row
-       then a card 1332x1484: head 46, body 1437 holding the table
-       the card is TABBED 1332x1484 — tabs 254x46, each 94 wide
+     CREDITS USAGE — scripts/pages/blocks.mjs from data/fixtures/blocks.json
+     Every size below is read off data/live/credits-usage.capture.json:
+       content 1380x856 · a row 1348x816 of two antd columns
+       left ant-col-lg-8 449 wide holding a 433-wide block
+       right ant-col-lg-16 899 wide holding a card 883x790: head 57, body 732
      ═══════════════════════════════════════════════════════════════════════ -->
 <div class="pf-shell">
   <!-- ── icon rail · collapsed (60px), the shipped default state ────── -->
@@ -3981,9 +3981,9 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
       <a class="pf-rail-item" href="dashboard.html" title="Overview"><svg class="i i-20"><use href="#pf-SideMenuDashboard"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Post%20Listing" title="Post Listing"><svg class="i i-20"><use href="#pf-PostListingIcon"/></svg></a>
       <a class="pf-rail-item" href="listings.html" title="My Listings"><svg class="i i-20"><use href="#pf-MyListingIcon"/></svg></a>
-      <a class="pf-rail-item" href="credits-usage.html" title="Credits Usage"><svg class="i i-20"><use href="#pf-SideMenuQuota"/></svg></a>
+      <a class="pf-rail-item" aria-current="page" href="credits-usage.html" title="Credits Usage"><svg class="i i-20"><use href="#pf-SideMenuQuota"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Agent%20Performance" title="Agent Performance"><svg class="i i-20"><use href="#pf-AgentPerformanceIcon"/></svg></a>
-      <a class="pf-rail-item" aria-current="page" href="reports-summary.html" title="Reports"><svg class="i i-20"><use href="#pf-SideMenuReports"/></svg></a>
+      <a class="pf-rail-item" href="reports-summary.html" title="Reports"><svg class="i i-20"><use href="#pf-SideMenuReports"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Agency%20Staff" title="Agency Staff"><svg class="i i-20"><use href="#pf-SideMenuAgency"/></svg></a>
       <a class="pf-rail-item" href="user-settings-user-profile.html" title="Settings"><svg class="i i-20"><use href="#pf-IoSettingsOutline"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Credits%20%26%20Packages" title="Credits &amp; Packages"><svg class="i i-20"><use href="#pf-SideMenuPropShop"/></svg></a>
@@ -3996,7 +3996,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   <div class="pf-main">
     <!-- ── header ──────────────────────────────────────────────────── -->
     <header class="pf-header pf-header-fixed">
-      <div class="pf-header-brand"><span class="pf-page-title">Listing Report</span></div>
+      <div class="pf-header-brand"><span class="pf-page-title">Credits Usage</span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
         <!-- the one link in the shell that LEAVES the product. It carried
@@ -4008,46 +4008,29 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
       </div>
     </header>
     <main class="pf-content" data-gap="8">
-      <div class="pf-block-row" style-cols="533 783" data-cols="533 783">
-        <section class="pf-card pf-block" data-w="533" data-h="240">
-          <div class="pf-block-head">Listings Summary</div>
+      <div class="pf-block-row" style-cols="449 899" data-cols="449 899">
+        <section class="pf-card pf-block" data-w="433">
+          <div class="pf-block-head">Credits Summary</div>
           <div class="pf-block-body">
             <div class="pf-stat-grid">
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-MyListingIcon"/></svg><div><span class="pf-stat-title">Total</span><span class="pf-stat-value">51</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconBasic"/></svg><div><span class="pf-stat-title">Basic</span><span class="pf-stat-value">34</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg><div><span class="pf-stat-title">Hot</span><span class="pf-stat-value">9</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg><div><span class="pf-stat-title">Signature</span><span class="pf-stat-value">8</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-MdEdit"/></svg><div><span class="pf-stat-title">Draft</span><span class="pf-stat-value">1</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-GoDotFill"/></svg><div><span class="pf-stat-title">Pending</span><span class="pf-stat-value">4</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg><div><span class="pf-stat-title">Removed</span><span class="pf-stat-value">172</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconBasic"/></svg><div><span class="pf-stat-title">Basic</span><span class="pf-stat-value">980</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg><div><span class="pf-stat-title">Hot</span><span class="pf-stat-value">640</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg><div><span class="pf-stat-title">Signature</span><span class="pf-stat-value">320</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg><div><span class="pf-stat-title">Refresh</span><span class="pf-stat-value">120</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-HiCamera"/></svg><div><span class="pf-stat-title">Photography</span><span class="pf-stat-value">60</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-SideMenuQuota"/></svg><div><span class="pf-stat-title">Used</span><span class="pf-stat-value">2,120</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-GoDotFill"/></svg><div><span class="pf-stat-title">Available</span><span class="pf-stat-value">34</span></div></div>
             </div>
           </div>
         </section>
-        <section class="pf-card pf-block" data-w="783" data-h="240">
-          <div class="pf-block-head">Listings Performance</div>
+        <section class="pf-card pf-block" data-w="883">
+          <div class="pf-block-head">Consumption History<a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Download"><span>Download</span></a></div>
           <div class="pf-block-body">
-            <div class="pf-plot" data-h="160" role="img" aria-label="Views, clicks and leads over time">
-              <span class="pf-plot-note">Views, clicks and leads over time</span>
-            </div>
-          </div>
-        </section>
-      </div>
-      <div class="pf-block-row" style-cols="full" data-cols="full">
-        <section class="pf-table-card">
-          <div class="pf-table-card-head">
-
-            <div class="pf-tabs" role="tablist">
-              <button class="pf-tab" role="tab" type="button" aria-selected="true" data-tabw="94" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Summary</span></button>
-              <button class="pf-tab" role="tab" type="button" data-tabw="94" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Listing Report</span></button>
-              <button class="pf-tab" role="tab" type="button" data-tabw="94" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Leads Report</span></button>
-            </div>
-
-          </div>
             <table class="pf-table">
-              <thead><tr><th>Property</th><th>Product</th><th>Views</th><th>Clicks</th><th>Leads</th><th>Posted on</th></tr></thead>
+              <thead><tr><th>Product</th><th>Listing</th><th>Credits</th><th>Used on</th><th>By</th></tr></thead>
               <tbody>
                 <tr>
-                  <td colspan="6">
+                  <td colspan="5">
                     <div class="pf-empty">
                       <svg class="pf-empty-art" width="164" height="89" viewBox="0 0 164 89" role="img" aria-label="No Record Found illustration">
   <path
@@ -4146,6 +4129,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
                 </tr>
               </tbody>
             </table>
+          </div>
         </section>
       </div>
       <ul class="pf-pagination">

@@ -1,0 +1,14 @@
+{
+  "score": 96.7,
+  "checks": 90,
+  "disagreements": [
+    {
+      "id": "shell.content",
+      "prop": "height",
+      "live": "856.016px",
+      "ours": "799px",
+      "w": 3
+    }
+  ],
+  "at": "2026-09-22T11:33:34.078Z"
+}

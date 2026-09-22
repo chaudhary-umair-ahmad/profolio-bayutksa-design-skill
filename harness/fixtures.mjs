@@ -332,6 +332,51 @@ const ROUTES = [
       const l = listings.find((x) => x.id === id) || listings[0];
       return { listing: { ...clean(l), dynamic_data: { dynamic_fields: { features: [] } } } };
     }],
+  /* ── credits usage ────────────────────────────────────────────────────
+     Both of these answered {} and the page rendered chrome and nothing else:
+     0 rows, 2 cards, 146 nodes. scripts/check-captures.mjs called it EMPTY,
+     which is the whole reason it exists.
+
+     The shapes are the transformers': getConsumptionHistoryData reads
+     `credits_consumption_history[platform_slug]` and maps each row through
+     `dataMapper` (apis/quotaCredits.js:9), which wants product.slug,
+     performed_at and listing.expiry_date; getConsumptionSummaryData reads
+     `credits_consumption_summary[platform_slug]` and wants `used` and a
+     `product_wise` array of {slug, consumed_credits} that it turns into the
+     donut. */
+  [/^\/api\/surge\/credits\/consumption_history/, () => ({
+      credits_consumption_history: {
+        /* keyed 'bayut', NOT 'ksa'. apis/quotaCredits.js:157 reads
+           `platform.platform_slug || platform.slug`, and staticLists.js:19
+           sets platform_slug to 'bayut' while the platform's own slug is
+           'ksa'. Keyed by the slug the page rendered nothing and the capture
+           gate still called it empty. */
+        bayut: listings.slice(0, 8).map((l, i) => ({
+          id: 5500 + i,
+          credits: [1, 1, 2, 5][i % 4],
+          performed_at: day(3 + i * 2).toISOString(),
+          product: { slug: ['hot-listing', 'signature-listing', 'refresh', 'photography-service'][i % 4],
+                     name: ['Hot', 'Signature', 'Refresh', 'Photography'][i % 4] },
+          listing: { id: l.id, expiry_date: day(-28).toISOString(), ...clean(l) },
+          user: { id: U.id, name: U.name },
+        })),
+      },
+      pagination: { current_page: 1, total_pages: 6, total_count: 118, page_size: 20 },
+    })],
+  [/^\/api\/surge\/credits\/consumption_summary$/, () => ({
+      credits_consumption_summary: {
+        bayut: {
+          used: 2120, available: 34, total: 75000, expiring: 120,
+          product_wise: [
+            { slug: 'basic-listing',       name: 'Basic',       consumed_credits: 980 },
+            { slug: 'hot-listing',         name: 'Hot',         consumed_credits: 640 },
+            { slug: 'signature-listing',   name: 'Signature',   consumed_credits: 320 },
+            { slug: 'refresh',             name: 'Refresh',     consumed_credits: 120 },
+            { slug: 'photography-service', name: 'Photography', consumed_credits: 60 },
+          ],
+        },
+      },
+    })],
   [/^\/api\/surge\/listings\/summary$/,              () => ({ summary: SUMMARY })],
   /* The tab IS a query param — listings.js:99 reads
      `f[nested.platform_listings.status.slug]` and passes the slug to
