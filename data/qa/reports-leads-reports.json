@@ -1,60 +1,44 @@
 {
   "route": "reports-leads-reports",
-  "at": "2026-09-22T11:29:12.047Z",
+  "at": "2026-09-22T12:17:14.126Z",
   "shellFails": [
     {
       "id": "shell.title",
-      "diff": 36
+      "diff": 37.2
     },
     {
       "id": "shell.header",
-      "diff": 9.8
+      "diff": 10
     }
   ],
   "diffs": [
     {
       "id": "shell.title",
-      "diff": 36
-    },
-    {
-      "id": "filter.field",
-      "diff": 22.4
+      "diff": 37.2
     },
     {
       "id": "filter.clear",
-      "diff": 19.6
+      "diff": 25.3
     },
     {
-      "id": "tabs.active",
+      "id": "filter.search",
       "diff": 16.1
     },
     {
-      "id": "filter.bar",
-      "diff": 11.3
-    },
-    {
-      "id": "tabs.nav",
-      "diff": 10.7
+      "id": "filter.field",
+      "diff": 14.7
     },
     {
       "id": "shell.header",
-      "diff": 9.8
+      "diff": 10
     },
     {
-      "id": "table.card.head",
-      "diff": 7.8
-    },
-    {
-      "id": "tabs.tab",
-      "diff": 7.2
+      "id": "filter.bar",
+      "diff": 5.6
     },
     {
       "id": "shell.sider",
       "diff": 4.6
-    },
-    {
-      "id": "table.card",
-      "diff": 3.9
     },
     {
       "id": "shell.content",
@@ -65,20 +49,20 @@
       "diff": 3.1
     },
     {
-      "id": "table",
-      "diff": 3.1
-    },
-    {
       "id": "shell.footer",
       "diff": 2.1
     },
     {
-      "id": "pager",
-      "diff": 1
+      "id": "table",
+      "diff": 1.1
     },
     {
       "id": "pager.item",
       "diff": 0.8
+    },
+    {
+      "id": "pager",
+      "diff": 0.5
     },
     {
       "id": "pager.nav",
@@ -91,9 +75,27 @@
     "space": []
   },
   "literals": [
-    ".pf-sfield[data-h=\"118\"] { block-size: 118px }",
+    ".i-17 { width: 17px }",
+    ".i-17 { height: 17px }",
+    ".pf-settings-head + .pf-settings-form { --form-inset: 41px }",
+    ".pf-agency { --form-inset: 17px }",
+    ".pf-upload-btn { block-size: 55px }",
     ".pf-block-row[data-cols=\"533 783\"] { grid-template-columns: 533px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"449 899\"] { grid-template-columns: 449px minmax(var(--sp-0),1fr) }",
     ".pf-block-row[data-cols=\"narrow\"] { grid-template-columns: minmax(var(--sp-0),1035px) }",
+    ".pf-datefield { inline-size: var(--field-w, 345px) }",
+    ".pf-pill { block-size: 29px }",
+    ".pf-stat-lead { inline-size: 103px }",
+    ".pf-tl-thumb { inline-size: 120px }",
+    ".pf-tl-thumb { block-size: 82px }",
+    ".pf-proptable .pf-td-prop { inline-size: 475px }",
+    ".pf-page-lead { inline-size: 1035px }",
+    ".pf-wsection-title { inline-size: 195px }",
+    ".pf-wsection-title { block-size: 105px }",
+    ".pf-wsection-icon { inline-size: 56px }",
+    ".pf-wsection-icon { block-size: 56px }",
+    ".pf-wsection-fields { max-inline-size: 640px }",
+    ".pf-compound .pf-select { inline-size: 82px }",
     ".pf-plot[data-h=\"160\"] { block-size: 160px }",
     ".pf-plot[data-h=\"440\"] { block-size: 440px }",
     ".pf-tab[data-tabw=\"200\"] { inline-size: 200px }",
@@ -101,8 +103,8 @@
     ".pf-table-card[data-h=\"528\"] { block-size: 528px }",
     ".pf-filter-bar[data-in-head=\"true\"] { block-size: 78px }"
   ],
-  "lowContrast": 0,
-  "contrastMatchingProduct": 10,
+  "lowContrast": 2,
+  "contrastMatchingProduct": 15,
   "productLow": [
     {
       "col": "rgb(255,255,255)",
@@ -121,7 +123,11 @@
     }
   ],
   "notModelled": [
-    "filter.search",
+    "table.card",
+    "table.card.head",
+    "tabs.nav",
+    "tabs.tab",
+    "tabs.active",
     "tabs.ink"
   ],
   "rtlOverflow": false,

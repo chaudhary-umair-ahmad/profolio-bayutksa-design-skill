@@ -270,6 +270,10 @@
   --fs-12:12px;                        /* .fz-12 banner message, tooltip-title */
   --fs-18:18px;                        /* utils.less @fontSizes */
   --fs-20:20px;                        /* .fs20 — the Download App modal title */
+  --fs-24:24px;                        /* the agency name on Agency Settings */
+  --sp-28:28px;                        /* agency header to divider */
+  --sp-56:56px;                        /* upload button to its guidelines */
+  --radius-control-sm:4px;             /* the settings sub-nav pill */
   --fs-tag:11px;                        /* theme tag-font-size */
   --fs-chart-tick:13px;                /* chart yAxes ticks fontSize */
   --fs-chart-tick-x:10px;              /* [px] x labels — 30 daily ticks only fit at ~10px */
@@ -664,10 +668,40 @@
   --settings-gutter:5px;               /* .ant-col padding-inline */
   --settings-card:326px;               /* the cards inside it */
   --settings-nav-h:256px;
-  --settings-nav-pad:17px 26px;
-  --settings-head-h:152px;
-  --settings-avatar:68px;
-  --settings-avatar-slot:74px;
+  --settings-nav-pad:17px 21px;        /* list 284 inside the 326 card */
+  --settings-nav-row:38px;             /* every entry, 8 apart */
+  --settings-nav-icon:38px;            /* the icon slot, 18 glyph + 20 gap */
+  --settings-comp-h:240px;
+  --settings-meter:235px;              /* the progress track */
+  --settings-meter-h:8px;
+  --settings-meter-fill:#F0A742;       /* ORANGE — not the page's teal */
+  --settings-step-h:24px;
+  --settings-step-r:10px;
+  --settings-head-h:150px;             /* the profile page's header card */
+  --settings-avatar:56px;
+  --agency-logo:72px;
+  --agency-head-h:72px;
+  --settings-pad:40px;                 /* card body inset on every shape */
+  --settings-nav-active:#F7FCFC;       /* the current sub-nav row */
+  --settings-nav-icon-color:#ADB4D2;   /* an inactive sub-nav glyph */
+  --progress-track:rgba(0,0,0,.06);    /* antd .ant-progress-inner */
+  --step-done:rgba(0,97,105,.667);     /* a completed verification step's label */
+  --quality-bg:rgba(240,167,66,.12);   /* the listing-quality chip */
+
+  /* Per-instance properties. Each is set inline by the generator from a
+     MEASURED value — a step pill's width, a stat tile's tint, a Save button's
+     width — and declared here so the stylesheet is the list of everything the
+     pages can set, and so a typo in a generator shows up as a default rather
+     than as nothing at all. */
+  --step-w:auto;                       /* a completion step pill */
+  --form-w:100%;                       /* a settings form's column block */
+  --save-w:auto; --save-r:var(--radius-control);
+  --round-w:auto;                      /* the generate-description button */
+  --upload-w:415px;                    /* the dashed upload button */
+  --field-w:auto;                      /* a filter field */
+  --tile:var(--bg-gray-deep);          /* an icon tile's tint */
+  --donut:128px;                       /* a ring's diameter */
+  --swatch:var(--gray-400);            /* a legend swatch */
   --sfield-label-h:22px;
   --sfield-control-h:44px;
   --sfield-gap:8px;                    /* label to control */
@@ -676,7 +710,13 @@
   --sfield-gutter:54px;
   --sfield-row-gap:24px;               /* 98 pitch less the 74 field */
   --sfield-tall:164px;                 /* a generate-content textarea */
+  --sfield-textarea:88px;
+  --sfield-phone-h:46px;               /* a PhoneInput is 2 taller than an input */
+  --sfield-phone-country:68px;
+  --sfield-narrow:500px;               /* Change Password's centred column */
+  --sfield-round-h:38px;               /* the generate button */
   --input-disabled-bg:rgba(0,0,0,.04);  /* .ant-input-disabled, measured */
+  --disabled:rgba(0,0,0,.25);           /* .ant-input-disabled's own text colour */
   --sfield-upload:133px;               /* the image-select row that ends the form */
   --sfield-upload-art:103px;
   /* pages made of measured blocks — reports, LMS, ad-license.
@@ -1975,6 +2015,9 @@ table{border-collapse:collapse}
 .pf-page-item[aria-disabled="true"]{color:var(--text-disabled)}
 .pf-page-item[aria-disabled="true"] button{cursor:not-allowed}
 .i-12{width:var(--fs-12);height:var(--fs-12)}
+.i-10{width:var(--fs-10);height:var(--fs-10)}
+.i-17{width:17px;height:17px}    /* antd renders the stat tiles' glyphs at 17 */
+.i-24{width:var(--fs-24);height:var(--fs-24)}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · overlays — modal, drawer, popover
@@ -2269,7 +2312,10 @@ table{border-collapse:collapse}
 }
 /* the illustration ships its own 164x89 and its own fills — EmptyState.js:31
    passes primary-light-2, which is already baked into the extracted art */
-.pf-empty-art{display:block}
+/* EmptyState.js:31 renders <EmptyListing color={tenantTheme['primary-light-2']}/>
+   and the illustration paints nine of its shapes with currentColor. Inherited,
+   that resolved to the page's near-black text and the art came out dark. */
+.pf-empty-art{display:block;color:var(--primary-light-2)}
 .pf-empty-title{
   font-size:var(--fs-18);font-weight:var(--fw-600);color:var(--black);
   margin-block-end:var(--empty-title-mb);
@@ -2885,122 +2931,234 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   min-inline-size:var(--sp-0);
 }
 
+/* the sub-nav: five 38-tall rows, 8 apart, each with an 18px glyph in a 38
+   slot. The CURRENT one is a filled pill — #f7fcfc, radius 4, weight 600 —
+   which reading it as coloured text alone missed entirely. */
 .pf-settings-nav{padding:var(--settings-nav-pad);block-size:var(--settings-nav-h);box-sizing:border-box}
-.pf-settings-nav ul{list-style:none;margin:var(--sp-0);padding:var(--sp-0)}
+.pf-settings-nav ul{list-style:none;margin:var(--sp-0);padding:var(--sp-0);display:grid;gap:var(--sp-8)}
 .pf-settings-nav a{
-  display:flex;align-items:center;gap:var(--sp-12);
-  padding-block:var(--sp-8);
-  color:var(--base);
+  display:flex;align-items:center;
+  block-size:var(--settings-nav-row);
+  border-radius:var(--radius-control-sm);
+  color:var(--base);font-weight:var(--fw-500);
 }
-.pf-settings-nav a[aria-current="page"]{color:var(--primary);font-weight:var(--fw-600)}
+.pf-settings-nav .nav-text{flex:1}
+.pf-settings-nav a > svg{
+  inline-size:var(--settings-nav-icon);block-size:18px;
+  padding-inline-start:var(--sp-16);box-sizing:content-box;
+  color:var(--settings-nav-icon-color);flex:none;
+}
+.pf-settings-nav a[aria-current="page"]{
+  background:var(--settings-nav-active);
+  color:var(--primary);font-weight:var(--fw-600);
+}
+.pf-settings-nav a[aria-current="page"] > svg{color:var(--primary)}
 .pf-settings-nav a:hover{color:var(--primary)}
 
-.pf-completion{padding:var(--sp-24)}
+/* Profile completeness. Three things here are the product's and were all
+   wrong: the meter is ORANGE, the steps are pills rather than chips, and a
+   step that is DONE is tinted with a check while one still to do is outlined
+   with a hollow dot. */
+.pf-completion{padding:var(--sp-24);block-size:var(--settings-comp-h);box-sizing:border-box}
 .pf-completion-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-8);margin-block-end:var(--sp-4)}
-.pf-completion-title{font-weight:var(--fw-500)}
+.pf-completion-title{font-weight:var(--fw-500);white-space:nowrap}
+.pf-completion-head .pf-btn{padding:var(--sp-0);border:0;background:none;white-space:nowrap}
 .pf-completion-meter{display:flex;align-items:center;gap:var(--sp-8);margin-block-end:var(--sp-16)}
-.pf-completion-pct{font-weight:var(--fw-600)}
-.pf-completion-body{display:grid;justify-items:start;gap:var(--sp-8)}
-.pf-mini-card{
-  display:inline-flex;align-items:center;gap:var(--sp-8);
-  padding:var(--sp-2) var(--sp-8);
-  border:var(--border-w) solid var(--gray-400);
-  border-radius:var(--radius-tag);
-  font-size:var(--fs-12);
-}
-
-.pf-settings-head{block-size:var(--settings-head-h);display:flex;align-items:center;padding-inline:var(--sp-40)}
-.pf-settings-meta{display:flex;align-items:center;gap:var(--sp-16)}
-/* the meta's avatar SLOT is 74 wide and the circle inside it 68 — the 6 is
-   antd's card-meta gutter, and measuring the circle alone read 68 against 74 */
-.pf-settings-avatar{
-  inline-size:var(--settings-avatar-slot);block-size:var(--settings-avatar);
-  padding-inline-end:calc(var(--settings-avatar-slot) - var(--settings-avatar));
+.pf-progress{
+  inline-size:var(--settings-meter);block-size:var(--settings-meter-h);
   border-radius:var(--radius-round);
-  background:var(--bg-gray-deep);color:var(--gray-600);
-  display:grid;place-items:center;flex:none;
+  background:var(--progress-track);
+  overflow:hidden;flex:none;
 }
-.pf-settings-name{font-size:var(--fs-18);font-weight:var(--fw-600)}
-.pf-settings-sub{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
-.pf-settings-sub svg{color:var(--gray-500)}
+.pf-progress-bg{display:block;block-size:100%;border-radius:var(--radius-round);background:var(--settings-meter-fill)}
+.pf-completion-pct{font-weight:var(--fw-600)}
+.pf-completion-body{display:grid;justify-items:start;gap:var(--sp-16)}
+.pf-step{
+  display:inline-flex;align-items:center;
+  inline-size:var(--step-w);block-size:var(--settings-step-h);
+  border-radius:var(--settings-step-r);
+  font-size:var(--fs-base);font-weight:var(--fw-600);
+  box-sizing:border-box;
+}
+.pf-step > svg{inline-size:32px;block-size:16px;padding-inline-start:var(--sp-4);box-sizing:border-box;flex:none}
+.pf-step[data-state="todo"]{background:var(--white);border:var(--border-w) solid var(--border-light);color:var(--heading)}
+.pf-step[data-state="todo"] > svg{color:var(--gray-400)}
+.pf-step[data-state="done"]{background:var(--primary-light-4);color:var(--step-done)}
+.pf-step[data-state="done"] > svg{color:var(--primary)}
 
-.pf-settings-form{padding:var(--sp-40)}
-.pf-card-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-12)}
-/* two 390 columns with a 54 gutter and a 98 row pitch — a field is a 22 label
-   over a 44 control with 8 between them */
-/* Agency Settings uses 413 columns where the profile form uses 390 — same
-   54 gutter, same 98 pitch, a wider card because it has no header card above
-   it. data/live/user-settings-agency-profile.capture.json */
-.pf-form-grid[data-cols="413"]{grid-template-columns:repeat(2,var(--sfield-col-wide))}
+/* ── the profile page's header card ─────────────────────────────────────── */
+/* .pf-card is a flex COLUMN, so a header that only says `display:flex` stacks
+   the avatar over the name instead of putting them side by side. The direction
+   has to be restated on every row inside a card. */
+.pf-settings-head{
+  block-size:var(--settings-head-h);
+  display:flex;flex-direction:row;align-items:center;gap:var(--sp-16);
+  padding-inline:var(--settings-pad);box-sizing:border-box;
+}
+.pf-settings-avatar{
+  inline-size:var(--settings-avatar);block-size:var(--settings-avatar);
+  border-radius:var(--radius-round);
+  background:var(--gray-400);
+  position:relative;flex:none;
+}
+/* the completeness ring's percentage sits on the avatar, not beside it */
+.pf-avatar-pct{
+  position:absolute;inset-block-end:-6px;inset-inline-start:50%;translate:-50% 0;
+  padding:0 var(--sp-4);
+  border-radius:var(--radius-round);
+  background:var(--settings-meter-fill);color:var(--white);
+  font-size:var(--fs-10);font-weight:var(--fw-600);line-height:14px;
+}
+.pf-settings-who{display:grid;gap:var(--sp-4)}
+.pf-settings-nameline{display:flex;align-items:center;gap:var(--sp-8);flex-wrap:wrap}
+.pf-settings-name{font-size:var(--fs-20);font-weight:var(--fw-700);margin:var(--sp-0)}
+.pf-user-tag{
+  display:inline-flex;align-items:center;gap:var(--sp-4);
+  block-size:var(--settings-step-h);padding-inline:var(--sp-8);
+  border-radius:var(--settings-step-r);
+  background:var(--bg-gray-deep);color:var(--base);
+  font-size:var(--fs-12);font-weight:var(--fw-500);
+}
+.pf-user-tag[data-tone="verified"]{background:var(--primary-light-4);color:var(--primary)}
+.pf-settings-sub{color:var(--gray-700)}
+
+/* ── the agency page: one card with its header inside ───────────────────── */
+.pf-agency-head{display:flex;flex-direction:row;align-items:center;gap:var(--sp-16);block-size:var(--agency-head-h)}
+.pf-agency-logo{
+  inline-size:var(--agency-logo);block-size:var(--agency-logo);
+  border-radius:var(--radius-round);
+  background:var(--primary-light-4);flex:none;
+}
+.pf-agency-name{font-size:var(--fs-24);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-4)}
+.pf-agency-users{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
+.pf-agency-users svg{color:var(--gray-500)}
+.pf-divider{border:0;border-block-start:var(--border-w) solid var(--border-light);margin:var(--sp-28) var(--sp-0) var(--sp-40)}
+
+/* ── the form ───────────────────────────────────────────────────────────── */
+.pf-settings-form{padding:var(--settings-pad)}
+/* the form is inset FURTHER than the card's 40: the profile page's fields run
+   501..1336 inside a card at 420..1417, the agency page's 478..1358 */
+.pf-settings-form > .pf-form-grid,
+.pf-settings-form > .pf-form-actions{margin-inline:var(--form-inset, 0)}
+.pf-settings-head + .pf-settings-form{--form-inset:41px}
+.pf-agency{--form-inset:17px}
+.pf-card-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-24)}
 .pf-form-grid{
   display:grid;
-  grid-template-columns:repeat(2,var(--sfield-col));
+  inline-size:var(--form-w);
+  grid-template-columns:repeat(2,minmax(var(--sp-0),1fr));
   column-gap:var(--sfield-gutter);
   row-gap:var(--sfield-row-gap);
 }
+/* Change Password has one 500-wide column, centred in the card */
+.pf-form-grid[data-cols="one"]{grid-template-columns:minmax(var(--sp-0),1fr);margin-inline:auto}
+.pf-narrow .pf-form-actions{inline-size:var(--sfield-narrow);margin-inline:auto}
+
 .pf-sfield{display:flex;flex-direction:column;gap:var(--sfield-gap)}
-/* a settings label is 14/22 in black — NOT the filter bar's 12/19 grey, which
-   is what it inherited and what the region diff read as a 9.6%% difference on
-   every field */
+.pf-sfield.span-all{grid-column:1 / -1}
+/* every field type the generator can emit, named here so the stylesheet is the
+   list of what a settings field can be */
+.pf-sfield.sf-input,
+.pf-sfield.sf-select,
+.pf-sfield.sf-textarea,
+.pf-sfield.sf-generate,
+.pf-sfield.sf-upload{}
+.pf-sfield.rtl{text-align:end}
+/* a settings label is 14/22 in black — NOT the filter bar's 12/19 grey */
 .pf-sfield > .pf-field-label{
   block-size:var(--sfield-label-h);
-  font-size:var(--fs-base);
-  line-height:var(--lh-base);
-  color:var(--black);
+  font-size:var(--fs-base);line-height:var(--lh-base);
+  font-weight:var(--fw-600);color:var(--black);
 }
-/* the 44 belongs to the INPUT, which is what the product measures; putting it
-   on the wrapper left the control region missing entirely */
-.pf-sfield .pf-input > input{block-size:var(--sfield-control-h)}
-/* the BORDER is the input's here, as the product's .ant-input carries it —
-   with it on the wrapper the control region had no border at all */
-.pf-sfield .pf-input{border:0;padding:var(--sp-0)}
-/* the wrapper's suffix slot has no job on a settings field and was eating 24
-   of the control's width — 366 against the product's 390 */
-.pf-sfield .pf-input > .pf-input-suffix{display:none}
+.pf-sfield .pf-input,
+.pf-sfield .pf-select{block-size:var(--sfield-control-h)}
+.pf-sfield .pf-input{border:0;padding:var(--sp-0);background:none}
 .pf-sfield .pf-input > input{
-  inline-size:100%;
+  inline-size:100%;block-size:var(--sfield-control-h);
   padding-inline:var(--sp-12);
   border:var(--border-w) solid var(--input-border);
   border-radius:var(--radius-control);
   background:var(--white);
 }
-/* a disabled field is filled, not just dimmed — rgba(0,0,0,.04), measured on
-   the three read-only fields at the top of the profile form */
-.pf-sfield .pf-input > input:disabled{background:var(--input-disabled-bg);cursor:not-allowed}
+/* a disabled field is FILLED, not just dimmed — rgba(0,0,0,.04) */
+.pf-sfield .pf-input > input:disabled{background:var(--input-disabled-bg);color:var(--disabled);cursor:not-allowed}
+.pf-sfield .pf-select[disabled]{background:var(--input-disabled-bg);color:var(--disabled);cursor:not-allowed}
+/* a select showing a chosen value, and a multi-select showing one removable
+   tag — Service Area renders "1 x" rather than a placeholder */
+.pf-select-value{color:var(--base)}
+.pf-select-tag{
+  display:inline-flex;align-items:center;gap:var(--sp-4);
+  block-size:24px;padding-inline:var(--sp-8);
+  border-radius:var(--radius-control);
+  background:var(--bg-gray-deep);color:var(--base);font-size:var(--fs-13);
+}
+.pf-select-tag svg{color:var(--gray-500)}
+
+/* a phone field is a compound the product builds from react-phone-number-input:
+   a 68-wide disabled country box, then the number. It is 46 tall, not 44. */
+.pf-sfield.sf-phone .pf-phone{display:flex;gap:var(--sp-8);block-size:var(--sfield-phone-h)}
+.pf-phone-country{
+  inline-size:var(--sfield-phone-country);
+  display:flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  border:var(--border-w) solid var(--input-border);
+  border-radius:var(--radius-control);
+  background:var(--white);flex:none;
+}
+.pf-flag{inline-size:20px;block-size:14px;border-radius:2px;background:var(--border-light)}
+.pf-sfield.sf-phone .pf-input{flex:1;block-size:var(--sfield-phone-h)}
+.pf-sfield.sf-phone .pf-input > input{block-size:var(--sfield-phone-h)}
+
 /* Change Password uses antd's Input.Password: the BORDER is on the affix
-   wrapper and the inner input has none — the opposite of the profile form,
-   where the input carries it. Two components, two answers. */
-.pf-sfield.password .pf-input{
+   wrapper and the inner input has none — the opposite of the profile form. */
+.pf-sfield.sf-password .pf-input{
+  display:flex;align-items:center;
   border:var(--border-w) solid var(--input-border);
   border-radius:var(--radius-control);
   padding-inline:var(--sp-12);
 }
-.pf-sfield.password .pf-input > input{border:0;padding-inline:var(--sp-0)}
-/* a row whose measured height is not the 74 a label and a control come to */
-.pf-sfield[data-h="118"]{block-size:118px}
-.pf-sfield[data-h="85"]{block-size:85px}
-.pf-sfield.upload{block-size:var(--sfield-upload)}
-.pf-sfield.upload[data-h]{block-size:auto}
-.pf-upload{display:flex;align-items:center;gap:var(--sp-16)}
-.pf-upload-art{
-  inline-size:var(--sfield-upload-art);block-size:var(--sfield-upload-art);
-  border-radius:var(--radius-card);
-  background:var(--border-light);
-  flex:none;
-}
-.pf-sfield.span-all{grid-column:1 / -1}
-.pf-sfield .pf-input,
-.pf-sfield .pf-select{block-size:var(--sfield-control-h)}
-.pf-sfield.tall{block-size:var(--sfield-tall)}
+.pf-sfield.sf-password .pf-input > input{border:0;padding-inline:var(--sp-0);flex:1;background:none}
+.pf-input-suffix{display:grid;place-items:center;color:var(--gray-500);background:none;border:0}
+
 .pf-textarea{
-  flex:1;
+  block-size:var(--sfield-textarea);
   padding:var(--sp-12);
   border:var(--border-w) solid var(--input-border);
   border-radius:var(--radius-control);
   background:var(--white);color:var(--base);
   font:inherit;resize:none;
 }
-.pf-form-actions{display:flex;justify-content:flex-end;gap:var(--sp-12);margin-block-start:var(--sp-24)}
+/* the generate-description button — GenerateContentField.js:179, a round
+   primaryOutlined button under the textarea, aligned to whichever end the
+   language reads towards */
+.pf-generate{display:flex;margin-block-start:var(--sp-16)}
+.pf-generate[data-align="end"]{justify-content:flex-end}
+.pf-btn[data-variant="round"]{
+  inline-size:var(--round-w);block-size:var(--sfield-round-h);
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-8);
+  border:0;border-radius:32px;
+  background:var(--primary-light-4);color:var(--primary);
+  font-size:var(--fs-13);font-weight:var(--fw-600);
+}
+
+/* the upload — image-upload.js:83 renders a primaryOutlined Button with a
+   DASHED border, not a grey square beside a plain button */
+.pf-upload{display:flex;align-items:flex-start;gap:var(--sp-56)}
+.pf-upload-btn{
+  inline-size:var(--upload-w);block-size:55px;
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-12);
+  border:var(--border-w) dashed var(--primary-light-2);
+  border-radius:var(--radius-control);
+  background:var(--primary-light-4);color:var(--primary);
+  font-weight:var(--fw-600);flex:none;
+}
+.pf-guidelines{font-size:var(--fs-12);color:var(--gray-700);display:grid;gap:var(--sp-2)}
+.pf-guidelines-title{font-size:var(--fs-base);font-weight:var(--fw-600);color:var(--base)}
+.pf-guideline{display:flex;gap:var(--sp-4)}
+.pf-guideline svg{color:var(--primary);flex:none;margin-block-start:var(--sp-4)}
+.pf-guidelines a{font-weight:var(--fw-600);color:var(--primary)}
+
+.pf-form-actions{display:flex;justify-content:flex-end;margin-block-start:var(--sp-24)}
+.pf-form-actions .pf-btn{inline-size:var(--save-w);block-size:40px;border-radius:var(--save-r, var(--radius-control))}
 
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -3036,6 +3194,233 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   box-sizing:border-box;
 }
 .pf-stat-item > div{display:flex;flex-direction:column}
+
+/* ── the head, which is more than a title ───────────────────────────────── */
+.pf-block-head[data-tall="true"]{block-size:auto;display:block;padding-block:var(--sp-16)}
+.pf-block-head-row{display:flex;flex-direction:row;align-items:center;gap:var(--sp-16);inline-size:100%}
+.pf-block-head-row > .pf-block-title{margin-inline-end:auto}
+.pf-block-title{font-size:var(--fs-card-title);font-weight:var(--fw-700);color:var(--heading)}
+.pf-icon-btn{
+  inline-size:34px;block-size:34px;display:grid;place-items:center;
+  border:var(--border-w) solid var(--border-light);border-radius:var(--radius-control);
+  background:var(--white);color:var(--gray-700);
+}
+
+/* the purpose segmented control — a grey track with a filled active pill */
+.pf-segmented{
+  display:inline-flex;flex-direction:row;gap:var(--sp-2);
+  padding:var(--sp-4);border-radius:var(--radius-control);
+  background:var(--bg-gray-deep);
+}
+.pf-segment{
+  block-size:36px;padding-inline:var(--sp-16);
+  border:0;border-radius:var(--radius-control);background:none;
+  color:var(--gray-700);font-weight:var(--fw-500);
+}
+.pf-segment[aria-selected="true"]{background:var(--primary);color:var(--white);font-weight:var(--fw-600)}
+
+/* the date-range field — a bordered box with a calendar on the trailing edge */
+.pf-datefield{
+  inline-size:var(--field-w, 345px);block-size:48px;
+  display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:var(--sp-8);
+  padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--input-border);border-radius:var(--radius-control);
+  background:var(--white);color:var(--base);
+}
+.pf-datefield svg{color:var(--gray-500);flex:none}
+
+/* the metric tabs. These ARE the card's tabs — Views/Clicks/Leads each with an
+   icon tile, a value and a period-on-period delta, the active one underlined */
+/* the head's second row: the metric tabs on the left and the channel strip in
+   the tabs' extra slot on the right — 609 and 556 of one 84-tall row, not two
+   stacked rows */
+.pf-block-head[data-tall="true"]{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center}
+.pf-block-head[data-tall="true"] > .pf-block-head-row{margin-block-end:var(--sp-16)}
+.pf-metrics{display:flex;flex-direction:row}
+.pf-channels{margin-inline-start:auto}
+.pf-metric{
+  display:flex;flex-direction:row;align-items:center;gap:var(--sp-12);
+  padding:var(--sp-16) var(--sp-24);
+  border:0;border-block-end:var(--sp-2) solid transparent;background:none;text-align:start;
+}
+.pf-metric[aria-selected="true"]{border-block-end-color:var(--primary);background:var(--primary-light-4)}
+.pf-metric-tile{
+  inline-size:34px;block-size:34px;display:grid;place-items:center;flex:none;
+  border-radius:30%;background:var(--tile);
+}
+.pf-metric-text{display:flex;flex-direction:column;gap:var(--sp-2)}
+.pf-metric-label{color:var(--gray-700)}
+.pf-metric-value{display:flex;flex-direction:row;align-items:center;gap:var(--sp-8);font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-delta{display:inline-flex;align-items:center;gap:var(--sp-2);font-size:var(--fs-12);font-weight:var(--fw-500)}
+.pf-delta[data-dir="up"]{color:var(--success)}
+.pf-delta[data-dir="down"]{color:var(--error)}
+
+/* the channel strip that sits in the tabs' extra slot */
+.pf-channels{display:flex;flex-direction:row;align-items:center}
+.pf-channel{
+  display:inline-flex;align-items:center;gap:var(--sp-8);
+  padding-inline:var(--sp-24);
+  border-inline-end:var(--border-w) solid var(--border-light);
+  color:var(--gray-700);
+}
+.pf-channel:last-child{border-inline-end:0}
+.pf-channel b{color:var(--base);font-weight:var(--fw-600)}
+.pf-channel svg{color:var(--gray-500)}
+
+/* the product pills under the chart */
+.pf-pills{display:flex;flex-direction:row;gap:var(--sp-8);margin-block-end:var(--sp-24)}
+.pf-pill{
+  display:inline-flex;align-items:center;gap:var(--sp-8);
+  block-size:29px;padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--border-light);border-radius:var(--radius-round);
+  background:var(--white);color:var(--gray-700);font-size:var(--fs-13);
+}
+.pf-pill[aria-checked="true"]{background:var(--primary-light-4);border-color:var(--primary-light-4);color:var(--primary);font-weight:var(--fw-600)}
+
+/* the charts themselves */
+.pf-linechart{inline-size:100%}
+.pf-linechart .pf-grid{stroke:var(--border-light);stroke-dasharray:3 4;stroke-width:1}
+.pf-linechart .pf-axis-line{stroke:var(--primary);stroke-width:1}
+.pf-linechart .pf-axis{fill:var(--gray-600);font-size:11px}
+.pf-linechart .pf-series{stroke:var(--primary);stroke-width:1.5}
+.pf-linechart .pf-dot{fill:var(--primary)}
+.pf-donut-seg{transition:none}
+.pf-donut{position:relative;inline-size:var(--donut);block-size:var(--donut);flex:none}
+.pf-donut-centre{
+  position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:var(--sp-2);
+}
+.pf-donut-value{font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-donut-label{color:var(--gray-700)}
+.pf-donut-row{display:flex;flex-direction:row;gap:var(--sp-24);align-items:center}
+.pf-donut-cell{display:flex;flex-direction:row;align-items:center;gap:var(--sp-24);flex:1}
+.pf-donut-legend{display:grid;gap:var(--sp-8)}
+.pf-legend-item{display:inline-flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
+.pf-legend-item svg{color:var(--gray-400)}
+
+/* Reports Summary's Listings card */
+.pf-statcard{display:flex;flex-direction:row;align-items:flex-start;gap:var(--sp-24)}
+/* three columns beside the lead figure, two rows — measured at x236/362/489
+   and y163/236 inside a 533 card. Four columns overflowed it and clipped
+   Signature off the edge. */
+.pf-statcard .pf-stat-grid{grid-template-columns:repeat(3,var(--block-stat-w));row-gap:var(--sp-24)}
+.pf-stat-lead{display:flex;flex-direction:column;gap:var(--sp-4);align-items:center;inline-size:103px;flex:none}
+.pf-stat-lead-value{display:inline-flex;align-items:center;gap:var(--sp-8);font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-stat-lead-value svg{color:var(--primary)}
+.pf-stat-tile{
+  inline-size:32px;block-size:32px;display:grid;place-items:center;flex:none;
+  border-radius:30%;background:var(--tile);
+}
+
+/* Credits Usage's left card */
+.pf-credits{display:grid;gap:var(--sp-24);justify-items:center}
+.pf-credits-note{justify-self:start;color:var(--gray-700)}
+.pf-credits-strip{
+  display:flex;flex-direction:row;inline-size:100%;
+  padding:var(--sp-16);border-radius:var(--radius-control);
+  background:var(--bg-gray-deep);
+}
+.pf-credits-cell{display:flex;flex-direction:column;gap:var(--sp-4);flex:1;padding-inline:var(--sp-12);border-inline-end:var(--border-w) solid var(--border-light)}
+.pf-credits-cell:last-child{border-inline-end:0}
+.pf-credits-value{font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-credits-breakdown{inline-size:100%;display:grid;gap:var(--sp-12)}
+.pf-credits-bd-title{font-size:var(--fs-card-title);font-weight:var(--fw-600)}
+.pf-bd-row{display:flex;flex-direction:row;align-items:center;justify-content:space-between}
+.pf-bd-swatch{inline-size:20px;block-size:20px;display:grid;place-items:center;border-radius:var(--radius-tag);background:var(--swatch)}
+.pf-bd-swatch svg{color:var(--white)}
+.pf-bd-value{font-weight:var(--fw-500)}
+
+/* Credits Usage's history — a timeline, not a table */
+.pf-timeline{display:grid;gap:var(--sp-24)}
+.pf-tl-item{display:flex;flex-direction:row;gap:var(--sp-24);align-items:flex-start;position:relative}
+.pf-tl-dot{
+  inline-size:10px;block-size:10px;border-radius:var(--radius-round);
+  background:var(--gray-400);margin-block-start:var(--sp-24);flex:none;
+}
+.pf-tl-item::after{
+  content:"";position:absolute;inset-inline-start:4px;inset-block:36px -24px;
+  border-inline-start:var(--border-w) solid var(--border-light);
+}
+.pf-tl-item:last-child::after{display:none}
+.pf-tl-card{
+  flex:1;display:flex;flex-direction:row;box-shadow:none;align-items:center;justify-content:space-between;gap:var(--sp-24);
+  padding:var(--sp-16);
+  border:var(--border-w) solid var(--border-light);border-radius:var(--radius-card);
+}
+.pf-tl-prop{box-shadow:none;border:0;display:flex;flex-direction:row;gap:var(--sp-16);align-items:center;flex:1;padding:var(--sp-12);border-radius:var(--radius-control);background:var(--primary-light-4)}
+.pf-tl-thumb{inline-size:120px;block-size:82px;border-radius:var(--radius-control);background:var(--border-light);flex:none}
+/* The riyal mark U+FDFC is a strong right-to-left character, so "﷼ 1,250,000"
+   in an otherwise left-to-right line reorders to "1,250,000 ﷼". The product
+   shows the mark first, so the price is its own isolated left-to-right run. */
+.pf-tl-price,
+.pf-prop-price{unicode-bidi:isolate;direction:ltr}
+.pf-tl-price{font-weight:var(--fw-700);color:var(--primary)}
+.pf-tl-tag{display:inline-block;margin-block:var(--sp-4);padding:var(--sp-2) var(--sp-8);border-radius:var(--radius-tag);background:var(--primary-light-4);color:var(--primary);font-size:var(--fs-12);font-weight:var(--fw-600)}
+.pf-tl-specs{display:flex;flex-direction:row;gap:var(--sp-16);color:var(--gray-700);font-size:var(--fs-13)}
+.pf-tl-specs span{display:inline-flex;align-items:center;gap:var(--sp-4)}
+.pf-tl-date{color:var(--gray-700);white-space:nowrap}
+
+/* Listing Report's property cell */
+.pf-proptable .pf-th-prop,
+.pf-proptable .pf-td-prop{inline-size:475px}
+.pf-prop{display:flex;flex-direction:row;gap:var(--sp-16);align-items:flex-start}
+.pf-prop-thumb{inline-size:24px;block-size:16px;border-radius:2px;background:var(--primary-light-4);flex:none;margin-block-start:var(--sp-4)}
+.pf-prop-detail{display:grid;gap:var(--sp-4)}
+.pf-prop-priceline{display:flex;flex-direction:row;align-items:center;gap:var(--sp-8)}
+.pf-prop-price{font-weight:var(--fw-700);color:var(--primary)}
+.pf-quality{padding:var(--sp-2) var(--sp-8);border-radius:var(--radius-tag);font-size:var(--fs-12);font-weight:var(--fw-600)}
+.pf-quality[data-band="high"]{background:var(--quality-bg);color:var(--warning)}
+.pf-quality[data-band="mid"]{background:var(--quality-bg);color:var(--warning)}
+.pf-quality[data-band="low"]{background:var(--quality-bg);color:var(--warning)}
+.pf-prop-specs{display:flex;flex-direction:row;gap:var(--sp-12);color:var(--gray-700);font-size:var(--fs-13)}
+.pf-prop-specs span{display:inline-flex;align-items:center;gap:var(--sp-4)}
+.pf-prop-address{color:var(--base)}
+.pf-prop-ids{display:flex;flex-direction:row;gap:var(--sp-8);color:var(--gray-500);font-size:var(--fs-12)}
+.pf-prop-ids i{font-style:normal;color:var(--border-light)}
+
+/* the page lead — a Back pill over a 24/30 heading, on Ad License */
+.pf-page-lead{display:grid;justify-items:start;gap:var(--sp-8);inline-size:1035px;margin-inline:auto;margin-block-end:var(--sp-16)}
+.pf-page-h2{font-size:var(--fs-24);font-weight:var(--fw-600);margin:var(--sp-0)}
+.pf-section-h{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-24) var(--sp-0) var(--sp-12)}
+
+/* the Ad License wizard */
+.pf-wizard{display:grid;gap:var(--sp-8)}
+/* the section's title column is 195 wide and 105 tall at the TOP of the
+   section, not centred against a 754-tall column of fields. And the sections
+   are white cards inside a white panel — the product draws no rule between
+   them, only an 8 gap. */
+.pf-wsection{display:flex;flex-direction:row;align-items:flex-start;gap:var(--sp-48);padding-block:var(--sp-40)}
+.pf-wsection-title{
+  inline-size:195px;block-size:105px;flex:none;
+  display:grid;gap:var(--sp-12);justify-items:start;align-content:start;
+  font-size:var(--fs-18);font-weight:var(--fw-600);
+}
+.pf-wsection-icon{inline-size:56px;block-size:56px;display:grid;place-items:center;border-radius:var(--radius-card);background:var(--bg-gray-deep)}
+.pf-wsection-fields{flex:1;display:grid;gap:var(--sp-24);max-inline-size:640px}
+.pf-wfield{display:flex;flex-direction:row;gap:var(--sp-16);align-items:flex-start}
+.pf-wfield-icon{inline-size:34px;block-size:34px;display:grid;place-items:center;flex:none;border-radius:30%;background:var(--bg-gray-deep);color:var(--gray-600)}
+.pf-wfield-body{flex:1;display:grid;gap:var(--sp-8)}
+.pf-wfield-body > .pf-field-label{font-size:var(--fs-base);line-height:var(--lh-base);font-weight:var(--fw-600);color:var(--black)}
+.pf-wfield-body .pf-input > input,
+.pf-wfield-body .pf-select{block-size:var(--sfield-control-h);inline-size:100%}
+.pf-wfield-body .pf-input{border:0;padding:var(--sp-0);background:none}
+.pf-wfield-body .pf-input > input{padding-inline:var(--sp-12);border:var(--border-w) solid var(--input-border);border-radius:var(--radius-control);background:var(--white)}
+.pf-wfield-body .pf-select[disabled]{background:var(--input-disabled-bg);color:var(--disabled)}
+.pf-field-hint{color:var(--gray-500);font-weight:var(--fw-500)}
+.pf-choices{display:flex;flex-direction:row;flex-wrap:wrap;gap:var(--sp-8)}
+.pf-choice{
+  display:inline-flex;align-items:center;gap:var(--sp-8);
+  block-size:36px;min-inline-size:44px;padding-inline:var(--sp-16);
+  border:0;border-radius:var(--radius-round);
+  background:var(--bg-gray-deep);color:var(--base);
+}
+.pf-choice[aria-checked="true"]{background:var(--primary);color:var(--white)}
+
+/* a plain filter bar has no card behind it — Leads & Reach sets its fields
+   straight on the page background */
+.pf-filter-bar[data-plain="true"]{background:none;border:0;box-shadow:none;padding-inline:var(--sp-0)}
+.pf-compound{display:flex;flex-direction:row}
+.pf-compound .pf-input{flex:1}
+.pf-compound .pf-select{inline-size:82px;flex:none}
 
 /* the plot area. No chart library ships with this system, so a chart is the
    box it occupies and says so — the same honesty as the QR placeholder. */
@@ -3765,6 +4150,126 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     d="m15.148 10.836-1.009 1.344.178.115c.224.146.282.45.136.674a.48.48 0 0 1-.403.215.47.47 0 0 1-.272-.084l-.22-.146-1.082 1.438a.51.51 0 0 1-.397.198.484.484 0 0 1-.387-.779l1.051-1.396-2.253-1.505a1.93 1.93 0 0 1-1.715 1.024H8.29c-.722 0-1.37-.392-1.71-1.02l-2.248 1.501 1.051 1.396a.484.484 0 0 1-.392.78.49.49 0 0 1-.387-.194l-1.082-1.438-.22.146a.48.48 0 0 1-.271.084.48.48 0 0 1-.403-.214.49.49 0 0 1 .136-.675l.178-.115-1.01-1.343a.484.484 0 1 1 .774-.586l1.046 1.386 2.546-1.7c0-.02-.005-.041-.005-.057V6.12q.001-.07.01-.141L4.174 4.02 2.857 5.466a.48.48 0 0 1-.36.157.482.482 0 0 1-.36-.81L3.462 3.36l-.24-.22a.48.48 0 0 1-.026-.684.48.48 0 0 1 .685-.026l.23.214L5.466 1.16a.48.48 0 0 1 .685-.03.48.48 0 0 1 .031.684l-1.36 1.49 1.825 1.689a1.95 1.95 0 0 1 1.584-.816h.591c.638 0 1.224.314 1.59.826l1.83-1.7-1.36-1.489a.48.48 0 0 1 .031-.685.486.486 0 0 1 .685.031l1.354 1.485.23-.214a.48.48 0 0 1 .685.026.48.48 0 0 1-.026.685l-.235.22 1.322 1.453a.482.482 0 0 1-.36.81.5.5 0 0 1-.361-.157L12.889 4.02l-2.122 1.966c.005.052.01.11.01.162V9.86c0 .026-.01.052-.01.078l2.551 1.705 1.046-1.386a.484.484 0 0 1 .68-.094.48.48 0 0 1 .104.674"
     />
   </symbol>
+  <!-- Agency Settings (settings sub-nav) · src/components/svg.js -->
+  <symbol id="pf-SideMenuSetting" viewBox="0 0 20 20">
+    <g transform="translate(-0.152 -0.154)">
+    <path
+    d="M3.527,4.078v-1.1a.332.332,0,0,1,.331-.331h1.1a.332.332,0,0,1,.331.331v1.1a.332.332,0,0,1-.331.331h-1.1A.332.332,0,0,1,3.527,4.078Zm3.857.331h1.1a.332.332,0,0,0,.331-.331v-1.1a.332.332,0,0,0-.331-.331h-1.1a.332.332,0,0,0-.331.331v1.1A.332.332,0,0,0,7.384,4.408ZM3.857,7.053h1.1a.332.332,0,0,0,.331-.331V5.62a.332.332,0,0,0-.331-.331h-1.1a.332.332,0,0,0-.331.331v1.1A.332.332,0,0,0,3.857,7.053Zm3.527,0h1.1a.332.332,0,0,0,.331-.331V5.62a.332.332,0,0,0-.331-.331h-1.1a.332.332,0,0,0-.331.331v1.1A.332.332,0,0,0,7.384,7.053ZM5.29,9.367v-1.1a.332.332,0,0,0-.331-.331h-1.1a.332.332,0,0,0-.331.331v1.1a.332.332,0,0,0,.331.331h1.1A.332.332,0,0,0,5.29,9.367ZM7.384,9.7h1.1a.332.332,0,0,0,.331-.331v-1.1a.332.332,0,0,0-.331-.331h-1.1a.332.332,0,0,0-.331.331v1.1A.332.332,0,0,0,7.384,9.7Zm4.959,3.416v.992H0v-.992a.332.332,0,0,1,.331-.331H.868V.661A.66.66,0,0,1,1.529,0h9.285a.66.66,0,0,1,.661.661V12.784h.537A.332.332,0,0,1,12.343,13.114ZM2.19,12.756h3.1V10.91a.332.332,0,0,1,.331-.331h1.1a.332.332,0,0,1,.331.331v1.846h3.1V1.35L2.2,1.322Z"
+    transform="translate(3.981 3.099)"
+    fill="currentColor"
+    />
+    </g>
+  </symbol>
+  <!-- Property Information · src/components/svg.js -->
+  <symbol id="pf-IconPropertyInfo" viewBox="0 0 53 52">
+    <path
+    d="M42.5 0H10.5C4.97715 0 0.5 4.47715 0.5 10V42C0.5 47.5228 4.97715 52 10.5 52H42.5C48.0228 52 52.5 47.5228 52.5 42V10C52.5 4.47715 48.0228 0 42.5 0Z"
+    fill="#F7F7F7"
+    />
+    <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M23.4097 8H22.2178V10.3927H23.4097V8ZM18.0312 11.8876H20.424V13.0795H18.0312V11.8876ZM24.9095 11.8876H27.3022V13.0795H24.9095V11.8876Z"
+    fill="#ACC9CB"
+    />
+    <g clip-path="url(#IconPropertyInfo__clip0_46785_283977)">
+    <path d="M23.5703 22.4531H24.9766V23.8594H23.5703V22.4531Z" fill="#006169" />
+    <path d="M23.5703 25.6875H24.9766V27.0938H23.5703V25.6875Z" fill="#006169" />
+    <path d="M30.0234 25.6875H31.4297V27.0938H30.0234V25.6875Z" fill="#006169" />
+    <path d="M33.25 25.6875H34.6562V27.0938H33.25V25.6875Z" fill="#006169" />
+    <path d="M30.0234 28.9062H31.4297V30.3125H30.0234V28.9062Z" fill="#006169" />
+    <path d="M33.25 28.9062H34.6562V30.3125H33.25V28.9062Z" fill="#006169" />
+    <path d="M30.0234 32.1406H31.4297V33.5469H30.0234V32.1406Z" fill="#006169" />
+    <path d="M33.25 32.1406H34.6562V33.5469H33.25V32.1406Z" fill="#006169" />
+    <path d="M30.0234 35.3672H31.4297V36.7734H30.0234V35.3672Z" fill="#006169" />
+    <path d="M33.25 35.3672H34.6562V36.7734H33.25V35.3672Z" fill="#006169" />
+    <path d="M20.3438 25.6875H21.75V27.0938H20.3438V25.6875Z" fill="#006169" />
+    <path d="M23.5703 28.9062H24.9766V30.3125H23.5703V28.9062Z" fill="#006169" />
+    <path d="M20.3438 28.9062H21.75V30.3125H20.3438V28.9062Z" fill="#006169" />
+    <path d="M23.5703 32.1406H24.9766V33.5469H23.5703V32.1406Z" fill="#006169" />
+    <path d="M20.3438 32.1406H21.75V33.5469H20.3438V32.1406Z" fill="#006169" />
+    <path
+    d="M38.8861 38.5938V22.4553H29.2031V19.1008L27.5893 19.3698V16H19.7277V20.68L18.1139 20.949V38.5938H16.5V40H40.5V38.5938H38.8861ZM37.4799 23.8616V38.5938H29.2031V23.8616H37.4799ZM21.1339 17.4062H26.183V19.6041L21.1339 20.4457V17.4062ZM19.5201 22.1403L27.7969 20.7608V22.4553V38.5938H25.9755V35.3661H21.3415V38.5938H19.5201V22.1403ZM24.5692 38.5938H22.7478V36.7723H24.5692V38.5938Z"
+    fill="#E8E8E8"
+    />
+    <path
+    d="M37.8861 38.5938V22.4553H28.2031V19.1008L26.5893 19.3698V16H18.7277V20.68L17.1139 20.949V38.5938H15.5V40H39.5V38.5938H37.8861ZM36.4799 23.8616V38.5938H28.2031V23.8616H36.4799ZM20.1339 17.4062H25.183V19.6041L20.1339 20.4457V17.4062ZM18.5201 22.1403L26.7969 20.7608V22.4553V38.5938H24.9755V35.3661H20.3415V38.5938H18.5201V22.1403ZM23.5692 38.5938H21.7478V36.7723H23.5692V38.5938Z"
+    fill="#D0D0D0"
+    />
+    </g>
+    <defs>
+    <clipPath id="IconPropertyInfo__clip0_46785_283977">
+    <rect width="24" height="24" fill="white" transform="translate(15.5 16)" />
+    </clipPath>
+    </defs>
+  </symbol>
+  <!-- Property Location · src/components/svg.js -->
+  <symbol id="pf-IconLocationPurpose" viewBox="0 0 52 52">
+    <g>
+    <path
+    d="M42 0H10C4.477 0 0 4.477 0 10v32c0 5.523 4.477 10 10 10h32c5.523 0 10-4.477 10-10V10c0-5.523-4.477-10-10-10Z"
+    fill="#F7F7F7"
+    />
+    <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="m19.72 7.846.923.834-1.667 1.844-.922-.833 1.665-1.845Zm-4.79 5.303.923.834-1.665 1.844-.923-.833 1.666-1.845Zm.491-3.323L13.577 8.16l-.833.923 1.844 1.665.833-.922Zm19.515 26.433a1.795 1.795 0 1 0 2.538-2.538 1.795 1.795 0 0 0-2.538 2.538Zm.848-1.692a.596.596 0 1 1 .842.843.596.596 0 0 1-.842-.843Z"
+    fill="#A6C8CA"
+    />
+    <path
+    d="M37.047 21.547C37.047 15.73 32.316 11 26.5 11c-5.816 0-10.547 4.731-10.547 10.547 0 2.3.728 4.487 2.105 6.323l5.628 7.504A3.535 3.535 0 0 0 26.5 36.78c1.1 0 2.152-.526 2.814-1.407l5.628-7.504a10.46 10.46 0 0 0 2.105-6.323Z"
+    fill="#F3F3F1"
+    />
+    <path
+    d="m28.14 34.67-5.629-7.503a9.333 9.333 0 0 1-1.87-5.62c0-4.577 3.28-8.387 7.617-9.21a9.375 9.375 0 0 0-11.133 9.21c0 2.108.696 4.054 1.87 5.62l5.629 7.504a2.34 2.34 0 0 0 3.634.144 2.362 2.362 0 0 1-.118-.144Z"
+    fill="#E8E8E8"
+    />
+    <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M26.5 11c5.816 0 10.547 4.731 10.547 10.547 0 2.3-.728 4.487-2.105 6.323l-5.628 7.504A3.535 3.535 0 0 1 26.5 36.78c-1.1 0-2.152-.526-2.814-1.407l-5.628-7.504a10.46 10.46 0 0 1-2.105-6.323C15.953 15.73 20.685 11 26.5 11Zm.939 22.967 5.628-7.503a8.132 8.132 0 0 0 1.636-4.917c0-4.523-3.68-8.203-8.203-8.203s-8.203 3.68-8.203 8.203c0 1.79.566 3.49 1.636 4.917l5.628 7.504c.224.298.567.47.939.47s.715-.172.939-.47Zm3.748 4.69a1.172 1.172 0 0 1 0 2.343h-9.375a1.172 1.172 0 1 1 0-2.344h9.375Z"
+    fill="#D0D0D0"
+    />
+    <path
+    d="M26.5 25.063a3.52 3.52 0 0 0 3.516-3.516A3.52 3.52 0 0 0 26.5 18.03a3.52 3.52 0 0 0-3.516 3.516 3.52 3.52 0 0 0 3.516 3.515Zm0-4.688c.646 0 1.172.526 1.172 1.172 0 .646-.526 1.172-1.172 1.172a1.173 1.173 0 0 1-1.172-1.172c0-.646.526-1.172 1.172-1.172Z"
+    fill="#006169"
+    />
+    </g>
+  </symbol>
+  <!-- Contact Information · src/components/svg.js -->
+  <symbol id="pf-IconContactInfo" viewBox="0 0 52 52">
+    <path
+    d="M42 0H10C4.477 0 0 4.477 0 10v32c0 5.523 4.477 10 10 10h32c5.523 0 10-4.477 10-10V10c0-5.523-4.477-10-10-10z"
+    fill="#F7F7F7"
+    />
+    <path
+    d="M33.717 35.854v4.52a1.433 1.433 0 01-1.571 1.406A21.228 21.228 0 0112.59 22.238a1.43 1.43 0 011.406-1.552l4.414-.032a1.417 1.417 0 011.38 1.067l.922 3.662a1.406 1.406 0 01-.522 1.471l-2.256 1.68a17.756 17.756 0 007.807 7.852l1.734-2.3a1.425 1.425 0 011.48-.522l3.689.916a1.413 1.413 0 011.073 1.374z"
+    fill="#F3F3F1"
+    />
+    <path
+    d="M32.996 41.582a1.4 1.4 0 01-.845.2 21.25 21.25 0 01-19.562-19.55 1.422 1.422 0 011.4-1.541l4.424-.037a.484.484 0 01.186.025l-2.125.012a1.421 1.421 0 00-1.4 1.541 21.226 21.226 0 0017.922 19.35z"
+    fill="#D5DBE1"
+    />
+    <path
+    d="M32.264 42.713c-.063 0-.127 0-.189-.007a22.263 22.263 0 01-20.41-20.4 2.4 2.4 0 01.625-1.8 2.306 2.306 0 011.7-.752l4.414-.031a2.35 2.35 0 012.288 1.772l.922 3.664a2.327 2.327 0 01-.872 2.445l-1.614 1.2a16.94 16.94 0 006.348 6.38l1.251-1.657a2.353 2.353 0 012.448-.865l3.689.916a2.34 2.34 0 011.783 2.273v4.521a2.3 2.3 0 01-.739 1.706 2.43 2.43 0 01-1.639.635h-.005zM18.413 21.586l-4.405.031a.457.457 0 00-.345.153.523.523 0 00-.135.4 20.387 20.387 0 0018.691 18.676.535.535 0 00.418-.139.45.45 0 00.148-.337v-4.52a.48.48 0 00-.368-.464l-3.689-.914a.485.485 0 00-.511.179l-1.735 2.3a.936.936 0 01-1.168.268 18.793 18.793 0 01-8.217-8.266.933.933 0 01.277-1.164l2.256-1.68a.473.473 0 00.179-.493l-.922-3.664a.486.486 0 00-.473-.362l-.001-.004zm14.372 1.864h1.864v5.592h-1.864V23.45z"
+    fill="#D0D0D0"
+    />
+    <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M28.96 11.167l-.88-.88-1.757 1.758.879.879 1.757-1.757zm-5.053 5.053l-.879-.88-1.757 1.758.879.879 1.757-1.757zm-1.977-5.931l1.757 1.757-.879.879-1.757-1.757.879-.88z"
+    fill="#A6C8CA"
+    />
+    <path d="M33.717 29.553a7.707 7.707 0 100-15.414 7.707 7.707 0 000 15.414z" fill="#E7F3EF" />
+    <path
+    d="M33.717 30.556a8.713 8.713 0 118.712-8.712 8.722 8.722 0 01-8.712 8.712zm0-15.413a6.7 6.7 0 106.7 6.7 6.71 6.71 0 00-6.7-6.7z"
+    fill="#006169"
+    />
+    <path
+    d="M32.377 25.532a1 1 0 01-.71-.295l-2.681-2.68 1.422-1.422 1.921 1.921 3.987-4.552 1.513 1.324-4.691 5.361a1.01 1.01 0 01-.724.343h-.037z"
+    fill="#006169"
+    />
+  </symbol>
   <!-- Download App · react-icons/md -->
   <symbol id="pf-MdPhoneIphone" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
     <path fill="none" d="M0 0h24v24H0z"/><path d="M15.5 1h-8A2.5 2.5 0 0 0 5 3.5v17A2.5 2.5 0 0 0 7.5 23h8a2.5 2.5 0 0 0 2.5-2.5v-17A2.5 2.5 0 0 0 15.5 1m-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5m4.5-4H7V4h9z"/>
@@ -3913,6 +4418,26 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   <symbol id="pf-MdRefresh" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
     <path fill="none" d="M0 0h24v24H0z"/><path d="M17.65 6.35A7.96 7.96 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"/>
   </symbol>
+  <!-- Licenses · react-icons/pi -->
+  <symbol id="pf-PiIdentificationCard" viewBox="0 0 256 256" fill="currentColor" stroke="currentColor" stroke-width="0">
+    <path d="M200,112a8,8,0,0,1-8,8H152a8,8,0,0,1,0-16h40A8,8,0,0,1,200,112Zm-8,24H152a8,8,0,0,0,0,16h40a8,8,0,0,0,0-16Zm40-80V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56ZM216,200V56H40V200H216Zm-80.26-34a8,8,0,1,1-15.5,4c-2.63-10.26-13.06-18-24.25-18s-21.61,7.74-24.25,18a8,8,0,1,1-15.5-4,39.84,39.84,0,0,1,17.19-23.34,32,32,0,1,1,45.12,0A39.76,39.76,0,0,1,135.75,166ZM96,136a16,16,0,1,0-16-16A16,16,0,0,0,96,136Z"/>
+  </symbol>
+  <!-- Preferences · react-icons/vsc -->
+  <symbol id="pf-VscSettings" viewBox="0 0 16 16" fill="currentColor" stroke="currentColor" stroke-width="0">
+    <path d="M6 9.5C6.93191 9.5 7.71496 10.1374 7.93699 11L13.5 11C13.7761 11 14 11.2239 14 11.5C14 11.7455 13.8231 11.9496 13.5899 11.9919L13.5 12L7.93673 12.001C7.71435 12.8631 6.93155 13.5 6 13.5C5.06845 13.5 4.28565 12.8631 4.06327 12.001L2.5 12C2.22386 12 2 11.7761 2 11.5C2 11.2545 2.17688 11.0504 2.41012 11.0081L2.5 11L4.06301 11C4.28504 10.1374 5.06809 9.5 6 9.5ZM6 10.5C5.44772 10.5 5 10.9477 5 11.5C5 12.0523 5.44772 12.5 6 12.5C6.55228 12.5 7 12.0523 7 11.5C7 10.9477 6.55228 10.5 6 10.5ZM10 2.5C10.9319 2.5 11.715 3.13738 11.937 3.99998L13.5 4C13.7761 4 14 4.22386 14 4.5C14 4.74546 13.8231 4.94961 13.5899 4.99194L13.5 5L11.9367 5.00102C11.7144 5.86312 10.9316 6.5 10 6.5C9.06845 6.5 8.28565 5.86312 8.06327 5.00102L2.5 5C2.22386 5 2 4.77614 2 4.5C2 4.25454 2.17688 4.05039 2.41012 4.00806L2.5 4L8.06301 3.99998C8.28504 3.13738 9.06809 2.5 10 2.5ZM10 3.5C9.44772 3.5 9 3.94772 9 4.5C9 5.05228 9.44772 5.5 10 5.5C10.5523 5.5 11 5.05228 11 4.5C11 3.94772 10.5523 3.5 10 3.5Z"/>
+  </symbol>
+  <!-- Change Password · react-icons/md -->
+  <symbol id="pf-MdPassword" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
+    <path fill="none" d="M0 0h24v24H0z"/><path d="M2 17h20v2H2zm1.15-4.05L4 11.47l.85 1.48 1.3-.75-.85-1.48H7v-1.5H5.3l.85-1.47L4.85 7 4 8.47 3.15 7l-1.3.75.85 1.47H1v1.5h1.7l-.85 1.48zm6.7-.75 1.3.75.85-1.48.85 1.48 1.3-.75-.85-1.48H15v-1.5h-1.7l.85-1.47-1.3-.75L12 8.47 11.15 7l-1.3.75.85 1.47H9v1.5h1.7zM23 9.22h-1.7l.85-1.47-1.3-.75L20 8.47 19.15 7l-1.3.75.85 1.47H17v1.5h1.7l-.85 1.48 1.3.75.85-1.48.85 1.48 1.3-.75-.85-1.48H23z"/>
+  </symbol>
+  <!-- Generate Agent Description — GenerateContentField.js:182 · react-icons/bs -->
+  <symbol id="pf-BsStars" viewBox="0 0 16 16" fill="currentColor" stroke="currentColor" stroke-width="0">
+    <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"/>
+  </symbol>
+  <!-- Browse and Upload (stands in for the upload Lottie) · react-icons/md -->
+  <symbol id="pf-MdOutlineCloudUpload" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
+    <path fill="none" d="M0 0h24v24H0z"/><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96M19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95A5.47 5.47 0 0 1 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11A2.98 2.98 0 0 1 22 15c0 1.65-1.35 3-3 3M8 13h2.55v3h2.9v-3H16l-4-4z"/>
+  </symbol>
   <!-- Verified Photography (#5462AF) · react-icons/hi -->
   <symbol id="pf-HiCamera" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="0" aria-hidden="true">
     <path fill-rule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
@@ -3935,10 +4460,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   </symbol>
 </defs></svg>
 <!-- ═══════════════════════════════════════════════════════════════════
-     LEADS — scripts/pages/blocks.mjs from data/fixtures/blocks.json
+      — scripts/pages/blocks.mjs from data/fixtures/blocks.json
      Every size below is read off data/live/lms-leads.capture.json:
-       content 1380x800 · one 1332x672 block
-       it carries the same filter bar Listings does — filter.input, .field, .showmore, .clear and .search all resolve on the product's capture
+       no page title in the header — the filter bar is the first thing on the page
+       the account has no leads, so the product renders its own empty card
      ═══════════════════════════════════════════════════════════════════════ -->
 <div class="pf-shell">
   <!-- ── icon rail · collapsed (60px), the shipped default state ────── -->
@@ -3995,7 +4520,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   <div class="pf-main">
     <!-- ── header ──────────────────────────────────────────────────── -->
     <header class="pf-header pf-header-fixed">
-      <div class="pf-header-brand"><span class="pf-page-title">Leads</span></div>
+      <div class="pf-header-brand"><span class="pf-page-title"></span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
         <!-- the one link in the shell that LEAVES the product. It carried
@@ -4009,44 +4534,45 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     <main class="pf-content" data-gap="8">
       <div class="pf-filter-bar">
         <div class="pf-filter-fields">
-          <div class="pf-field">
-            <label class="pf-field-label" for="lms-leads-fb-0">Lead ID</label>
-            <span class="pf-input"><input id="lms-leads-fb-0" type="text" placeholder="Enter Lead ID"><span class="pf-input-suffix"></span></span>
+          <div class="pf-field" style="--field-w:234px">
+            <label class="pf-field-label" for="lms-leads-fb-0">Search by</label>
+            <span class="pf-compound">
+              <span class="pf-input"><input id="lms-leads-fb-0" type="text" placeholder="Search by Listin..."></span>
+              <button class="pf-select" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Listi...</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+            </span>
           </div>
-          <div class="pf-field">
-            <label class="pf-field-label" for="lms-leads-fb-1">Listing</label>
-            <button class="pf-select" id="lms-leads-fb-1" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Listing</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+          <div class="pf-field" style="--field-w:236px">
+            <label class="pf-field-label" for="lms-leads-fb-1">Lead Received</label>
+            <button class="pf-datefield" id="lms-leads-fb-1" type="button" data-noop="the range calendar is not measured yet — see authoring/qa-listings.md"><span class="pf-placeholder">Select Date Range</span><svg class="i i-16"><use href="#pf-FiCalendar"/></svg></button>
           </div>
-          <div class="pf-field">
-            <label class="pf-field-label" for="lms-leads-fb-2">Channel</label>
-            <button class="pf-select" id="lms-leads-fb-2" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Channel</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
-          </div>
-          <div class="pf-field">
-            <label class="pf-field-label" for="lms-leads-fb-3">Status</label>
-            <button class="pf-select" id="lms-leads-fb-3" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Status</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+          <div class="pf-field" style="--field-w:236px">
+            <label class="pf-field-label" for="lms-leads-fb-2">Last Interaction</label>
+            <button class="pf-datefield" id="lms-leads-fb-2" type="button" data-noop="the range calendar is not measured yet — see authoring/qa-listings.md"><span class="pf-placeholder">Select Date Range</span><svg class="i i-16"><use href="#pf-FiCalendar"/></svg></button>
           </div>
         </div>
         <div class="pf-filter-actions">
-          <button class="pf-btn" data-variant="tint" data-size="small" type="button" data-noop="the extra filters open in a drawer on this screen too"><span>Show More</span><svg class="i i-18"><use href="#pf-MdOutlineDoubleArrow"/></svg></button>
-          <button class="pf-btn" data-variant="link-danger" data-size="small" type="button" disabled><span>Clear filters</span></button>
+          <button class="pf-btn" data-variant="link-danger" data-size="small" type="button" data-noop="clearing a filter is a URL push and a refetch"><span>Clear filters</span></button>
           <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-noop="Search pushes the filter values into the URL and refetches"><svg class="i"><use href="#pf-FiSearch"/></svg><span>Search</span></button>
+          <a class="pf-btn" data-variant="default" data-size="large" href="not-built.html?screen=Add%20New%20Lead"><svg class="i i-16"><use href="#pf-IoAddCircleOutline"/></svg><span>Add New Lead</span></a>
         </div>
       </div>
-      <div class="pf-block-row" style-cols="full" data-cols="full">
-        <section class="pf-card pf-block" data-w="1332">
-          <div class="pf-block-head">Leads</div>
+      <div class="pf-block-row" data-cols="auto">
+        <section class="pf-card pf-block" data-w="full" data-h="552">
+
           <div class="pf-block-body">
             <table class="pf-table">
-              <thead><tr><th>Lead</th><th>Listing</th><th>Channel</th><th>Received</th><th>Status</th></tr></thead>
+              <thead><tr><th></th></tr></thead>
               <tbody>
                 <tr>
-                  <td colspan="5">
+                  <td colspan="1">
                     <div class="pf-empty">
                       <svg class="pf-empty-art" width="164" height="89" viewBox="0 0 164 89" role="img" aria-label="No Record Found illustration">
   <path
+  fill="#F7FCFC"
   d="M17.357 15.687c0-8.666 7.025-15.69 15.69-15.69h90.982c8.665 0 15.689 7.024 15.689 15.69 0 8.664-7.024 15.688-15.689 15.688H33.047c-8.665 0-15.69-7.024-15.69-15.688m18.811 57.631c0-8.664 7.024-15.688 15.69-15.688h82.924c8.664 0 15.689 7.024 15.689 15.688 0 8.666-7.025 15.69-15.689 15.69H51.857c-8.665 0-15.689-7.024-15.689-15.69"
   />
   <path
+  fill="#F7FCFC"
   d="M.586 53.193c0-8.664 7.024-15.689 15.69-15.689h131.449c8.666 0 15.69 7.025 15.69 15.69s-7.024 15.689-15.69 15.689H16.275c-8.665 0-15.69-7.024-15.69-15.69"
   />
   <path
@@ -4075,12 +4601,13 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   <rect width="21" height="2.1" x="57.426" y="70.211" fill="#fff" rx="1.05" />
   <g>
   <path
-  fill="url(#EmptyListing__EmptyListing1-blocks-3)"
+  fill="url(#EmptyListing__EmptyListing1-blocks-1)"
   d="M108.456 26.29H62.212a5.78 5.78 0 0 0-5.78 5.78v23.12a5.78 5.78 0 0 0 5.78 5.78h46.244a5.78 5.78 0 0 0 5.78-5.78V32.07a5.78 5.78 0 0 0-5.78-5.78"
   />
   <path
   fill="currentColor"
   d="M98.34 37.85H72.327a2.89 2.89 0 0 1 0-5.78H98.34a2.89 2.89 0 0 1 0 5.78m7.225 8.664H72.328a2.89 2.89 0 0 1 0-5.78h33.237a2.89 2.89 0 0 1 0 5.78m-14.451 8.68H72.327a2.89 2.89 0 0 1 0-5.78h18.787a2.89 2.89 0 0 1 0 5.78"
+  style="mix-blend-mode:multiply"
   />
   </g>
   <path
@@ -4121,7 +4648,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   />
   <defs>
   <radialGradient
-  id="EmptyListing__EmptyListing1-blocks-3"
+  id="EmptyListing__EmptyListing1-blocks-1"
   cx="0"
   cy="0"
   r="1"

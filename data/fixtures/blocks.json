@@ -1,5 +1,9 @@
 {
-  "_": "Pages made of measured blocks. Every width, height and count is read off data/live/<route>.capture.json; labels come from the product's own source. These screens mostly render EMPTY STATES because the fixture account has no report or lead data, and reproducing what rendered is the method — inventing rows the product did not draw is what check-captures.mjs exists to prevent.",
+  "_source": {
+    "geometry": "data/live/<route>.capture.json, read with scripts/outline.mjs",
+    "content": "data/live/<route>.png — the same fixture account the captures were taken from",
+    "note": "These pages were once a stat grid and a grey rectangle labelled 'Chart'. A region diff could not see the difference because a region is a bounding box; scripts/qa-body.mjs compares what a body is MADE of and is what caught it."
+  },
   "listbox": [
     "Last 7 days",
     "Last 30 days",
@@ -8,98 +12,261 @@
   "pages": [
     {
       "slug": "reports-summary",
-      "route": "reports-summary",
-      "title": "Reports",
+      "title": "Summary",
       "rail": "Reports",
+      "route": "reports-summary",
       "notes": [
-        "content 1380x824 · header row 1332x240 (533 + 16 + 783)",
-        "stat card head 47, body 192, seven 103-wide items on a 4-column grid",
-        "chart card head 47, body 192 with a 733x160 plot",
-        "the second row is a 1332x528 plot",
-        "the second row is a TABBED card 1332x528 — tabs 609x84, each 200 wide"
+        "Listings 533x240 · Breakdown By Location 783x240 (two 128 rings)",
+        "Performance 1332x528 — head 158 (a 44 row + an 84 tab strip), body 370",
+        "the chart area is 1282x273 and the pill row 29"
       ],
       "rows": [
         {
           "cols": "533 783",
           "blocks": [
             {
-              "title": "Listings Summary",
               "w": 533,
               "h": 240,
+              "title": "Listings",
               "body": [
                 {
-                  "kind": "stats",
+                  "kind": "statcard",
+                  "lead": {
+                    "label": "Active",
+                    "value": "20"
+                  },
                   "items": [
                     {
-                      "icon": "MyListingIcon",
-                      "label": "Total",
-                      "value": "51"
+                      "label": "For Sale",
+                      "value": "20",
+                      "icon": "IconForSale",
+                      "tint": "rgba(45,62,155,.08)"
                     },
                     {
-                      "icon": "IconBasic",
-                      "label": "Basic",
-                      "value": "34"
+                      "label": "To Rent",
+                      "value": "0",
+                      "icon": "IconForRent",
+                      "tint": "rgba(71,158,235,.08)"
                     },
                     {
-                      "icon": "IconSuperHot",
-                      "label": "Hot",
-                      "value": "9"
+                      "label": "Daily Rentals",
+                      "value": "0",
+                      "icon": "IconRental",
+                      "tint": "rgba(71,158,235,.08)"
                     },
                     {
-                      "icon": "BsFillLightningChargeFill",
                       "label": "Signature",
-                      "value": "8"
+                      "value": "12",
+                      "icon": "BsFillLightningChargeFill",
+                      "tint": "rgba(175,111,255,.08)"
                     },
                     {
-                      "icon": "MdEdit",
-                      "label": "Draft",
-                      "value": "1"
+                      "label": "Hot",
+                      "value": "5",
+                      "icon": "IconSuperHot",
+                      "tint": "rgba(247,49,49,.08)"
                     },
                     {
-                      "icon": "GoDotFill",
-                      "label": "Pending",
-                      "value": "4"
-                    },
-                    {
-                      "icon": "HiOutlineTrash",
-                      "label": "Removed",
-                      "value": "172"
+                      "label": "Basic",
+                      "value": "3",
+                      "icon": "IconBasic",
+                      "tint": "rgba(40,177,109,.08)"
                     }
                   ]
                 }
               ]
             },
             {
-              "title": "Listings Performance",
               "w": 783,
               "h": 240,
+              "title": "Breakdown By Location",
               "body": [
                 {
-                  "kind": "plot",
-                  "h": 160,
-                  "label": "Views, clicks and leads over time"
+                  "kind": "donuts",
+                  "items": [
+                    {
+                      "value": "0",
+                      "label": "For Sale",
+                      "series": [],
+                      "legend": [
+                        {
+                          "label": "Not enough data"
+                        }
+                      ]
+                    },
+                    {
+                      "value": "0",
+                      "label": "To Rent",
+                      "series": [],
+                      "legend": [
+                        {
+                          "label": "Not enough data"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
           ]
         },
         {
-          "cols": "full",
           "blocks": [
             {
-              "tabs": [
-                "Summary",
-                "Listing Report",
-                "Leads Report"
-              ],
-              "tabw": 200,
+              "w": "full",
               "h": 528,
-              "w": 1332,
+              "title": "Performance",
+              "segments": [
+                "All",
+                "For Sale",
+                "For Rent",
+                "Daily Rentals"
+              ],
+              "dateField": "Last 30 Days",
+              "headBody": [
+                {
+                  "kind": "metricTabs",
+                  "metrics": [
+                    {
+                      "label": "Views",
+                      "value": "26,080",
+                      "delta": "13%",
+                      "dir": "up",
+                      "icon": "IoMdEye",
+                      "tint": "rgba(0,97,105,.08)"
+                    },
+                    {
+                      "label": "Clicks",
+                      "value": "407",
+                      "delta": "3%",
+                      "dir": "down",
+                      "icon": "HiCursorClick",
+                      "tint": "rgba(255,169,0,.10)"
+                    },
+                    {
+                      "label": "Leads",
+                      "value": "13",
+                      "delta": "8%",
+                      "dir": "up",
+                      "icon": "MdPhone",
+                      "tint": "rgba(71,158,235,.10)"
+                    }
+                  ],
+                  "channels": [
+                    {
+                      "label": "Calls",
+                      "value": "0",
+                      "icon": "MdPhone"
+                    },
+                    {
+                      "label": "WhatsApp",
+                      "value": "7",
+                      "icon": "IconWhatsapp"
+                    },
+                    {
+                      "label": "SMS",
+                      "value": "0",
+                      "icon": "MdSms"
+                    },
+                    {
+                      "label": "Emails",
+                      "value": "0",
+                      "icon": "MdEmail"
+                    }
+                  ]
+                }
+              ],
               "body": [
                 {
-                  "kind": "plot",
-                  "h": 440,
-                  "label": "Leads by channel"
+                  "kind": "pills",
+                  "pills": [
+                    {
+                      "label": "All",
+                      "icon": "GoDotFill"
+                    },
+                    {
+                      "label": "Basic",
+                      "icon": "IconBasic"
+                    },
+                    {
+                      "label": "Hot",
+                      "icon": "IconSuperHot"
+                    },
+                    {
+                      "label": "Signature",
+                      "icon": "BsFillLightningChargeFill"
+                    }
+                  ]
+                },
+                {
+                  "kind": "chart",
+                  "points": [
+                    8,
+                    12,
+                    15,
+                    18,
+                    22,
+                    30,
+                    60,
+                    620,
+                    330,
+                    500,
+                    820,
+                    830,
+                    820,
+                    790,
+                    1010,
+                    1430,
+                    1750,
+                    1710,
+                    1440,
+                    1200,
+                    1500,
+                    2290,
+                    1550,
+                    1290,
+                    940,
+                    905,
+                    975,
+                    1200,
+                    1120,
+                    1010
+                  ],
+                  "labels": [
+                    "Aug 23",
+                    "Aug 24",
+                    "Aug 25",
+                    "Aug 26",
+                    "Aug 27",
+                    "Aug 28",
+                    "Aug 29",
+                    "Aug 30",
+                    "Aug 31",
+                    "Sep 01",
+                    "Sep 02",
+                    "Sep 03",
+                    "Sep 04",
+                    "Sep 05",
+                    "Sep 06",
+                    "Sep 07",
+                    "Sep 08",
+                    "Sep 09",
+                    "Sep 10",
+                    "Sep 11",
+                    "Sep 12",
+                    "Sep 13",
+                    "Sep 14",
+                    "Sep 15",
+                    "Sep 16",
+                    "Sep 17",
+                    "Sep 18",
+                    "Sep 19",
+                    "Sep 20",
+                    "Sep 21"
+                  ],
+                  "max": 2500,
+                  "step": 500,
+                  "h": 273
                 }
               ]
             }
@@ -109,204 +276,843 @@
     },
     {
       "slug": "reports-listing-report",
-      "route": "reports-listing-report",
       "title": "Listing Report",
       "rail": "Reports",
+      "route": "reports-listing-report",
       "notes": [
-        "content 1380x1780 · the same 1332x240 header row",
-        "then a card 1332x1484: head 46, body 1437 holding the table",
-        "the card is TABBED 1332x1484 — tabs 254x46, each 94 wide"
+        "the same two cards as Summary, then a tabbed table card",
+        "the property cell is the listings table's — thumb, price, quality chip, specs, address, ids"
       ],
       "rows": [
         {
           "cols": "533 783",
           "blocks": [
             {
-              "title": "Listings Summary",
               "w": 533,
               "h": 240,
+              "title": "Listings",
               "body": [
                 {
-                  "kind": "stats",
+                  "kind": "statcard",
+                  "lead": {
+                    "label": "Active",
+                    "value": "20"
+                  },
                   "items": [
                     {
-                      "icon": "MyListingIcon",
-                      "label": "Total",
-                      "value": "51"
+                      "label": "For Sale",
+                      "value": "20",
+                      "icon": "IconForSale",
+                      "tint": "rgba(45,62,155,.08)"
                     },
                     {
-                      "icon": "IconBasic",
-                      "label": "Basic",
-                      "value": "34"
+                      "label": "To Rent",
+                      "value": "0",
+                      "icon": "IconForRent",
+                      "tint": "rgba(71,158,235,.08)"
                     },
                     {
-                      "icon": "IconSuperHot",
-                      "label": "Hot",
-                      "value": "9"
+                      "label": "Daily Rentals",
+                      "value": "0",
+                      "icon": "IconRental",
+                      "tint": "rgba(71,158,235,.08)"
                     },
                     {
-                      "icon": "BsFillLightningChargeFill",
                       "label": "Signature",
-                      "value": "8"
+                      "value": "12",
+                      "icon": "BsFillLightningChargeFill",
+                      "tint": "rgba(175,111,255,.08)"
                     },
                     {
-                      "icon": "MdEdit",
-                      "label": "Draft",
-                      "value": "1"
+                      "label": "Hot",
+                      "value": "5",
+                      "icon": "IconSuperHot",
+                      "tint": "rgba(247,49,49,.08)"
                     },
                     {
-                      "icon": "GoDotFill",
-                      "label": "Pending",
-                      "value": "4"
-                    },
-                    {
-                      "icon": "HiOutlineTrash",
-                      "label": "Removed",
-                      "value": "172"
+                      "label": "Basic",
+                      "value": "3",
+                      "icon": "IconBasic",
+                      "tint": "rgba(40,177,109,.08)"
                     }
                   ]
                 }
               ]
             },
             {
-              "title": "Listings Performance",
               "w": 783,
               "h": 240,
+              "title": "Breakdown By Location",
               "body": [
                 {
-                  "kind": "plot",
-                  "h": 160,
-                  "label": "Views, clicks and leads over time"
+                  "kind": "donuts",
+                  "items": [
+                    {
+                      "value": "0",
+                      "label": "For Sale",
+                      "series": [],
+                      "legend": [
+                        {
+                          "label": "Not enough data"
+                        }
+                      ]
+                    },
+                    {
+                      "value": "0",
+                      "label": "To Rent",
+                      "series": [],
+                      "legend": [
+                        {
+                          "label": "Not enough data"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
           ]
         },
         {
-          "cols": "full",
           "blocks": [
             {
               "tabs": [
-                "Summary",
-                "Listing Report",
-                "Leads Report"
+                "Listing Performance",
+                "Listing By Date"
               ],
-              "tabw": 94,
-              "w": 1332,
+              "tabw": 137,
               "body": [
                 {
-                  "kind": "table",
+                  "kind": "proptable",
                   "columns": [
                     "Property",
-                    "Product",
+                    "Posted On",
                     "Views",
                     "Clicks",
-                    "Leads",
-                    "Posted on"
+                    "All Leads",
+                    "Whatsapp",
+                    "Calls",
+                    "SMS",
+                    "Emails"
                   ],
-                  "empty": "No Record Found"
+                  "rows": [
+                    {
+                      "price": "﷼ 1,250,000",
+                      "quality": "62%",
+                      "band": "high",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconBathroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "null Sq. M."
+                        }
+                      ],
+                      "address": "Al Wurud, North Riyadh, Riyadh",
+                      "ids": [
+                        "Bayut ID: 88240117",
+                        "REGA ID: 7201340882"
+                      ],
+                      "cells": [
+                        "Sep 19, 2026",
+                        "896",
+                        "35",
+                        "2",
+                        "1",
+                        "1",
+                        "-",
+                        "-"
+                      ]
+                    },
+                    {
+                      "price": "﷼ 1,399,000",
+                      "quality": "62%",
+                      "band": "high",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconBathroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "null Sq. M."
+                        }
+                      ],
+                      "address": "Al Masif, North Riyadh, Riyadh",
+                      "ids": [
+                        "Bayut ID: 88240112",
+                        "REGA ID: 7201340856"
+                      ],
+                      "cells": [
+                        "Sep 16, 2026",
+                        "796",
+                        "17",
+                        "1",
+                        "1",
+                        "-",
+                        "-",
+                        "-"
+                      ]
+                    },
+                    {
+                      "price": "﷼ 1,999,000",
+                      "quality": "54%",
+                      "band": "mid",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "4"
+                        },
+                        {
+                          "icon": "IconBathroom",
+                          "text": "5"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "null Sq. M."
+                        }
+                      ],
+                      "address": "Al Mughrizat, North Riyadh, Riyadh",
+                      "ids": [
+                        "Bayut ID: 88238421",
+                        "REGA ID: 7201340887"
+                      ],
+                      "cells": [
+                        "Sep 13, 2026",
+                        "1,600",
+                        "18",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                      ]
+                    },
+                    {
+                      "price": "﷼ 1,049,000",
+                      "quality": "50%",
+                      "band": "mid",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconBathroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "null Sq. M."
+                        }
+                      ],
+                      "address": "Al Rawabi, East Riyadh, Riyadh",
+                      "ids": [
+                        "Bayut ID: 88236048",
+                        "REGA ID: 7201340868"
+                      ],
+                      "cells": [
+                        "Sep 10, 2026",
+                        "2,015",
+                        "18",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                      ]
+                    },
+                    {
+                      "price": "﷼ 2,330,000",
+                      "quality": "43%",
+                      "band": "low",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "5"
+                        },
+                        {
+                          "icon": "IconBathroom",
+                          "text": "6"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "null Sq. M."
+                        }
+                      ],
+                      "address": "Al Nahdah, East Riyadh, Riyadh",
+                      "ids": [
+                        "Bayut ID: 88235710",
+                        "REGA ID: 7201340875"
+                      ],
+                      "cells": [
+                        "Sep 07, 2026",
+                        "2,669",
+                        "36",
+                        "2",
+                        "1",
+                        "1",
+                        "-",
+                        "-"
+                      ]
+                    },
+                    {
+                      "price": "﷼ 4,900,000",
+                      "quality": "46%",
+                      "band": "low",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "6"
+                        },
+                        {
+                          "icon": "IconBathroom",
+                          "text": "7"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "null Sq. M."
+                        }
+                      ],
+                      "address": ", As Sulaymaniyah, Al Diriyah",
+                      "ids": [
+                        "Bayut ID: 88234837",
+                        "REGA ID: 7201351018"
+                      ],
+                      "cells": [
+                        "Sep 04, 2026",
+                        "2,386",
+                        "66",
+                        "1",
+                        "1",
+                        "-",
+                        "-",
+                        "-"
+                      ]
+                    },
+                    {
+                      "price": "﷼ 870,000",
+                      "quality": "31%",
+                      "band": "low",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconBathroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "null Sq. M."
+                        }
+                      ],
+                      "address": "Al Yarmuk, East Riyadh, Riyadh",
+                      "ids": [
+                        "Bayut ID: 88232857",
+                        "REGA ID: 7201347658"
+                      ],
+                      "cells": [
+                        "Sep 01, 2026",
+                        "1,192",
+                        "13",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                      ]
+                    },
+                    {
+                      "price": "﷼ 920,000",
+                      "quality": "34%",
+                      "band": "low",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconBathroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "null Sq. M."
+                        }
+                      ],
+                      "address": "Al Yarmuk, East Riyadh, Riyadh",
+                      "ids": [
+                        "Bayut ID: 88230489",
+                        "REGA ID: 7201347647"
+                      ],
+                      "cells": [
+                        "Aug 29, 2026",
+                        "1,050",
+                        "6",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                      ]
+                    },
+                    {
+                      "price": "﷼ 995,000",
+                      "quality": "39%",
+                      "band": "low",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconBathroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "null Sq. M."
+                        }
+                      ],
+                      "address": "Al Yarmuk, East Riyadh, Riyadh",
+                      "ids": [
+                        "Bayut ID: 88230479",
+                        "REGA ID: 7201347611"
+                      ],
+                      "cells": [
+                        "Aug 26, 2026",
+                        "1,007",
+                        "3",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                      ]
+                    },
+                    {
+                      "price": "﷼ 1,050,000",
+                      "quality": "33%",
+                      "band": "low",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconBathroom",
+                          "text": "3"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "null Sq. M."
+                        }
+                      ],
+                      "address": "Al Yarmuk, East Riyadh, Riyadh",
+                      "ids": [
+                        "Bayut ID: 88230478",
+                        "REGA ID: 7201347593"
+                      ],
+                      "cells": [
+                        "Aug 23, 2026",
+                        "749",
+                        "5",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                      ]
+                    }
+                  ]
                 }
               ]
             }
           ]
         }
       ],
-      "pager": 6
+      "pager": 2,
+      "pagerFull": true
     },
     {
       "slug": "reports-leads-reports",
-      "route": "reports-leads-reports",
-      "title": "Leads Report",
+      "title": "Leads & Reach Report",
       "rail": "Reports",
+      "route": "reports-leads-reports",
       "notes": [
-        "content 1380x1389 · a 1332x528 plot over a 1332x797 table block",
-        "the FIRST row is the tabbed card 1332x528 at y80 — tabs 609x84",
-        "the card head is 158: a 76-tall filter row over an 84-tall tab strip with a 556-wide extra slot",
-        "its pager spans the content width (1332 at x84), not right-aligned like Listings'"
+        "the Performance card again, then a filtered table of leads by date"
       ],
       "rows": [
         {
-          "cols": "full",
           "blocks": [
             {
-              "tabs": [
-                "Summary",
-                "Listing Report",
-                "Leads Report"
+              "w": "full",
+              "h": 540,
+              "title": "Performance",
+              "segments": [
+                "All",
+                "For Sale",
+                "For Rent",
+                "Daily Rentals"
               ],
-              "tabw": 200,
-              "h": 528,
-              "w": 1332,
-              "body": [
+              "dateField": "Last 30 Days",
+              "headBody": [
                 {
-                  "kind": "plot",
-                  "h": 440,
-                  "label": "Leads by channel"
+                  "kind": "metricTabs",
+                  "metrics": [
+                    {
+                      "label": "Views",
+                      "value": "26,080",
+                      "delta": "13%",
+                      "dir": "up",
+                      "icon": "IoMdEye",
+                      "tint": "rgba(0,97,105,.08)"
+                    },
+                    {
+                      "label": "Clicks",
+                      "value": "407",
+                      "delta": "3%",
+                      "dir": "down",
+                      "icon": "HiCursorClick",
+                      "tint": "rgba(255,169,0,.10)"
+                    },
+                    {
+                      "label": "Leads",
+                      "value": "13",
+                      "delta": "8%",
+                      "dir": "up",
+                      "icon": "MdPhone",
+                      "tint": "rgba(71,158,235,.10)"
+                    }
+                  ],
+                  "channels": [
+                    {
+                      "label": "Calls",
+                      "value": "0",
+                      "icon": "MdPhone"
+                    },
+                    {
+                      "label": "WhatsApp",
+                      "value": "7",
+                      "icon": "IconWhatsapp"
+                    },
+                    {
+                      "label": "SMS",
+                      "value": "0",
+                      "icon": "MdSms"
+                    },
+                    {
+                      "label": "Emails",
+                      "value": "0",
+                      "icon": "MdEmail"
+                    }
+                  ]
                 }
               ],
-              "headRow": {
-                "fields": [
-                  "Select Date Range",
-                  "Select Listing",
-                  "Select Channel"
-                ]
-              },
-              "extra": "Download",
-              "id": "lr"
+              "body": [
+                {
+                  "kind": "pills",
+                  "pills": [
+                    {
+                      "label": "All",
+                      "icon": "GoDotFill"
+                    },
+                    {
+                      "label": "Basic",
+                      "icon": "IconBasic"
+                    },
+                    {
+                      "label": "Hot",
+                      "icon": "IconSuperHot"
+                    },
+                    {
+                      "label": "Signature",
+                      "icon": "BsFillLightningChargeFill"
+                    }
+                  ]
+                },
+                {
+                  "kind": "chart",
+                  "points": [
+                    8,
+                    12,
+                    15,
+                    18,
+                    22,
+                    30,
+                    60,
+                    620,
+                    330,
+                    500,
+                    820,
+                    830,
+                    820,
+                    790,
+                    1010,
+                    1430,
+                    1750,
+                    1710,
+                    1440,
+                    1200,
+                    1500,
+                    2290,
+                    1550,
+                    1290,
+                    940,
+                    905,
+                    975,
+                    1200,
+                    1120,
+                    1010
+                  ],
+                  "labels": [
+                    "Aug 23",
+                    "Aug 24",
+                    "Aug 25",
+                    "Aug 26",
+                    "Aug 27",
+                    "Aug 28",
+                    "Aug 29",
+                    "Aug 30",
+                    "Aug 31",
+                    "Sep 01",
+                    "Sep 02",
+                    "Sep 03",
+                    "Sep 04",
+                    "Sep 05",
+                    "Sep 06",
+                    "Sep 07",
+                    "Sep 08",
+                    "Sep 09",
+                    "Sep 10",
+                    "Sep 11",
+                    "Sep 12",
+                    "Sep 13",
+                    "Sep 14",
+                    "Sep 15",
+                    "Sep 16",
+                    "Sep 17",
+                    "Sep 18",
+                    "Sep 19",
+                    "Sep 20",
+                    "Sep 21"
+                  ],
+                  "max": 2500,
+                  "step": 500,
+                  "h": 273
+                }
+              ]
             }
           ]
         },
         {
-          "cols": "full",
+          "heading": "Traffic and Leads by date",
+          "filterBar": {
+            "plain": true,
+            "fields": [
+              {
+                "label": "Listed Date",
+                "type": "date",
+                "placeholder": "Select Date Range",
+                "w": 274
+              },
+              {
+                "label": "Purpose",
+                "type": "select",
+                "placeholder": "Select Purpose",
+                "w": 274
+              }
+            ],
+            "actions": [
+              {
+                "kind": "clear",
+                "label": "Clear filters"
+              },
+              {
+                "kind": "search",
+                "label": "Search",
+                "icon": "FiSearch"
+              }
+            ]
+          },
           "blocks": [
             {
-              "title": "Leads",
-              "headAction": "Download",
-              "w": 1332,
+              "w": "full",
               "body": [
                 {
                   "kind": "table",
                   "columns": [
-                    "Listing",
-                    "Channel",
-                    "Received",
-                    "Status"
+                    "Date",
+                    "Calls",
+                    "Emails",
+                    "SMS",
+                    "WhatsApp",
+                    "Total Leads"
                   ],
-                  "empty": "No Record Found"
+                  "rows": [
+                    [
+                      "Sep 21, 2026",
+                      "-",
+                      "-",
+                      "-",
+                      "-",
+                      "-"
+                    ],
+                    [
+                      "Sep 20, 2026",
+                      "-",
+                      "-",
+                      "-",
+                      "-",
+                      "-"
+                    ],
+                    [
+                      "Sep 19, 2026",
+                      "-",
+                      "-",
+                      "-",
+                      "-",
+                      "-"
+                    ],
+                    [
+                      "Sep 18, 2026",
+                      "-",
+                      "-",
+                      "-",
+                      "-",
+                      "-"
+                    ],
+                    [
+                      "Sep 17, 2026",
+                      "-",
+                      "-",
+                      "-",
+                      "-",
+                      "-"
+                    ],
+                    [
+                      "Sep 16, 2026",
+                      "-",
+                      "-",
+                      "-",
+                      "-",
+                      "-"
+                    ],
+                    [
+                      "Sep 15, 2026",
+                      "-",
+                      "-",
+                      "-",
+                      "-",
+                      "-"
+                    ],
+                    [
+                      "Sep 14, 2026",
+                      "-",
+                      "-",
+                      "-",
+                      "-",
+                      "-"
+                    ],
+                    [
+                      "Sep 13, 2026",
+                      "-",
+                      "-",
+                      "-",
+                      "1",
+                      "1"
+                    ],
+                    [
+                      "Sep 12, 2026",
+                      "-",
+                      "-",
+                      "-",
+                      "1",
+                      "1"
+                    ]
+                  ]
                 }
               ]
             }
           ]
         }
       ],
-      "pager": 6,
+      "pager": 3,
       "pagerFull": true
     },
     {
       "slug": "lms-leads",
-      "route": "lms-leads",
-      "title": "Leads",
+      "title": "",
+      "docTitle": "Leads",
       "rail": "Reports",
+      "route": "lms-leads",
       "notes": [
-        "content 1380x800 · one 1332x672 block",
-        "it carries the same filter bar Listings does — filter.input, .field, .showmore, .clear and .search all resolve on the product's capture"
+        "no page title in the header — the filter bar is the first thing on the page",
+        "the account has no leads, so the product renders its own empty card"
       ],
+      "filterBar": {
+        "fields": [
+          {
+            "label": "Search by",
+            "type": "search-compound",
+            "placeholder": "Search by Listin...",
+            "selectPlaceholder": "Listi...",
+            "w": 234
+          },
+          {
+            "label": "Lead Received",
+            "type": "date",
+            "placeholder": "Select Date Range",
+            "w": 236
+          },
+          {
+            "label": "Last Interaction",
+            "type": "date",
+            "placeholder": "Select Date Range",
+            "w": 236
+          }
+        ],
+        "actions": [
+          {
+            "kind": "clear",
+            "label": "Clear filters"
+          },
+          {
+            "kind": "search",
+            "label": "Search",
+            "icon": "FiSearch"
+          },
+          {
+            "kind": "link",
+            "label": "Add New Lead",
+            "variant": "default",
+            "icon": "IoAddCircleOutline"
+          }
+        ]
+      },
       "rows": [
         {
-          "cols": "full",
           "blocks": [
             {
-              "title": "Leads",
-              "w": 1332,
+              "w": "full",
+              "h": 552,
               "body": [
                 {
                   "kind": "table",
                   "columns": [
-                    "Lead",
-                    "Listing",
-                    "Channel",
-                    "Received",
-                    "Status"
+                    ""
                   ],
                   "empty": "No Record Found"
                 }
@@ -314,87 +1120,155 @@
             }
           ]
         }
-      ],
-      "filterBar": {
-        "fields": [
-          {
-            "label": "Lead ID",
-            "placeholder": "Enter Lead ID",
-            "type": "input"
-          },
-          {
-            "label": "Listing",
-            "placeholder": "Select Listing",
-            "type": "select"
-          },
-          {
-            "label": "Channel",
-            "placeholder": "Select Channel",
-            "type": "select"
-          },
-          {
-            "label": "Status",
-            "placeholder": "Select Status",
-            "type": "select"
-          }
-        ]
-      }
+      ]
     },
     {
       "slug": "ad-license",
-      "route": "ad-license",
-      "title": "Ad License",
+      "title": "",
+      "docTitle": "Ad License",
       "rail": "My Listings",
+      "route": "ad-license",
+      "back": {
+        "label": "Back",
+        "href": "listings.html"
+      },
+      "heading": "Get a New Ad License",
       "notes": [
-        "content 1380x814 · a single 1035-wide column at x173",
-        "a 79x32 back button, an h2 1035x30, a form 1035x720",
-        "its 1035-wide column is antd's ant-col-lg-18, the same one the settings pages use, so it carries .pf-settings-main and the field regions resolve inside it"
+        "a 1035-wide panel centred in the content area, not a two-column form",
+        "Back pill 79x32 · h2 24/30 · each section is a 195 title column beside 640 of fields",
+        "sections from create-ad-license.js:270, :447, :474"
       ],
       "rows": [
         {
           "cols": "narrow",
           "blocks": [
             {
-              "title": "Get an Ad License",
-              "w": 1035,
-              "id": "adl",
+              "w": "full",
               "body": [
                 {
-                  "kind": "form",
+                  "kind": "wizard",
                   "id": "adl",
-                  "cols": 413,
-                  "fields": [
+                  "sections": [
                     {
-                      "label": "Deed Number",
-                      "placeholder": "Enter Deed Number",
-                      "type": "input"
+                      "title": "Property Information",
+                      "icon": "IconPropertyInfo",
+                      "fields": [
+                        {
+                          "label": "Purpose",
+                          "icon": "IconSellRentListing",
+                          "type": "choices",
+                          "options": [],
+                          "note": "the account has no ad-licence products, so the product renders this row empty"
+                        },
+                        {
+                          "label": "Property Type",
+                          "icon": "SideMenuAgency",
+                          "type": "choices",
+                          "options": [
+                            {
+                              "label": "Residential",
+                              "icon": "SideMenuAgency"
+                            },
+                            {
+                              "label": "Commercial",
+                              "icon": "SideMenuPropShop"
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Property Sub Type",
+                          "icon": "SideMenuAgency",
+                          "type": "select",
+                          "placeholder": "Select Property Sub Type",
+                          "disabled": true
+                        },
+                        {
+                          "label": "Property Ownership Document Number",
+                          "icon": "PiIdentificationCard",
+                          "type": "input",
+                          "placeholder": "Enter 10-20 digit deed number"
+                        },
+                        {
+                          "label": "Property Age",
+                          "icon": "FiCalendar",
+                          "type": "select",
+                          "placeholder": "Select Property Age"
+                        },
+                        {
+                          "label": "Number of Bedrooms",
+                          "icon": "IconBedroom",
+                          "type": "choices",
+                          "options": [
+                            "Studio",
+                            "1",
+                            "2",
+                            "3",
+                            "4",
+                            "5",
+                            "6",
+                            "7",
+                            "8",
+                            "9",
+                            "10",
+                            "10+"
+                          ]
+                        },
+                        {
+                          "label": "Area Size",
+                          "hint": "Sq. M.",
+                          "icon": "IconAreaSize",
+                          "type": "input",
+                          "placeholder": "Enter Area"
+                        },
+                        {
+                          "label": "Price",
+                          "icon": "SideMenuQuota",
+                          "type": "input",
+                          "placeholder": "Enter Price"
+                        }
+                      ]
                     },
                     {
-                      "label": "Deed Date",
-                      "placeholder": "Select Deed Date",
-                      "type": "select"
+                      "title": "Property Location",
+                      "icon": "IconLocationPurpose",
+                      "fields": [
+                        {
+                          "label": "City",
+                          "icon": "SideMenuAgency",
+                          "type": "select",
+                          "placeholder": "Select City"
+                        },
+                        {
+                          "label": "District",
+                          "icon": "SideMenuAgency",
+                          "type": "select",
+                          "placeholder": "Select District"
+                        },
+                        {
+                          "label": "Street Name",
+                          "icon": "PiIdentificationCard",
+                          "type": "input",
+                          "placeholder": "Enter Street Name"
+                        }
+                      ]
                     },
                     {
-                      "label": "ID Number",
-                      "placeholder": "Enter ID Number",
-                      "type": "input"
-                    },
-                    {
-                      "label": "Date of Birth",
-                      "placeholder": "Select Date of Birth",
-                      "type": "select"
-                    },
-                    {
-                      "label": "Property Type",
-                      "placeholder": "Select Property Type",
-                      "type": "input",
-                      "span": true
-                    },
-                    {
-                      "label": "Property Address",
-                      "placeholder": "Enter Property Address",
-                      "type": "input",
-                      "span": true
+                      "title": "Contact Information",
+                      "icon": "IconContactInfo",
+                      "fields": [
+                        {
+                          "label": "Name",
+                          "icon": "FiUser",
+                          "type": "input",
+                          "placeholder": "Enter Name"
+                        },
+                        {
+                          "label": "Phone Number",
+                          "icon": "MdPhone",
+                          "type": "input",
+                          "placeholder": "Enter Phone Number"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -402,91 +1276,193 @@
             }
           ]
         }
-      ],
-      "column": true
+      ]
     },
     {
       "slug": "credits-usage",
-      "route": "credits-usage",
       "title": "Credits Usage",
       "rail": "Credits Usage",
+      "route": "credits-usage",
       "notes": [
-        "content 1380x856 · a row 1348x816 of two antd columns",
-        "left ant-col-lg-8 449 wide holding a 433-wide block",
-        "right ant-col-lg-16 899 wide holding a card 883x790: head 57, body 732"
+        "left card 433x816 (head 52) · right card 883x790 (head 57)",
+        "the left card is a 3-up strip over a 300 ring over a five-row legend",
+        "the right card is a timeline of dated property cards, not a table"
       ],
       "rows": [
         {
           "cols": "449 899",
           "blocks": [
             {
-              "title": "Credits Summary",
               "w": 433,
+              "h": 816,
+              "title": "Credits Usage",
+              "headAction": "Top-Up your Credits",
+              "headActionVariant": "tint",
+              "headActionIcon": "IoAddCircleOutline",
               "body": [
                 {
-                  "kind": "stats",
-                  "items": [
+                  "kind": "credits",
+                  "note": "Status of your current package",
+                  "strip": [
                     {
-                      "icon": "IconBasic",
-                      "label": "Basic",
-                      "value": "980"
+                      "label": "Available",
+                      "value": "34"
                     },
                     {
-                      "icon": "IconSuperHot",
-                      "label": "Hot",
-                      "value": "640"
-                    },
-                    {
-                      "icon": "BsFillLightningChargeFill",
-                      "label": "Signature",
-                      "value": "320"
-                    },
-                    {
-                      "icon": "MdRefresh",
-                      "label": "Refresh",
-                      "value": "120"
-                    },
-                    {
-                      "icon": "HiCamera",
-                      "label": "Photography",
-                      "value": "60"
-                    },
-                    {
-                      "icon": "SideMenuQuota",
                       "label": "Used",
                       "value": "2,120"
                     },
                     {
-                      "icon": "GoDotFill",
-                      "label": "Available",
-                      "value": "34"
+                      "label": "Total",
+                      "value": "0"
                     }
-                  ]
+                  ],
+                  "donut": {
+                    "size": 300,
+                    "thickness": 76,
+                    "series": [
+                      {
+                        "value": 980,
+                        "color": "#28B16D"
+                      },
+                      {
+                        "value": 640,
+                        "color": "#F73131"
+                      },
+                      {
+                        "value": 320,
+                        "color": "#AF6FFF"
+                      },
+                      {
+                        "value": 120,
+                        "color": "#479EEB"
+                      },
+                      {
+                        "value": 60,
+                        "color": "#2D3E9B"
+                      }
+                    ]
+                  },
+                  "breakdown": {
+                    "title": "Usage Breakdown",
+                    "rows": [
+                      {
+                        "value": "980",
+                        "color": "#28B16D"
+                      },
+                      {
+                        "value": "640",
+                        "color": "#F73131"
+                      },
+                      {
+                        "value": "320",
+                        "color": "#AF6FFF"
+                      },
+                      {
+                        "value": "120",
+                        "color": "#479EEB"
+                      },
+                      {
+                        "value": "60",
+                        "color": "#2D3E9B"
+                      }
+                    ]
+                  }
                 }
               ]
             },
             {
-              "title": "Consumption History",
-              "headAction": "Download",
               "w": 883,
+              "h": 790,
+              "title": "Credits Usage History",
+              "headIcon": "MdOutlineDoubleArrow",
+              "headIconNoop": "the history filter opens the product's own drawer",
               "body": [
                 {
-                  "kind": "table",
-                  "columns": [
-                    "Product",
-                    "Listing",
-                    "Credits",
-                    "Used on",
-                    "By"
-                  ],
-                  "empty": "No Record Found"
+                  "kind": "timeline",
+                  "items": [
+                    {
+                      "price": "﷼ 1,250,000",
+                      "product": "for undefined",
+                      "date": "Sep 19, 2026, 12:00 am",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3 Rooms"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "64 Sq. M."
+                        }
+                      ]
+                    },
+                    {
+                      "price": "﷼ 1,399,000",
+                      "product": "for undefined",
+                      "date": "Sep 17, 2026, 12:00 am",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3 Rooms"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "73 Sq. M."
+                        }
+                      ]
+                    },
+                    {
+                      "price": "﷼ 1,999,000",
+                      "product": "for undefined",
+                      "date": "Sep 15, 2026, 12:00 am",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "4 Rooms"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "79 Sq. M."
+                        }
+                      ]
+                    },
+                    {
+                      "price": "﷼ 1,049,000",
+                      "product": "for undefined",
+                      "date": "Sep 13, 2026, 12:00 am",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3 Rooms"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "79 Sq. M."
+                        }
+                      ]
+                    },
+                    {
+                      "price": "﷼ 1,199,000",
+                      "product": "for undefined",
+                      "date": "Sep 11, 2026, 12:00 am",
+                      "specs": [
+                        {
+                          "icon": "IconBedroom",
+                          "text": "3 Rooms"
+                        },
+                        {
+                          "icon": "IconAreaSize",
+                          "text": "68 Sq. M."
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
           ]
         }
-      ],
-      "pager": 6
+      ]
     }
   ]
 }

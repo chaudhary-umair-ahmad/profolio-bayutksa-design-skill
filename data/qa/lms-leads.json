@@ -1,60 +1,56 @@
 {
   "route": "lms-leads",
-  "at": "2026-09-22T11:30:32.711Z",
+  "at": "2026-09-22T12:17:12.652Z",
   "shellFails": [
     {
       "id": "shell.header",
-      "diff": 8.3
+      "diff": 7.7
     }
   ],
   "diffs": [
     {
       "id": "filter.clear",
-      "diff": 22.3
-    },
-    {
-      "id": "filter.showmore",
-      "diff": 18.3
+      "diff": 25
     },
     {
       "id": "filter.search",
-      "diff": 15.4
+      "diff": 15.3
+    },
+    {
+      "id": "filter.field",
+      "diff": 11.6
     },
     {
       "id": "filter.bar",
-      "diff": 11
+      "diff": 8.8
     },
     {
       "id": "shell.header",
-      "diff": 8.3
+      "diff": 7.7
     },
     {
       "id": "filter.input",
       "diff": 7.5
     },
     {
-      "id": "filter.field",
-      "diff": 6.3
-    },
-    {
       "id": "filter.label",
-      "diff": 5.9
+      "diff": 6.3
     },
     {
       "id": "shell.sider",
       "diff": 4.6
     },
     {
+      "id": "shell.footer",
+      "diff": 2.1
+    },
+    {
       "id": "table",
-      "diff": 3.2
+      "diff": 2
     },
     {
       "id": "shell.content",
-      "diff": 2.6
-    },
-    {
-      "id": "shell.footer",
-      "diff": 2.1
+      "diff": 1.9
     }
   ],
   "offScale": {
@@ -63,9 +59,27 @@
     "space": []
   },
   "literals": [
-    ".pf-sfield[data-h=\"118\"] { block-size: 118px }",
+    ".i-17 { width: 17px }",
+    ".i-17 { height: 17px }",
+    ".pf-settings-head + .pf-settings-form { --form-inset: 41px }",
+    ".pf-agency { --form-inset: 17px }",
+    ".pf-upload-btn { block-size: 55px }",
     ".pf-block-row[data-cols=\"533 783\"] { grid-template-columns: 533px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"449 899\"] { grid-template-columns: 449px minmax(var(--sp-0),1fr) }",
     ".pf-block-row[data-cols=\"narrow\"] { grid-template-columns: minmax(var(--sp-0),1035px) }",
+    ".pf-datefield { inline-size: var(--field-w, 345px) }",
+    ".pf-pill { block-size: 29px }",
+    ".pf-stat-lead { inline-size: 103px }",
+    ".pf-tl-thumb { inline-size: 120px }",
+    ".pf-tl-thumb { block-size: 82px }",
+    ".pf-proptable .pf-td-prop { inline-size: 475px }",
+    ".pf-page-lead { inline-size: 1035px }",
+    ".pf-wsection-title { inline-size: 195px }",
+    ".pf-wsection-title { block-size: 105px }",
+    ".pf-wsection-icon { inline-size: 56px }",
+    ".pf-wsection-icon { block-size: 56px }",
+    ".pf-wsection-fields { max-inline-size: 640px }",
+    ".pf-compound .pf-select { inline-size: 82px }",
     ".pf-plot[data-h=\"160\"] { block-size: 160px }",
     ".pf-plot[data-h=\"440\"] { block-size: 440px }",
     ".pf-tab[data-tabw=\"200\"] { inline-size: 200px }",
@@ -74,7 +88,7 @@
     ".pf-filter-bar[data-in-head=\"true\"] { block-size: 78px }"
   ],
   "lowContrast": 0,
-  "contrastMatchingProduct": 14,
+  "contrastMatchingProduct": 6,
   "productLow": [
     {
       "col": "rgb(255,255,255)",
@@ -92,7 +106,9 @@
       "ratio": 3.86
     }
   ],
-  "notModelled": [],
+  "notModelled": [
+    "filter.showmore"
+  ],
   "rtlOverflow": false,
   "physical": 0,
   "states": []

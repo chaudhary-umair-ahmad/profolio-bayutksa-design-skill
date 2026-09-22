@@ -273,6 +273,10 @@
   --fs-12:12px;                        /* .fz-12 banner message, tooltip-title */
   --fs-18:18px;                        /* utils.less @fontSizes */
   --fs-20:20px;                        /* .fs20 — the Download App modal title */
+  --fs-24:24px;                        /* the agency name on Agency Settings */
+  --sp-28:28px;                        /* agency header to divider */
+  --sp-56:56px;                        /* upload button to its guidelines */
+  --radius-control-sm:4px;             /* the settings sub-nav pill */
   --fs-tag:11px;                        /* theme tag-font-size */
   --fs-chart-tick:13px;                /* chart yAxes ticks fontSize */
   --fs-chart-tick-x:10px;              /* [px] x labels — 30 daily ticks only fit at ~10px */
@@ -667,10 +671,40 @@
   --settings-gutter:5px;               /* .ant-col padding-inline */
   --settings-card:326px;               /* the cards inside it */
   --settings-nav-h:256px;
-  --settings-nav-pad:17px 26px;
-  --settings-head-h:152px;
-  --settings-avatar:68px;
-  --settings-avatar-slot:74px;
+  --settings-nav-pad:17px 21px;        /* list 284 inside the 326 card */
+  --settings-nav-row:38px;             /* every entry, 8 apart */
+  --settings-nav-icon:38px;            /* the icon slot, 18 glyph + 20 gap */
+  --settings-comp-h:240px;
+  --settings-meter:235px;              /* the progress track */
+  --settings-meter-h:8px;
+  --settings-meter-fill:#F0A742;       /* ORANGE — not the page's teal */
+  --settings-step-h:24px;
+  --settings-step-r:10px;
+  --settings-head-h:150px;             /* the profile page's header card */
+  --settings-avatar:56px;
+  --agency-logo:72px;
+  --agency-head-h:72px;
+  --settings-pad:40px;                 /* card body inset on every shape */
+  --settings-nav-active:#F7FCFC;       /* the current sub-nav row */
+  --settings-nav-icon-color:#ADB4D2;   /* an inactive sub-nav glyph */
+  --progress-track:rgba(0,0,0,.06);    /* antd .ant-progress-inner */
+  --step-done:rgba(0,97,105,.667);     /* a completed verification step's label */
+  --quality-bg:rgba(240,167,66,.12);   /* the listing-quality chip */
+
+  /* Per-instance properties. Each is set inline by the generator from a
+     MEASURED value — a step pill's width, a stat tile's tint, a Save button's
+     width — and declared here so the stylesheet is the list of everything the
+     pages can set, and so a typo in a generator shows up as a default rather
+     than as nothing at all. */
+  --step-w:auto;                       /* a completion step pill */
+  --form-w:100%;                       /* a settings form's column block */
+  --save-w:auto; --save-r:var(--radius-control);
+  --round-w:auto;                      /* the generate-description button */
+  --upload-w:415px;                    /* the dashed upload button */
+  --field-w:auto;                      /* a filter field */
+  --tile:var(--bg-gray-deep);          /* an icon tile's tint */
+  --donut:128px;                       /* a ring's diameter */
+  --swatch:var(--gray-400);            /* a legend swatch */
   --sfield-label-h:22px;
   --sfield-control-h:44px;
   --sfield-gap:8px;                    /* label to control */
@@ -679,7 +713,13 @@
   --sfield-gutter:54px;
   --sfield-row-gap:24px;               /* 98 pitch less the 74 field */
   --sfield-tall:164px;                 /* a generate-content textarea */
+  --sfield-textarea:88px;
+  --sfield-phone-h:46px;               /* a PhoneInput is 2 taller than an input */
+  --sfield-phone-country:68px;
+  --sfield-narrow:500px;               /* Change Password's centred column */
+  --sfield-round-h:38px;               /* the generate button */
   --input-disabled-bg:rgba(0,0,0,.04);  /* .ant-input-disabled, measured */
+  --disabled:rgba(0,0,0,.25);           /* .ant-input-disabled's own text colour */
   --sfield-upload:133px;               /* the image-select row that ends the form */
   --sfield-upload-art:103px;
   /* pages made of measured blocks — reports, LMS, ad-license.
@@ -1978,6 +2018,9 @@ table{border-collapse:collapse}
 .pf-page-item[aria-disabled="true"]{color:var(--text-disabled)}
 .pf-page-item[aria-disabled="true"] button{cursor:not-allowed}
 .i-12{width:var(--fs-12);height:var(--fs-12)}
+.i-10{width:var(--fs-10);height:var(--fs-10)}
+.i-17{width:17px;height:17px}    /* antd renders the stat tiles' glyphs at 17 */
+.i-24{width:var(--fs-24);height:var(--fs-24)}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · overlays — modal, drawer, popover
@@ -2272,7 +2315,10 @@ table{border-collapse:collapse}
 }
 /* the illustration ships its own 164x89 and its own fills — EmptyState.js:31
    passes primary-light-2, which is already baked into the extracted art */
-.pf-empty-art{display:block}
+/* EmptyState.js:31 renders <EmptyListing color={tenantTheme['primary-light-2']}/>
+   and the illustration paints nine of its shapes with currentColor. Inherited,
+   that resolved to the page's near-black text and the art came out dark. */
+.pf-empty-art{display:block;color:var(--primary-light-2)}
 .pf-empty-title{
   font-size:var(--fs-18);font-weight:var(--fw-600);color:var(--black);
   margin-block-end:var(--empty-title-mb);
@@ -2888,122 +2934,234 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   min-inline-size:var(--sp-0);
 }
 
+/* the sub-nav: five 38-tall rows, 8 apart, each with an 18px glyph in a 38
+   slot. The CURRENT one is a filled pill — #f7fcfc, radius 4, weight 600 —
+   which reading it as coloured text alone missed entirely. */
 .pf-settings-nav{padding:var(--settings-nav-pad);block-size:var(--settings-nav-h);box-sizing:border-box}
-.pf-settings-nav ul{list-style:none;margin:var(--sp-0);padding:var(--sp-0)}
+.pf-settings-nav ul{list-style:none;margin:var(--sp-0);padding:var(--sp-0);display:grid;gap:var(--sp-8)}
 .pf-settings-nav a{
-  display:flex;align-items:center;gap:var(--sp-12);
-  padding-block:var(--sp-8);
-  color:var(--base);
+  display:flex;align-items:center;
+  block-size:var(--settings-nav-row);
+  border-radius:var(--radius-control-sm);
+  color:var(--base);font-weight:var(--fw-500);
 }
-.pf-settings-nav a[aria-current="page"]{color:var(--primary);font-weight:var(--fw-600)}
+.pf-settings-nav .nav-text{flex:1}
+.pf-settings-nav a > svg{
+  inline-size:var(--settings-nav-icon);block-size:18px;
+  padding-inline-start:var(--sp-16);box-sizing:content-box;
+  color:var(--settings-nav-icon-color);flex:none;
+}
+.pf-settings-nav a[aria-current="page"]{
+  background:var(--settings-nav-active);
+  color:var(--primary);font-weight:var(--fw-600);
+}
+.pf-settings-nav a[aria-current="page"] > svg{color:var(--primary)}
 .pf-settings-nav a:hover{color:var(--primary)}
 
-.pf-completion{padding:var(--sp-24)}
+/* Profile completeness. Three things here are the product's and were all
+   wrong: the meter is ORANGE, the steps are pills rather than chips, and a
+   step that is DONE is tinted with a check while one still to do is outlined
+   with a hollow dot. */
+.pf-completion{padding:var(--sp-24);block-size:var(--settings-comp-h);box-sizing:border-box}
 .pf-completion-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-8);margin-block-end:var(--sp-4)}
-.pf-completion-title{font-weight:var(--fw-500)}
+.pf-completion-title{font-weight:var(--fw-500);white-space:nowrap}
+.pf-completion-head .pf-btn{padding:var(--sp-0);border:0;background:none;white-space:nowrap}
 .pf-completion-meter{display:flex;align-items:center;gap:var(--sp-8);margin-block-end:var(--sp-16)}
-.pf-completion-pct{font-weight:var(--fw-600)}
-.pf-completion-body{display:grid;justify-items:start;gap:var(--sp-8)}
-.pf-mini-card{
-  display:inline-flex;align-items:center;gap:var(--sp-8);
-  padding:var(--sp-2) var(--sp-8);
-  border:var(--border-w) solid var(--gray-400);
-  border-radius:var(--radius-tag);
-  font-size:var(--fs-12);
-}
-
-.pf-settings-head{block-size:var(--settings-head-h);display:flex;align-items:center;padding-inline:var(--sp-40)}
-.pf-settings-meta{display:flex;align-items:center;gap:var(--sp-16)}
-/* the meta's avatar SLOT is 74 wide and the circle inside it 68 — the 6 is
-   antd's card-meta gutter, and measuring the circle alone read 68 against 74 */
-.pf-settings-avatar{
-  inline-size:var(--settings-avatar-slot);block-size:var(--settings-avatar);
-  padding-inline-end:calc(var(--settings-avatar-slot) - var(--settings-avatar));
+.pf-progress{
+  inline-size:var(--settings-meter);block-size:var(--settings-meter-h);
   border-radius:var(--radius-round);
-  background:var(--bg-gray-deep);color:var(--gray-600);
-  display:grid;place-items:center;flex:none;
+  background:var(--progress-track);
+  overflow:hidden;flex:none;
 }
-.pf-settings-name{font-size:var(--fs-18);font-weight:var(--fw-600)}
-.pf-settings-sub{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
-.pf-settings-sub svg{color:var(--gray-500)}
+.pf-progress-bg{display:block;block-size:100%;border-radius:var(--radius-round);background:var(--settings-meter-fill)}
+.pf-completion-pct{font-weight:var(--fw-600)}
+.pf-completion-body{display:grid;justify-items:start;gap:var(--sp-16)}
+.pf-step{
+  display:inline-flex;align-items:center;
+  inline-size:var(--step-w);block-size:var(--settings-step-h);
+  border-radius:var(--settings-step-r);
+  font-size:var(--fs-base);font-weight:var(--fw-600);
+  box-sizing:border-box;
+}
+.pf-step > svg{inline-size:32px;block-size:16px;padding-inline-start:var(--sp-4);box-sizing:border-box;flex:none}
+.pf-step[data-state="todo"]{background:var(--white);border:var(--border-w) solid var(--border-light);color:var(--heading)}
+.pf-step[data-state="todo"] > svg{color:var(--gray-400)}
+.pf-step[data-state="done"]{background:var(--primary-light-4);color:var(--step-done)}
+.pf-step[data-state="done"] > svg{color:var(--primary)}
 
-.pf-settings-form{padding:var(--sp-40)}
-.pf-card-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-12)}
-/* two 390 columns with a 54 gutter and a 98 row pitch — a field is a 22 label
-   over a 44 control with 8 between them */
-/* Agency Settings uses 413 columns where the profile form uses 390 — same
-   54 gutter, same 98 pitch, a wider card because it has no header card above
-   it. data/live/user-settings-agency-profile.capture.json */
-.pf-form-grid[data-cols="413"]{grid-template-columns:repeat(2,var(--sfield-col-wide))}
+/* ── the profile page's header card ─────────────────────────────────────── */
+/* .pf-card is a flex COLUMN, so a header that only says `display:flex` stacks
+   the avatar over the name instead of putting them side by side. The direction
+   has to be restated on every row inside a card. */
+.pf-settings-head{
+  block-size:var(--settings-head-h);
+  display:flex;flex-direction:row;align-items:center;gap:var(--sp-16);
+  padding-inline:var(--settings-pad);box-sizing:border-box;
+}
+.pf-settings-avatar{
+  inline-size:var(--settings-avatar);block-size:var(--settings-avatar);
+  border-radius:var(--radius-round);
+  background:var(--gray-400);
+  position:relative;flex:none;
+}
+/* the completeness ring's percentage sits on the avatar, not beside it */
+.pf-avatar-pct{
+  position:absolute;inset-block-end:-6px;inset-inline-start:50%;translate:-50% 0;
+  padding:0 var(--sp-4);
+  border-radius:var(--radius-round);
+  background:var(--settings-meter-fill);color:var(--white);
+  font-size:var(--fs-10);font-weight:var(--fw-600);line-height:14px;
+}
+.pf-settings-who{display:grid;gap:var(--sp-4)}
+.pf-settings-nameline{display:flex;align-items:center;gap:var(--sp-8);flex-wrap:wrap}
+.pf-settings-name{font-size:var(--fs-20);font-weight:var(--fw-700);margin:var(--sp-0)}
+.pf-user-tag{
+  display:inline-flex;align-items:center;gap:var(--sp-4);
+  block-size:var(--settings-step-h);padding-inline:var(--sp-8);
+  border-radius:var(--settings-step-r);
+  background:var(--bg-gray-deep);color:var(--base);
+  font-size:var(--fs-12);font-weight:var(--fw-500);
+}
+.pf-user-tag[data-tone="verified"]{background:var(--primary-light-4);color:var(--primary)}
+.pf-settings-sub{color:var(--gray-700)}
+
+/* ── the agency page: one card with its header inside ───────────────────── */
+.pf-agency-head{display:flex;flex-direction:row;align-items:center;gap:var(--sp-16);block-size:var(--agency-head-h)}
+.pf-agency-logo{
+  inline-size:var(--agency-logo);block-size:var(--agency-logo);
+  border-radius:var(--radius-round);
+  background:var(--primary-light-4);flex:none;
+}
+.pf-agency-name{font-size:var(--fs-24);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-4)}
+.pf-agency-users{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
+.pf-agency-users svg{color:var(--gray-500)}
+.pf-divider{border:0;border-block-start:var(--border-w) solid var(--border-light);margin:var(--sp-28) var(--sp-0) var(--sp-40)}
+
+/* ── the form ───────────────────────────────────────────────────────────── */
+.pf-settings-form{padding:var(--settings-pad)}
+/* the form is inset FURTHER than the card's 40: the profile page's fields run
+   501..1336 inside a card at 420..1417, the agency page's 478..1358 */
+.pf-settings-form > .pf-form-grid,
+.pf-settings-form > .pf-form-actions{margin-inline:var(--form-inset, 0)}
+.pf-settings-head + .pf-settings-form{--form-inset:41px}
+.pf-agency{--form-inset:17px}
+.pf-card-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-24)}
 .pf-form-grid{
   display:grid;
-  grid-template-columns:repeat(2,var(--sfield-col));
+  inline-size:var(--form-w);
+  grid-template-columns:repeat(2,minmax(var(--sp-0),1fr));
   column-gap:var(--sfield-gutter);
   row-gap:var(--sfield-row-gap);
 }
+/* Change Password has one 500-wide column, centred in the card */
+.pf-form-grid[data-cols="one"]{grid-template-columns:minmax(var(--sp-0),1fr);margin-inline:auto}
+.pf-narrow .pf-form-actions{inline-size:var(--sfield-narrow);margin-inline:auto}
+
 .pf-sfield{display:flex;flex-direction:column;gap:var(--sfield-gap)}
-/* a settings label is 14/22 in black — NOT the filter bar's 12/19 grey, which
-   is what it inherited and what the region diff read as a 9.6%% difference on
-   every field */
+.pf-sfield.span-all{grid-column:1 / -1}
+/* every field type the generator can emit, named here so the stylesheet is the
+   list of what a settings field can be */
+.pf-sfield.sf-input,
+.pf-sfield.sf-select,
+.pf-sfield.sf-textarea,
+.pf-sfield.sf-generate,
+.pf-sfield.sf-upload{}
+.pf-sfield.rtl{text-align:end}
+/* a settings label is 14/22 in black — NOT the filter bar's 12/19 grey */
 .pf-sfield > .pf-field-label{
   block-size:var(--sfield-label-h);
-  font-size:var(--fs-base);
-  line-height:var(--lh-base);
-  color:var(--black);
+  font-size:var(--fs-base);line-height:var(--lh-base);
+  font-weight:var(--fw-600);color:var(--black);
 }
-/* the 44 belongs to the INPUT, which is what the product measures; putting it
-   on the wrapper left the control region missing entirely */
-.pf-sfield .pf-input > input{block-size:var(--sfield-control-h)}
-/* the BORDER is the input's here, as the product's .ant-input carries it —
-   with it on the wrapper the control region had no border at all */
-.pf-sfield .pf-input{border:0;padding:var(--sp-0)}
-/* the wrapper's suffix slot has no job on a settings field and was eating 24
-   of the control's width — 366 against the product's 390 */
-.pf-sfield .pf-input > .pf-input-suffix{display:none}
+.pf-sfield .pf-input,
+.pf-sfield .pf-select{block-size:var(--sfield-control-h)}
+.pf-sfield .pf-input{border:0;padding:var(--sp-0);background:none}
 .pf-sfield .pf-input > input{
-  inline-size:100%;
+  inline-size:100%;block-size:var(--sfield-control-h);
   padding-inline:var(--sp-12);
   border:var(--border-w) solid var(--input-border);
   border-radius:var(--radius-control);
   background:var(--white);
 }
-/* a disabled field is filled, not just dimmed — rgba(0,0,0,.04), measured on
-   the three read-only fields at the top of the profile form */
-.pf-sfield .pf-input > input:disabled{background:var(--input-disabled-bg);cursor:not-allowed}
+/* a disabled field is FILLED, not just dimmed — rgba(0,0,0,.04) */
+.pf-sfield .pf-input > input:disabled{background:var(--input-disabled-bg);color:var(--disabled);cursor:not-allowed}
+.pf-sfield .pf-select[disabled]{background:var(--input-disabled-bg);color:var(--disabled);cursor:not-allowed}
+/* a select showing a chosen value, and a multi-select showing one removable
+   tag — Service Area renders "1 x" rather than a placeholder */
+.pf-select-value{color:var(--base)}
+.pf-select-tag{
+  display:inline-flex;align-items:center;gap:var(--sp-4);
+  block-size:24px;padding-inline:var(--sp-8);
+  border-radius:var(--radius-control);
+  background:var(--bg-gray-deep);color:var(--base);font-size:var(--fs-13);
+}
+.pf-select-tag svg{color:var(--gray-500)}
+
+/* a phone field is a compound the product builds from react-phone-number-input:
+   a 68-wide disabled country box, then the number. It is 46 tall, not 44. */
+.pf-sfield.sf-phone .pf-phone{display:flex;gap:var(--sp-8);block-size:var(--sfield-phone-h)}
+.pf-phone-country{
+  inline-size:var(--sfield-phone-country);
+  display:flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  border:var(--border-w) solid var(--input-border);
+  border-radius:var(--radius-control);
+  background:var(--white);flex:none;
+}
+.pf-flag{inline-size:20px;block-size:14px;border-radius:2px;background:var(--border-light)}
+.pf-sfield.sf-phone .pf-input{flex:1;block-size:var(--sfield-phone-h)}
+.pf-sfield.sf-phone .pf-input > input{block-size:var(--sfield-phone-h)}
+
 /* Change Password uses antd's Input.Password: the BORDER is on the affix
-   wrapper and the inner input has none — the opposite of the profile form,
-   where the input carries it. Two components, two answers. */
-.pf-sfield.password .pf-input{
+   wrapper and the inner input has none — the opposite of the profile form. */
+.pf-sfield.sf-password .pf-input{
+  display:flex;align-items:center;
   border:var(--border-w) solid var(--input-border);
   border-radius:var(--radius-control);
   padding-inline:var(--sp-12);
 }
-.pf-sfield.password .pf-input > input{border:0;padding-inline:var(--sp-0)}
-/* a row whose measured height is not the 74 a label and a control come to */
-.pf-sfield[data-h="118"]{block-size:118px}
-.pf-sfield[data-h="85"]{block-size:85px}
-.pf-sfield.upload{block-size:var(--sfield-upload)}
-.pf-sfield.upload[data-h]{block-size:auto}
-.pf-upload{display:flex;align-items:center;gap:var(--sp-16)}
-.pf-upload-art{
-  inline-size:var(--sfield-upload-art);block-size:var(--sfield-upload-art);
-  border-radius:var(--radius-card);
-  background:var(--border-light);
-  flex:none;
-}
-.pf-sfield.span-all{grid-column:1 / -1}
-.pf-sfield .pf-input,
-.pf-sfield .pf-select{block-size:var(--sfield-control-h)}
-.pf-sfield.tall{block-size:var(--sfield-tall)}
+.pf-sfield.sf-password .pf-input > input{border:0;padding-inline:var(--sp-0);flex:1;background:none}
+.pf-input-suffix{display:grid;place-items:center;color:var(--gray-500);background:none;border:0}
+
 .pf-textarea{
-  flex:1;
+  block-size:var(--sfield-textarea);
   padding:var(--sp-12);
   border:var(--border-w) solid var(--input-border);
   border-radius:var(--radius-control);
   background:var(--white);color:var(--base);
   font:inherit;resize:none;
 }
-.pf-form-actions{display:flex;justify-content:flex-end;gap:var(--sp-12);margin-block-start:var(--sp-24)}
+/* the generate-description button — GenerateContentField.js:179, a round
+   primaryOutlined button under the textarea, aligned to whichever end the
+   language reads towards */
+.pf-generate{display:flex;margin-block-start:var(--sp-16)}
+.pf-generate[data-align="end"]{justify-content:flex-end}
+.pf-btn[data-variant="round"]{
+  inline-size:var(--round-w);block-size:var(--sfield-round-h);
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-8);
+  border:0;border-radius:32px;
+  background:var(--primary-light-4);color:var(--primary);
+  font-size:var(--fs-13);font-weight:var(--fw-600);
+}
+
+/* the upload — image-upload.js:83 renders a primaryOutlined Button with a
+   DASHED border, not a grey square beside a plain button */
+.pf-upload{display:flex;align-items:flex-start;gap:var(--sp-56)}
+.pf-upload-btn{
+  inline-size:var(--upload-w);block-size:55px;
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-12);
+  border:var(--border-w) dashed var(--primary-light-2);
+  border-radius:var(--radius-control);
+  background:var(--primary-light-4);color:var(--primary);
+  font-weight:var(--fw-600);flex:none;
+}
+.pf-guidelines{font-size:var(--fs-12);color:var(--gray-700);display:grid;gap:var(--sp-2)}
+.pf-guidelines-title{font-size:var(--fs-base);font-weight:var(--fw-600);color:var(--base)}
+.pf-guideline{display:flex;gap:var(--sp-4)}
+.pf-guideline svg{color:var(--primary);flex:none;margin-block-start:var(--sp-4)}
+.pf-guidelines a{font-weight:var(--fw-600);color:var(--primary)}
+
+.pf-form-actions{display:flex;justify-content:flex-end;margin-block-start:var(--sp-24)}
+.pf-form-actions .pf-btn{inline-size:var(--save-w);block-size:40px;border-radius:var(--save-r, var(--radius-control))}
 
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -3039,6 +3197,233 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   box-sizing:border-box;
 }
 .pf-stat-item > div{display:flex;flex-direction:column}
+
+/* ── the head, which is more than a title ───────────────────────────────── */
+.pf-block-head[data-tall="true"]{block-size:auto;display:block;padding-block:var(--sp-16)}
+.pf-block-head-row{display:flex;flex-direction:row;align-items:center;gap:var(--sp-16);inline-size:100%}
+.pf-block-head-row > .pf-block-title{margin-inline-end:auto}
+.pf-block-title{font-size:var(--fs-card-title);font-weight:var(--fw-700);color:var(--heading)}
+.pf-icon-btn{
+  inline-size:34px;block-size:34px;display:grid;place-items:center;
+  border:var(--border-w) solid var(--border-light);border-radius:var(--radius-control);
+  background:var(--white);color:var(--gray-700);
+}
+
+/* the purpose segmented control — a grey track with a filled active pill */
+.pf-segmented{
+  display:inline-flex;flex-direction:row;gap:var(--sp-2);
+  padding:var(--sp-4);border-radius:var(--radius-control);
+  background:var(--bg-gray-deep);
+}
+.pf-segment{
+  block-size:36px;padding-inline:var(--sp-16);
+  border:0;border-radius:var(--radius-control);background:none;
+  color:var(--gray-700);font-weight:var(--fw-500);
+}
+.pf-segment[aria-selected="true"]{background:var(--primary);color:var(--white);font-weight:var(--fw-600)}
+
+/* the date-range field — a bordered box with a calendar on the trailing edge */
+.pf-datefield{
+  inline-size:var(--field-w, 345px);block-size:48px;
+  display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:var(--sp-8);
+  padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--input-border);border-radius:var(--radius-control);
+  background:var(--white);color:var(--base);
+}
+.pf-datefield svg{color:var(--gray-500);flex:none}
+
+/* the metric tabs. These ARE the card's tabs — Views/Clicks/Leads each with an
+   icon tile, a value and a period-on-period delta, the active one underlined */
+/* the head's second row: the metric tabs on the left and the channel strip in
+   the tabs' extra slot on the right — 609 and 556 of one 84-tall row, not two
+   stacked rows */
+.pf-block-head[data-tall="true"]{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center}
+.pf-block-head[data-tall="true"] > .pf-block-head-row{margin-block-end:var(--sp-16)}
+.pf-metrics{display:flex;flex-direction:row}
+.pf-channels{margin-inline-start:auto}
+.pf-metric{
+  display:flex;flex-direction:row;align-items:center;gap:var(--sp-12);
+  padding:var(--sp-16) var(--sp-24);
+  border:0;border-block-end:var(--sp-2) solid transparent;background:none;text-align:start;
+}
+.pf-metric[aria-selected="true"]{border-block-end-color:var(--primary);background:var(--primary-light-4)}
+.pf-metric-tile{
+  inline-size:34px;block-size:34px;display:grid;place-items:center;flex:none;
+  border-radius:30%;background:var(--tile);
+}
+.pf-metric-text{display:flex;flex-direction:column;gap:var(--sp-2)}
+.pf-metric-label{color:var(--gray-700)}
+.pf-metric-value{display:flex;flex-direction:row;align-items:center;gap:var(--sp-8);font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-delta{display:inline-flex;align-items:center;gap:var(--sp-2);font-size:var(--fs-12);font-weight:var(--fw-500)}
+.pf-delta[data-dir="up"]{color:var(--success)}
+.pf-delta[data-dir="down"]{color:var(--error)}
+
+/* the channel strip that sits in the tabs' extra slot */
+.pf-channels{display:flex;flex-direction:row;align-items:center}
+.pf-channel{
+  display:inline-flex;align-items:center;gap:var(--sp-8);
+  padding-inline:var(--sp-24);
+  border-inline-end:var(--border-w) solid var(--border-light);
+  color:var(--gray-700);
+}
+.pf-channel:last-child{border-inline-end:0}
+.pf-channel b{color:var(--base);font-weight:var(--fw-600)}
+.pf-channel svg{color:var(--gray-500)}
+
+/* the product pills under the chart */
+.pf-pills{display:flex;flex-direction:row;gap:var(--sp-8);margin-block-end:var(--sp-24)}
+.pf-pill{
+  display:inline-flex;align-items:center;gap:var(--sp-8);
+  block-size:29px;padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--border-light);border-radius:var(--radius-round);
+  background:var(--white);color:var(--gray-700);font-size:var(--fs-13);
+}
+.pf-pill[aria-checked="true"]{background:var(--primary-light-4);border-color:var(--primary-light-4);color:var(--primary);font-weight:var(--fw-600)}
+
+/* the charts themselves */
+.pf-linechart{inline-size:100%}
+.pf-linechart .pf-grid{stroke:var(--border-light);stroke-dasharray:3 4;stroke-width:1}
+.pf-linechart .pf-axis-line{stroke:var(--primary);stroke-width:1}
+.pf-linechart .pf-axis{fill:var(--gray-600);font-size:11px}
+.pf-linechart .pf-series{stroke:var(--primary);stroke-width:1.5}
+.pf-linechart .pf-dot{fill:var(--primary)}
+.pf-donut-seg{transition:none}
+.pf-donut{position:relative;inline-size:var(--donut);block-size:var(--donut);flex:none}
+.pf-donut-centre{
+  position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:var(--sp-2);
+}
+.pf-donut-value{font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-donut-label{color:var(--gray-700)}
+.pf-donut-row{display:flex;flex-direction:row;gap:var(--sp-24);align-items:center}
+.pf-donut-cell{display:flex;flex-direction:row;align-items:center;gap:var(--sp-24);flex:1}
+.pf-donut-legend{display:grid;gap:var(--sp-8)}
+.pf-legend-item{display:inline-flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
+.pf-legend-item svg{color:var(--gray-400)}
+
+/* Reports Summary's Listings card */
+.pf-statcard{display:flex;flex-direction:row;align-items:flex-start;gap:var(--sp-24)}
+/* three columns beside the lead figure, two rows — measured at x236/362/489
+   and y163/236 inside a 533 card. Four columns overflowed it and clipped
+   Signature off the edge. */
+.pf-statcard .pf-stat-grid{grid-template-columns:repeat(3,var(--block-stat-w));row-gap:var(--sp-24)}
+.pf-stat-lead{display:flex;flex-direction:column;gap:var(--sp-4);align-items:center;inline-size:103px;flex:none}
+.pf-stat-lead-value{display:inline-flex;align-items:center;gap:var(--sp-8);font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-stat-lead-value svg{color:var(--primary)}
+.pf-stat-tile{
+  inline-size:32px;block-size:32px;display:grid;place-items:center;flex:none;
+  border-radius:30%;background:var(--tile);
+}
+
+/* Credits Usage's left card */
+.pf-credits{display:grid;gap:var(--sp-24);justify-items:center}
+.pf-credits-note{justify-self:start;color:var(--gray-700)}
+.pf-credits-strip{
+  display:flex;flex-direction:row;inline-size:100%;
+  padding:var(--sp-16);border-radius:var(--radius-control);
+  background:var(--bg-gray-deep);
+}
+.pf-credits-cell{display:flex;flex-direction:column;gap:var(--sp-4);flex:1;padding-inline:var(--sp-12);border-inline-end:var(--border-w) solid var(--border-light)}
+.pf-credits-cell:last-child{border-inline-end:0}
+.pf-credits-value{font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-credits-breakdown{inline-size:100%;display:grid;gap:var(--sp-12)}
+.pf-credits-bd-title{font-size:var(--fs-card-title);font-weight:var(--fw-600)}
+.pf-bd-row{display:flex;flex-direction:row;align-items:center;justify-content:space-between}
+.pf-bd-swatch{inline-size:20px;block-size:20px;display:grid;place-items:center;border-radius:var(--radius-tag);background:var(--swatch)}
+.pf-bd-swatch svg{color:var(--white)}
+.pf-bd-value{font-weight:var(--fw-500)}
+
+/* Credits Usage's history — a timeline, not a table */
+.pf-timeline{display:grid;gap:var(--sp-24)}
+.pf-tl-item{display:flex;flex-direction:row;gap:var(--sp-24);align-items:flex-start;position:relative}
+.pf-tl-dot{
+  inline-size:10px;block-size:10px;border-radius:var(--radius-round);
+  background:var(--gray-400);margin-block-start:var(--sp-24);flex:none;
+}
+.pf-tl-item::after{
+  content:"";position:absolute;inset-inline-start:4px;inset-block:36px -24px;
+  border-inline-start:var(--border-w) solid var(--border-light);
+}
+.pf-tl-item:last-child::after{display:none}
+.pf-tl-card{
+  flex:1;display:flex;flex-direction:row;box-shadow:none;align-items:center;justify-content:space-between;gap:var(--sp-24);
+  padding:var(--sp-16);
+  border:var(--border-w) solid var(--border-light);border-radius:var(--radius-card);
+}
+.pf-tl-prop{box-shadow:none;border:0;display:flex;flex-direction:row;gap:var(--sp-16);align-items:center;flex:1;padding:var(--sp-12);border-radius:var(--radius-control);background:var(--primary-light-4)}
+.pf-tl-thumb{inline-size:120px;block-size:82px;border-radius:var(--radius-control);background:var(--border-light);flex:none}
+/* The riyal mark U+FDFC is a strong right-to-left character, so "﷼ 1,250,000"
+   in an otherwise left-to-right line reorders to "1,250,000 ﷼". The product
+   shows the mark first, so the price is its own isolated left-to-right run. */
+.pf-tl-price,
+.pf-prop-price{unicode-bidi:isolate;direction:ltr}
+.pf-tl-price{font-weight:var(--fw-700);color:var(--primary)}
+.pf-tl-tag{display:inline-block;margin-block:var(--sp-4);padding:var(--sp-2) var(--sp-8);border-radius:var(--radius-tag);background:var(--primary-light-4);color:var(--primary);font-size:var(--fs-12);font-weight:var(--fw-600)}
+.pf-tl-specs{display:flex;flex-direction:row;gap:var(--sp-16);color:var(--gray-700);font-size:var(--fs-13)}
+.pf-tl-specs span{display:inline-flex;align-items:center;gap:var(--sp-4)}
+.pf-tl-date{color:var(--gray-700);white-space:nowrap}
+
+/* Listing Report's property cell */
+.pf-proptable .pf-th-prop,
+.pf-proptable .pf-td-prop{inline-size:475px}
+.pf-prop{display:flex;flex-direction:row;gap:var(--sp-16);align-items:flex-start}
+.pf-prop-thumb{inline-size:24px;block-size:16px;border-radius:2px;background:var(--primary-light-4);flex:none;margin-block-start:var(--sp-4)}
+.pf-prop-detail{display:grid;gap:var(--sp-4)}
+.pf-prop-priceline{display:flex;flex-direction:row;align-items:center;gap:var(--sp-8)}
+.pf-prop-price{font-weight:var(--fw-700);color:var(--primary)}
+.pf-quality{padding:var(--sp-2) var(--sp-8);border-radius:var(--radius-tag);font-size:var(--fs-12);font-weight:var(--fw-600)}
+.pf-quality[data-band="high"]{background:var(--quality-bg);color:var(--warning)}
+.pf-quality[data-band="mid"]{background:var(--quality-bg);color:var(--warning)}
+.pf-quality[data-band="low"]{background:var(--quality-bg);color:var(--warning)}
+.pf-prop-specs{display:flex;flex-direction:row;gap:var(--sp-12);color:var(--gray-700);font-size:var(--fs-13)}
+.pf-prop-specs span{display:inline-flex;align-items:center;gap:var(--sp-4)}
+.pf-prop-address{color:var(--base)}
+.pf-prop-ids{display:flex;flex-direction:row;gap:var(--sp-8);color:var(--gray-500);font-size:var(--fs-12)}
+.pf-prop-ids i{font-style:normal;color:var(--border-light)}
+
+/* the page lead — a Back pill over a 24/30 heading, on Ad License */
+.pf-page-lead{display:grid;justify-items:start;gap:var(--sp-8);inline-size:1035px;margin-inline:auto;margin-block-end:var(--sp-16)}
+.pf-page-h2{font-size:var(--fs-24);font-weight:var(--fw-600);margin:var(--sp-0)}
+.pf-section-h{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-24) var(--sp-0) var(--sp-12)}
+
+/* the Ad License wizard */
+.pf-wizard{display:grid;gap:var(--sp-8)}
+/* the section's title column is 195 wide and 105 tall at the TOP of the
+   section, not centred against a 754-tall column of fields. And the sections
+   are white cards inside a white panel — the product draws no rule between
+   them, only an 8 gap. */
+.pf-wsection{display:flex;flex-direction:row;align-items:flex-start;gap:var(--sp-48);padding-block:var(--sp-40)}
+.pf-wsection-title{
+  inline-size:195px;block-size:105px;flex:none;
+  display:grid;gap:var(--sp-12);justify-items:start;align-content:start;
+  font-size:var(--fs-18);font-weight:var(--fw-600);
+}
+.pf-wsection-icon{inline-size:56px;block-size:56px;display:grid;place-items:center;border-radius:var(--radius-card);background:var(--bg-gray-deep)}
+.pf-wsection-fields{flex:1;display:grid;gap:var(--sp-24);max-inline-size:640px}
+.pf-wfield{display:flex;flex-direction:row;gap:var(--sp-16);align-items:flex-start}
+.pf-wfield-icon{inline-size:34px;block-size:34px;display:grid;place-items:center;flex:none;border-radius:30%;background:var(--bg-gray-deep);color:var(--gray-600)}
+.pf-wfield-body{flex:1;display:grid;gap:var(--sp-8)}
+.pf-wfield-body > .pf-field-label{font-size:var(--fs-base);line-height:var(--lh-base);font-weight:var(--fw-600);color:var(--black)}
+.pf-wfield-body .pf-input > input,
+.pf-wfield-body .pf-select{block-size:var(--sfield-control-h);inline-size:100%}
+.pf-wfield-body .pf-input{border:0;padding:var(--sp-0);background:none}
+.pf-wfield-body .pf-input > input{padding-inline:var(--sp-12);border:var(--border-w) solid var(--input-border);border-radius:var(--radius-control);background:var(--white)}
+.pf-wfield-body .pf-select[disabled]{background:var(--input-disabled-bg);color:var(--disabled)}
+.pf-field-hint{color:var(--gray-500);font-weight:var(--fw-500)}
+.pf-choices{display:flex;flex-direction:row;flex-wrap:wrap;gap:var(--sp-8)}
+.pf-choice{
+  display:inline-flex;align-items:center;gap:var(--sp-8);
+  block-size:36px;min-inline-size:44px;padding-inline:var(--sp-16);
+  border:0;border-radius:var(--radius-round);
+  background:var(--bg-gray-deep);color:var(--base);
+}
+.pf-choice[aria-checked="true"]{background:var(--primary);color:var(--white)}
+
+/* a plain filter bar has no card behind it — Leads & Reach sets its fields
+   straight on the page background */
+.pf-filter-bar[data-plain="true"]{background:none;border:0;box-shadow:none;padding-inline:var(--sp-0)}
+.pf-compound{display:flex;flex-direction:row}
+.pf-compound .pf-input{flex:1}
+.pf-compound .pf-select{inline-size:82px;flex:none}
 
 /* the plot area. No chart library ships with this system, so a chart is the
    box it occupies and says so — the same honesty as the QR placeholder. */
@@ -3082,7 +3467,6 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
    Custom-property values that carry DATA (a percentage), not presentation.
    Here so neither view needs a single style attribute in its markup.
    ═══════════════════════════════════════════════════════════════════════ */
-.fill-90{--meter-pct:90}     /* profile completion */
 .fill-97{--meter-pct:97.17}           /* 72,880 / 75,000 — QuotaCreditsStatWidget */
 .pct-90{--ring-pct:90}                /* profile completion score */
 .pct-40{--ring-pct:40}
@@ -5188,9 +5572,11 @@ body{margin:var(--sp-0)}
                   <div class="pf-empty">
                     <svg class="pf-empty-art" width="164" height="89" viewBox="0 0 164 89" role="img" aria-label="No Record Found illustration">
   <path
+  fill="#F7FCFC"
   d="M17.357 15.687c0-8.666 7.025-15.69 15.69-15.69h90.982c8.665 0 15.689 7.024 15.689 15.69 0 8.664-7.024 15.688-15.689 15.688H33.047c-8.665 0-15.69-7.024-15.69-15.688m18.811 57.631c0-8.664 7.024-15.688 15.69-15.688h82.924c8.664 0 15.689 7.024 15.689 15.688 0 8.666-7.025 15.69-15.689 15.69H51.857c-8.665 0-15.689-7.024-15.689-15.69"
   />
   <path
+  fill="#F7FCFC"
   d="M.586 53.193c0-8.664 7.024-15.689 15.69-15.689h131.449c8.666 0 15.69 7.025 15.69 15.69s-7.024 15.689-15.69 15.689H16.275c-8.665 0-15.69-7.024-15.69-15.69"
   />
   <path
@@ -5225,6 +5611,7 @@ body{margin:var(--sp-0)}
   <path
   fill="currentColor"
   d="M98.34 37.85H72.327a2.89 2.89 0 0 1 0-5.78H98.34a2.89 2.89 0 0 1 0 5.78m7.225 8.664H72.328a2.89 2.89 0 0 1 0-5.78h33.237a2.89 2.89 0 0 1 0 5.78m-14.451 8.68H72.327a2.89 2.89 0 0 1 0-5.78h18.787a2.89 2.89 0 0 1 0 5.78"
+  style="mix-blend-mode:multiply"
   />
   </g>
   <path
@@ -5294,9 +5681,11 @@ body{margin:var(--sp-0)}
                   <div class="pf-empty">
                     <svg class="pf-empty-art" width="164" height="89" viewBox="0 0 164 89" role="img" aria-label="No Record Found illustration">
   <path
+  fill="#F7FCFC"
   d="M17.357 15.687c0-8.666 7.025-15.69 15.69-15.69h90.982c8.665 0 15.689 7.024 15.689 15.69 0 8.664-7.024 15.688-15.689 15.688H33.047c-8.665 0-15.69-7.024-15.69-15.688m18.811 57.631c0-8.664 7.024-15.688 15.69-15.688h82.924c8.664 0 15.689 7.024 15.689 15.688 0 8.666-7.025 15.69-15.689 15.69H51.857c-8.665 0-15.689-7.024-15.689-15.69"
   />
   <path
+  fill="#F7FCFC"
   d="M.586 53.193c0-8.664 7.024-15.689 15.69-15.689h131.449c8.666 0 15.69 7.025 15.69 15.69s-7.024 15.689-15.69 15.689H16.275c-8.665 0-15.69-7.024-15.69-15.69"
   />
   <path
@@ -5331,6 +5720,7 @@ body{margin:var(--sp-0)}
   <path
   fill="currentColor"
   d="M98.34 37.85H72.327a2.89 2.89 0 0 1 0-5.78H98.34a2.89 2.89 0 0 1 0 5.78m7.225 8.664H72.328a2.89 2.89 0 0 1 0-5.78h33.237a2.89 2.89 0 0 1 0 5.78m-14.451 8.68H72.327a2.89 2.89 0 0 1 0-5.78h18.787a2.89 2.89 0 0 1 0 5.78"
+  style="mix-blend-mode:multiply"
   />
   </g>
   <path
@@ -5438,9 +5828,11 @@ body{margin:var(--sp-0)}
               <div class="pf-empty">
                 <svg class="pf-empty-art" width="164" height="89" viewBox="0 0 164 89" role="img" aria-label="No Record Found illustration">
   <path
+  fill="#F7FCFC"
   d="M17.357 15.687c0-8.666 7.025-15.69 15.69-15.69h90.982c8.665 0 15.689 7.024 15.689 15.69 0 8.664-7.024 15.688-15.689 15.688H33.047c-8.665 0-15.69-7.024-15.69-15.688m18.811 57.631c0-8.664 7.024-15.688 15.69-15.688h82.924c8.664 0 15.689 7.024 15.689 15.688 0 8.666-7.025 15.69-15.689 15.69H51.857c-8.665 0-15.689-7.024-15.689-15.69"
   />
   <path
+  fill="#F7FCFC"
   d="M.586 53.193c0-8.664 7.024-15.689 15.69-15.689h131.449c8.666 0 15.69 7.025 15.69 15.69s-7.024 15.689-15.69 15.689H16.275c-8.665 0-15.69-7.024-15.69-15.69"
   />
   <path
@@ -5475,6 +5867,7 @@ body{margin:var(--sp-0)}
   <path
   fill="currentColor"
   d="M98.34 37.85H72.327a2.89 2.89 0 0 1 0-5.78H98.34a2.89 2.89 0 0 1 0 5.78m7.225 8.664H72.328a2.89 2.89 0 0 1 0-5.78h33.237a2.89 2.89 0 0 1 0 5.78m-14.451 8.68H72.327a2.89 2.89 0 0 1 0-5.78h18.787a2.89 2.89 0 0 1 0 5.78"
+  style="mix-blend-mode:multiply"
   />
   </g>
   <path
@@ -5616,139 +6009,126 @@ body{margin:var(--sp-0)}
     </header>
     <main class="pf-content" data-gap="8">
       <div class="pf-block-row" style-cols="449 899" data-cols="449 899">
-        <section class="pf-card pf-block" data-w="433">
-          <div class="pf-block-head">Credits Summary</div>
+        <section class="pf-card pf-block" data-w="433" data-h="816">
+          <div class="pf-block-head">
+            <div class="pf-block-head-row">
+              <span class="pf-block-title">Credits Usage</span>
+<a class="pf-btn" data-variant="tint" data-size="small" href="not-built.html?screen=Top-Up%20your%20Credits"><svg class="i i-16"><use href="#pf-IoAddCircleOutline"/></svg><span>Top-Up your Credits</span></a>
+            </div>
+
+          </div>
           <div class="pf-block-body">
-            <div class="pf-stat-grid">
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconBasic"/></svg><div><span class="pf-stat-title">Basic</span><span class="pf-stat-value">980</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg><div><span class="pf-stat-title">Hot</span><span class="pf-stat-value">640</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg><div><span class="pf-stat-title">Signature</span><span class="pf-stat-value">320</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg><div><span class="pf-stat-title">Refresh</span><span class="pf-stat-value">120</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-HiCamera"/></svg><div><span class="pf-stat-title">Photography</span><span class="pf-stat-value">60</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-SideMenuQuota"/></svg><div><span class="pf-stat-title">Used</span><span class="pf-stat-value">2,120</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-GoDotFill"/></svg><div><span class="pf-stat-title">Available</span><span class="pf-stat-value">34</span></div></div>
+            <div class="pf-credits">
+              <div class="pf-credits-note">Status of your current package</div>
+              <div class="pf-credits-strip">
+                <div class="pf-credits-cell"><span class="pf-stat-title">Available</span><span class="pf-credits-value">34</span></div>
+                <div class="pf-credits-cell"><span class="pf-stat-title">Used</span><span class="pf-credits-value">2,120</span></div>
+                <div class="pf-credits-cell"><span class="pf-stat-title">Total</span><span class="pf-credits-value">0</span></div>
+              </div>
+<div class="pf-donut" style="--donut:300px">
+                <svg viewBox="0 0 300 300" width="300" height="300" role="img" aria-label="Breakdown">
+                  <g transform="rotate(-90 150 150)">
+                    <circle cx="150" cy="150" r="112" fill="none" stroke="var(--border-light)" stroke-width="76"/>
+                    <circle class="pf-donut-seg" cx="150" cy="150" r="112" fill="none" stroke="#28B16D" stroke-width="76" stroke-dasharray="325.30 378.41" stroke-dashoffset="0.00"/><circle class="pf-donut-seg" cx="150" cy="150" r="112" fill="none" stroke="#F73131" stroke-width="76" stroke-dasharray="212.44 491.27" stroke-dashoffset="-325.30"/><circle class="pf-donut-seg" cx="150" cy="150" r="112" fill="none" stroke="#AF6FFF" stroke-width="76" stroke-dasharray="106.22 597.50" stroke-dashoffset="-537.75"/><circle class="pf-donut-seg" cx="150" cy="150" r="112" fill="none" stroke="#479EEB" stroke-width="76" stroke-dasharray="39.83 663.88" stroke-dashoffset="-643.97"/><circle class="pf-donut-seg" cx="150" cy="150" r="112" fill="none" stroke="#2D3E9B" stroke-width="76" stroke-dasharray="19.92 683.80" stroke-dashoffset="-683.80"/>
+                  </g>
+                </svg>
+
+              </div>
+              <div class="pf-credits-breakdown">
+                <div class="pf-credits-bd-title">Usage Breakdown</div>
+                <div class="pf-bd-row"><span class="pf-bd-swatch" style="--swatch:#28B16D"><svg class="i i-10"><use href="#pf-GoDotFill"/></svg></span><span class="pf-bd-value">980</span></div>
+                <div class="pf-bd-row"><span class="pf-bd-swatch" style="--swatch:#F73131"><svg class="i i-10"><use href="#pf-GoDotFill"/></svg></span><span class="pf-bd-value">640</span></div>
+                <div class="pf-bd-row"><span class="pf-bd-swatch" style="--swatch:#AF6FFF"><svg class="i i-10"><use href="#pf-GoDotFill"/></svg></span><span class="pf-bd-value">320</span></div>
+                <div class="pf-bd-row"><span class="pf-bd-swatch" style="--swatch:#479EEB"><svg class="i i-10"><use href="#pf-GoDotFill"/></svg></span><span class="pf-bd-value">120</span></div>
+                <div class="pf-bd-row"><span class="pf-bd-swatch" style="--swatch:#2D3E9B"><svg class="i i-10"><use href="#pf-GoDotFill"/></svg></span><span class="pf-bd-value">60</span></div>
+              </div>
             </div>
           </div>
         </section>
-        <section class="pf-card pf-block" data-w="883">
-          <div class="pf-block-head">Consumption History<a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Download"><span>Download</span></a></div>
+        <section class="pf-card pf-block" data-w="883" data-h="790">
+          <div class="pf-block-head">
+            <div class="pf-block-head-row">
+              <span class="pf-block-title">Credits Usage History</span>
+<button class="pf-icon-btn" type="button" data-noop="the history filter opens the product's own drawer"><svg class="i i-16"><use href="#pf-MdOutlineDoubleArrow"/></svg></button>
+            </div>
+
+          </div>
           <div class="pf-block-body">
-            <table class="pf-table">
-              <thead><tr><th>Product</th><th>Listing</th><th>Credits</th><th>Used on</th><th>By</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td colspan="5">
-                    <div class="pf-empty">
-                      <svg class="pf-empty-art" width="164" height="89" viewBox="0 0 164 89" role="img" aria-label="No Record Found illustration">
-  <path
-  d="M17.357 15.687c0-8.666 7.025-15.69 15.69-15.69h90.982c8.665 0 15.689 7.024 15.689 15.69 0 8.664-7.024 15.688-15.689 15.688H33.047c-8.665 0-15.69-7.024-15.69-15.688m18.811 57.631c0-8.664 7.024-15.688 15.69-15.688h82.924c8.664 0 15.689 7.024 15.689 15.688 0 8.666-7.025 15.69-15.689 15.69H51.857c-8.665 0-15.689-7.024-15.689-15.69"
-  />
-  <path
-  d="M.586 53.193c0-8.664 7.024-15.689 15.69-15.689h131.449c8.666 0 15.69 7.025 15.69 15.69s-7.024 15.689-15.69 15.689H16.275c-8.665 0-15.69-7.024-15.69-15.69"
-  />
-  <path
-  fill="currentColor"
-  d="M89.392 24.57a18.7 18.7 0 0 1 6.058-4.053V8.952a5.78 5.78 0 0 0-5.78-5.78H49.206a5.78 5.78 0 0 0-5.78 5.78v11.562a5.78 5.78 0 0 0 5.78 5.78h38.678c.466-.595.96-1.175 1.508-1.723"
-  />
-  <circle cx="50.426" cy="12.008" r="4" fill="#fff" />
-  <rect width="26" height="2.1" x="57.426" y="8.008" fill="#fff" rx="1.05" />
-  <rect width="32" height="2.1" x="57.426" y="13.109" fill="#fff" rx="1.05" />
-  <rect width="21" height="2.1" x="57.426" y="18.211" fill="#fff" rx="1.05" />
-  <path
-  fill="currentColor"
-  d="M104.119 29.188H63.656a5.78 5.78 0 0 0-5.781 5.78v11.561a5.78 5.78 0 0 0 5.78 5.78h40.464a5.78 5.78 0 0 0 5.78-5.78V34.968a5.78 5.78 0 0 0-5.78-5.78"
-  />
-  <circle cx="66.426" cy="38.008" r="4" fill="#fff" />
-  <rect width="26" height="2.1" x="73.426" y="34.008" fill="#fff" rx="1.05" />
-  <rect width="32" height="2.1" x="73.426" y="39.109" fill="#fff" rx="1.05" />
-  <rect width="21" height="2.1" x="73.426" y="44.211" fill="#fff" rx="1.05" />
-  <path
-  fill="currentColor"
-  d="M89.67 55.195H49.206a5.78 5.78 0 0 0-5.78 5.78v11.562a5.78 5.78 0 0 0 5.78 5.78H89.67a5.78 5.78 0 0 0 5.781-5.78V60.976a5.78 5.78 0 0 0-5.78-5.78"
-  />
-  <circle cx="50.426" cy="64.008" r="4" fill="#fff" />
-  <rect width="26" height="2.1" x="57.426" y="60.008" fill="#fff" rx="1.05" />
-  <rect width="32" height="2.1" x="57.426" y="65.109" fill="#fff" rx="1.05" />
-  <rect width="21" height="2.1" x="57.426" y="70.211" fill="#fff" rx="1.05" />
-  <g>
-  <path
-  fill="url(#EmptyListing__EmptyListing1-blocks-4)"
-  d="M108.456 26.29H62.212a5.78 5.78 0 0 0-5.78 5.78v23.12a5.78 5.78 0 0 0 5.78 5.78h46.244a5.78 5.78 0 0 0 5.78-5.78V32.07a5.78 5.78 0 0 0-5.78-5.78"
-  />
-  <path
-  fill="currentColor"
-  d="M98.34 37.85H72.327a2.89 2.89 0 0 1 0-5.78H98.34a2.89 2.89 0 0 1 0 5.78m7.225 8.664H72.328a2.89 2.89 0 0 1 0-5.78h33.237a2.89 2.89 0 0 1 0 5.78m-14.451 8.68H72.327a2.89 2.89 0 0 1 0-5.78h18.787a2.89 2.89 0 0 1 0 5.78"
-  />
-  </g>
-  <path
-  fill="#fff"
-  d="M86.207 38.532c0-12.172 9.867-22.04 22.038-22.04 12.172 0 22.04 9.868 22.04 22.04 0 12.17-9.868 22.038-22.04 22.038-12.17 0-22.038-9.867-22.038-22.038"
-  />
-  <path
-  fill="currentColor"
-  d="M108.245 63.195a24.5 24.5 0 0 1-17.442-7.224 24.5 24.5 0 0 1-7.225-17.442c0-6.59 2.566-12.783 7.225-17.442s10.853-7.225 17.442-7.225 12.783 2.566 17.442 7.225a24.5 24.5 0 0 1 7.225 17.442 24.6 24.6 0 0 1-6.541 16.73 2.628 2.628 0 0 1-3.861-3.565 19.35 19.35 0 0 0 5.146-13.165c0-10.704-8.708-19.412-19.411-19.412s-19.411 8.708-19.411 19.412S97.54 57.94 108.245 57.94c2.415 0 4.77-.437 7-1.3a2.628 2.628 0 1 1 1.896 4.902 24.6 24.6 0 0 1-8.896 1.653"
-  />
-  <path
-  fill="currentColor"
-  d="M142.002 74.063a2.62 2.62 0 0 1-1.858-.77l-17.718-17.719a2.628 2.628 0 0 1 3.715-3.716l17.719 17.719a2.628 2.628 0 0 1-1.858 4.486"
-  />
-  <path
-  fill="#fff"
-  d="m142.709 78.981-12.777-12.776a4.36 4.36 0 0 1 0-6.164l.67-.67a4.36 4.36 0 0 1 6.163 0l12.777 12.778a4.356 4.356 0 0 1 0 6.163l-.669.67a4.36 4.36 0 0 1-6.164 0"
-  />
-  <path
-  fill="currentColor"
-  d="M133.687 60.72c-.443 0-.886.169-1.224.506l-.67.67a1.72 1.72 0 0 0-.507 1.223c0 .463.18.897.507 1.224l12.778 12.777c.327.327.761.507 1.224.507s.896-.18 1.223-.507l.67-.67c.327-.326.506-.76.506-1.223a1.72 1.72 0 0 0-.506-1.224L134.91 61.227a1.72 1.72 0 0 0-1.223-.506m12.108 22.163a6.94 6.94 0 0 1-4.94-2.046L128.077 68.06a6.94 6.94 0 0 1-2.046-4.94c0-1.865.726-3.62 2.046-4.94l.67-.669a6.99 6.99 0 0 1 9.879 0l12.778 12.777a6.994 6.994 0 0 1 0 9.88l-.67.67a6.94 6.94 0 0 1-4.939 2.046"
-  />
-  <path
-  fill="#fff"
-  d="M132.966 38.528c0 2.18-.284 4.293-.815 6.305a13.46 13.46 0 0 1-3.545.472c-7.444 0-13.477-6.035-13.477-13.478 0-5.713 3.552-10.593 8.568-12.555 5.65 4.513 9.269 11.462 9.269 19.256"
-  />
-  <path
-  fill="currentColor"
-  d="M115.047 28.327c0-7.443 6.034-13.477 13.478-13.477 7.443 0 13.478 6.034 13.478 13.477s-6.035 13.478-13.478 13.478c-7.444 0-13.478-6.035-13.478-13.478"
-  />
-  <path
-  fill="#fff"
-  d="M128.544 33.778q.792 0 1.252-.503.46-.502.674-1.702t.215-3.317q0-2.14-.215-3.34-.213-1.198-.674-1.7-.46-.504-1.252-.504t-1.263.503q-.47.503-.674 1.701-.204 1.2-.204 3.34 0 2.118.204 3.317t.674 1.702 1.263.503m0 2.183q-1.712 0-2.676-.856-.963-.855-1.359-2.569-.396-1.712-.396-4.28t.396-4.292 1.359-2.58q.965-.855 2.676-.856 1.713.001 2.665.856.952.857 1.349 2.58.396 1.724.396 4.292t-.396 4.28q-.397 1.714-1.349 2.569t-2.665.856"
-  />
-  <path
-  fill="currentColor"
-  d="M94.91 40.54c-.82 0-1.484-.666-1.484-1.484 0-8.209 6.678-14.886 14.885-14.886a1.482 1.482 0 1 1 0 2.967c-6.572 0-11.918 5.346-11.918 11.919 0 .819-.665 1.483-1.484 1.483"
-  />
-  <defs>
-  <radialGradient
-  id="EmptyListing__EmptyListing1-blocks-4"
-  cx="0"
-  cy="0"
-  r="1"
-  gradientTransform="translate(96.144 26.396) scale(32.4114)"
-  gradientUnits="userSpaceOnUse"
-  >
-  <stop stop-color="#F2F2F2" />
-  <stop offset="1" stop-color="#D3D3D3" />
-  </radialGradient>
-  </defs>
-</svg>
-                      <div><div class="pf-empty-title">No Record Found</div></div>
+            <div class="pf-timeline">
+              <div class="pf-tl-item">
+                <span class="pf-tl-dot"></span>
+                <div class="pf-card pf-tl-card">
+                  <div class="pf-card pf-tl-prop">
+                    <span class="pf-tl-thumb"></span>
+                    <div>
+                      <div class="pf-tl-price"><bdi>﷼</bdi> 1,250,000</div>
+                      <span class="pf-tl-tag">for undefined</span>
+                      <div class="pf-tl-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3 Rooms</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>64 Sq. M.</span></div>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </div>
+                  <div class="pf-tl-date">Sep 19, 2026, 12:00 am</div>
+                </div>
+              </div>
+              <div class="pf-tl-item">
+                <span class="pf-tl-dot"></span>
+                <div class="pf-card pf-tl-card">
+                  <div class="pf-card pf-tl-prop">
+                    <span class="pf-tl-thumb"></span>
+                    <div>
+                      <div class="pf-tl-price"><bdi>﷼</bdi> 1,399,000</div>
+                      <span class="pf-tl-tag">for undefined</span>
+                      <div class="pf-tl-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3 Rooms</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>73 Sq. M.</span></div>
+                    </div>
+                  </div>
+                  <div class="pf-tl-date">Sep 17, 2026, 12:00 am</div>
+                </div>
+              </div>
+              <div class="pf-tl-item">
+                <span class="pf-tl-dot"></span>
+                <div class="pf-card pf-tl-card">
+                  <div class="pf-card pf-tl-prop">
+                    <span class="pf-tl-thumb"></span>
+                    <div>
+                      <div class="pf-tl-price"><bdi>﷼</bdi> 1,999,000</div>
+                      <span class="pf-tl-tag">for undefined</span>
+                      <div class="pf-tl-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>4 Rooms</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>79 Sq. M.</span></div>
+                    </div>
+                  </div>
+                  <div class="pf-tl-date">Sep 15, 2026, 12:00 am</div>
+                </div>
+              </div>
+              <div class="pf-tl-item">
+                <span class="pf-tl-dot"></span>
+                <div class="pf-card pf-tl-card">
+                  <div class="pf-card pf-tl-prop">
+                    <span class="pf-tl-thumb"></span>
+                    <div>
+                      <div class="pf-tl-price"><bdi>﷼</bdi> 1,049,000</div>
+                      <span class="pf-tl-tag">for undefined</span>
+                      <div class="pf-tl-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3 Rooms</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>79 Sq. M.</span></div>
+                    </div>
+                  </div>
+                  <div class="pf-tl-date">Sep 13, 2026, 12:00 am</div>
+                </div>
+              </div>
+              <div class="pf-tl-item">
+                <span class="pf-tl-dot"></span>
+                <div class="pf-card pf-tl-card">
+                  <div class="pf-card pf-tl-prop">
+                    <span class="pf-tl-thumb"></span>
+                    <div>
+                      <div class="pf-tl-price"><bdi>﷼</bdi> 1,199,000</div>
+                      <span class="pf-tl-tag">for undefined</span>
+                      <div class="pf-tl-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3 Rooms</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>68 Sq. M.</span></div>
+                    </div>
+                  </div>
+                  <div class="pf-tl-date">Sep 11, 2026, 12:00 am</div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>
-      <ul class="pf-pagination">
-        <li class="pf-page-item" data-nav="prev" aria-disabled="true"><button type="button" aria-label="Previous page" disabled><svg class="i i-12"><use href="#pf-LeftOutlined"/></svg></button></li>
-        <li class="pf-page-item" aria-current="page"><a data-noop="the pager pushes the page number into the URL and refetches">1</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">2</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">3</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">4</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">5</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">6</a></li>
-        <li class="pf-page-item" data-nav="next"><button type="button" aria-label="Next page" data-noop="the pager pushes the page number into the URL and refetches"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
-      </ul>
     </main>
     <footer class="pf-footer">© 2026 – All Rights Reserved</footer>
   </div><!-- /.pf-main -->
@@ -5812,7 +6192,7 @@ body{margin:var(--sp-0)}
   <div class="pf-main">
     <!-- ── header ──────────────────────────────────────────────────── -->
     <header class="pf-header pf-header-fixed">
-      <div class="pf-header-brand"><span class="pf-page-title">Reports</span></div>
+      <div class="pf-header-brand"><span class="pf-page-title">Summary</span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
         <!-- the one link in the shell that LEAVES the product. It carried
@@ -5826,42 +6206,124 @@ body{margin:var(--sp-0)}
     <main class="pf-content" data-gap="8">
       <div class="pf-block-row" style-cols="533 783" data-cols="533 783">
         <section class="pf-card pf-block" data-w="533" data-h="240">
-          <div class="pf-block-head">Listings Summary</div>
+          <div class="pf-block-head">
+            <div class="pf-block-head-row">
+              <span class="pf-block-title">Listings</span>
+
+            </div>
+
+          </div>
           <div class="pf-block-body">
-            <div class="pf-stat-grid">
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-MyListingIcon"/></svg><div><span class="pf-stat-title">Total</span><span class="pf-stat-value">51</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconBasic"/></svg><div><span class="pf-stat-title">Basic</span><span class="pf-stat-value">34</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg><div><span class="pf-stat-title">Hot</span><span class="pf-stat-value">9</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg><div><span class="pf-stat-title">Signature</span><span class="pf-stat-value">8</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-MdEdit"/></svg><div><span class="pf-stat-title">Draft</span><span class="pf-stat-value">1</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-GoDotFill"/></svg><div><span class="pf-stat-title">Pending</span><span class="pf-stat-value">4</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg><div><span class="pf-stat-title">Removed</span><span class="pf-stat-value">172</span></div></div>
+            <div class="pf-statcard">
+              <div class="pf-stat-lead">
+                <span class="pf-stat-title">Active</span>
+                <span class="pf-stat-lead-value"><svg class="i i-12"><use href="#pf-GoDotFill"/></svg>20</span>
+              </div>
+              <div class="pf-stat-grid">
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(45,62,155,.08)"><svg class="i i-17"><use href="#pf-IconForSale"/></svg></span><div><span class="pf-stat-title">For Sale</span><span class="pf-stat-value">20</span></div></div>
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(71,158,235,.08)"><svg class="i i-17"><use href="#pf-IconForRent"/></svg></span><div><span class="pf-stat-title">To Rent</span><span class="pf-stat-value">0</span></div></div>
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(71,158,235,.08)"><svg class="i i-17"><use href="#pf-IconRental"/></svg></span><div><span class="pf-stat-title">Daily Rentals</span><span class="pf-stat-value">0</span></div></div>
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(175,111,255,.08)"><svg class="i i-17"><use href="#pf-BsFillLightningChargeFill"/></svg></span><div><span class="pf-stat-title">Signature</span><span class="pf-stat-value">12</span></div></div>
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(247,49,49,.08)"><svg class="i i-17"><use href="#pf-IconSuperHot"/></svg></span><div><span class="pf-stat-title">Hot</span><span class="pf-stat-value">5</span></div></div>
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(40,177,109,.08)"><svg class="i i-17"><use href="#pf-IconBasic"/></svg></span><div><span class="pf-stat-title">Basic</span><span class="pf-stat-value">3</span></div></div>
+              </div>
             </div>
           </div>
         </section>
         <section class="pf-card pf-block" data-w="783" data-h="240">
-          <div class="pf-block-head">Listings Performance</div>
+          <div class="pf-block-head">
+            <div class="pf-block-head-row">
+              <span class="pf-block-title">Breakdown By Location</span>
+
+            </div>
+
+          </div>
           <div class="pf-block-body">
-            <div class="pf-plot" data-h="160" role="img" aria-label="Views, clicks and leads over time">
-              <span class="pf-plot-note">Views, clicks and leads over time</span>
+            <div class="pf-donut-row">
+              <div class="pf-donut-cell">
+<div class="pf-donut" style="--donut:128px">
+                <svg viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="For Sale">
+                  <g transform="rotate(-90 64 64)">
+                    <circle cx="64" cy="64" r="57" fill="none" stroke="var(--border-light)" stroke-width="14"/>
+                    
+                  </g>
+                </svg>
+                <div class="pf-donut-centre"><span class="pf-donut-value">0</span><span class="pf-donut-label">For Sale</span></div>
+              </div>
+                <div class="pf-donut-legend">
+                  <span class="pf-legend-item"><svg class="i i-10"><use href="#pf-GoDotFill"/></svg><span>Not enough data</span></span>
+                </div>
+              </div>
+              <div class="pf-donut-cell">
+<div class="pf-donut" style="--donut:128px">
+                <svg viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="To Rent">
+                  <g transform="rotate(-90 64 64)">
+                    <circle cx="64" cy="64" r="57" fill="none" stroke="var(--border-light)" stroke-width="14"/>
+                    
+                  </g>
+                </svg>
+                <div class="pf-donut-centre"><span class="pf-donut-value">0</span><span class="pf-donut-label">To Rent</span></div>
+              </div>
+                <div class="pf-donut-legend">
+                  <span class="pf-legend-item"><svg class="i i-10"><use href="#pf-GoDotFill"/></svg><span>Not enough data</span></span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
       </div>
-      <div class="pf-block-row" style-cols="full" data-cols="full">
-        <section class="pf-table-card" data-h="528">
-          <div class="pf-table-card-head">
-
-            <div class="pf-tabs" role="tablist">
-              <button class="pf-tab" role="tab" type="button" aria-selected="true" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Summary</span></button>
-              <button class="pf-tab" role="tab" type="button" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Listing Report</span></button>
-              <button class="pf-tab" role="tab" type="button" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Leads Report</span></button>
+      <div class="pf-block-row" data-cols="auto">
+        <section class="pf-card pf-block" data-w="full" data-h="528" data-head="tall">
+          <div class="pf-block-head" data-tall="true">
+            <div class="pf-block-head-row">
+              <span class="pf-block-title">Performance</span>
+              <div class="pf-segmented" role="tablist">
+                <button class="pf-segment" role="tab" type="button" aria-selected="true" data-noop="switching purpose refetches the series">All</button>
+                <button class="pf-segment" role="tab" type="button" data-noop="switching purpose refetches the series">For Sale</button>
+                <button class="pf-segment" role="tab" type="button" data-noop="switching purpose refetches the series">For Rent</button>
+                <button class="pf-segment" role="tab" type="button" data-noop="switching purpose refetches the series">Daily Rentals</button>
+              </div>
+              <button class="pf-datefield" type="button" data-noop="the range picker opens a two-month calendar the product mounts on demand"><span>Last 30 Days</span><svg class="i i-16"><use href="#pf-FiCalendar"/></svg></button>
             </div>
-
+              <div class="pf-metrics" role="tablist">
+                <button class="pf-metric" role="tab" type="button" aria-selected="true" data-noop="each metric redraws the series">
+                  <span class="pf-metric-tile" style="--tile:rgba(0,97,105,.08)"><svg class="i i-18"><use href="#pf-IoMdEye"/></svg></span>
+                  <span class="pf-metric-text"><span class="pf-metric-label">Views</span><span class="pf-metric-value">26,080<span class="pf-delta" data-dir="up"><svg class="i i-12"><use href="#pf-TiArrowSortedUp"/></svg>13%</span></span></span>
+                </button>
+                <button class="pf-metric" role="tab" type="button" data-noop="each metric redraws the series">
+                  <span class="pf-metric-tile" style="--tile:rgba(255,169,0,.10)"><svg class="i i-18"><use href="#pf-HiCursorClick"/></svg></span>
+                  <span class="pf-metric-text"><span class="pf-metric-label">Clicks</span><span class="pf-metric-value">407<span class="pf-delta" data-dir="down"><svg class="i i-12"><use href="#pf-TiArrowSortedDown"/></svg>3%</span></span></span>
+                </button>
+                <button class="pf-metric" role="tab" type="button" data-noop="each metric redraws the series">
+                  <span class="pf-metric-tile" style="--tile:rgba(71,158,235,.10)"><svg class="i i-18"><use href="#pf-MdPhone"/></svg></span>
+                  <span class="pf-metric-text"><span class="pf-metric-label">Leads</span><span class="pf-metric-value">13<span class="pf-delta" data-dir="up"><svg class="i i-12"><use href="#pf-TiArrowSortedUp"/></svg>8%</span></span></span>
+                </button>
+              </div>
+              <div class="pf-channels">
+                <span class="pf-channel"><svg class="i i-16"><use href="#pf-MdPhone"/></svg><span>Calls</span><b>0</b></span>
+                <span class="pf-channel"><svg class="i i-16"><use href="#pf-IconWhatsapp"/></svg><span>WhatsApp</span><b>7</b></span>
+                <span class="pf-channel"><svg class="i i-16"><use href="#pf-MdSms"/></svg><span>SMS</span><b>0</b></span>
+                <span class="pf-channel"><svg class="i i-16"><use href="#pf-MdEmail"/></svg><span>Emails</span><b>0</b></span>
+              </div>
           </div>
-            <div class="pf-plot" data-h="440" role="img" aria-label="Leads by channel">
-              <span class="pf-plot-note">Leads by channel</span>
+          <div class="pf-block-body">
+            <div class="pf-pills" role="radiogroup">
+              <button class="pf-pill" role="radio" type="button" aria-checked="true" data-noop="filtering by product refetches the series"><svg class="i i-14"><use href="#pf-GoDotFill"/></svg><span>All</span></button>
+              <button class="pf-pill" role="radio" type="button" data-noop="filtering by product refetches the series"><svg class="i i-14"><use href="#pf-IconBasic"/></svg><span>Basic</span></button>
+              <button class="pf-pill" role="radio" type="button" data-noop="filtering by product refetches the series"><svg class="i i-14"><use href="#pf-IconSuperHot"/></svg><span>Hot</span></button>
+              <button class="pf-pill" role="radio" type="button" data-noop="filtering by product refetches the series"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg><span>Signature</span></button>
             </div>
+            <div class="pf-linechart">
+              <svg viewBox="0 0 1282 273" width="100%" height="273" preserveAspectRatio="none" role="img" aria-label="Views, clicks and leads over time">
+                <line class="pf-grid" x1="46" x2="1274" y1="215.0" y2="215.0"/><line class="pf-grid" x1="46" x2="1274" y1="173.6" y2="173.6"/><line class="pf-grid" x1="46" x2="1274" y1="132.2" y2="132.2"/><line class="pf-grid" x1="46" x2="1274" y1="90.8" y2="90.8"/><line class="pf-grid" x1="46" x2="1274" y1="49.4" y2="49.4"/><line class="pf-grid" x1="46" x2="1274" y1="8.0" y2="8.0"/>
+                <line class="pf-axis-line" x1="46" x2="46" y1="8" y2="215"/>
+                <text class="pf-axis" x="38" y="219.0" text-anchor="end">0</text><text class="pf-axis" x="38" y="177.6" text-anchor="end">500</text><text class="pf-axis" x="38" y="136.2" text-anchor="end">1000</text><text class="pf-axis" x="38" y="94.8" text-anchor="end">1500</text><text class="pf-axis" x="38" y="53.4" text-anchor="end">2000</text><text class="pf-axis" x="38" y="12.0" text-anchor="end">2500</text>
+                <polyline class="pf-series" fill="none" points="46.0,214.3 88.3,214.0 130.7,213.8 173.0,213.5 215.4,213.2 257.7,212.5 300.1,210.0 342.4,163.7 384.8,187.7 427.1,173.6 469.4,147.1 511.8,146.3 554.1,147.1 596.5,149.6 638.8,131.4 681.2,96.6 723.5,70.1 765.9,73.4 808.2,95.8 850.6,115.6 892.9,90.8 935.2,25.4 977.6,86.7 1019.9,108.2 1062.3,137.2 1104.6,140.1 1147.0,134.3 1189.3,115.6 1231.7,122.3 1274.0,131.4"/>
+                <circle class="pf-dot" cx="46.0" cy="214.3" r="2.5"/><circle class="pf-dot" cx="88.3" cy="214.0" r="2.5"/><circle class="pf-dot" cx="130.7" cy="213.8" r="2.5"/><circle class="pf-dot" cx="173.0" cy="213.5" r="2.5"/><circle class="pf-dot" cx="215.4" cy="213.2" r="2.5"/><circle class="pf-dot" cx="257.7" cy="212.5" r="2.5"/><circle class="pf-dot" cx="300.1" cy="210.0" r="2.5"/><circle class="pf-dot" cx="342.4" cy="163.7" r="2.5"/><circle class="pf-dot" cx="384.8" cy="187.7" r="2.5"/><circle class="pf-dot" cx="427.1" cy="173.6" r="2.5"/><circle class="pf-dot" cx="469.4" cy="147.1" r="2.5"/><circle class="pf-dot" cx="511.8" cy="146.3" r="2.5"/><circle class="pf-dot" cx="554.1" cy="147.1" r="2.5"/><circle class="pf-dot" cx="596.5" cy="149.6" r="2.5"/><circle class="pf-dot" cx="638.8" cy="131.4" r="2.5"/><circle class="pf-dot" cx="681.2" cy="96.6" r="2.5"/><circle class="pf-dot" cx="723.5" cy="70.1" r="2.5"/><circle class="pf-dot" cx="765.9" cy="73.4" r="2.5"/><circle class="pf-dot" cx="808.2" cy="95.8" r="2.5"/><circle class="pf-dot" cx="850.6" cy="115.6" r="2.5"/><circle class="pf-dot" cx="892.9" cy="90.8" r="2.5"/><circle class="pf-dot" cx="935.2" cy="25.4" r="2.5"/><circle class="pf-dot" cx="977.6" cy="86.7" r="2.5"/><circle class="pf-dot" cx="1019.9" cy="108.2" r="2.5"/><circle class="pf-dot" cx="1062.3" cy="137.2" r="2.5"/><circle class="pf-dot" cx="1104.6" cy="140.1" r="2.5"/><circle class="pf-dot" cx="1147.0" cy="134.3" r="2.5"/><circle class="pf-dot" cx="1189.3" cy="115.6" r="2.5"/><circle class="pf-dot" cx="1231.7" cy="122.3" r="2.5"/><circle class="pf-dot" cx="1274.0" cy="131.4" r="2.5"/>
+                <text class="pf-axis" transform="translate(46.0 229.0) rotate(-45)" text-anchor="end">Aug 23</text><text class="pf-axis" transform="translate(88.3 229.0) rotate(-45)" text-anchor="end">Aug 24</text><text class="pf-axis" transform="translate(130.7 229.0) rotate(-45)" text-anchor="end">Aug 25</text><text class="pf-axis" transform="translate(173.0 229.0) rotate(-45)" text-anchor="end">Aug 26</text><text class="pf-axis" transform="translate(215.4 229.0) rotate(-45)" text-anchor="end">Aug 27</text><text class="pf-axis" transform="translate(257.7 229.0) rotate(-45)" text-anchor="end">Aug 28</text><text class="pf-axis" transform="translate(300.1 229.0) rotate(-45)" text-anchor="end">Aug 29</text><text class="pf-axis" transform="translate(342.4 229.0) rotate(-45)" text-anchor="end">Aug 30</text><text class="pf-axis" transform="translate(384.8 229.0) rotate(-45)" text-anchor="end">Aug 31</text><text class="pf-axis" transform="translate(427.1 229.0) rotate(-45)" text-anchor="end">Sep 01</text><text class="pf-axis" transform="translate(469.4 229.0) rotate(-45)" text-anchor="end">Sep 02</text><text class="pf-axis" transform="translate(511.8 229.0) rotate(-45)" text-anchor="end">Sep 03</text><text class="pf-axis" transform="translate(554.1 229.0) rotate(-45)" text-anchor="end">Sep 04</text><text class="pf-axis" transform="translate(596.5 229.0) rotate(-45)" text-anchor="end">Sep 05</text><text class="pf-axis" transform="translate(638.8 229.0) rotate(-45)" text-anchor="end">Sep 06</text><text class="pf-axis" transform="translate(681.2 229.0) rotate(-45)" text-anchor="end">Sep 07</text><text class="pf-axis" transform="translate(723.5 229.0) rotate(-45)" text-anchor="end">Sep 08</text><text class="pf-axis" transform="translate(765.9 229.0) rotate(-45)" text-anchor="end">Sep 09</text><text class="pf-axis" transform="translate(808.2 229.0) rotate(-45)" text-anchor="end">Sep 10</text><text class="pf-axis" transform="translate(850.6 229.0) rotate(-45)" text-anchor="end">Sep 11</text><text class="pf-axis" transform="translate(892.9 229.0) rotate(-45)" text-anchor="end">Sep 12</text><text class="pf-axis" transform="translate(935.2 229.0) rotate(-45)" text-anchor="end">Sep 13</text><text class="pf-axis" transform="translate(977.6 229.0) rotate(-45)" text-anchor="end">Sep 14</text><text class="pf-axis" transform="translate(1019.9 229.0) rotate(-45)" text-anchor="end">Sep 15</text><text class="pf-axis" transform="translate(1062.3 229.0) rotate(-45)" text-anchor="end">Sep 16</text><text class="pf-axis" transform="translate(1104.6 229.0) rotate(-45)" text-anchor="end">Sep 17</text><text class="pf-axis" transform="translate(1147.0 229.0) rotate(-45)" text-anchor="end">Sep 18</text><text class="pf-axis" transform="translate(1189.3 229.0) rotate(-45)" text-anchor="end">Sep 19</text><text class="pf-axis" transform="translate(1231.7 229.0) rotate(-45)" text-anchor="end">Sep 20</text><text class="pf-axis" transform="translate(1274.0 229.0) rotate(-45)" text-anchor="end">Sep 21</text>
+              </svg>
+            </div>
+          </div>
         </section>
       </div>
     </main>
@@ -5941,152 +6403,303 @@ body{margin:var(--sp-0)}
     <main class="pf-content" data-gap="8">
       <div class="pf-block-row" style-cols="533 783" data-cols="533 783">
         <section class="pf-card pf-block" data-w="533" data-h="240">
-          <div class="pf-block-head">Listings Summary</div>
+          <div class="pf-block-head">
+            <div class="pf-block-head-row">
+              <span class="pf-block-title">Listings</span>
+
+            </div>
+
+          </div>
           <div class="pf-block-body">
-            <div class="pf-stat-grid">
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-MyListingIcon"/></svg><div><span class="pf-stat-title">Total</span><span class="pf-stat-value">51</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconBasic"/></svg><div><span class="pf-stat-title">Basic</span><span class="pf-stat-value">34</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg><div><span class="pf-stat-title">Hot</span><span class="pf-stat-value">9</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg><div><span class="pf-stat-title">Signature</span><span class="pf-stat-value">8</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-MdEdit"/></svg><div><span class="pf-stat-title">Draft</span><span class="pf-stat-value">1</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-GoDotFill"/></svg><div><span class="pf-stat-title">Pending</span><span class="pf-stat-value">4</span></div></div>
-              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg><div><span class="pf-stat-title">Removed</span><span class="pf-stat-value">172</span></div></div>
+            <div class="pf-statcard">
+              <div class="pf-stat-lead">
+                <span class="pf-stat-title">Active</span>
+                <span class="pf-stat-lead-value"><svg class="i i-12"><use href="#pf-GoDotFill"/></svg>20</span>
+              </div>
+              <div class="pf-stat-grid">
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(45,62,155,.08)"><svg class="i i-17"><use href="#pf-IconForSale"/></svg></span><div><span class="pf-stat-title">For Sale</span><span class="pf-stat-value">20</span></div></div>
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(71,158,235,.08)"><svg class="i i-17"><use href="#pf-IconForRent"/></svg></span><div><span class="pf-stat-title">To Rent</span><span class="pf-stat-value">0</span></div></div>
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(71,158,235,.08)"><svg class="i i-17"><use href="#pf-IconRental"/></svg></span><div><span class="pf-stat-title">Daily Rentals</span><span class="pf-stat-value">0</span></div></div>
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(175,111,255,.08)"><svg class="i i-17"><use href="#pf-BsFillLightningChargeFill"/></svg></span><div><span class="pf-stat-title">Signature</span><span class="pf-stat-value">12</span></div></div>
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(247,49,49,.08)"><svg class="i i-17"><use href="#pf-IconSuperHot"/></svg></span><div><span class="pf-stat-title">Hot</span><span class="pf-stat-value">5</span></div></div>
+                <div class="pf-stat-item"><span class="pf-stat-tile" style="--tile:rgba(40,177,109,.08)"><svg class="i i-17"><use href="#pf-IconBasic"/></svg></span><div><span class="pf-stat-title">Basic</span><span class="pf-stat-value">3</span></div></div>
+              </div>
             </div>
           </div>
         </section>
         <section class="pf-card pf-block" data-w="783" data-h="240">
-          <div class="pf-block-head">Listings Performance</div>
+          <div class="pf-block-head">
+            <div class="pf-block-head-row">
+              <span class="pf-block-title">Breakdown By Location</span>
+
+            </div>
+
+          </div>
           <div class="pf-block-body">
-            <div class="pf-plot" data-h="160" role="img" aria-label="Views, clicks and leads over time">
-              <span class="pf-plot-note">Views, clicks and leads over time</span>
+            <div class="pf-donut-row">
+              <div class="pf-donut-cell">
+<div class="pf-donut" style="--donut:128px">
+                <svg viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="For Sale">
+                  <g transform="rotate(-90 64 64)">
+                    <circle cx="64" cy="64" r="57" fill="none" stroke="var(--border-light)" stroke-width="14"/>
+                    
+                  </g>
+                </svg>
+                <div class="pf-donut-centre"><span class="pf-donut-value">0</span><span class="pf-donut-label">For Sale</span></div>
+              </div>
+                <div class="pf-donut-legend">
+                  <span class="pf-legend-item"><svg class="i i-10"><use href="#pf-GoDotFill"/></svg><span>Not enough data</span></span>
+                </div>
+              </div>
+              <div class="pf-donut-cell">
+<div class="pf-donut" style="--donut:128px">
+                <svg viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="To Rent">
+                  <g transform="rotate(-90 64 64)">
+                    <circle cx="64" cy="64" r="57" fill="none" stroke="var(--border-light)" stroke-width="14"/>
+                    
+                  </g>
+                </svg>
+                <div class="pf-donut-centre"><span class="pf-donut-value">0</span><span class="pf-donut-label">To Rent</span></div>
+              </div>
+                <div class="pf-donut-legend">
+                  <span class="pf-legend-item"><svg class="i i-10"><use href="#pf-GoDotFill"/></svg><span>Not enough data</span></span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
       </div>
-      <div class="pf-block-row" style-cols="full" data-cols="full">
+      <div class="pf-block-row" data-cols="auto">
         <section class="pf-table-card">
           <div class="pf-table-card-head">
 
             <div class="pf-tabs" role="tablist">
-              <button class="pf-tab" role="tab" type="button" aria-selected="true" data-tabw="94" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Summary</span></button>
-              <button class="pf-tab" role="tab" type="button" data-tabw="94" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Listing Report</span></button>
-              <button class="pf-tab" role="tab" type="button" data-tabw="94" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Leads Report</span></button>
+              <button class="pf-tab" role="tab" type="button" aria-selected="true" data-tabw="137" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Listing Performance</span></button>
+              <button class="pf-tab" role="tab" type="button" data-tabw="137" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Listing By Date</span></button>
             </div>
 
           </div>
-            <table class="pf-table">
-              <thead><tr><th>Property</th><th>Product</th><th>Views</th><th>Clicks</th><th>Leads</th><th>Posted on</th></tr></thead>
+            <table class="pf-table pf-proptable">
+              <thead><tr><th class="pf-th-prop">Property</th><th>Posted On</th><th>Views</th><th>Clicks</th><th>All Leads</th><th>Whatsapp</th><th>Calls</th><th>SMS</th><th>Emails</th></tr></thead>
               <tbody>
                 <tr>
-                  <td colspan="6">
-                    <div class="pf-empty">
-                      <svg class="pf-empty-art" width="164" height="89" viewBox="0 0 164 89" role="img" aria-label="No Record Found illustration">
-  <path
-  d="M17.357 15.687c0-8.666 7.025-15.69 15.69-15.69h90.982c8.665 0 15.689 7.024 15.689 15.69 0 8.664-7.024 15.688-15.689 15.688H33.047c-8.665 0-15.69-7.024-15.69-15.688m18.811 57.631c0-8.664 7.024-15.688 15.69-15.688h82.924c8.664 0 15.689 7.024 15.689 15.688 0 8.666-7.025 15.69-15.689 15.69H51.857c-8.665 0-15.689-7.024-15.689-15.69"
-  />
-  <path
-  d="M.586 53.193c0-8.664 7.024-15.689 15.69-15.689h131.449c8.666 0 15.69 7.025 15.69 15.69s-7.024 15.689-15.69 15.689H16.275c-8.665 0-15.69-7.024-15.69-15.69"
-  />
-  <path
-  fill="currentColor"
-  d="M89.392 24.57a18.7 18.7 0 0 1 6.058-4.053V8.952a5.78 5.78 0 0 0-5.78-5.78H49.206a5.78 5.78 0 0 0-5.78 5.78v11.562a5.78 5.78 0 0 0 5.78 5.78h38.678c.466-.595.96-1.175 1.508-1.723"
-  />
-  <circle cx="50.426" cy="12.008" r="4" fill="#fff" />
-  <rect width="26" height="2.1" x="57.426" y="8.008" fill="#fff" rx="1.05" />
-  <rect width="32" height="2.1" x="57.426" y="13.109" fill="#fff" rx="1.05" />
-  <rect width="21" height="2.1" x="57.426" y="18.211" fill="#fff" rx="1.05" />
-  <path
-  fill="currentColor"
-  d="M104.119 29.188H63.656a5.78 5.78 0 0 0-5.781 5.78v11.561a5.78 5.78 0 0 0 5.78 5.78h40.464a5.78 5.78 0 0 0 5.78-5.78V34.968a5.78 5.78 0 0 0-5.78-5.78"
-  />
-  <circle cx="66.426" cy="38.008" r="4" fill="#fff" />
-  <rect width="26" height="2.1" x="73.426" y="34.008" fill="#fff" rx="1.05" />
-  <rect width="32" height="2.1" x="73.426" y="39.109" fill="#fff" rx="1.05" />
-  <rect width="21" height="2.1" x="73.426" y="44.211" fill="#fff" rx="1.05" />
-  <path
-  fill="currentColor"
-  d="M89.67 55.195H49.206a5.78 5.78 0 0 0-5.78 5.78v11.562a5.78 5.78 0 0 0 5.78 5.78H89.67a5.78 5.78 0 0 0 5.781-5.78V60.976a5.78 5.78 0 0 0-5.78-5.78"
-  />
-  <circle cx="50.426" cy="64.008" r="4" fill="#fff" />
-  <rect width="26" height="2.1" x="57.426" y="60.008" fill="#fff" rx="1.05" />
-  <rect width="32" height="2.1" x="57.426" y="65.109" fill="#fff" rx="1.05" />
-  <rect width="21" height="2.1" x="57.426" y="70.211" fill="#fff" rx="1.05" />
-  <g>
-  <path
-  fill="url(#EmptyListing__EmptyListing1-blocks-1)"
-  d="M108.456 26.29H62.212a5.78 5.78 0 0 0-5.78 5.78v23.12a5.78 5.78 0 0 0 5.78 5.78h46.244a5.78 5.78 0 0 0 5.78-5.78V32.07a5.78 5.78 0 0 0-5.78-5.78"
-  />
-  <path
-  fill="currentColor"
-  d="M98.34 37.85H72.327a2.89 2.89 0 0 1 0-5.78H98.34a2.89 2.89 0 0 1 0 5.78m7.225 8.664H72.328a2.89 2.89 0 0 1 0-5.78h33.237a2.89 2.89 0 0 1 0 5.78m-14.451 8.68H72.327a2.89 2.89 0 0 1 0-5.78h18.787a2.89 2.89 0 0 1 0 5.78"
-  />
-  </g>
-  <path
-  fill="#fff"
-  d="M86.207 38.532c0-12.172 9.867-22.04 22.038-22.04 12.172 0 22.04 9.868 22.04 22.04 0 12.17-9.868 22.038-22.04 22.038-12.17 0-22.038-9.867-22.038-22.038"
-  />
-  <path
-  fill="currentColor"
-  d="M108.245 63.195a24.5 24.5 0 0 1-17.442-7.224 24.5 24.5 0 0 1-7.225-17.442c0-6.59 2.566-12.783 7.225-17.442s10.853-7.225 17.442-7.225 12.783 2.566 17.442 7.225a24.5 24.5 0 0 1 7.225 17.442 24.6 24.6 0 0 1-6.541 16.73 2.628 2.628 0 0 1-3.861-3.565 19.35 19.35 0 0 0 5.146-13.165c0-10.704-8.708-19.412-19.411-19.412s-19.411 8.708-19.411 19.412S97.54 57.94 108.245 57.94c2.415 0 4.77-.437 7-1.3a2.628 2.628 0 1 1 1.896 4.902 24.6 24.6 0 0 1-8.896 1.653"
-  />
-  <path
-  fill="currentColor"
-  d="M142.002 74.063a2.62 2.62 0 0 1-1.858-.77l-17.718-17.719a2.628 2.628 0 0 1 3.715-3.716l17.719 17.719a2.628 2.628 0 0 1-1.858 4.486"
-  />
-  <path
-  fill="#fff"
-  d="m142.709 78.981-12.777-12.776a4.36 4.36 0 0 1 0-6.164l.67-.67a4.36 4.36 0 0 1 6.163 0l12.777 12.778a4.356 4.356 0 0 1 0 6.163l-.669.67a4.36 4.36 0 0 1-6.164 0"
-  />
-  <path
-  fill="currentColor"
-  d="M133.687 60.72c-.443 0-.886.169-1.224.506l-.67.67a1.72 1.72 0 0 0-.507 1.223c0 .463.18.897.507 1.224l12.778 12.777c.327.327.761.507 1.224.507s.896-.18 1.223-.507l.67-.67c.327-.326.506-.76.506-1.223a1.72 1.72 0 0 0-.506-1.224L134.91 61.227a1.72 1.72 0 0 0-1.223-.506m12.108 22.163a6.94 6.94 0 0 1-4.94-2.046L128.077 68.06a6.94 6.94 0 0 1-2.046-4.94c0-1.865.726-3.62 2.046-4.94l.67-.669a6.99 6.99 0 0 1 9.879 0l12.778 12.777a6.994 6.994 0 0 1 0 9.88l-.67.67a6.94 6.94 0 0 1-4.939 2.046"
-  />
-  <path
-  fill="#fff"
-  d="M132.966 38.528c0 2.18-.284 4.293-.815 6.305a13.46 13.46 0 0 1-3.545.472c-7.444 0-13.477-6.035-13.477-13.478 0-5.713 3.552-10.593 8.568-12.555 5.65 4.513 9.269 11.462 9.269 19.256"
-  />
-  <path
-  fill="currentColor"
-  d="M115.047 28.327c0-7.443 6.034-13.477 13.478-13.477 7.443 0 13.478 6.034 13.478 13.477s-6.035 13.478-13.478 13.478c-7.444 0-13.478-6.035-13.478-13.478"
-  />
-  <path
-  fill="#fff"
-  d="M128.544 33.778q.792 0 1.252-.503.46-.502.674-1.702t.215-3.317q0-2.14-.215-3.34-.213-1.198-.674-1.7-.46-.504-1.252-.504t-1.263.503q-.47.503-.674 1.701-.204 1.2-.204 3.34 0 2.118.204 3.317t.674 1.702 1.263.503m0 2.183q-1.712 0-2.676-.856-.963-.855-1.359-2.569-.396-1.712-.396-4.28t.396-4.292 1.359-2.58q.965-.855 2.676-.856 1.713.001 2.665.856.952.857 1.349 2.58.396 1.724.396 4.292t-.396 4.28q-.397 1.714-1.349 2.569t-2.665.856"
-  />
-  <path
-  fill="currentColor"
-  d="M94.91 40.54c-.82 0-1.484-.666-1.484-1.484 0-8.209 6.678-14.886 14.885-14.886a1.482 1.482 0 1 1 0 2.967c-6.572 0-11.918 5.346-11.918 11.919 0 .819-.665 1.483-1.484 1.483"
-  />
-  <defs>
-  <radialGradient
-  id="EmptyListing__EmptyListing1-blocks-1"
-  cx="0"
-  cy="0"
-  r="1"
-  gradientTransform="translate(96.144 26.396) scale(32.4114)"
-  gradientUnits="userSpaceOnUse"
-  >
-  <stop stop-color="#F2F2F2" />
-  <stop offset="1" stop-color="#D3D3D3" />
-  </radialGradient>
-  </defs>
-</svg>
-                      <div><div class="pf-empty-title">No Record Found</div></div>
+                  <td class="pf-td-prop">
+                    <div class="pf-prop">
+                      <span class="pf-prop-thumb"></span>
+                      <div class="pf-prop-detail">
+                        <div class="pf-prop-priceline"><span class="pf-prop-price"><bdi>﷼</bdi> 1,250,000</span><span class="pf-quality" data-band="high">62%</span></div>
+                        <div class="pf-prop-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>null Sq. M.</span></div>
+                        <div class="pf-prop-address">Al Wurud, North Riyadh, Riyadh</div>
+                        <div class="pf-prop-ids"><span>Bayut ID: 88240117</span><i>|</i><span>REGA ID: 7201340882</span></div>
+                      </div>
                     </div>
                   </td>
+                  <td>Sep 19, 2026</td>
+                  <td>896</td>
+                  <td>35</td>
+                  <td>2</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td class="pf-td-prop">
+                    <div class="pf-prop">
+                      <span class="pf-prop-thumb"></span>
+                      <div class="pf-prop-detail">
+                        <div class="pf-prop-priceline"><span class="pf-prop-price"><bdi>﷼</bdi> 1,399,000</span><span class="pf-quality" data-band="high">62%</span></div>
+                        <div class="pf-prop-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>null Sq. M.</span></div>
+                        <div class="pf-prop-address">Al Masif, North Riyadh, Riyadh</div>
+                        <div class="pf-prop-ids"><span>Bayut ID: 88240112</span><i>|</i><span>REGA ID: 7201340856</span></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Sep 16, 2026</td>
+                  <td>796</td>
+                  <td>17</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td class="pf-td-prop">
+                    <div class="pf-prop">
+                      <span class="pf-prop-thumb"></span>
+                      <div class="pf-prop-detail">
+                        <div class="pf-prop-priceline"><span class="pf-prop-price"><bdi>﷼</bdi> 1,999,000</span><span class="pf-quality" data-band="mid">54%</span></div>
+                        <div class="pf-prop-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>4</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg>5</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>null Sq. M.</span></div>
+                        <div class="pf-prop-address">Al Mughrizat, North Riyadh, Riyadh</div>
+                        <div class="pf-prop-ids"><span>Bayut ID: 88238421</span><i>|</i><span>REGA ID: 7201340887</span></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Sep 13, 2026</td>
+                  <td>1,600</td>
+                  <td>18</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td class="pf-td-prop">
+                    <div class="pf-prop">
+                      <span class="pf-prop-thumb"></span>
+                      <div class="pf-prop-detail">
+                        <div class="pf-prop-priceline"><span class="pf-prop-price"><bdi>﷼</bdi> 1,049,000</span><span class="pf-quality" data-band="mid">50%</span></div>
+                        <div class="pf-prop-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>null Sq. M.</span></div>
+                        <div class="pf-prop-address">Al Rawabi, East Riyadh, Riyadh</div>
+                        <div class="pf-prop-ids"><span>Bayut ID: 88236048</span><i>|</i><span>REGA ID: 7201340868</span></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Sep 10, 2026</td>
+                  <td>2,015</td>
+                  <td>18</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td class="pf-td-prop">
+                    <div class="pf-prop">
+                      <span class="pf-prop-thumb"></span>
+                      <div class="pf-prop-detail">
+                        <div class="pf-prop-priceline"><span class="pf-prop-price"><bdi>﷼</bdi> 2,330,000</span><span class="pf-quality" data-band="low">43%</span></div>
+                        <div class="pf-prop-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>5</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg>6</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>null Sq. M.</span></div>
+                        <div class="pf-prop-address">Al Nahdah, East Riyadh, Riyadh</div>
+                        <div class="pf-prop-ids"><span>Bayut ID: 88235710</span><i>|</i><span>REGA ID: 7201340875</span></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Sep 07, 2026</td>
+                  <td>2,669</td>
+                  <td>36</td>
+                  <td>2</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td class="pf-td-prop">
+                    <div class="pf-prop">
+                      <span class="pf-prop-thumb"></span>
+                      <div class="pf-prop-detail">
+                        <div class="pf-prop-priceline"><span class="pf-prop-price"><bdi>﷼</bdi> 4,900,000</span><span class="pf-quality" data-band="low">46%</span></div>
+                        <div class="pf-prop-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>6</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg>7</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>null Sq. M.</span></div>
+                        <div class="pf-prop-address">, As Sulaymaniyah, Al Diriyah</div>
+                        <div class="pf-prop-ids"><span>Bayut ID: 88234837</span><i>|</i><span>REGA ID: 7201351018</span></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Sep 04, 2026</td>
+                  <td>2,386</td>
+                  <td>66</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td class="pf-td-prop">
+                    <div class="pf-prop">
+                      <span class="pf-prop-thumb"></span>
+                      <div class="pf-prop-detail">
+                        <div class="pf-prop-priceline"><span class="pf-prop-price"><bdi>﷼</bdi> 870,000</span><span class="pf-quality" data-band="low">31%</span></div>
+                        <div class="pf-prop-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>null Sq. M.</span></div>
+                        <div class="pf-prop-address">Al Yarmuk, East Riyadh, Riyadh</div>
+                        <div class="pf-prop-ids"><span>Bayut ID: 88232857</span><i>|</i><span>REGA ID: 7201347658</span></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Sep 01, 2026</td>
+                  <td>1,192</td>
+                  <td>13</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td class="pf-td-prop">
+                    <div class="pf-prop">
+                      <span class="pf-prop-thumb"></span>
+                      <div class="pf-prop-detail">
+                        <div class="pf-prop-priceline"><span class="pf-prop-price"><bdi>﷼</bdi> 920,000</span><span class="pf-quality" data-band="low">34%</span></div>
+                        <div class="pf-prop-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>null Sq. M.</span></div>
+                        <div class="pf-prop-address">Al Yarmuk, East Riyadh, Riyadh</div>
+                        <div class="pf-prop-ids"><span>Bayut ID: 88230489</span><i>|</i><span>REGA ID: 7201347647</span></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Aug 29, 2026</td>
+                  <td>1,050</td>
+                  <td>6</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td class="pf-td-prop">
+                    <div class="pf-prop">
+                      <span class="pf-prop-thumb"></span>
+                      <div class="pf-prop-detail">
+                        <div class="pf-prop-priceline"><span class="pf-prop-price"><bdi>﷼</bdi> 995,000</span><span class="pf-quality" data-band="low">39%</span></div>
+                        <div class="pf-prop-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>null Sq. M.</span></div>
+                        <div class="pf-prop-address">Al Yarmuk, East Riyadh, Riyadh</div>
+                        <div class="pf-prop-ids"><span>Bayut ID: 88230479</span><i>|</i><span>REGA ID: 7201347611</span></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Aug 26, 2026</td>
+                  <td>1,007</td>
+                  <td>3</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td class="pf-td-prop">
+                    <div class="pf-prop">
+                      <span class="pf-prop-thumb"></span>
+                      <div class="pf-prop-detail">
+                        <div class="pf-prop-priceline"><span class="pf-prop-price"><bdi>﷼</bdi> 1,050,000</span><span class="pf-quality" data-band="low">33%</span></div>
+                        <div class="pf-prop-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg>3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg>null Sq. M.</span></div>
+                        <div class="pf-prop-address">Al Yarmuk, East Riyadh, Riyadh</div>
+                        <div class="pf-prop-ids"><span>Bayut ID: 88230478</span><i>|</i><span>REGA ID: 7201347593</span></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Aug 23, 2026</td>
+                  <td>749</td>
+                  <td>5</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
                 </tr>
               </tbody>
             </table>
         </section>
       </div>
-      <ul class="pf-pagination">
+      <ul class="pf-pagination" data-span="full">
         <li class="pf-page-item" data-nav="prev" aria-disabled="true"><button type="button" aria-label="Previous page" disabled><svg class="i i-12"><use href="#pf-LeftOutlined"/></svg></button></li>
         <li class="pf-page-item" aria-current="page"><a data-noop="the pager pushes the page number into the URL and refetches">1</a></li>
         <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">2</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">3</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">4</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">5</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">6</a></li>
         <li class="pf-page-item" data-nav="next"><button type="button" aria-label="Next page" data-noop="the pager pushes the page number into the URL and refetches"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
       </ul>
     </main>
@@ -6152,7 +6765,7 @@ body{margin:var(--sp-0)}
   <div class="pf-main">
     <!-- ── header ──────────────────────────────────────────────────── -->
     <header class="pf-header pf-header-fixed">
-      <div class="pf-header-brand"><span class="pf-page-title">Leads Report</span></div>
+      <div class="pf-header-brand"><span class="pf-page-title">Leads &amp; Reach Report</span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
         <!-- the one link in the shell that LEAVES the product. It carried
@@ -6164,139 +6777,94 @@ body{margin:var(--sp-0)}
       </div>
     </header>
     <main class="pf-content" data-gap="8">
-      <div class="pf-block-row" style-cols="full" data-cols="full">
-        <section class="pf-table-card" data-h="528">
-          <div class="pf-table-card-head" data-tall="true">
-            <!-- a 76-tall row above the tabs: the product puts the page's filter
-                 controls here, not in a bar of their own -->
-            <!-- it IS the filter bar, so it carries that class: the design QA
-                 scopes filter.field and filter.clear inside filter.bar, and a
-                 differently-named wrapper left both regions unresolved -->
-            <div class="pf-filter-bar" data-in-head="true">
-              <div class="pf-filter-fields">
-                <div class="pf-field"><button class="pf-select" id="lr-0" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button></div>
-                <div class="pf-field"><button class="pf-select" id="lr-1" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Listing</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button></div>
-                <div class="pf-field"><button class="pf-select" id="lr-2" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Channel</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button></div>
+      <div class="pf-block-row" data-cols="auto">
+        <section class="pf-card pf-block" data-w="full" data-h="540" data-head="tall">
+          <div class="pf-block-head" data-tall="true">
+            <div class="pf-block-head-row">
+              <span class="pf-block-title">Performance</span>
+              <div class="pf-segmented" role="tablist">
+                <button class="pf-segment" role="tab" type="button" aria-selected="true" data-noop="switching purpose refetches the series">All</button>
+                <button class="pf-segment" role="tab" type="button" data-noop="switching purpose refetches the series">For Sale</button>
+                <button class="pf-segment" role="tab" type="button" data-noop="switching purpose refetches the series">For Rent</button>
+                <button class="pf-segment" role="tab" type="button" data-noop="switching purpose refetches the series">Daily Rentals</button>
               </div>
-              <button class="pf-btn" data-variant="link-danger" data-size="small" type="button" data-noop="clearing a filter is a URL push and a refetch"><span>Clear filters</span></button>
+              <button class="pf-datefield" type="button" data-noop="the range picker opens a two-month calendar the product mounts on demand"><span>Last 30 Days</span><svg class="i i-16"><use href="#pf-FiCalendar"/></svg></button>
             </div>
-            <div class="pf-tabs" role="tablist">
-              <button class="pf-tab" role="tab" type="button" aria-selected="true" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Summary</span></button>
-              <button class="pf-tab" role="tab" type="button" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Listing Report</span></button>
-              <button class="pf-tab" role="tab" type="button" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Leads Report</span></button>
-            </div>
-            <div class="pf-tabs-extra"><a class="pf-btn" data-variant="primary" data-size="small" href="not-built.html?screen=Download"><span>Download</span></a></div>
+              <div class="pf-metrics" role="tablist">
+                <button class="pf-metric" role="tab" type="button" aria-selected="true" data-noop="each metric redraws the series">
+                  <span class="pf-metric-tile" style="--tile:rgba(0,97,105,.08)"><svg class="i i-18"><use href="#pf-IoMdEye"/></svg></span>
+                  <span class="pf-metric-text"><span class="pf-metric-label">Views</span><span class="pf-metric-value">26,080<span class="pf-delta" data-dir="up"><svg class="i i-12"><use href="#pf-TiArrowSortedUp"/></svg>13%</span></span></span>
+                </button>
+                <button class="pf-metric" role="tab" type="button" data-noop="each metric redraws the series">
+                  <span class="pf-metric-tile" style="--tile:rgba(255,169,0,.10)"><svg class="i i-18"><use href="#pf-HiCursorClick"/></svg></span>
+                  <span class="pf-metric-text"><span class="pf-metric-label">Clicks</span><span class="pf-metric-value">407<span class="pf-delta" data-dir="down"><svg class="i i-12"><use href="#pf-TiArrowSortedDown"/></svg>3%</span></span></span>
+                </button>
+                <button class="pf-metric" role="tab" type="button" data-noop="each metric redraws the series">
+                  <span class="pf-metric-tile" style="--tile:rgba(71,158,235,.10)"><svg class="i i-18"><use href="#pf-MdPhone"/></svg></span>
+                  <span class="pf-metric-text"><span class="pf-metric-label">Leads</span><span class="pf-metric-value">13<span class="pf-delta" data-dir="up"><svg class="i i-12"><use href="#pf-TiArrowSortedUp"/></svg>8%</span></span></span>
+                </button>
+              </div>
+              <div class="pf-channels">
+                <span class="pf-channel"><svg class="i i-16"><use href="#pf-MdPhone"/></svg><span>Calls</span><b>0</b></span>
+                <span class="pf-channel"><svg class="i i-16"><use href="#pf-IconWhatsapp"/></svg><span>WhatsApp</span><b>7</b></span>
+                <span class="pf-channel"><svg class="i i-16"><use href="#pf-MdSms"/></svg><span>SMS</span><b>0</b></span>
+                <span class="pf-channel"><svg class="i i-16"><use href="#pf-MdEmail"/></svg><span>Emails</span><b>0</b></span>
+              </div>
           </div>
-            <div class="pf-plot" data-h="440" role="img" aria-label="Leads by channel">
-              <span class="pf-plot-note">Leads by channel</span>
+          <div class="pf-block-body">
+            <div class="pf-pills" role="radiogroup">
+              <button class="pf-pill" role="radio" type="button" aria-checked="true" data-noop="filtering by product refetches the series"><svg class="i i-14"><use href="#pf-GoDotFill"/></svg><span>All</span></button>
+              <button class="pf-pill" role="radio" type="button" data-noop="filtering by product refetches the series"><svg class="i i-14"><use href="#pf-IconBasic"/></svg><span>Basic</span></button>
+              <button class="pf-pill" role="radio" type="button" data-noop="filtering by product refetches the series"><svg class="i i-14"><use href="#pf-IconSuperHot"/></svg><span>Hot</span></button>
+              <button class="pf-pill" role="radio" type="button" data-noop="filtering by product refetches the series"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg><span>Signature</span></button>
             </div>
+            <div class="pf-linechart">
+              <svg viewBox="0 0 1282 273" width="100%" height="273" preserveAspectRatio="none" role="img" aria-label="Views, clicks and leads over time">
+                <line class="pf-grid" x1="46" x2="1274" y1="215.0" y2="215.0"/><line class="pf-grid" x1="46" x2="1274" y1="173.6" y2="173.6"/><line class="pf-grid" x1="46" x2="1274" y1="132.2" y2="132.2"/><line class="pf-grid" x1="46" x2="1274" y1="90.8" y2="90.8"/><line class="pf-grid" x1="46" x2="1274" y1="49.4" y2="49.4"/><line class="pf-grid" x1="46" x2="1274" y1="8.0" y2="8.0"/>
+                <line class="pf-axis-line" x1="46" x2="46" y1="8" y2="215"/>
+                <text class="pf-axis" x="38" y="219.0" text-anchor="end">0</text><text class="pf-axis" x="38" y="177.6" text-anchor="end">500</text><text class="pf-axis" x="38" y="136.2" text-anchor="end">1000</text><text class="pf-axis" x="38" y="94.8" text-anchor="end">1500</text><text class="pf-axis" x="38" y="53.4" text-anchor="end">2000</text><text class="pf-axis" x="38" y="12.0" text-anchor="end">2500</text>
+                <polyline class="pf-series" fill="none" points="46.0,214.3 88.3,214.0 130.7,213.8 173.0,213.5 215.4,213.2 257.7,212.5 300.1,210.0 342.4,163.7 384.8,187.7 427.1,173.6 469.4,147.1 511.8,146.3 554.1,147.1 596.5,149.6 638.8,131.4 681.2,96.6 723.5,70.1 765.9,73.4 808.2,95.8 850.6,115.6 892.9,90.8 935.2,25.4 977.6,86.7 1019.9,108.2 1062.3,137.2 1104.6,140.1 1147.0,134.3 1189.3,115.6 1231.7,122.3 1274.0,131.4"/>
+                <circle class="pf-dot" cx="46.0" cy="214.3" r="2.5"/><circle class="pf-dot" cx="88.3" cy="214.0" r="2.5"/><circle class="pf-dot" cx="130.7" cy="213.8" r="2.5"/><circle class="pf-dot" cx="173.0" cy="213.5" r="2.5"/><circle class="pf-dot" cx="215.4" cy="213.2" r="2.5"/><circle class="pf-dot" cx="257.7" cy="212.5" r="2.5"/><circle class="pf-dot" cx="300.1" cy="210.0" r="2.5"/><circle class="pf-dot" cx="342.4" cy="163.7" r="2.5"/><circle class="pf-dot" cx="384.8" cy="187.7" r="2.5"/><circle class="pf-dot" cx="427.1" cy="173.6" r="2.5"/><circle class="pf-dot" cx="469.4" cy="147.1" r="2.5"/><circle class="pf-dot" cx="511.8" cy="146.3" r="2.5"/><circle class="pf-dot" cx="554.1" cy="147.1" r="2.5"/><circle class="pf-dot" cx="596.5" cy="149.6" r="2.5"/><circle class="pf-dot" cx="638.8" cy="131.4" r="2.5"/><circle class="pf-dot" cx="681.2" cy="96.6" r="2.5"/><circle class="pf-dot" cx="723.5" cy="70.1" r="2.5"/><circle class="pf-dot" cx="765.9" cy="73.4" r="2.5"/><circle class="pf-dot" cx="808.2" cy="95.8" r="2.5"/><circle class="pf-dot" cx="850.6" cy="115.6" r="2.5"/><circle class="pf-dot" cx="892.9" cy="90.8" r="2.5"/><circle class="pf-dot" cx="935.2" cy="25.4" r="2.5"/><circle class="pf-dot" cx="977.6" cy="86.7" r="2.5"/><circle class="pf-dot" cx="1019.9" cy="108.2" r="2.5"/><circle class="pf-dot" cx="1062.3" cy="137.2" r="2.5"/><circle class="pf-dot" cx="1104.6" cy="140.1" r="2.5"/><circle class="pf-dot" cx="1147.0" cy="134.3" r="2.5"/><circle class="pf-dot" cx="1189.3" cy="115.6" r="2.5"/><circle class="pf-dot" cx="1231.7" cy="122.3" r="2.5"/><circle class="pf-dot" cx="1274.0" cy="131.4" r="2.5"/>
+                <text class="pf-axis" transform="translate(46.0 229.0) rotate(-45)" text-anchor="end">Aug 23</text><text class="pf-axis" transform="translate(88.3 229.0) rotate(-45)" text-anchor="end">Aug 24</text><text class="pf-axis" transform="translate(130.7 229.0) rotate(-45)" text-anchor="end">Aug 25</text><text class="pf-axis" transform="translate(173.0 229.0) rotate(-45)" text-anchor="end">Aug 26</text><text class="pf-axis" transform="translate(215.4 229.0) rotate(-45)" text-anchor="end">Aug 27</text><text class="pf-axis" transform="translate(257.7 229.0) rotate(-45)" text-anchor="end">Aug 28</text><text class="pf-axis" transform="translate(300.1 229.0) rotate(-45)" text-anchor="end">Aug 29</text><text class="pf-axis" transform="translate(342.4 229.0) rotate(-45)" text-anchor="end">Aug 30</text><text class="pf-axis" transform="translate(384.8 229.0) rotate(-45)" text-anchor="end">Aug 31</text><text class="pf-axis" transform="translate(427.1 229.0) rotate(-45)" text-anchor="end">Sep 01</text><text class="pf-axis" transform="translate(469.4 229.0) rotate(-45)" text-anchor="end">Sep 02</text><text class="pf-axis" transform="translate(511.8 229.0) rotate(-45)" text-anchor="end">Sep 03</text><text class="pf-axis" transform="translate(554.1 229.0) rotate(-45)" text-anchor="end">Sep 04</text><text class="pf-axis" transform="translate(596.5 229.0) rotate(-45)" text-anchor="end">Sep 05</text><text class="pf-axis" transform="translate(638.8 229.0) rotate(-45)" text-anchor="end">Sep 06</text><text class="pf-axis" transform="translate(681.2 229.0) rotate(-45)" text-anchor="end">Sep 07</text><text class="pf-axis" transform="translate(723.5 229.0) rotate(-45)" text-anchor="end">Sep 08</text><text class="pf-axis" transform="translate(765.9 229.0) rotate(-45)" text-anchor="end">Sep 09</text><text class="pf-axis" transform="translate(808.2 229.0) rotate(-45)" text-anchor="end">Sep 10</text><text class="pf-axis" transform="translate(850.6 229.0) rotate(-45)" text-anchor="end">Sep 11</text><text class="pf-axis" transform="translate(892.9 229.0) rotate(-45)" text-anchor="end">Sep 12</text><text class="pf-axis" transform="translate(935.2 229.0) rotate(-45)" text-anchor="end">Sep 13</text><text class="pf-axis" transform="translate(977.6 229.0) rotate(-45)" text-anchor="end">Sep 14</text><text class="pf-axis" transform="translate(1019.9 229.0) rotate(-45)" text-anchor="end">Sep 15</text><text class="pf-axis" transform="translate(1062.3 229.0) rotate(-45)" text-anchor="end">Sep 16</text><text class="pf-axis" transform="translate(1104.6 229.0) rotate(-45)" text-anchor="end">Sep 17</text><text class="pf-axis" transform="translate(1147.0 229.0) rotate(-45)" text-anchor="end">Sep 18</text><text class="pf-axis" transform="translate(1189.3 229.0) rotate(-45)" text-anchor="end">Sep 19</text><text class="pf-axis" transform="translate(1231.7 229.0) rotate(-45)" text-anchor="end">Sep 20</text><text class="pf-axis" transform="translate(1274.0 229.0) rotate(-45)" text-anchor="end">Sep 21</text>
+              </svg>
+            </div>
+          </div>
         </section>
       </div>
-      <div class="pf-block-row" style-cols="full" data-cols="full">
-        <section class="pf-card pf-block" data-w="1332">
-          <div class="pf-block-head">Leads<a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Download"><span>Download</span></a></div>
+      <h3 class="pf-section-h">Traffic and Leads by date</h3>
+      <div class="pf-filter-bar" data-plain="true">
+        <div class="pf-filter-fields">
+          <div class="pf-field" style="--field-w:274px">
+            <label class="pf-field-label" for="reports-leads-reports-fb-0">Listed Date</label>
+            <button class="pf-datefield" id="reports-leads-reports-fb-0" type="button" data-noop="the range calendar is not measured yet — see authoring/qa-listings.md"><span class="pf-placeholder">Select Date Range</span><svg class="i i-16"><use href="#pf-FiCalendar"/></svg></button>
+          </div>
+          <div class="pf-field" style="--field-w:274px">
+            <label class="pf-field-label" for="reports-leads-reports-fb-1">Purpose</label>
+            <button class="pf-select" id="reports-leads-reports-fb-1" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Purpose</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+          </div>
+        </div>
+        <div class="pf-filter-actions">
+          <button class="pf-btn" data-variant="link-danger" data-size="small" type="button" data-noop="clearing a filter is a URL push and a refetch"><span>Clear filters</span></button>
+          <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-noop="Search pushes the filter values into the URL and refetches"><svg class="i"><use href="#pf-FiSearch"/></svg><span>Search</span></button>
+        </div>
+      </div>
+      <div class="pf-block-row" data-cols="auto">
+        <section class="pf-card pf-block" data-w="full">
+
           <div class="pf-block-body">
             <table class="pf-table">
-              <thead><tr><th>Listing</th><th>Channel</th><th>Received</th><th>Status</th></tr></thead>
+              <thead><tr><th>Date</th><th>Calls</th><th>Emails</th><th>SMS</th><th>WhatsApp</th><th>Total Leads</th></tr></thead>
               <tbody>
-                <tr>
-                  <td colspan="4">
-                    <div class="pf-empty">
-                      <svg class="pf-empty-art" width="164" height="89" viewBox="0 0 164 89" role="img" aria-label="No Record Found illustration">
-  <path
-  d="M17.357 15.687c0-8.666 7.025-15.69 15.69-15.69h90.982c8.665 0 15.689 7.024 15.689 15.69 0 8.664-7.024 15.688-15.689 15.688H33.047c-8.665 0-15.69-7.024-15.69-15.688m18.811 57.631c0-8.664 7.024-15.688 15.69-15.688h82.924c8.664 0 15.689 7.024 15.689 15.688 0 8.666-7.025 15.69-15.689 15.69H51.857c-8.665 0-15.689-7.024-15.689-15.69"
-  />
-  <path
-  d="M.586 53.193c0-8.664 7.024-15.689 15.69-15.689h131.449c8.666 0 15.69 7.025 15.69 15.69s-7.024 15.689-15.69 15.689H16.275c-8.665 0-15.69-7.024-15.69-15.69"
-  />
-  <path
-  fill="currentColor"
-  d="M89.392 24.57a18.7 18.7 0 0 1 6.058-4.053V8.952a5.78 5.78 0 0 0-5.78-5.78H49.206a5.78 5.78 0 0 0-5.78 5.78v11.562a5.78 5.78 0 0 0 5.78 5.78h38.678c.466-.595.96-1.175 1.508-1.723"
-  />
-  <circle cx="50.426" cy="12.008" r="4" fill="#fff" />
-  <rect width="26" height="2.1" x="57.426" y="8.008" fill="#fff" rx="1.05" />
-  <rect width="32" height="2.1" x="57.426" y="13.109" fill="#fff" rx="1.05" />
-  <rect width="21" height="2.1" x="57.426" y="18.211" fill="#fff" rx="1.05" />
-  <path
-  fill="currentColor"
-  d="M104.119 29.188H63.656a5.78 5.78 0 0 0-5.781 5.78v11.561a5.78 5.78 0 0 0 5.78 5.78h40.464a5.78 5.78 0 0 0 5.78-5.78V34.968a5.78 5.78 0 0 0-5.78-5.78"
-  />
-  <circle cx="66.426" cy="38.008" r="4" fill="#fff" />
-  <rect width="26" height="2.1" x="73.426" y="34.008" fill="#fff" rx="1.05" />
-  <rect width="32" height="2.1" x="73.426" y="39.109" fill="#fff" rx="1.05" />
-  <rect width="21" height="2.1" x="73.426" y="44.211" fill="#fff" rx="1.05" />
-  <path
-  fill="currentColor"
-  d="M89.67 55.195H49.206a5.78 5.78 0 0 0-5.78 5.78v11.562a5.78 5.78 0 0 0 5.78 5.78H89.67a5.78 5.78 0 0 0 5.781-5.78V60.976a5.78 5.78 0 0 0-5.78-5.78"
-  />
-  <circle cx="50.426" cy="64.008" r="4" fill="#fff" />
-  <rect width="26" height="2.1" x="57.426" y="60.008" fill="#fff" rx="1.05" />
-  <rect width="32" height="2.1" x="57.426" y="65.109" fill="#fff" rx="1.05" />
-  <rect width="21" height="2.1" x="57.426" y="70.211" fill="#fff" rx="1.05" />
-  <g>
-  <path
-  fill="url(#EmptyListing__EmptyListing1-blocks-2)"
-  d="M108.456 26.29H62.212a5.78 5.78 0 0 0-5.78 5.78v23.12a5.78 5.78 0 0 0 5.78 5.78h46.244a5.78 5.78 0 0 0 5.78-5.78V32.07a5.78 5.78 0 0 0-5.78-5.78"
-  />
-  <path
-  fill="currentColor"
-  d="M98.34 37.85H72.327a2.89 2.89 0 0 1 0-5.78H98.34a2.89 2.89 0 0 1 0 5.78m7.225 8.664H72.328a2.89 2.89 0 0 1 0-5.78h33.237a2.89 2.89 0 0 1 0 5.78m-14.451 8.68H72.327a2.89 2.89 0 0 1 0-5.78h18.787a2.89 2.89 0 0 1 0 5.78"
-  />
-  </g>
-  <path
-  fill="#fff"
-  d="M86.207 38.532c0-12.172 9.867-22.04 22.038-22.04 12.172 0 22.04 9.868 22.04 22.04 0 12.17-9.868 22.038-22.04 22.038-12.17 0-22.038-9.867-22.038-22.038"
-  />
-  <path
-  fill="currentColor"
-  d="M108.245 63.195a24.5 24.5 0 0 1-17.442-7.224 24.5 24.5 0 0 1-7.225-17.442c0-6.59 2.566-12.783 7.225-17.442s10.853-7.225 17.442-7.225 12.783 2.566 17.442 7.225a24.5 24.5 0 0 1 7.225 17.442 24.6 24.6 0 0 1-6.541 16.73 2.628 2.628 0 0 1-3.861-3.565 19.35 19.35 0 0 0 5.146-13.165c0-10.704-8.708-19.412-19.411-19.412s-19.411 8.708-19.411 19.412S97.54 57.94 108.245 57.94c2.415 0 4.77-.437 7-1.3a2.628 2.628 0 1 1 1.896 4.902 24.6 24.6 0 0 1-8.896 1.653"
-  />
-  <path
-  fill="currentColor"
-  d="M142.002 74.063a2.62 2.62 0 0 1-1.858-.77l-17.718-17.719a2.628 2.628 0 0 1 3.715-3.716l17.719 17.719a2.628 2.628 0 0 1-1.858 4.486"
-  />
-  <path
-  fill="#fff"
-  d="m142.709 78.981-12.777-12.776a4.36 4.36 0 0 1 0-6.164l.67-.67a4.36 4.36 0 0 1 6.163 0l12.777 12.778a4.356 4.356 0 0 1 0 6.163l-.669.67a4.36 4.36 0 0 1-6.164 0"
-  />
-  <path
-  fill="currentColor"
-  d="M133.687 60.72c-.443 0-.886.169-1.224.506l-.67.67a1.72 1.72 0 0 0-.507 1.223c0 .463.18.897.507 1.224l12.778 12.777c.327.327.761.507 1.224.507s.896-.18 1.223-.507l.67-.67c.327-.326.506-.76.506-1.223a1.72 1.72 0 0 0-.506-1.224L134.91 61.227a1.72 1.72 0 0 0-1.223-.506m12.108 22.163a6.94 6.94 0 0 1-4.94-2.046L128.077 68.06a6.94 6.94 0 0 1-2.046-4.94c0-1.865.726-3.62 2.046-4.94l.67-.669a6.99 6.99 0 0 1 9.879 0l12.778 12.777a6.994 6.994 0 0 1 0 9.88l-.67.67a6.94 6.94 0 0 1-4.939 2.046"
-  />
-  <path
-  fill="#fff"
-  d="M132.966 38.528c0 2.18-.284 4.293-.815 6.305a13.46 13.46 0 0 1-3.545.472c-7.444 0-13.477-6.035-13.477-13.478 0-5.713 3.552-10.593 8.568-12.555 5.65 4.513 9.269 11.462 9.269 19.256"
-  />
-  <path
-  fill="currentColor"
-  d="M115.047 28.327c0-7.443 6.034-13.477 13.478-13.477 7.443 0 13.478 6.034 13.478 13.477s-6.035 13.478-13.478 13.478c-7.444 0-13.478-6.035-13.478-13.478"
-  />
-  <path
-  fill="#fff"
-  d="M128.544 33.778q.792 0 1.252-.503.46-.502.674-1.702t.215-3.317q0-2.14-.215-3.34-.213-1.198-.674-1.7-.46-.504-1.252-.504t-1.263.503q-.47.503-.674 1.701-.204 1.2-.204 3.34 0 2.118.204 3.317t.674 1.702 1.263.503m0 2.183q-1.712 0-2.676-.856-.963-.855-1.359-2.569-.396-1.712-.396-4.28t.396-4.292 1.359-2.58q.965-.855 2.676-.856 1.713.001 2.665.856.952.857 1.349 2.58.396 1.724.396 4.292t-.396 4.28q-.397 1.714-1.349 2.569t-2.665.856"
-  />
-  <path
-  fill="currentColor"
-  d="M94.91 40.54c-.82 0-1.484-.666-1.484-1.484 0-8.209 6.678-14.886 14.885-14.886a1.482 1.482 0 1 1 0 2.967c-6.572 0-11.918 5.346-11.918 11.919 0 .819-.665 1.483-1.484 1.483"
-  />
-  <defs>
-  <radialGradient
-  id="EmptyListing__EmptyListing1-blocks-2"
-  cx="0"
-  cy="0"
-  r="1"
-  gradientTransform="translate(96.144 26.396) scale(32.4114)"
-  gradientUnits="userSpaceOnUse"
-  >
-  <stop stop-color="#F2F2F2" />
-  <stop offset="1" stop-color="#D3D3D3" />
-  </radialGradient>
-  </defs>
-</svg>
-                      <div><div class="pf-empty-title">No Record Found</div></div>
-                    </div>
-                  </td>
-                </tr>
+                <tr><td>Sep 21, 2026</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Sep 20, 2026</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Sep 19, 2026</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Sep 18, 2026</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Sep 17, 2026</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Sep 16, 2026</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Sep 15, 2026</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Sep 14, 2026</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Sep 13, 2026</td><td>-</td><td>-</td><td>-</td><td>1</td><td>1</td></tr>
+                <tr><td>Sep 12, 2026</td><td>-</td><td>-</td><td>-</td><td>1</td><td>1</td></tr>
               </tbody>
             </table>
           </div>
@@ -6307,9 +6875,6 @@ body{margin:var(--sp-0)}
         <li class="pf-page-item" aria-current="page"><a data-noop="the pager pushes the page number into the URL and refetches">1</a></li>
         <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">2</a></li>
         <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">3</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">4</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">5</a></li>
-        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">6</a></li>
         <li class="pf-page-item" data-nav="next"><button type="button" aria-label="Next page" data-noop="the pager pushes the page number into the URL and refetches"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
       </ul>
     </main>
@@ -6375,7 +6940,7 @@ body{margin:var(--sp-0)}
   <div class="pf-main">
     <!-- ── header ──────────────────────────────────────────────────── -->
     <header class="pf-header pf-header-fixed">
-      <div class="pf-header-brand"><span class="pf-page-title">Leads</span></div>
+      <div class="pf-header-brand"><span class="pf-page-title"></span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
         <!-- the one link in the shell that LEAVES the product. It carried
@@ -6389,44 +6954,45 @@ body{margin:var(--sp-0)}
     <main class="pf-content" data-gap="8">
       <div class="pf-filter-bar">
         <div class="pf-filter-fields">
-          <div class="pf-field">
-            <label class="pf-field-label" for="lms-leads-fb-0">Lead ID</label>
-            <span class="pf-input"><input id="lms-leads-fb-0" type="text" placeholder="Enter Lead ID"><span class="pf-input-suffix"></span></span>
+          <div class="pf-field" style="--field-w:234px">
+            <label class="pf-field-label" for="lms-leads-fb-0">Search by</label>
+            <span class="pf-compound">
+              <span class="pf-input"><input id="lms-leads-fb-0" type="text" placeholder="Search by Listin..."></span>
+              <button class="pf-select" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Listi...</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+            </span>
           </div>
-          <div class="pf-field">
-            <label class="pf-field-label" for="lms-leads-fb-1">Listing</label>
-            <button class="pf-select" id="lms-leads-fb-1" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Listing</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+          <div class="pf-field" style="--field-w:236px">
+            <label class="pf-field-label" for="lms-leads-fb-1">Lead Received</label>
+            <button class="pf-datefield" id="lms-leads-fb-1" type="button" data-noop="the range calendar is not measured yet — see authoring/qa-listings.md"><span class="pf-placeholder">Select Date Range</span><svg class="i i-16"><use href="#pf-FiCalendar"/></svg></button>
           </div>
-          <div class="pf-field">
-            <label class="pf-field-label" for="lms-leads-fb-2">Channel</label>
-            <button class="pf-select" id="lms-leads-fb-2" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Channel</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
-          </div>
-          <div class="pf-field">
-            <label class="pf-field-label" for="lms-leads-fb-3">Status</label>
-            <button class="pf-select" id="lms-leads-fb-3" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Status</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+          <div class="pf-field" style="--field-w:236px">
+            <label class="pf-field-label" for="lms-leads-fb-2">Last Interaction</label>
+            <button class="pf-datefield" id="lms-leads-fb-2" type="button" data-noop="the range calendar is not measured yet — see authoring/qa-listings.md"><span class="pf-placeholder">Select Date Range</span><svg class="i i-16"><use href="#pf-FiCalendar"/></svg></button>
           </div>
         </div>
         <div class="pf-filter-actions">
-          <button class="pf-btn" data-variant="tint" data-size="small" type="button" data-noop="the extra filters open in a drawer on this screen too"><span>Show More</span><svg class="i i-18"><use href="#pf-MdOutlineDoubleArrow"/></svg></button>
-          <button class="pf-btn" data-variant="link-danger" data-size="small" type="button" disabled><span>Clear filters</span></button>
+          <button class="pf-btn" data-variant="link-danger" data-size="small" type="button" data-noop="clearing a filter is a URL push and a refetch"><span>Clear filters</span></button>
           <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-noop="Search pushes the filter values into the URL and refetches"><svg class="i"><use href="#pf-FiSearch"/></svg><span>Search</span></button>
+          <a class="pf-btn" data-variant="default" data-size="large" href="not-built.html?screen=Add%20New%20Lead"><svg class="i i-16"><use href="#pf-IoAddCircleOutline"/></svg><span>Add New Lead</span></a>
         </div>
       </div>
-      <div class="pf-block-row" style-cols="full" data-cols="full">
-        <section class="pf-card pf-block" data-w="1332">
-          <div class="pf-block-head">Leads</div>
+      <div class="pf-block-row" data-cols="auto">
+        <section class="pf-card pf-block" data-w="full" data-h="552">
+
           <div class="pf-block-body">
             <table class="pf-table">
-              <thead><tr><th>Lead</th><th>Listing</th><th>Channel</th><th>Received</th><th>Status</th></tr></thead>
+              <thead><tr><th></th></tr></thead>
               <tbody>
                 <tr>
-                  <td colspan="5">
+                  <td colspan="1">
                     <div class="pf-empty">
                       <svg class="pf-empty-art" width="164" height="89" viewBox="0 0 164 89" role="img" aria-label="No Record Found illustration">
   <path
+  fill="#F7FCFC"
   d="M17.357 15.687c0-8.666 7.025-15.69 15.69-15.69h90.982c8.665 0 15.689 7.024 15.689 15.69 0 8.664-7.024 15.688-15.689 15.688H33.047c-8.665 0-15.69-7.024-15.69-15.688m18.811 57.631c0-8.664 7.024-15.688 15.69-15.688h82.924c8.664 0 15.689 7.024 15.689 15.688 0 8.666-7.025 15.69-15.689 15.69H51.857c-8.665 0-15.689-7.024-15.689-15.69"
   />
   <path
+  fill="#F7FCFC"
   d="M.586 53.193c0-8.664 7.024-15.689 15.69-15.689h131.449c8.666 0 15.69 7.025 15.69 15.69s-7.024 15.689-15.69 15.689H16.275c-8.665 0-15.69-7.024-15.69-15.69"
   />
   <path
@@ -6455,12 +7021,13 @@ body{margin:var(--sp-0)}
   <rect width="21" height="2.1" x="57.426" y="70.211" fill="#fff" rx="1.05" />
   <g>
   <path
-  fill="url(#EmptyListing__EmptyListing1-blocks-3)"
+  fill="url(#EmptyListing__EmptyListing1-blocks-1)"
   d="M108.456 26.29H62.212a5.78 5.78 0 0 0-5.78 5.78v23.12a5.78 5.78 0 0 0 5.78 5.78h46.244a5.78 5.78 0 0 0 5.78-5.78V32.07a5.78 5.78 0 0 0-5.78-5.78"
   />
   <path
   fill="currentColor"
   d="M98.34 37.85H72.327a2.89 2.89 0 0 1 0-5.78H98.34a2.89 2.89 0 0 1 0 5.78m7.225 8.664H72.328a2.89 2.89 0 0 1 0-5.78h33.237a2.89 2.89 0 0 1 0 5.78m-14.451 8.68H72.327a2.89 2.89 0 0 1 0-5.78h18.787a2.89 2.89 0 0 1 0 5.78"
+  style="mix-blend-mode:multiply"
   />
   </g>
   <path
@@ -6501,7 +7068,7 @@ body{margin:var(--sp-0)}
   />
   <defs>
   <radialGradient
-  id="EmptyListing__EmptyListing1-blocks-3"
+  id="EmptyListing__EmptyListing1-blocks-1"
   cx="0"
   cy="0"
   r="1"
@@ -6585,7 +7152,7 @@ body{margin:var(--sp-0)}
   <div class="pf-main">
     <!-- ── header ──────────────────────────────────────────────────── -->
     <header class="pf-header pf-header-fixed">
-      <div class="pf-header-brand"><span class="pf-page-title">Ad License</span></div>
+      <div class="pf-header-brand"><span class="pf-page-title"></span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
         <!-- the one link in the shell that LEAVES the product. It carried
@@ -6597,40 +7164,133 @@ body{margin:var(--sp-0)}
       </div>
     </header>
     <main class="pf-content" data-gap="8">
-      <div class="pf-settings-main">
+      <div class="pf-page-lead">
+        <a class="pf-btn" data-variant="tint" data-size="small" href="listings.html"><svg class="i i-14"><use href="#pf-LeftOutlined"/></svg><span>Back</span></a>
+        <h2 class="pf-page-h2">Get a New Ad License</h2>
+      </div>
       <div class="pf-block-row" style-cols="narrow" data-cols="narrow">
-        <section class="pf-card pf-block" data-w="1035">
-          <div class="pf-block-head">Get an Ad License</div>
+        <section class="pf-card pf-block" data-w="full">
+
           <div class="pf-block-body">
-            <form class="pf-form-grid" data-cols="413">
-              <div class="pf-sfield">
-                <label class="pf-field-label" for="adl-0">Deed Number</label>
-                <span class="pf-input"><input id="adl-0" type="text" placeholder="Enter Deed Number"></span>
-              </div>
-              <div class="pf-sfield">
-                <label class="pf-field-label" for="adl-1">Deed Date</label>
-                <button class="pf-select" id="adl-1" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Deed Date</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
-              </div>
-              <div class="pf-sfield">
-                <label class="pf-field-label" for="adl-2">ID Number</label>
-                <span class="pf-input"><input id="adl-2" type="text" placeholder="Enter ID Number"></span>
-              </div>
-              <div class="pf-sfield">
-                <label class="pf-field-label" for="adl-3">Date of Birth</label>
-                <button class="pf-select" id="adl-3" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Date of Birth</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
-              </div>
-              <div class="pf-sfield span-all">
-                <label class="pf-field-label" for="adl-4">Property Type</label>
-                <span class="pf-input"><input id="adl-4" type="text" placeholder="Select Property Type"></span>
-              </div>
-              <div class="pf-sfield span-all">
-                <label class="pf-field-label" for="adl-5">Property Address</label>
-                <span class="pf-input"><input id="adl-5" type="text" placeholder="Enter Property Address"></span>
-              </div>
-            </form>
+            <div class="pf-wizard">
+              <section class="pf-wsection">
+                <div class="pf-wsection-title">
+                  <span class="pf-wsection-icon"><svg class="i i-24"><use href="#pf-IconPropertyInfo"/></svg></span>
+                  <span>Property Information</span>
+                </div>
+                <div class="pf-wsection-fields">
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-0-0">Purpose</label>
+                      <div class="pf-choices" role="radiogroup"></div>
+                    </div>
+                  </div>
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-SideMenuAgency"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-0-1">Property Type</label>
+                      <div class="pf-choices" role="radiogroup"><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><svg class="i i-14"><use href="#pf-SideMenuAgency"/></svg><span>Residential</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><svg class="i i-14"><use href="#pf-SideMenuPropShop"/></svg><span>Commercial</span></button></div>
+                    </div>
+                  </div>
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-SideMenuAgency"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-0-2">Property Sub Type</label>
+                      <button class="pf-select" id="adl-0-2" type="button" aria-haspopup="listbox" disabled><span class="pf-placeholder">Select Property Sub Type</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+                    </div>
+                  </div>
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-PiIdentificationCard"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-0-3">Property Ownership Document Number</label>
+                      <span class="pf-input"><input id="adl-0-3" type="text" placeholder="Enter 10-20 digit deed number"></span>
+                    </div>
+                  </div>
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-FiCalendar"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-0-4">Property Age</label>
+                      <button class="pf-select" id="adl-0-4" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Property Age</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+                    </div>
+                  </div>
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-IconBedroom"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-0-5">Number of Bedrooms</label>
+                      <div class="pf-choices" role="radiogroup"><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>Studio</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>1</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>2</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>3</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>4</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>5</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>6</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>7</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>8</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>9</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>10</span></button><button class="pf-choice" role="radio" type="button" data-noop="choosing a value here refetches the fields below it"><span>10+</span></button></div>
+                    </div>
+                  </div>
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-IconAreaSize"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-0-6">Area Size<span class="pf-field-hint"> (Sq. M.)</span></label>
+                      <span class="pf-input"><input id="adl-0-6" type="text" placeholder="Enter Area"></span>
+                    </div>
+                  </div>
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-SideMenuQuota"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-0-7">Price</label>
+                      <span class="pf-input"><input id="adl-0-7" type="text" placeholder="Enter Price"></span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section class="pf-wsection">
+                <div class="pf-wsection-title">
+                  <span class="pf-wsection-icon"><svg class="i i-24"><use href="#pf-IconLocationPurpose"/></svg></span>
+                  <span>Property Location</span>
+                </div>
+                <div class="pf-wsection-fields">
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-SideMenuAgency"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-1-0">City</label>
+                      <button class="pf-select" id="adl-1-0" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select City</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+                    </div>
+                  </div>
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-SideMenuAgency"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-1-1">District</label>
+                      <button class="pf-select" id="adl-1-1" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select District</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+                    </div>
+                  </div>
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-PiIdentificationCard"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-1-2">Street Name</label>
+                      <span class="pf-input"><input id="adl-1-2" type="text" placeholder="Enter Street Name"></span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section class="pf-wsection">
+                <div class="pf-wsection-title">
+                  <span class="pf-wsection-icon"><svg class="i i-24"><use href="#pf-IconContactInfo"/></svg></span>
+                  <span>Contact Information</span>
+                </div>
+                <div class="pf-wsection-fields">
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-FiUser"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-2-0">Name</label>
+                      <span class="pf-input"><input id="adl-2-0" type="text" placeholder="Enter Name"></span>
+                    </div>
+                  </div>
+                  <div class="pf-wfield">
+                    <span class="pf-wfield-icon"><svg class="i i-16"><use href="#pf-MdPhone"/></svg></span>
+                    <div class="pf-wfield-body">
+                      <label class="pf-field-label" for="adl-2-1">Phone Number</label>
+                      <span class="pf-input"><input id="adl-2-1" type="text" placeholder="Enter Phone Number"></span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
           </div>
         </section>
-      </div>
       </div>
     </main>
     <footer class="pf-footer">© 2026 – All Rights Reserved</footer>
@@ -6712,107 +7372,120 @@ body{margin:var(--sp-0)}
         <section class="pf-card pf-settings-nav">
           <nav aria-label="Settings">
             <ul>
-              <li><a href="user-settings-user-profile.html" aria-current="page"><svg class="i i-16"><use href="#pf-FiUser"/></svg><span>User Settings</span></a></li>
-              <li><a href="user-settings-agency-profile.html"><svg class="i i-16"><use href="#pf-SideMenuSetting"/></svg><span>Agency Settings</span></a></li>
-              <li><a href="not-built.html?screen=Licenses"><svg class="i i-16"><use href="#pf-PiIdentificationCard"/></svg><span>Licenses</span></a></li>
-              <li><a href="not-built.html?screen=Preferences"><svg class="i i-16"><use href="#pf-VscSettings"/></svg><span>Preferences</span></a></li>
-              <li><a href="not-built.html?screen=Bank%20Detail"><svg class="i i-16"><use href="#pf-FiCreditCard"/></svg><span>Bank Detail</span></a></li>
-              <li><a href="user-settings-change-password.html"><svg class="i i-16"><use href="#pf-MdPassword"/></svg><span>Change Password</span></a></li>
+              <li><a href="user-settings-user-profile.html" aria-current="page"><svg class="i i-18"><use href="#pf-FiUser"/></svg><span class="nav-text">User Settings</span></a></li>
+              <li><a href="user-settings-agency-profile.html"><svg class="i i-18"><use href="#pf-SideMenuSetting"/></svg><span class="nav-text">Agency Settings</span></a></li>
+              <li><a href="not-built.html?screen=Licenses"><svg class="i i-18"><use href="#pf-PiIdentificationCard"/></svg><span class="nav-text">Licenses</span></a></li>
+              <li><a href="not-built.html?screen=Preferences"><svg class="i i-18"><use href="#pf-VscSettings"/></svg><span class="nav-text">Preferences</span></a></li>
+              <li><a href="user-settings-change-password.html"><svg class="i i-18"><use href="#pf-MdPassword"/></svg><span class="nav-text">Change Password</span></a></li>
             </ul>
           </nav>
         </section>
         <section class="pf-card pf-completion">
           <div class="pf-completion-head">
-            <span class="pf-completion-title">Profile Completion</span>
-            <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Profile%20Completion"><span>Complete Profile</span></a>
+            <span class="pf-completion-title">Profile Completeness</span>
+            <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Why%20is%20this%20important%3F"><span class="fz-12">Why is this important?</span></a>
           </div>
           <div class="pf-completion-meter">
-            <!-- the same .pf-credit-meter the dashboard's quota widget uses;
-                 a second progress component would be a second truth -->
-            <span class="pf-credit-meter fill-90"></span>
+            <span class="pf-progress"><span class="pf-progress-bg"></span></span>
             <span class="pf-completion-pct">90%</span>
           </div>
           <div class="pf-completion-body">
-            <a class="pf-btn" data-variant="primary" data-size="small" href="not-built.html?screen=TruBroker"><span>Become a TruBroker</span></a>
-            <span class="pf-mini-card"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg>Nafath Verified</span>
-            <span class="pf-mini-card"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg>REGA Verified</span>
+            <span class="pf-step" data-state="todo" style="--step-w:130px"><svg class="i i-16"><use href="#pf-GoDotFill"/></svg><span>User Settings</span></span>
+            <span class="pf-step" data-state="done" style="--step-w:202px"><svg class="i i-16"><use href="#pf-HiCheck"/></svg><span>FAL License Verification</span></span>
+            <span class="pf-step" data-state="done" style="--step-w:163px"><svg class="i i-16"><use href="#pf-HiCheck"/></svg><span>Nafath Verification</span></span>
           </div>
         </section>
         </div>
         <div class="pf-settings-main">
-        <section class="pf-card pf-settings-head">
-          <div class="pf-settings-meta">
-            <span class="pf-settings-avatar"><svg class="i i-20"><use href="#pf-FiUser"/></svg></span>
-            <div>
-              <div class="pf-settings-name">Faisal Al-Harbi</div>
-              <div class="pf-settings-sub">Agency User<svg class="i"><use href="#pf-GoDotFill"/></svg><span>faisal@najdhorizon.example</span></div>
+          <section class="pf-card pf-settings-head">
+            <span class="pf-settings-avatar"><span class="pf-avatar-pct">90%</span></span>
+            <div class="pf-settings-who">
+              <div class="pf-settings-nameline">
+                <h2 class="pf-settings-name">Faisal Al-Harbi</h2>
+                <span class="pf-user-tag"><svg class="i i-14"><use href="#pf-SideMenuAgency"/></svg><span>Agency</span></span>
+                <span class="pf-user-tag" data-tone="verified"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg><span>نفاذ Nafath Verified</span></span>
+              </div>
+              <div class="pf-settings-sub">faisal@najdhorizon.example</div>
             </div>
-          </div>
-        </section>
-
+          </section>
           <section class="pf-card pf-settings-form">
-            <h5 class="pf-card-title">Profile Information</h5>
-            <form class="pf-form-grid">
-            <div class="pf-sfield">
+            <h5 class="pf-card-title">Additional Information</h5>
+            <form class="pf-form-grid" data-cols="390" style="--form-w:835px">
+            <div class="pf-sfield sf-input">
               <label class="pf-field-label" for="user-settings-user-profile-f-0">Title (English)</label>
-              <span class="pf-input"><input id="user-settings-user-profile-f-0" type="text" placeholder="Please enter English title" disabled><span class="pf-input-suffix"></span></span>
+              <span class="pf-input"><input id="user-settings-user-profile-f-0" type="text" value="Faisal Al-Harbi" disabled></span>
             </div>
-            <div class="pf-sfield">
+            <div class="pf-sfield sf-input rtl">
               <label class="pf-field-label" for="user-settings-user-profile-f-1">العنوان (عربي)</label>
-              <span class="pf-input"><input id="user-settings-user-profile-f-1" type="text" placeholder="Please enter Arabic title" disabled><span class="pf-input-suffix"></span></span>
+              <span class="pf-input"><input id="user-settings-user-profile-f-1" type="text" value="فيصل الحربي" disabled dir="rtl"></span>
             </div>
-            <div class="pf-sfield">
+            <div class="pf-sfield sf-input">
               <label class="pf-field-label" for="user-settings-user-profile-f-2">Email</label>
-              <span class="pf-input"><input id="user-settings-user-profile-f-2" type="text" placeholder="Enter Email" disabled><span class="pf-input-suffix"></span></span>
+              <span class="pf-input"><input id="user-settings-user-profile-f-2" type="text" value="faisal@najdhorizon.example" disabled></span>
             </div>
-            <div class="pf-sfield">
-              <label class="pf-field-label" for="user-settings-user-profile-f-3">Phone Number</label>
-              <span class="pf-input"><input id="user-settings-user-profile-f-3" type="text" placeholder="Enter Phone Number"><span class="pf-input-suffix"></span></span>
+            <div class="pf-sfield sf-select">
+              <label class="pf-field-label" for="user-settings-user-profile-f-3">City</label>
+              <button class="pf-select" id="user-settings-user-profile-f-3" type="button" aria-haspopup="listbox" disabled><span class="pf-select-value">1</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
             </div>
-            <div class="pf-sfield">
-              <label class="pf-field-label" for="user-settings-user-profile-f-4">Whatsapp</label>
-              <span class="pf-input"><input id="user-settings-user-profile-f-4" type="text" placeholder="Enter whatsapp number"><span class="pf-input-suffix"></span></span>
+            <div class="pf-sfield sf-phone">
+              <label class="pf-field-label" for="user-settings-user-profile-f-4">Phone Number</label>
+              <span class="pf-phone">
+                <button class="pf-phone-country" type="button" disabled data-noop="the product disables the country select — countrySelectProps.disabled, profileFields.js:275"><span class="pf-flag"></span><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></button>
+                <span class="pf-input"><input id="user-settings-user-profile-f-4" type="tel" value="+966 50 123 4567"></span>
+              </span>
             </div>
-            <div class="pf-sfield">
-              <label class="pf-field-label" for="user-settings-user-profile-f-5">Gender</label>
-              <button class="pf-select" id="user-settings-user-profile-f-5" type="button" aria-haspopup="listbox" data-open="listbox-settings" data-placement="bottom"><span class="pf-placeholder">Select Gender</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+            <div class="pf-sfield sf-phone">
+              <label class="pf-field-label" for="user-settings-user-profile-f-5">Whatsapp</label>
+              <span class="pf-phone">
+                <button class="pf-phone-country" type="button" disabled data-noop="the product disables the country select — countrySelectProps.disabled, profileFields.js:275"><span class="pf-flag"></span><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></button>
+                <span class="pf-input"><input id="user-settings-user-profile-f-5" type="tel" value="+966"></span>
+              </span>
             </div>
-            <div class="pf-sfield span-all">
+            <div class="pf-sfield span-all sf-input">
               <label class="pf-field-label" for="user-settings-user-profile-f-6">National Short Address</label>
-              <span class="pf-input"><input id="user-settings-user-profile-f-6" type="text" placeholder="Enter National Short Address"><span class="pf-input-suffix"></span></span>
+              <span class="pf-input"><input id="user-settings-user-profile-f-6" type="text" placeholder="Enter National Short Address"></span>
             </div>
-            <div class="pf-sfield span-all">
+            <div class="pf-sfield span-all sf-input">
               <label class="pf-field-label" for="user-settings-user-profile-f-7">Address</label>
-              <span class="pf-input"><input id="user-settings-user-profile-f-7" type="text" placeholder="Enter Address"><span class="pf-input-suffix"></span></span>
+              <span class="pf-input"><input id="user-settings-user-profile-f-7" type="text" placeholder="Enter Address"></span>
             </div>
-            <div class="pf-sfield">
+            <div class="pf-sfield sf-select">
               <label class="pf-field-label" for="user-settings-user-profile-f-8">Service Area</label>
-              <button class="pf-select" id="user-settings-user-profile-f-8" type="button" aria-haspopup="listbox" data-open="listbox-settings" data-placement="bottom"><span class="pf-placeholder">Select Service Areas</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+              <button class="pf-select" id="user-settings-user-profile-f-8" type="button" aria-haspopup="listbox" data-open="listbox-settings" data-placement="bottom"><span class="pf-select-tag">1<svg class="i i-12"><use href="#pf-IoMdClose"/></svg></span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
             </div>
-            <div class="pf-sfield">
+            <div class="pf-sfield sf-select">
               <label class="pf-field-label" for="user-settings-user-profile-f-9">User Languages</label>
               <button class="pf-select" id="user-settings-user-profile-f-9" type="button" aria-haspopup="listbox" data-open="listbox-settings" data-placement="bottom"><span class="pf-placeholder">Select User Languages</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
             </div>
-            <div class="pf-sfield">
+            <div class="pf-sfield sf-select">
               <label class="pf-field-label" for="user-settings-user-profile-f-10">Years of Experience</label>
               <button class="pf-select" id="user-settings-user-profile-f-10" type="button" aria-haspopup="listbox" data-open="listbox-settings" data-placement="bottom"><span class="pf-placeholder">Select Years of Experiences</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
             </div>
-            <div class="pf-sfield span-all tall">
+            <div class="pf-sfield span-all sf-generate">
               <label class="pf-field-label" for="user-settings-user-profile-f-11">Agent Description - English</label>
               <textarea class="pf-textarea" id="user-settings-user-profile-f-11" placeholder="Enter Agent Description"></textarea>
+              <div class="pf-generate" data-align="end"><button class="pf-btn" data-variant="round" type="button" style="--round-w:288px" data-noop="generating a description calls the product's AI endpoint"><svg class="i i-12"><use href="#pf-BsStars"/></svg><span>Generate Agent Description (English)</span></button></div>
             </div>
-            <div class="pf-sfield span-all tall">
+            <div class="pf-sfield span-all sf-generate rtl">
               <label class="pf-field-label" for="user-settings-user-profile-f-12">وصف الوكيل - بالعربية (اختياري)</label>
-              <textarea class="pf-textarea" id="user-settings-user-profile-f-12" placeholder="أدخل وصف الوكيل"></textarea>
+              <textarea class="pf-textarea" id="user-settings-user-profile-f-12" placeholder="أدخل وصف الوكيل" dir="rtl"></textarea>
+              <div class="pf-generate" data-align="start"><button class="pf-btn" data-variant="round" type="button" style="--round-w:204px" data-noop="generating a description calls the product's AI endpoint"><svg class="i i-12"><use href="#pf-BsStars"/></svg><span>إنشاء وصف الوكيل (بالعربية)</span></button></div>
             </div>
-            <div class="pf-sfield span-all upload">
+            <div class="pf-sfield span-all sf-upload">
               <label class="pf-field-label" for="user-settings-user-profile-f-13">Upload a picture</label>
-              <div class="pf-upload"><span class="pf-upload-art" role="img" aria-label="Photo placeholder"></span><a class="pf-btn" data-variant="default" data-size="small" href="not-built.html?screen=Upload%20a%20picture"><span>Browse and Upload</span></a></div>
+              <div class="pf-upload" style="--upload-w:415px">
+                <button class="pf-upload-btn" type="button" data-noop="a file picker needs a server to upload to"><svg class="i i-18"><use href="#pf-MdOutlineCloudUpload"/></svg><span>Browse and Upload</span></button>
+                <div class="pf-guidelines">
+                  <div class="pf-guidelines-title">Profile Picture Guidelines:</div>
+                  <div class="pf-guideline"><svg class="i i-12"><use href="#pf-GoDotFill"/></svg><span>Upload a clear, high-resolution headshot with a solid background.</span></div>
+                  <div class="pf-guideline"><svg class="i i-12"><use href="#pf-GoDotFill"/></svg><span>Pictures of logos, buildings, or irrelevant images are not allowed.</span></div>
+                  <a href="not-built.html?screen=Profile%20picture%20guidelines">Learn more</a>
+                </div>
+              </div>
             </div>
             </form>
             <div class="pf-form-actions">
-              <button class="pf-btn" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Cancel</span></button>
-              <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Save Changes</span></button>
+              <button class="pf-btn" data-variant="primary" data-size="large" type="button" style="--save-w:212px" data-noop="the form is not wired to a server in this page"><span>Save Changes</span></button>
             </div>
           </section>
         </div>
@@ -6897,74 +7570,82 @@ body{margin:var(--sp-0)}
         <section class="pf-card pf-settings-nav">
           <nav aria-label="Settings">
             <ul>
-              <li><a href="user-settings-user-profile.html"><svg class="i i-16"><use href="#pf-FiUser"/></svg><span>User Settings</span></a></li>
-              <li><a href="user-settings-agency-profile.html" aria-current="page"><svg class="i i-16"><use href="#pf-SideMenuSetting"/></svg><span>Agency Settings</span></a></li>
-              <li><a href="not-built.html?screen=Licenses"><svg class="i i-16"><use href="#pf-PiIdentificationCard"/></svg><span>Licenses</span></a></li>
-              <li><a href="not-built.html?screen=Preferences"><svg class="i i-16"><use href="#pf-VscSettings"/></svg><span>Preferences</span></a></li>
-              <li><a href="not-built.html?screen=Bank%20Detail"><svg class="i i-16"><use href="#pf-FiCreditCard"/></svg><span>Bank Detail</span></a></li>
-              <li><a href="user-settings-change-password.html"><svg class="i i-16"><use href="#pf-MdPassword"/></svg><span>Change Password</span></a></li>
+              <li><a href="user-settings-user-profile.html"><svg class="i i-18"><use href="#pf-FiUser"/></svg><span class="nav-text">User Settings</span></a></li>
+              <li><a href="user-settings-agency-profile.html" aria-current="page"><svg class="i i-18"><use href="#pf-SideMenuSetting"/></svg><span class="nav-text">Agency Settings</span></a></li>
+              <li><a href="not-built.html?screen=Licenses"><svg class="i i-18"><use href="#pf-PiIdentificationCard"/></svg><span class="nav-text">Licenses</span></a></li>
+              <li><a href="not-built.html?screen=Preferences"><svg class="i i-18"><use href="#pf-VscSettings"/></svg><span class="nav-text">Preferences</span></a></li>
+              <li><a href="user-settings-change-password.html"><svg class="i i-18"><use href="#pf-MdPassword"/></svg><span class="nav-text">Change Password</span></a></li>
             </ul>
           </nav>
         </section>
         <section class="pf-card pf-completion">
           <div class="pf-completion-head">
-            <span class="pf-completion-title">Profile Completion</span>
-            <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Profile%20Completion"><span>Complete Profile</span></a>
+            <span class="pf-completion-title">Profile Completeness</span>
+            <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Why%20is%20this%20important%3F"><span class="fz-12">Why is this important?</span></a>
           </div>
           <div class="pf-completion-meter">
-            <!-- the same .pf-credit-meter the dashboard's quota widget uses;
-                 a second progress component would be a second truth -->
-            <span class="pf-credit-meter fill-90"></span>
+            <span class="pf-progress"><span class="pf-progress-bg"></span></span>
             <span class="pf-completion-pct">90%</span>
           </div>
           <div class="pf-completion-body">
-            <a class="pf-btn" data-variant="primary" data-size="small" href="not-built.html?screen=TruBroker"><span>Become a TruBroker</span></a>
-            <span class="pf-mini-card"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg>Nafath Verified</span>
-            <span class="pf-mini-card"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg>REGA Verified</span>
+            <span class="pf-step" data-state="todo" style="--step-w:130px"><svg class="i i-16"><use href="#pf-GoDotFill"/></svg><span>User Settings</span></span>
+            <span class="pf-step" data-state="done" style="--step-w:202px"><svg class="i i-16"><use href="#pf-HiCheck"/></svg><span>FAL License Verification</span></span>
+            <span class="pf-step" data-state="done" style="--step-w:163px"><svg class="i i-16"><use href="#pf-HiCheck"/></svg><span>Nafath Verification</span></span>
           </div>
         </section>
         </div>
         <div class="pf-settings-main">
-
-          <section class="pf-card pf-settings-form">
-            <h5 class="pf-card-title">Agency Information</h5>
-            <form class="pf-form-grid" data-cols="413">
-            <div class="pf-sfield">
+          <section class="pf-card pf-settings-form pf-agency">
+            <div class="pf-agency-head">
+              <span class="pf-agency-logo"></span>
+              <div>
+                <h2 class="pf-agency-name">Najd Horizon Real Estate</h2>
+                <div class="pf-agency-users"><svg class="i i-17"><use href="#pf-FiUsers"/></svg><span>1 Users</span></div>
+              </div>
+            </div>
+            <hr class="pf-divider">
+            <form class="pf-form-grid" data-cols="413" style="--form-w:880px">
+            <div class="pf-sfield sf-input">
               <label class="pf-field-label" for="user-settings-agency-profile-f-0">Agency Name</label>
-              <span class="pf-input"><input id="user-settings-agency-profile-f-0" type="text" placeholder="Enter Business Name"><span class="pf-input-suffix"></span></span>
+              <span class="pf-input"><input id="user-settings-agency-profile-f-0" type="text" value="Najd Horizon Real Estate"></span>
             </div>
-            <div class="pf-sfield">
+            <div class="pf-sfield sf-phone">
               <label class="pf-field-label" for="user-settings-agency-profile-f-1">Phone Number</label>
-              <span class="pf-input"><input id="user-settings-agency-profile-f-1" type="text" placeholder="Enter Phone Number"><span class="pf-input-suffix"></span></span>
+              <span class="pf-phone">
+                <button class="pf-phone-country" type="button" disabled data-noop="the product disables the country select — countrySelectProps.disabled, profileFields.js:275"><span class="pf-flag"></span><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></button>
+                <span class="pf-input"><input id="user-settings-agency-profile-f-1" type="tel" value="+966"></span>
+              </span>
             </div>
-            <div class="pf-sfield">
-              <label class="pf-field-label" for="user-settings-agency-profile-f-2">Commercial Registration Number</label>
-              <span class="pf-input"><input id="user-settings-agency-profile-f-2" type="text" placeholder="Enter Registration Number"><span class="pf-input-suffix"></span></span>
+            <div class="pf-sfield sf-input">
+              <label class="pf-field-label" for="user-settings-agency-profile-f-2">Website</label>
+              <span class="pf-input"><input id="user-settings-agency-profile-f-2" type="text" placeholder="www.example.com"></span>
             </div>
-            <div class="pf-sfield">
-              <label class="pf-field-label" for="user-settings-agency-profile-f-3">Website</label>
-              <span class="pf-input"><input id="user-settings-agency-profile-f-3" type="text" placeholder="www.example.com"><span class="pf-input-suffix"></span></span>
+            <div class="pf-sfield sf-select">
+              <label class="pf-field-label" for="user-settings-agency-profile-f-3">City</label>
+              <button class="pf-select" id="user-settings-agency-profile-f-3" type="button" aria-haspopup="listbox" disabled><span class="pf-select-value">1</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
             </div>
-            <div class="pf-sfield">
-              <label class="pf-field-label" for="user-settings-agency-profile-f-4">City</label>
-              <button class="pf-select" id="user-settings-agency-profile-f-4" type="button" aria-haspopup="listbox" data-open="listbox-settings" data-placement="bottom"><span class="pf-placeholder">Select City</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button>
+            <div class="pf-sfield sf-input">
+              <label class="pf-field-label" for="user-settings-agency-profile-f-4">National Short Address</label>
+              <span class="pf-input"><input id="user-settings-agency-profile-f-4" type="text" placeholder="Enter National Short Address"></span>
             </div>
-            <div class="pf-sfield span-all">
-              <label class="pf-field-label" for="user-settings-agency-profile-f-5">National Short Address</label>
-              <span class="pf-input"><input id="user-settings-agency-profile-f-5" type="text" placeholder="Enter National Short Address"><span class="pf-input-suffix"></span></span>
+            <div class="pf-sfield span-all sf-input">
+              <label class="pf-field-label" for="user-settings-agency-profile-f-5">Address</label>
+              <span class="pf-input"><input id="user-settings-agency-profile-f-5" type="text" value="King Fahd Rd, Riyadh"></span>
             </div>
-            <div class="pf-sfield span-all" data-h="118">
-              <label class="pf-field-label" for="user-settings-agency-profile-f-6">Address</label>
-              <span class="pf-input"><input id="user-settings-agency-profile-f-6" type="text" placeholder="Enter Business Address"><span class="pf-input-suffix"></span></span>
+            <div class="pf-sfield span-all sf-textarea">
+              <label class="pf-field-label" for="user-settings-agency-profile-f-6">Agency Description</label>
+              <textarea class="pf-textarea" id="user-settings-agency-profile-f-6" placeholder="Enter Agency Description"></textarea>
             </div>
-            <div class="pf-sfield span-all upload" data-h="85">
+            <div class="pf-sfield span-all sf-upload">
               <label class="pf-field-label" for="user-settings-agency-profile-f-7">Agency Logo</label>
-              <div class="pf-upload"><span class="pf-upload-art" role="img" aria-label="Photo placeholder"></span><a class="pf-btn" data-variant="default" data-size="small" href="not-built.html?screen=Upload%20a%20picture"><span>Browse and Upload</span></a></div>
+              <div class="pf-upload" style="--upload-w:415px">
+                <button class="pf-upload-btn" type="button" data-noop="a file picker needs a server to upload to"><svg class="i i-18"><use href="#pf-MdOutlineCloudUpload"/></svg><span>Browse and Upload</span></button>
+
+              </div>
             </div>
             </form>
             <div class="pf-form-actions">
-              <button class="pf-btn" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Cancel</span></button>
-              <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Save Changes</span></button>
+              <button class="pf-btn" data-variant="primary" data-size="large" type="button" style="--save-w:228px;--save-r:8px" data-noop="the form is not wired to a server in this page"><span>Save Changes</span></button>
             </div>
           </section>
         </div>
@@ -7049,54 +7730,48 @@ body{margin:var(--sp-0)}
         <section class="pf-card pf-settings-nav">
           <nav aria-label="Settings">
             <ul>
-              <li><a href="user-settings-user-profile.html"><svg class="i i-16"><use href="#pf-FiUser"/></svg><span>User Settings</span></a></li>
-              <li><a href="user-settings-agency-profile.html"><svg class="i i-16"><use href="#pf-SideMenuSetting"/></svg><span>Agency Settings</span></a></li>
-              <li><a href="not-built.html?screen=Licenses"><svg class="i i-16"><use href="#pf-PiIdentificationCard"/></svg><span>Licenses</span></a></li>
-              <li><a href="not-built.html?screen=Preferences"><svg class="i i-16"><use href="#pf-VscSettings"/></svg><span>Preferences</span></a></li>
-              <li><a href="not-built.html?screen=Bank%20Detail"><svg class="i i-16"><use href="#pf-FiCreditCard"/></svg><span>Bank Detail</span></a></li>
-              <li><a href="user-settings-change-password.html" aria-current="page"><svg class="i i-16"><use href="#pf-MdPassword"/></svg><span>Change Password</span></a></li>
+              <li><a href="user-settings-user-profile.html"><svg class="i i-18"><use href="#pf-FiUser"/></svg><span class="nav-text">User Settings</span></a></li>
+              <li><a href="user-settings-agency-profile.html"><svg class="i i-18"><use href="#pf-SideMenuSetting"/></svg><span class="nav-text">Agency Settings</span></a></li>
+              <li><a href="not-built.html?screen=Licenses"><svg class="i i-18"><use href="#pf-PiIdentificationCard"/></svg><span class="nav-text">Licenses</span></a></li>
+              <li><a href="not-built.html?screen=Preferences"><svg class="i i-18"><use href="#pf-VscSettings"/></svg><span class="nav-text">Preferences</span></a></li>
+              <li><a href="user-settings-change-password.html" aria-current="page"><svg class="i i-18"><use href="#pf-MdPassword"/></svg><span class="nav-text">Change Password</span></a></li>
             </ul>
           </nav>
         </section>
         <section class="pf-card pf-completion">
           <div class="pf-completion-head">
-            <span class="pf-completion-title">Profile Completion</span>
-            <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Profile%20Completion"><span>Complete Profile</span></a>
+            <span class="pf-completion-title">Profile Completeness</span>
+            <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Why%20is%20this%20important%3F"><span class="fz-12">Why is this important?</span></a>
           </div>
           <div class="pf-completion-meter">
-            <!-- the same .pf-credit-meter the dashboard's quota widget uses;
-                 a second progress component would be a second truth -->
-            <span class="pf-credit-meter fill-90"></span>
+            <span class="pf-progress"><span class="pf-progress-bg"></span></span>
             <span class="pf-completion-pct">90%</span>
           </div>
           <div class="pf-completion-body">
-            <a class="pf-btn" data-variant="primary" data-size="small" href="not-built.html?screen=TruBroker"><span>Become a TruBroker</span></a>
-            <span class="pf-mini-card"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg>Nafath Verified</span>
-            <span class="pf-mini-card"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg>REGA Verified</span>
+            <span class="pf-step" data-state="todo" style="--step-w:130px"><svg class="i i-16"><use href="#pf-GoDotFill"/></svg><span>User Settings</span></span>
+            <span class="pf-step" data-state="done" style="--step-w:202px"><svg class="i i-16"><use href="#pf-HiCheck"/></svg><span>FAL License Verification</span></span>
+            <span class="pf-step" data-state="done" style="--step-w:163px"><svg class="i i-16"><use href="#pf-HiCheck"/></svg><span>Nafath Verification</span></span>
           </div>
         </section>
         </div>
         <div class="pf-settings-main">
-
-          <section class="pf-card pf-settings-form">
-            <h5 class="pf-card-title">Change Password</h5>
-            <form class="pf-form-grid">
-            <div class="pf-sfield span-all password">
+          <section class="pf-card pf-settings-form pf-narrow">
+            <form class="pf-form-grid" data-cols="one" style="--form-w:500px">
+            <div class="pf-sfield sf-password">
               <label class="pf-field-label" for="user-settings-change-password-f-0">Enter Old Password</label>
-              <span class="pf-input"><input id="user-settings-change-password-f-0" type="text" placeholder="Enter Old Password"><span class="pf-input-suffix"></span></span>
+              <span class="pf-input"><input id="user-settings-change-password-f-0" type="password" placeholder="Enter Old Password"><button class="pf-input-suffix" type="button" data-noop="revealing a password needs script the product loads and this page does not"><svg class="i i-14"><use href="#pf-IoMdEyeOff"/></svg></button></span>
             </div>
-            <div class="pf-sfield span-all password">
+            <div class="pf-sfield sf-password">
               <label class="pf-field-label" for="user-settings-change-password-f-1">Enter New Password</label>
-              <span class="pf-input"><input id="user-settings-change-password-f-1" type="text" placeholder="Enter New Password"><span class="pf-input-suffix"></span></span>
+              <span class="pf-input"><input id="user-settings-change-password-f-1" type="password" placeholder="Enter New Password"><button class="pf-input-suffix" type="button" data-noop="revealing a password needs script the product loads and this page does not"><svg class="i i-14"><use href="#pf-IoMdEyeOff"/></svg></button></span>
             </div>
-            <div class="pf-sfield span-all password">
+            <div class="pf-sfield sf-password">
               <label class="pf-field-label" for="user-settings-change-password-f-2">Confirm Password</label>
-              <span class="pf-input"><input id="user-settings-change-password-f-2" type="text" placeholder="Confirm Password"><span class="pf-input-suffix"></span></span>
+              <span class="pf-input"><input id="user-settings-change-password-f-2" type="password" placeholder="Confirm Password"><button class="pf-input-suffix" type="button" data-noop="revealing a password needs script the product loads and this page does not"><svg class="i i-14"><use href="#pf-IoMdEyeOff"/></svg></button></span>
             </div>
             </form>
             <div class="pf-form-actions">
-              <button class="pf-btn" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Cancel</span></button>
-              <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Save Changes</span></button>
+              <button class="pf-btn" data-variant="primary" data-size="large" type="button" style="--save-w:191px" data-noop="the form is not wired to a server in this page"><span>Confirm</span></button>
             </div>
           </section>
         </div>
@@ -7628,7 +8303,10 @@ body{margin:var(--sp-0)}
   <div class="pf-listbox-scroll">
     <button class="pf-listbox-option" role="option" type="button" aria-selected="true" data-close>Riyadh</button>
     <button class="pf-listbox-option" role="option" type="button" data-close>Jeddah</button>
+    <button class="pf-listbox-option" role="option" type="button" data-close>Makkah</button>
+    <button class="pf-listbox-option" role="option" type="button" data-close>Madinah</button>
     <button class="pf-listbox-option" role="option" type="button" data-close>Dammam</button>
+    <button class="pf-listbox-option" role="option" type="button" data-close>Khobar</button>
   </div>
 </div>
 

@@ -80,6 +80,12 @@ const WANTED = {
   // empty state — components/common/EmptyState/EmptyState.js:31 renders
   // <EmptyListing color={tenantTheme['primary-light-2']}/> for type="table"
   EmptyListing: 'No Record Found illustration',
+  // the settings sub-nav — appRoutes.js getUserSettingsRoutes()
+  SideMenuSetting: 'Agency Settings (settings sub-nav)',
+  // the Ad License wizard's section marks — create-ad-license.js:270,447,474
+  IconPropertyInfo: 'Property Information',
+  IconLocationPurpose: 'Property Location',
+  IconContactInfo: 'Contact Information',
 };
 
 /* react-icons names the product uses on this screen. Resolution order in
@@ -132,6 +138,17 @@ const REACT_ICONS = {
   TiArrowForwardOutline: 'listing detail drawer',
   // upgrade services — tenant/bayut/data/products.js
   MdRefresh: 'Refresh Property (#479EEB)',
+  // the settings sub-nav — appRoutes.js getUserSettingsRoutes()
+  PiIdentificationCard: 'Licenses',
+  VscSettings: 'Preferences',
+  MdPassword: 'Change Password',
+  // the settings forms
+  BsStars: 'Generate Agent Description — GenerateContentField.js:182',
+  /* image-upload.js:90 animates a Lottie cloud here rather than drawing an
+     icon. A static page cannot carry the animation, so this is the closest
+     glyph and the one place on these pages where the mark is an equivalent
+     rather than the product's own. */
+  MdOutlineCloudUpload: 'Browse and Upload (stands in for the upload Lottie)',
   HiCamera: 'Verified Photography (#5462AF)',
   HiVideoCamera: 'Verified Videography (#FFA900)',
 };
@@ -157,7 +174,26 @@ const ATTR = {
     <filter>. Dropping them everywhere made the brand wordmark paint nothing,
     because its mask had no extent to mask. They are stripped from the root tag
     only, further down. */
-const DROP_ATTR = new Set(['style', 'className', 'key', 'onClick', 'xmlns', 'xmlnsXlink', 'ref']);
+/* `style` is dropped EXCEPT when it paints: svg.js writes the design system's
+   own colours as `style={{ fill: tenantTheme['primary-light'] }}` on several
+   shapes, and dropping those left the empty-state illustration's three big
+   bars unpainted — they inherited the page's text colour and the art came out
+   near-black where the product's is nearly white. */
+const DROP_ATTR = new Set(['className', 'key', 'onClick', 'xmlns', 'xmlnsXlink', 'ref']);
+
+/* The product's palette, read from its own theme file so a colour here is
+   never a guess. src/theme/index.js exports `colors` and maps them to the
+   hyphenated names svg.js uses. */
+const THEME = (() => {
+  const f = join(REPO, 'src', 'theme', 'index.js');
+  if (!existsSync(f)) return {};
+  const src = readFileSync(f, 'utf8');
+  const raw = {};
+  for (const m of src.matchAll(/^\s*(\w+):\s*'(#[0-9a-fA-F]{3,8})'/gm)) raw[m[1]] = m[2];
+  const out = {};
+  for (const m of src.matchAll(/'([\w-]+)':\s*colors\.(\w+)/g)) if (raw[m[2]]) out[m[1]] = raw[m[2]];
+  return out;
+})();
 
 /**
  * Resolve one JSX attribute expression to a plain SVG value.
@@ -169,6 +205,29 @@ function resolveExpr(attr, expr, unresolved, defaults = {}) {
   const e = expr.trim();
 
   if (DROP_ATTR.has(attr)) return null;
+
+  /* style={{ fill: tenantTheme['primary-light'] }} — the only style this
+     honours, and only when it resolves to a real colour in the product's own
+     theme. Anything else in a style object is reported, not invented. */
+  if (attr === 'style') {
+    const m = e.match(/^\{\s*(fill|stroke)\s*:\s*tenantTheme\[['"]([\w-]+)['"]\]\s*\}$/);
+    if (m && THEME[m[2]]) return { asAttr: m[1], value: THEME[m[2]] };
+    /* the two presentation styles the illustrations rely on. Dropping them
+       left EmptyListing's masked group unmasked and unmultiplied, so two
+       shapes the product blends away rendered as solid #222 blocks. */
+    const css = [...e.matchAll(/(\w+)\s*:\s*'([^']+)'/g)]
+      .map(([, k, v]) => [k.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase()), v])
+      .filter(([k]) => k === 'mask-type' || k === 'mix-blend-mode' || k === 'display');
+    if (css.length && css.length === [...e.matchAll(/\w+\s*:/g)].length) {
+      return { asAttr: 'style', value: css.map(([k, v]) => `${k}:${v}`).join(';') };
+    }
+    unresolved.push(`${attr}={${e.length > 60 ? e.slice(0, 60) + '…' : e}}`);
+    return null;
+  }
+
+  // tenantTheme['primary-color'] on its own
+  const tok = e.match(/^tenantTheme\[['"]([\w-]+)['"]\]$/);
+  if (tok && THEME[tok[1]]) return THEME[tok[1]];
 
   /* a prop whose default is a literal colour: that default is the product's
      intent, not a placeholder for the cascade */
@@ -252,7 +311,11 @@ function toSvg(jsx, name, unresolved, defaults = {}) {
     }
     const expr = s.slice(m.index + full.length, j - 1);
     const value = resolveExpr(attr, expr, unresolved, defaults);
-    out += s.slice(i, m.index) + (value === null ? '' : `${attr}="${value}"`);
+    /* a resolver may rename the attribute — a painting `style` becomes the
+       `fill` or `stroke` it was setting */
+    const emit = value === null ? ''
+      : (typeof value === 'object' ? `${value.asAttr}="${value.value}"` : `${attr}="${value}"`);
+    out += s.slice(i, m.index) + emit;
     i = j;
     re.lastIndex = j;
   }
@@ -364,6 +427,7 @@ const PREFIX_TO_SET = {
   Md: ['md'], Fi: ['fi'], Io: ['io5', 'io'], Bs: ['bs'], Hi: ['hi', 'hi2'],
   Ti: ['ti'], Pi: ['pi'], Go: ['go'], Bi: ['bi'], Ai: ['ai'], Ri: ['ri'],
   Fa: ['fa', 'fa6'], Gr: ['gr'], Cg: ['cg'], Im: ['im'], Si: ['si'], Tb: ['tb'],
+  Vsc: ['vsc'],
 };
 /* Read the package off disk rather than importing it: its `exports` map hides
    the per-set entry points from require.resolve, and we only want the data. */
@@ -392,7 +456,11 @@ if (reactIconsAvailable) {
   };
 
   for (const [name, use] of Object.entries(REACT_ICONS)) {
-    const sets = PREFIX_TO_SET[name.slice(0, 2)] || [];
+    /* the prefix is the leading capital run, not always two letters: `Vsc*` is
+       vscode-icons and `Md*` is material, and slicing a fixed 2 sent VscSettings
+       looking in a set called `Vs` that does not exist */
+    const prefix = (name.match(/^[A-Z][a-z]*/) || [''])[0];
+    const sets = PREFIX_TO_SET[prefix] || PREFIX_TO_SET[name.slice(0, 2)] || [];
     // each icon is `export function Name (props) { return GenIcon({…})(props); }`
     const pattern = new RegExp(`function ${name}\\s*\\([^)]*\\)\\s*\\{\\s*return GenIcon\\((\\{.*?\\})\\)\\(props\\)`);
     let m = null, set = null;

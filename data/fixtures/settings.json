@@ -1,227 +1,105 @@
 {
-  "_": "The user-settings family. Nav labels and icons are appRoutes.js's getUserSettingsRoutes(); field labels, placeholders and types are src/tenant/bayut/data/profileFields.js and agencySettingsFields.js. Field ORDER is transcribed from data/live/user-settings-*.capture.json, because a capture records where a control sits and never what it says. THREE of the six nav entries have a page of their own for this tenant: SHOW_BANK_DETAIL is false (constants.js:235) so /bank-detail falls through to the profile, and /licenses and /preferences fall through to /change-password. scripts/check-captures.mjs reports all three as redirects.",
+  "_source": {
+    "nav": "src/tenant/common/routes/appRoutes.js getUserSettingsRoutes() — five entries for an agency-admin package user; Bank Detail is behind SHOW_BANK_DETAIL and does not render for KSA",
+    "fields": "src/tenant/bayut/data/profileFields.js and agencySettingsFields.js — labels, placeholders, types and which are disabled",
+    "geometry": "data/live/user-settings-*.capture.json",
+    "note": "Commercial Registration Number is in agencySettingsFields.js but gated on typeofBuisness === 'Agency Broker'. The account does not have it, so the product does not render it, and neither does this page. It was here once as an unconditional field — the same instance-promoted-to-default error the listings row actions had."
+  },
+
+  "nav": [
+    { "label": "User Settings",   "icon": "FiUser",                "page": "user-settings-user-profile.html" },
+    { "label": "Agency Settings", "icon": "SideMenuSetting",       "page": "user-settings-agency-profile.html" },
+    { "label": "Licenses",        "icon": "PiIdentificationCard" },
+    { "label": "Preferences",     "icon": "VscSettings" },
+    { "label": "Change Password", "icon": "MdPassword",            "page": "user-settings-change-password.html" }
+  ],
+
+  "completion": {
+    "title": "Profile Completeness",
+    "link": "Why is this important?",
+    "pct": 90,
+    "steps": [
+      { "label": "User Settings",          "state": "todo", "w": 130 },
+      { "label": "FAL License Verification", "state": "done", "w": 202 },
+      { "label": "Nafath Verification",      "state": "done", "w": 163 }
+    ]
+  },
+
   "user": {
     "name": "Faisal Al-Harbi",
-    "role": "Agency User",
-    "email": "faisal@najdhorizon.example"
+    "email": "faisal@najdhorizon.example",
+    "tags": [
+      { "label": "Agency",          "icon": "SideMenuAgency" },
+      { "label": "نفاذ Nafath Verified", "icon": "PiSealCheckFill", "tone": "verified" }
+    ]
   },
-  "completion": 90,
-  "badges": [
-    "Nafath Verified",
-    "REGA Verified"
-  ],
-  "listbox": [
-    "Riyadh",
-    "Jeddah",
-    "Dammam"
-  ],
-  "nav": [
-    {
-      "label": "User Settings",
-      "icon": "FiUser",
-      "page": "user-settings-user-profile.html"
-    },
-    {
-      "label": "Agency Settings",
-      "icon": "SideMenuSetting",
-      "page": "user-settings-agency-profile.html"
-    },
-    {
-      "label": "Licenses",
-      "icon": "PiIdentificationCard",
-      "page": null
-    },
-    {
-      "label": "Preferences",
-      "icon": "VscSettings",
-      "page": null
-    },
-    {
-      "label": "Bank Detail",
-      "icon": "FiCreditCard",
-      "page": null
-    },
-    {
-      "label": "Change Password",
-      "icon": "MdPassword",
-      "page": "user-settings-change-password.html"
-    }
-  ],
+
+  "agency": { "name": "Najd Horizon Real Estate", "users": "1 Users" },
+
+  "listbox": ["Riyadh", "Jeddah", "Makkah", "Madinah", "Dammam", "Khobar"],
+
   "pages": [
     {
       "slug": "user-settings-user-profile",
-      "route": "user-settings-user-profile",
       "title": "User Settings",
-      "formTitle": "Profile Information",
-      "formCardH": 1373,
+      "shape": "profile",
+      "formTitle": "Additional Information",
+      "cols": 390,
+      "formWidth": 835,
+      "save": { "label": "Save Changes", "w": 212 },
       "fields": [
-        {
-          "label": "Title (English)",
-          "placeholder": "Please enter English title",
-          "type": "input",
-          "disabled": true
-        },
-        {
-          "label": "العنوان (عربي)",
-          "placeholder": "Please enter Arabic title",
-          "type": "input",
-          "disabled": true
-        },
-        {
-          "label": "Email",
-          "placeholder": "Enter Email",
-          "type": "input",
-          "disabled": true
-        },
-        {
-          "label": "Phone Number",
-          "placeholder": "Enter Phone Number",
-          "type": "input"
-        },
-        {
-          "label": "Whatsapp",
-          "placeholder": "Enter whatsapp number",
-          "type": "input"
-        },
-        {
-          "label": "Gender",
-          "placeholder": "Select Gender",
-          "type": "select"
-        },
-        {
-          "label": "National Short Address",
-          "placeholder": "Enter National Short Address",
-          "type": "input",
-          "span": true
-        },
-        {
-          "label": "Address",
-          "placeholder": "Enter Address",
-          "type": "input",
-          "span": true
-        },
-        {
-          "label": "Service Area",
-          "placeholder": "Select Service Areas",
-          "type": "select"
-        },
-        {
-          "label": "User Languages",
-          "placeholder": "Select User Languages",
-          "type": "select"
-        },
-        {
-          "label": "Years of Experience",
-          "placeholder": "Select Years of Experiences",
-          "type": "select"
-        },
-        {
-          "label": "Agent Description - English",
-          "placeholder": "Enter Agent Description",
-          "type": "textarea",
-          "span": true,
-          "tall": true
-        },
-        {
-          "label": "وصف الوكيل - بالعربية (اختياري)",
-          "placeholder": "أدخل وصف الوكيل",
-          "type": "textarea",
-          "span": true,
-          "tall": true
-        },
-        {
-          "label": "Upload a picture",
-          "placeholder": "Browse and Upload",
-          "type": "upload",
-          "span": true,
-          "upload": true
-        }
+        { "label": "Title (English)",  "type": "input",  "value": "Faisal Al-Harbi", "disabled": true },
+        { "label": "العنوان (عربي)",    "type": "input",  "value": "فيصل الحربي",     "disabled": true, "rtl": true },
+        { "label": "Email",            "type": "input",  "value": "faisal@najdhorizon.example", "disabled": true },
+        { "label": "City",             "type": "select", "value": "1", "disabled": true },
+        { "label": "Phone Number",     "type": "phone",  "value": "+966 50 123 4567" },
+        { "label": "Whatsapp",         "type": "phone",  "value": "+966" },
+        { "label": "National Short Address", "type": "input", "placeholder": "Enter National Short Address", "span": true },
+        { "label": "Address",          "type": "input",  "placeholder": "Enter Address", "span": true },
+        { "label": "Service Area",     "type": "select", "tag": "1" },
+        { "label": "User Languages",   "type": "select", "placeholder": "Select User Languages" },
+        { "label": "Years of Experience", "type": "select", "placeholder": "Select Years of Experiences" },
+        { "label": "Agent Description - English", "type": "generate", "placeholder": "Enter Agent Description", "span": true,
+          "button": { "label": "Generate Agent Description (English)", "w": 288, "align": "end" } },
+        { "label": "وصف الوكيل - بالعربية (اختياري)", "type": "generate", "placeholder": "أدخل وصف الوكيل", "span": true, "rtl": true,
+          "button": { "label": "إنشاء وصف الوكيل (بالعربية)", "w": 204, "align": "start" } },
+        { "label": "Upload a picture", "type": "upload", "placeholder": "Browse and Upload", "span": true, "uploadW": 415,
+          "guidelines": { "title": "Profile Picture Guidelines:", "items": [
+            "Upload a clear, high-resolution headshot with a solid background.",
+            "Pictures of logos, buildings, or irrelevant images are not allowed."
+          ], "link": "Learn more" } }
       ]
     },
+
     {
       "slug": "user-settings-agency-profile",
-      "route": "user-settings-agency-profile",
       "title": "Agency Settings",
-      "formTitle": "Agency Information",
-      "formCardH": 902,
-      "noHeaderCard": true,
+      "shape": "agency",
       "cols": 413,
+      "formWidth": 880,
+      "save": { "label": "Save Changes", "w": 228, "radius": 8 },
       "fields": [
-        {
-          "label": "Agency Name",
-          "placeholder": "Enter Business Name",
-          "type": "input"
-        },
-        {
-          "label": "Phone Number",
-          "placeholder": "Enter Phone Number",
-          "type": "input"
-        },
-        {
-          "label": "Commercial Registration Number",
-          "placeholder": "Enter Registration Number",
-          "type": "input"
-        },
-        {
-          "label": "Website",
-          "placeholder": "www.example.com",
-          "type": "input"
-        },
-        {
-          "label": "City",
-          "placeholder": "Select City",
-          "type": "select"
-        },
-        {
-          "label": "National Short Address",
-          "placeholder": "Enter National Short Address",
-          "type": "input",
-          "span": true
-        },
-        {
-          "label": "Address",
-          "placeholder": "Enter Business Address",
-          "type": "input",
-          "span": true,
-          "mid": true,
-          "h": 118
-        },
-        {
-          "label": "Agency Logo",
-          "placeholder": "Browse and Upload",
-          "type": "upload",
-          "span": true,
-          "upload": true,
-          "h": 85
-        }
+        { "label": "Agency Name",  "type": "input", "value": "Najd Horizon Real Estate" },
+        { "label": "Phone Number", "type": "phone", "value": "+966" },
+        { "label": "Website",      "type": "input", "placeholder": "www.example.com" },
+        { "label": "City",         "type": "select", "value": "1", "disabled": true },
+        { "label": "National Short Address", "type": "input", "placeholder": "Enter National Short Address" },
+        { "label": "Address",      "type": "input", "value": "King Fahd Rd, Riyadh", "span": true },
+        { "label": "Agency Description", "type": "textarea", "placeholder": "Enter Agency Description", "span": true },
+        { "label": "Agency Logo",  "type": "upload", "placeholder": "Browse and Upload", "span": true, "uploadW": 415 }
       ]
     },
+
     {
       "slug": "user-settings-change-password",
-      "route": "user-settings-change-password",
       "title": "Change Password",
-      "formTitle": "Change Password",
-      "formCardH": 416,
-      "noHeaderCard": true,
+      "shape": "narrow",
+      "colWidth": 500,
+      "save": { "label": "Confirm", "w": 191 },
       "fields": [
-        {
-          "label": "Enter Old Password",
-          "placeholder": "Enter Old Password",
-          "type": "password",
-          "span": true
-        },
-        {
-          "label": "Enter New Password",
-          "placeholder": "Enter New Password",
-          "type": "password",
-          "span": true
-        },
-        {
-          "label": "Confirm Password",
-          "placeholder": "Confirm Password",
-          "type": "password",
-          "span": true
-        }
+        { "label": "Enter Old Password", "type": "password", "placeholder": "Enter Old Password" },
+        { "label": "Enter New Password", "type": "password", "placeholder": "Enter New Password" },
+        { "label": "Confirm Password",   "type": "password", "placeholder": "Confirm Password" }
       ]
     }
   ]

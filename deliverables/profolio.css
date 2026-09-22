@@ -216,6 +216,10 @@
   --fs-12:12px;                        /* .fz-12 banner message, tooltip-title */
   --fs-18:18px;                        /* utils.less @fontSizes */
   --fs-20:20px;                        /* .fs20 — the Download App modal title */
+  --fs-24:24px;                        /* the agency name on Agency Settings */
+  --sp-28:28px;                        /* agency header to divider */
+  --sp-56:56px;                        /* upload button to its guidelines */
+  --radius-control-sm:4px;             /* the settings sub-nav pill */
   --fs-tag:11px;                        /* theme tag-font-size */
   --fs-chart-tick:13px;                /* chart yAxes ticks fontSize */
   --fs-chart-tick-x:10px;              /* [px] x labels — 30 daily ticks only fit at ~10px */
@@ -610,10 +614,40 @@
   --settings-gutter:5px;               /* .ant-col padding-inline */
   --settings-card:326px;               /* the cards inside it */
   --settings-nav-h:256px;
-  --settings-nav-pad:17px 26px;
-  --settings-head-h:152px;
-  --settings-avatar:68px;
-  --settings-avatar-slot:74px;
+  --settings-nav-pad:17px 21px;        /* list 284 inside the 326 card */
+  --settings-nav-row:38px;             /* every entry, 8 apart */
+  --settings-nav-icon:38px;            /* the icon slot, 18 glyph + 20 gap */
+  --settings-comp-h:240px;
+  --settings-meter:235px;              /* the progress track */
+  --settings-meter-h:8px;
+  --settings-meter-fill:#F0A742;       /* ORANGE — not the page's teal */
+  --settings-step-h:24px;
+  --settings-step-r:10px;
+  --settings-head-h:150px;             /* the profile page's header card */
+  --settings-avatar:56px;
+  --agency-logo:72px;
+  --agency-head-h:72px;
+  --settings-pad:40px;                 /* card body inset on every shape */
+  --settings-nav-active:#F7FCFC;       /* the current sub-nav row */
+  --settings-nav-icon-color:#ADB4D2;   /* an inactive sub-nav glyph */
+  --progress-track:rgba(0,0,0,.06);    /* antd .ant-progress-inner */
+  --step-done:rgba(0,97,105,.667);     /* a completed verification step's label */
+  --quality-bg:rgba(240,167,66,.12);   /* the listing-quality chip */
+
+  /* Per-instance properties. Each is set inline by the generator from a
+     MEASURED value — a step pill's width, a stat tile's tint, a Save button's
+     width — and declared here so the stylesheet is the list of everything the
+     pages can set, and so a typo in a generator shows up as a default rather
+     than as nothing at all. */
+  --step-w:auto;                       /* a completion step pill */
+  --form-w:100%;                       /* a settings form's column block */
+  --save-w:auto; --save-r:var(--radius-control);
+  --round-w:auto;                      /* the generate-description button */
+  --upload-w:415px;                    /* the dashed upload button */
+  --field-w:auto;                      /* a filter field */
+  --tile:var(--bg-gray-deep);          /* an icon tile's tint */
+  --donut:128px;                       /* a ring's diameter */
+  --swatch:var(--gray-400);            /* a legend swatch */
   --sfield-label-h:22px;
   --sfield-control-h:44px;
   --sfield-gap:8px;                    /* label to control */
@@ -622,7 +656,13 @@
   --sfield-gutter:54px;
   --sfield-row-gap:24px;               /* 98 pitch less the 74 field */
   --sfield-tall:164px;                 /* a generate-content textarea */
+  --sfield-textarea:88px;
+  --sfield-phone-h:46px;               /* a PhoneInput is 2 taller than an input */
+  --sfield-phone-country:68px;
+  --sfield-narrow:500px;               /* Change Password's centred column */
+  --sfield-round-h:38px;               /* the generate button */
   --input-disabled-bg:rgba(0,0,0,.04);  /* .ant-input-disabled, measured */
+  --disabled:rgba(0,0,0,.25);           /* .ant-input-disabled's own text colour */
   --sfield-upload:133px;               /* the image-select row that ends the form */
   --sfield-upload-art:103px;
   /* pages made of measured blocks — reports, LMS, ad-license.
@@ -1921,6 +1961,9 @@ table{border-collapse:collapse}
 .pf-page-item[aria-disabled="true"]{color:var(--text-disabled)}
 .pf-page-item[aria-disabled="true"] button{cursor:not-allowed}
 .i-12{width:var(--fs-12);height:var(--fs-12)}
+.i-10{width:var(--fs-10);height:var(--fs-10)}
+.i-17{width:17px;height:17px}    /* antd renders the stat tiles' glyphs at 17 */
+.i-24{width:var(--fs-24);height:var(--fs-24)}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · overlays — modal, drawer, popover
@@ -2215,7 +2258,10 @@ table{border-collapse:collapse}
 }
 /* the illustration ships its own 164x89 and its own fills — EmptyState.js:31
    passes primary-light-2, which is already baked into the extracted art */
-.pf-empty-art{display:block}
+/* EmptyState.js:31 renders <EmptyListing color={tenantTheme['primary-light-2']}/>
+   and the illustration paints nine of its shapes with currentColor. Inherited,
+   that resolved to the page's near-black text and the art came out dark. */
+.pf-empty-art{display:block;color:var(--primary-light-2)}
 .pf-empty-title{
   font-size:var(--fs-18);font-weight:var(--fw-600);color:var(--black);
   margin-block-end:var(--empty-title-mb);
@@ -2831,122 +2877,234 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   min-inline-size:var(--sp-0);
 }
 
+/* the sub-nav: five 38-tall rows, 8 apart, each with an 18px glyph in a 38
+   slot. The CURRENT one is a filled pill — #f7fcfc, radius 4, weight 600 —
+   which reading it as coloured text alone missed entirely. */
 .pf-settings-nav{padding:var(--settings-nav-pad);block-size:var(--settings-nav-h);box-sizing:border-box}
-.pf-settings-nav ul{list-style:none;margin:var(--sp-0);padding:var(--sp-0)}
+.pf-settings-nav ul{list-style:none;margin:var(--sp-0);padding:var(--sp-0);display:grid;gap:var(--sp-8)}
 .pf-settings-nav a{
-  display:flex;align-items:center;gap:var(--sp-12);
-  padding-block:var(--sp-8);
-  color:var(--base);
+  display:flex;align-items:center;
+  block-size:var(--settings-nav-row);
+  border-radius:var(--radius-control-sm);
+  color:var(--base);font-weight:var(--fw-500);
 }
-.pf-settings-nav a[aria-current="page"]{color:var(--primary);font-weight:var(--fw-600)}
+.pf-settings-nav .nav-text{flex:1}
+.pf-settings-nav a > svg{
+  inline-size:var(--settings-nav-icon);block-size:18px;
+  padding-inline-start:var(--sp-16);box-sizing:content-box;
+  color:var(--settings-nav-icon-color);flex:none;
+}
+.pf-settings-nav a[aria-current="page"]{
+  background:var(--settings-nav-active);
+  color:var(--primary);font-weight:var(--fw-600);
+}
+.pf-settings-nav a[aria-current="page"] > svg{color:var(--primary)}
 .pf-settings-nav a:hover{color:var(--primary)}
 
-.pf-completion{padding:var(--sp-24)}
+/* Profile completeness. Three things here are the product's and were all
+   wrong: the meter is ORANGE, the steps are pills rather than chips, and a
+   step that is DONE is tinted with a check while one still to do is outlined
+   with a hollow dot. */
+.pf-completion{padding:var(--sp-24);block-size:var(--settings-comp-h);box-sizing:border-box}
 .pf-completion-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-8);margin-block-end:var(--sp-4)}
-.pf-completion-title{font-weight:var(--fw-500)}
+.pf-completion-title{font-weight:var(--fw-500);white-space:nowrap}
+.pf-completion-head .pf-btn{padding:var(--sp-0);border:0;background:none;white-space:nowrap}
 .pf-completion-meter{display:flex;align-items:center;gap:var(--sp-8);margin-block-end:var(--sp-16)}
-.pf-completion-pct{font-weight:var(--fw-600)}
-.pf-completion-body{display:grid;justify-items:start;gap:var(--sp-8)}
-.pf-mini-card{
-  display:inline-flex;align-items:center;gap:var(--sp-8);
-  padding:var(--sp-2) var(--sp-8);
-  border:var(--border-w) solid var(--gray-400);
-  border-radius:var(--radius-tag);
-  font-size:var(--fs-12);
-}
-
-.pf-settings-head{block-size:var(--settings-head-h);display:flex;align-items:center;padding-inline:var(--sp-40)}
-.pf-settings-meta{display:flex;align-items:center;gap:var(--sp-16)}
-/* the meta's avatar SLOT is 74 wide and the circle inside it 68 — the 6 is
-   antd's card-meta gutter, and measuring the circle alone read 68 against 74 */
-.pf-settings-avatar{
-  inline-size:var(--settings-avatar-slot);block-size:var(--settings-avatar);
-  padding-inline-end:calc(var(--settings-avatar-slot) - var(--settings-avatar));
+.pf-progress{
+  inline-size:var(--settings-meter);block-size:var(--settings-meter-h);
   border-radius:var(--radius-round);
-  background:var(--bg-gray-deep);color:var(--gray-600);
-  display:grid;place-items:center;flex:none;
+  background:var(--progress-track);
+  overflow:hidden;flex:none;
 }
-.pf-settings-name{font-size:var(--fs-18);font-weight:var(--fw-600)}
-.pf-settings-sub{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
-.pf-settings-sub svg{color:var(--gray-500)}
+.pf-progress-bg{display:block;block-size:100%;border-radius:var(--radius-round);background:var(--settings-meter-fill)}
+.pf-completion-pct{font-weight:var(--fw-600)}
+.pf-completion-body{display:grid;justify-items:start;gap:var(--sp-16)}
+.pf-step{
+  display:inline-flex;align-items:center;
+  inline-size:var(--step-w);block-size:var(--settings-step-h);
+  border-radius:var(--settings-step-r);
+  font-size:var(--fs-base);font-weight:var(--fw-600);
+  box-sizing:border-box;
+}
+.pf-step > svg{inline-size:32px;block-size:16px;padding-inline-start:var(--sp-4);box-sizing:border-box;flex:none}
+.pf-step[data-state="todo"]{background:var(--white);border:var(--border-w) solid var(--border-light);color:var(--heading)}
+.pf-step[data-state="todo"] > svg{color:var(--gray-400)}
+.pf-step[data-state="done"]{background:var(--primary-light-4);color:var(--step-done)}
+.pf-step[data-state="done"] > svg{color:var(--primary)}
 
-.pf-settings-form{padding:var(--sp-40)}
-.pf-card-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-12)}
-/* two 390 columns with a 54 gutter and a 98 row pitch — a field is a 22 label
-   over a 44 control with 8 between them */
-/* Agency Settings uses 413 columns where the profile form uses 390 — same
-   54 gutter, same 98 pitch, a wider card because it has no header card above
-   it. data/live/user-settings-agency-profile.capture.json */
-.pf-form-grid[data-cols="413"]{grid-template-columns:repeat(2,var(--sfield-col-wide))}
+/* ── the profile page's header card ─────────────────────────────────────── */
+/* .pf-card is a flex COLUMN, so a header that only says `display:flex` stacks
+   the avatar over the name instead of putting them side by side. The direction
+   has to be restated on every row inside a card. */
+.pf-settings-head{
+  block-size:var(--settings-head-h);
+  display:flex;flex-direction:row;align-items:center;gap:var(--sp-16);
+  padding-inline:var(--settings-pad);box-sizing:border-box;
+}
+.pf-settings-avatar{
+  inline-size:var(--settings-avatar);block-size:var(--settings-avatar);
+  border-radius:var(--radius-round);
+  background:var(--gray-400);
+  position:relative;flex:none;
+}
+/* the completeness ring's percentage sits on the avatar, not beside it */
+.pf-avatar-pct{
+  position:absolute;inset-block-end:-6px;inset-inline-start:50%;translate:-50% 0;
+  padding:0 var(--sp-4);
+  border-radius:var(--radius-round);
+  background:var(--settings-meter-fill);color:var(--white);
+  font-size:var(--fs-10);font-weight:var(--fw-600);line-height:14px;
+}
+.pf-settings-who{display:grid;gap:var(--sp-4)}
+.pf-settings-nameline{display:flex;align-items:center;gap:var(--sp-8);flex-wrap:wrap}
+.pf-settings-name{font-size:var(--fs-20);font-weight:var(--fw-700);margin:var(--sp-0)}
+.pf-user-tag{
+  display:inline-flex;align-items:center;gap:var(--sp-4);
+  block-size:var(--settings-step-h);padding-inline:var(--sp-8);
+  border-radius:var(--settings-step-r);
+  background:var(--bg-gray-deep);color:var(--base);
+  font-size:var(--fs-12);font-weight:var(--fw-500);
+}
+.pf-user-tag[data-tone="verified"]{background:var(--primary-light-4);color:var(--primary)}
+.pf-settings-sub{color:var(--gray-700)}
+
+/* ── the agency page: one card with its header inside ───────────────────── */
+.pf-agency-head{display:flex;flex-direction:row;align-items:center;gap:var(--sp-16);block-size:var(--agency-head-h)}
+.pf-agency-logo{
+  inline-size:var(--agency-logo);block-size:var(--agency-logo);
+  border-radius:var(--radius-round);
+  background:var(--primary-light-4);flex:none;
+}
+.pf-agency-name{font-size:var(--fs-24);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-4)}
+.pf-agency-users{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
+.pf-agency-users svg{color:var(--gray-500)}
+.pf-divider{border:0;border-block-start:var(--border-w) solid var(--border-light);margin:var(--sp-28) var(--sp-0) var(--sp-40)}
+
+/* ── the form ───────────────────────────────────────────────────────────── */
+.pf-settings-form{padding:var(--settings-pad)}
+/* the form is inset FURTHER than the card's 40: the profile page's fields run
+   501..1336 inside a card at 420..1417, the agency page's 478..1358 */
+.pf-settings-form > .pf-form-grid,
+.pf-settings-form > .pf-form-actions{margin-inline:var(--form-inset, 0)}
+.pf-settings-head + .pf-settings-form{--form-inset:41px}
+.pf-agency{--form-inset:17px}
+.pf-card-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-24)}
 .pf-form-grid{
   display:grid;
-  grid-template-columns:repeat(2,var(--sfield-col));
+  inline-size:var(--form-w);
+  grid-template-columns:repeat(2,minmax(var(--sp-0),1fr));
   column-gap:var(--sfield-gutter);
   row-gap:var(--sfield-row-gap);
 }
+/* Change Password has one 500-wide column, centred in the card */
+.pf-form-grid[data-cols="one"]{grid-template-columns:minmax(var(--sp-0),1fr);margin-inline:auto}
+.pf-narrow .pf-form-actions{inline-size:var(--sfield-narrow);margin-inline:auto}
+
 .pf-sfield{display:flex;flex-direction:column;gap:var(--sfield-gap)}
-/* a settings label is 14/22 in black — NOT the filter bar's 12/19 grey, which
-   is what it inherited and what the region diff read as a 9.6%% difference on
-   every field */
+.pf-sfield.span-all{grid-column:1 / -1}
+/* every field type the generator can emit, named here so the stylesheet is the
+   list of what a settings field can be */
+.pf-sfield.sf-input,
+.pf-sfield.sf-select,
+.pf-sfield.sf-textarea,
+.pf-sfield.sf-generate,
+.pf-sfield.sf-upload{}
+.pf-sfield.rtl{text-align:end}
+/* a settings label is 14/22 in black — NOT the filter bar's 12/19 grey */
 .pf-sfield > .pf-field-label{
   block-size:var(--sfield-label-h);
-  font-size:var(--fs-base);
-  line-height:var(--lh-base);
-  color:var(--black);
+  font-size:var(--fs-base);line-height:var(--lh-base);
+  font-weight:var(--fw-600);color:var(--black);
 }
-/* the 44 belongs to the INPUT, which is what the product measures; putting it
-   on the wrapper left the control region missing entirely */
-.pf-sfield .pf-input > input{block-size:var(--sfield-control-h)}
-/* the BORDER is the input's here, as the product's .ant-input carries it —
-   with it on the wrapper the control region had no border at all */
-.pf-sfield .pf-input{border:0;padding:var(--sp-0)}
-/* the wrapper's suffix slot has no job on a settings field and was eating 24
-   of the control's width — 366 against the product's 390 */
-.pf-sfield .pf-input > .pf-input-suffix{display:none}
+.pf-sfield .pf-input,
+.pf-sfield .pf-select{block-size:var(--sfield-control-h)}
+.pf-sfield .pf-input{border:0;padding:var(--sp-0);background:none}
 .pf-sfield .pf-input > input{
-  inline-size:100%;
+  inline-size:100%;block-size:var(--sfield-control-h);
   padding-inline:var(--sp-12);
   border:var(--border-w) solid var(--input-border);
   border-radius:var(--radius-control);
   background:var(--white);
 }
-/* a disabled field is filled, not just dimmed — rgba(0,0,0,.04), measured on
-   the three read-only fields at the top of the profile form */
-.pf-sfield .pf-input > input:disabled{background:var(--input-disabled-bg);cursor:not-allowed}
+/* a disabled field is FILLED, not just dimmed — rgba(0,0,0,.04) */
+.pf-sfield .pf-input > input:disabled{background:var(--input-disabled-bg);color:var(--disabled);cursor:not-allowed}
+.pf-sfield .pf-select[disabled]{background:var(--input-disabled-bg);color:var(--disabled);cursor:not-allowed}
+/* a select showing a chosen value, and a multi-select showing one removable
+   tag — Service Area renders "1 x" rather than a placeholder */
+.pf-select-value{color:var(--base)}
+.pf-select-tag{
+  display:inline-flex;align-items:center;gap:var(--sp-4);
+  block-size:24px;padding-inline:var(--sp-8);
+  border-radius:var(--radius-control);
+  background:var(--bg-gray-deep);color:var(--base);font-size:var(--fs-13);
+}
+.pf-select-tag svg{color:var(--gray-500)}
+
+/* a phone field is a compound the product builds from react-phone-number-input:
+   a 68-wide disabled country box, then the number. It is 46 tall, not 44. */
+.pf-sfield.sf-phone .pf-phone{display:flex;gap:var(--sp-8);block-size:var(--sfield-phone-h)}
+.pf-phone-country{
+  inline-size:var(--sfield-phone-country);
+  display:flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  border:var(--border-w) solid var(--input-border);
+  border-radius:var(--radius-control);
+  background:var(--white);flex:none;
+}
+.pf-flag{inline-size:20px;block-size:14px;border-radius:2px;background:var(--border-light)}
+.pf-sfield.sf-phone .pf-input{flex:1;block-size:var(--sfield-phone-h)}
+.pf-sfield.sf-phone .pf-input > input{block-size:var(--sfield-phone-h)}
+
 /* Change Password uses antd's Input.Password: the BORDER is on the affix
-   wrapper and the inner input has none — the opposite of the profile form,
-   where the input carries it. Two components, two answers. */
-.pf-sfield.password .pf-input{
+   wrapper and the inner input has none — the opposite of the profile form. */
+.pf-sfield.sf-password .pf-input{
+  display:flex;align-items:center;
   border:var(--border-w) solid var(--input-border);
   border-radius:var(--radius-control);
   padding-inline:var(--sp-12);
 }
-.pf-sfield.password .pf-input > input{border:0;padding-inline:var(--sp-0)}
-/* a row whose measured height is not the 74 a label and a control come to */
-.pf-sfield[data-h="118"]{block-size:118px}
-.pf-sfield[data-h="85"]{block-size:85px}
-.pf-sfield.upload{block-size:var(--sfield-upload)}
-.pf-sfield.upload[data-h]{block-size:auto}
-.pf-upload{display:flex;align-items:center;gap:var(--sp-16)}
-.pf-upload-art{
-  inline-size:var(--sfield-upload-art);block-size:var(--sfield-upload-art);
-  border-radius:var(--radius-card);
-  background:var(--border-light);
-  flex:none;
-}
-.pf-sfield.span-all{grid-column:1 / -1}
-.pf-sfield .pf-input,
-.pf-sfield .pf-select{block-size:var(--sfield-control-h)}
-.pf-sfield.tall{block-size:var(--sfield-tall)}
+.pf-sfield.sf-password .pf-input > input{border:0;padding-inline:var(--sp-0);flex:1;background:none}
+.pf-input-suffix{display:grid;place-items:center;color:var(--gray-500);background:none;border:0}
+
 .pf-textarea{
-  flex:1;
+  block-size:var(--sfield-textarea);
   padding:var(--sp-12);
   border:var(--border-w) solid var(--input-border);
   border-radius:var(--radius-control);
   background:var(--white);color:var(--base);
   font:inherit;resize:none;
 }
-.pf-form-actions{display:flex;justify-content:flex-end;gap:var(--sp-12);margin-block-start:var(--sp-24)}
+/* the generate-description button — GenerateContentField.js:179, a round
+   primaryOutlined button under the textarea, aligned to whichever end the
+   language reads towards */
+.pf-generate{display:flex;margin-block-start:var(--sp-16)}
+.pf-generate[data-align="end"]{justify-content:flex-end}
+.pf-btn[data-variant="round"]{
+  inline-size:var(--round-w);block-size:var(--sfield-round-h);
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-8);
+  border:0;border-radius:32px;
+  background:var(--primary-light-4);color:var(--primary);
+  font-size:var(--fs-13);font-weight:var(--fw-600);
+}
+
+/* the upload — image-upload.js:83 renders a primaryOutlined Button with a
+   DASHED border, not a grey square beside a plain button */
+.pf-upload{display:flex;align-items:flex-start;gap:var(--sp-56)}
+.pf-upload-btn{
+  inline-size:var(--upload-w);block-size:55px;
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-12);
+  border:var(--border-w) dashed var(--primary-light-2);
+  border-radius:var(--radius-control);
+  background:var(--primary-light-4);color:var(--primary);
+  font-weight:var(--fw-600);flex:none;
+}
+.pf-guidelines{font-size:var(--fs-12);color:var(--gray-700);display:grid;gap:var(--sp-2)}
+.pf-guidelines-title{font-size:var(--fs-base);font-weight:var(--fw-600);color:var(--base)}
+.pf-guideline{display:flex;gap:var(--sp-4)}
+.pf-guideline svg{color:var(--primary);flex:none;margin-block-start:var(--sp-4)}
+.pf-guidelines a{font-weight:var(--fw-600);color:var(--primary)}
+
+.pf-form-actions{display:flex;justify-content:flex-end;margin-block-start:var(--sp-24)}
+.pf-form-actions .pf-btn{inline-size:var(--save-w);block-size:40px;border-radius:var(--save-r, var(--radius-control))}
 
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -2982,6 +3140,233 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   box-sizing:border-box;
 }
 .pf-stat-item > div{display:flex;flex-direction:column}
+
+/* ── the head, which is more than a title ───────────────────────────────── */
+.pf-block-head[data-tall="true"]{block-size:auto;display:block;padding-block:var(--sp-16)}
+.pf-block-head-row{display:flex;flex-direction:row;align-items:center;gap:var(--sp-16);inline-size:100%}
+.pf-block-head-row > .pf-block-title{margin-inline-end:auto}
+.pf-block-title{font-size:var(--fs-card-title);font-weight:var(--fw-700);color:var(--heading)}
+.pf-icon-btn{
+  inline-size:34px;block-size:34px;display:grid;place-items:center;
+  border:var(--border-w) solid var(--border-light);border-radius:var(--radius-control);
+  background:var(--white);color:var(--gray-700);
+}
+
+/* the purpose segmented control — a grey track with a filled active pill */
+.pf-segmented{
+  display:inline-flex;flex-direction:row;gap:var(--sp-2);
+  padding:var(--sp-4);border-radius:var(--radius-control);
+  background:var(--bg-gray-deep);
+}
+.pf-segment{
+  block-size:36px;padding-inline:var(--sp-16);
+  border:0;border-radius:var(--radius-control);background:none;
+  color:var(--gray-700);font-weight:var(--fw-500);
+}
+.pf-segment[aria-selected="true"]{background:var(--primary);color:var(--white);font-weight:var(--fw-600)}
+
+/* the date-range field — a bordered box with a calendar on the trailing edge */
+.pf-datefield{
+  inline-size:var(--field-w, 345px);block-size:48px;
+  display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:var(--sp-8);
+  padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--input-border);border-radius:var(--radius-control);
+  background:var(--white);color:var(--base);
+}
+.pf-datefield svg{color:var(--gray-500);flex:none}
+
+/* the metric tabs. These ARE the card's tabs — Views/Clicks/Leads each with an
+   icon tile, a value and a period-on-period delta, the active one underlined */
+/* the head's second row: the metric tabs on the left and the channel strip in
+   the tabs' extra slot on the right — 609 and 556 of one 84-tall row, not two
+   stacked rows */
+.pf-block-head[data-tall="true"]{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center}
+.pf-block-head[data-tall="true"] > .pf-block-head-row{margin-block-end:var(--sp-16)}
+.pf-metrics{display:flex;flex-direction:row}
+.pf-channels{margin-inline-start:auto}
+.pf-metric{
+  display:flex;flex-direction:row;align-items:center;gap:var(--sp-12);
+  padding:var(--sp-16) var(--sp-24);
+  border:0;border-block-end:var(--sp-2) solid transparent;background:none;text-align:start;
+}
+.pf-metric[aria-selected="true"]{border-block-end-color:var(--primary);background:var(--primary-light-4)}
+.pf-metric-tile{
+  inline-size:34px;block-size:34px;display:grid;place-items:center;flex:none;
+  border-radius:30%;background:var(--tile);
+}
+.pf-metric-text{display:flex;flex-direction:column;gap:var(--sp-2)}
+.pf-metric-label{color:var(--gray-700)}
+.pf-metric-value{display:flex;flex-direction:row;align-items:center;gap:var(--sp-8);font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-delta{display:inline-flex;align-items:center;gap:var(--sp-2);font-size:var(--fs-12);font-weight:var(--fw-500)}
+.pf-delta[data-dir="up"]{color:var(--success)}
+.pf-delta[data-dir="down"]{color:var(--error)}
+
+/* the channel strip that sits in the tabs' extra slot */
+.pf-channels{display:flex;flex-direction:row;align-items:center}
+.pf-channel{
+  display:inline-flex;align-items:center;gap:var(--sp-8);
+  padding-inline:var(--sp-24);
+  border-inline-end:var(--border-w) solid var(--border-light);
+  color:var(--gray-700);
+}
+.pf-channel:last-child{border-inline-end:0}
+.pf-channel b{color:var(--base);font-weight:var(--fw-600)}
+.pf-channel svg{color:var(--gray-500)}
+
+/* the product pills under the chart */
+.pf-pills{display:flex;flex-direction:row;gap:var(--sp-8);margin-block-end:var(--sp-24)}
+.pf-pill{
+  display:inline-flex;align-items:center;gap:var(--sp-8);
+  block-size:29px;padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--border-light);border-radius:var(--radius-round);
+  background:var(--white);color:var(--gray-700);font-size:var(--fs-13);
+}
+.pf-pill[aria-checked="true"]{background:var(--primary-light-4);border-color:var(--primary-light-4);color:var(--primary);font-weight:var(--fw-600)}
+
+/* the charts themselves */
+.pf-linechart{inline-size:100%}
+.pf-linechart .pf-grid{stroke:var(--border-light);stroke-dasharray:3 4;stroke-width:1}
+.pf-linechart .pf-axis-line{stroke:var(--primary);stroke-width:1}
+.pf-linechart .pf-axis{fill:var(--gray-600);font-size:11px}
+.pf-linechart .pf-series{stroke:var(--primary);stroke-width:1.5}
+.pf-linechart .pf-dot{fill:var(--primary)}
+.pf-donut-seg{transition:none}
+.pf-donut{position:relative;inline-size:var(--donut);block-size:var(--donut);flex:none}
+.pf-donut-centre{
+  position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:var(--sp-2);
+}
+.pf-donut-value{font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-donut-label{color:var(--gray-700)}
+.pf-donut-row{display:flex;flex-direction:row;gap:var(--sp-24);align-items:center}
+.pf-donut-cell{display:flex;flex-direction:row;align-items:center;gap:var(--sp-24);flex:1}
+.pf-donut-legend{display:grid;gap:var(--sp-8)}
+.pf-legend-item{display:inline-flex;align-items:center;gap:var(--sp-8);color:var(--gray-700)}
+.pf-legend-item svg{color:var(--gray-400)}
+
+/* Reports Summary's Listings card */
+.pf-statcard{display:flex;flex-direction:row;align-items:flex-start;gap:var(--sp-24)}
+/* three columns beside the lead figure, two rows — measured at x236/362/489
+   and y163/236 inside a 533 card. Four columns overflowed it and clipped
+   Signature off the edge. */
+.pf-statcard .pf-stat-grid{grid-template-columns:repeat(3,var(--block-stat-w));row-gap:var(--sp-24)}
+.pf-stat-lead{display:flex;flex-direction:column;gap:var(--sp-4);align-items:center;inline-size:103px;flex:none}
+.pf-stat-lead-value{display:inline-flex;align-items:center;gap:var(--sp-8);font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-stat-lead-value svg{color:var(--primary)}
+.pf-stat-tile{
+  inline-size:32px;block-size:32px;display:grid;place-items:center;flex:none;
+  border-radius:30%;background:var(--tile);
+}
+
+/* Credits Usage's left card */
+.pf-credits{display:grid;gap:var(--sp-24);justify-items:center}
+.pf-credits-note{justify-self:start;color:var(--gray-700)}
+.pf-credits-strip{
+  display:flex;flex-direction:row;inline-size:100%;
+  padding:var(--sp-16);border-radius:var(--radius-control);
+  background:var(--bg-gray-deep);
+}
+.pf-credits-cell{display:flex;flex-direction:column;gap:var(--sp-4);flex:1;padding-inline:var(--sp-12);border-inline-end:var(--border-w) solid var(--border-light)}
+.pf-credits-cell:last-child{border-inline-end:0}
+.pf-credits-value{font-size:var(--fs-20);font-weight:var(--fw-700)}
+.pf-credits-breakdown{inline-size:100%;display:grid;gap:var(--sp-12)}
+.pf-credits-bd-title{font-size:var(--fs-card-title);font-weight:var(--fw-600)}
+.pf-bd-row{display:flex;flex-direction:row;align-items:center;justify-content:space-between}
+.pf-bd-swatch{inline-size:20px;block-size:20px;display:grid;place-items:center;border-radius:var(--radius-tag);background:var(--swatch)}
+.pf-bd-swatch svg{color:var(--white)}
+.pf-bd-value{font-weight:var(--fw-500)}
+
+/* Credits Usage's history — a timeline, not a table */
+.pf-timeline{display:grid;gap:var(--sp-24)}
+.pf-tl-item{display:flex;flex-direction:row;gap:var(--sp-24);align-items:flex-start;position:relative}
+.pf-tl-dot{
+  inline-size:10px;block-size:10px;border-radius:var(--radius-round);
+  background:var(--gray-400);margin-block-start:var(--sp-24);flex:none;
+}
+.pf-tl-item::after{
+  content:"";position:absolute;inset-inline-start:4px;inset-block:36px -24px;
+  border-inline-start:var(--border-w) solid var(--border-light);
+}
+.pf-tl-item:last-child::after{display:none}
+.pf-tl-card{
+  flex:1;display:flex;flex-direction:row;box-shadow:none;align-items:center;justify-content:space-between;gap:var(--sp-24);
+  padding:var(--sp-16);
+  border:var(--border-w) solid var(--border-light);border-radius:var(--radius-card);
+}
+.pf-tl-prop{box-shadow:none;border:0;display:flex;flex-direction:row;gap:var(--sp-16);align-items:center;flex:1;padding:var(--sp-12);border-radius:var(--radius-control);background:var(--primary-light-4)}
+.pf-tl-thumb{inline-size:120px;block-size:82px;border-radius:var(--radius-control);background:var(--border-light);flex:none}
+/* The riyal mark U+FDFC is a strong right-to-left character, so "﷼ 1,250,000"
+   in an otherwise left-to-right line reorders to "1,250,000 ﷼". The product
+   shows the mark first, so the price is its own isolated left-to-right run. */
+.pf-tl-price,
+.pf-prop-price{unicode-bidi:isolate;direction:ltr}
+.pf-tl-price{font-weight:var(--fw-700);color:var(--primary)}
+.pf-tl-tag{display:inline-block;margin-block:var(--sp-4);padding:var(--sp-2) var(--sp-8);border-radius:var(--radius-tag);background:var(--primary-light-4);color:var(--primary);font-size:var(--fs-12);font-weight:var(--fw-600)}
+.pf-tl-specs{display:flex;flex-direction:row;gap:var(--sp-16);color:var(--gray-700);font-size:var(--fs-13)}
+.pf-tl-specs span{display:inline-flex;align-items:center;gap:var(--sp-4)}
+.pf-tl-date{color:var(--gray-700);white-space:nowrap}
+
+/* Listing Report's property cell */
+.pf-proptable .pf-th-prop,
+.pf-proptable .pf-td-prop{inline-size:475px}
+.pf-prop{display:flex;flex-direction:row;gap:var(--sp-16);align-items:flex-start}
+.pf-prop-thumb{inline-size:24px;block-size:16px;border-radius:2px;background:var(--primary-light-4);flex:none;margin-block-start:var(--sp-4)}
+.pf-prop-detail{display:grid;gap:var(--sp-4)}
+.pf-prop-priceline{display:flex;flex-direction:row;align-items:center;gap:var(--sp-8)}
+.pf-prop-price{font-weight:var(--fw-700);color:var(--primary)}
+.pf-quality{padding:var(--sp-2) var(--sp-8);border-radius:var(--radius-tag);font-size:var(--fs-12);font-weight:var(--fw-600)}
+.pf-quality[data-band="high"]{background:var(--quality-bg);color:var(--warning)}
+.pf-quality[data-band="mid"]{background:var(--quality-bg);color:var(--warning)}
+.pf-quality[data-band="low"]{background:var(--quality-bg);color:var(--warning)}
+.pf-prop-specs{display:flex;flex-direction:row;gap:var(--sp-12);color:var(--gray-700);font-size:var(--fs-13)}
+.pf-prop-specs span{display:inline-flex;align-items:center;gap:var(--sp-4)}
+.pf-prop-address{color:var(--base)}
+.pf-prop-ids{display:flex;flex-direction:row;gap:var(--sp-8);color:var(--gray-500);font-size:var(--fs-12)}
+.pf-prop-ids i{font-style:normal;color:var(--border-light)}
+
+/* the page lead — a Back pill over a 24/30 heading, on Ad License */
+.pf-page-lead{display:grid;justify-items:start;gap:var(--sp-8);inline-size:1035px;margin-inline:auto;margin-block-end:var(--sp-16)}
+.pf-page-h2{font-size:var(--fs-24);font-weight:var(--fw-600);margin:var(--sp-0)}
+.pf-section-h{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-24) var(--sp-0) var(--sp-12)}
+
+/* the Ad License wizard */
+.pf-wizard{display:grid;gap:var(--sp-8)}
+/* the section's title column is 195 wide and 105 tall at the TOP of the
+   section, not centred against a 754-tall column of fields. And the sections
+   are white cards inside a white panel — the product draws no rule between
+   them, only an 8 gap. */
+.pf-wsection{display:flex;flex-direction:row;align-items:flex-start;gap:var(--sp-48);padding-block:var(--sp-40)}
+.pf-wsection-title{
+  inline-size:195px;block-size:105px;flex:none;
+  display:grid;gap:var(--sp-12);justify-items:start;align-content:start;
+  font-size:var(--fs-18);font-weight:var(--fw-600);
+}
+.pf-wsection-icon{inline-size:56px;block-size:56px;display:grid;place-items:center;border-radius:var(--radius-card);background:var(--bg-gray-deep)}
+.pf-wsection-fields{flex:1;display:grid;gap:var(--sp-24);max-inline-size:640px}
+.pf-wfield{display:flex;flex-direction:row;gap:var(--sp-16);align-items:flex-start}
+.pf-wfield-icon{inline-size:34px;block-size:34px;display:grid;place-items:center;flex:none;border-radius:30%;background:var(--bg-gray-deep);color:var(--gray-600)}
+.pf-wfield-body{flex:1;display:grid;gap:var(--sp-8)}
+.pf-wfield-body > .pf-field-label{font-size:var(--fs-base);line-height:var(--lh-base);font-weight:var(--fw-600);color:var(--black)}
+.pf-wfield-body .pf-input > input,
+.pf-wfield-body .pf-select{block-size:var(--sfield-control-h);inline-size:100%}
+.pf-wfield-body .pf-input{border:0;padding:var(--sp-0);background:none}
+.pf-wfield-body .pf-input > input{padding-inline:var(--sp-12);border:var(--border-w) solid var(--input-border);border-radius:var(--radius-control);background:var(--white)}
+.pf-wfield-body .pf-select[disabled]{background:var(--input-disabled-bg);color:var(--disabled)}
+.pf-field-hint{color:var(--gray-500);font-weight:var(--fw-500)}
+.pf-choices{display:flex;flex-direction:row;flex-wrap:wrap;gap:var(--sp-8)}
+.pf-choice{
+  display:inline-flex;align-items:center;gap:var(--sp-8);
+  block-size:36px;min-inline-size:44px;padding-inline:var(--sp-16);
+  border:0;border-radius:var(--radius-round);
+  background:var(--bg-gray-deep);color:var(--base);
+}
+.pf-choice[aria-checked="true"]{background:var(--primary);color:var(--white)}
+
+/* a plain filter bar has no card behind it — Leads & Reach sets its fields
+   straight on the page background */
+.pf-filter-bar[data-plain="true"]{background:none;border:0;box-shadow:none;padding-inline:var(--sp-0)}
+.pf-compound{display:flex;flex-direction:row}
+.pf-compound .pf-input{flex:1}
+.pf-compound .pf-select{inline-size:82px;flex:none}
 
 /* the plot area. No chart library ships with this system, so a chart is the
    box it occupies and says so — the same honesty as the QR placeholder. */

@@ -22,7 +22,10 @@
     "pages": "node scripts/pages/listings.mjs",
     "layout": "node scripts/derive-layout.mjs",
     "qa": "node scripts/qa-design.mjs",
-    "sync": "node scripts/sync.mjs"
+    "sync": "node scripts/sync.mjs",
+    "qa-body": "node scripts/qa-body.mjs",
+    "qa-overlays": "node scripts/qa-overlays.mjs",
+    "outline": "node scripts/outline.mjs"
   },
   "devDependencies": {
     "antd": "5.22.1",

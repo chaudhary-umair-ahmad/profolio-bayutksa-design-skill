@@ -1,6 +1,6 @@
 {
   "route": "user-settings-agency-profile",
-  "at": "2026-09-22T11:21:31.394Z",
+  "at": "2026-09-22T12:17:18.637Z",
   "shellFails": [
     {
       "id": "shell.title",
@@ -21,28 +21,28 @@
       "diff": 8.5
     },
     {
-      "id": "settings.side",
-      "diff": 6
+      "id": "sfield.control",
+      "diff": 6.3
     },
     {
       "id": "sfield",
       "diff": 5.8
     },
     {
-      "id": "settings.main",
-      "diff": 5.8
+      "id": "shell.sider",
+      "diff": 4.7
+    },
+    {
+      "id": "settings.side",
+      "diff": 3.5
     },
     {
       "id": "shell.content",
-      "diff": 5.7
+      "diff": 2.5
     },
     {
-      "id": "sfield.control",
-      "diff": 5.3
-    },
-    {
-      "id": "shell.sider",
-      "diff": 4.7
+      "id": "settings.main",
+      "diff": 2.3
     },
     {
       "id": "shell.footer",
@@ -55,10 +55,36 @@
     "space": []
   },
   "literals": [
-    ".pf-sfield[data-h=\"118\"] { block-size: 118px }"
+    ".i-17 { width: 17px }",
+    ".i-17 { height: 17px }",
+    ".pf-settings-head + .pf-settings-form { --form-inset: 41px }",
+    ".pf-agency { --form-inset: 17px }",
+    ".pf-upload-btn { block-size: 55px }",
+    ".pf-block-row[data-cols=\"533 783\"] { grid-template-columns: 533px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"449 899\"] { grid-template-columns: 449px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"narrow\"] { grid-template-columns: minmax(var(--sp-0),1035px) }",
+    ".pf-datefield { inline-size: var(--field-w, 345px) }",
+    ".pf-pill { block-size: 29px }",
+    ".pf-stat-lead { inline-size: 103px }",
+    ".pf-tl-thumb { inline-size: 120px }",
+    ".pf-tl-thumb { block-size: 82px }",
+    ".pf-proptable .pf-td-prop { inline-size: 475px }",
+    ".pf-page-lead { inline-size: 1035px }",
+    ".pf-wsection-title { inline-size: 195px }",
+    ".pf-wsection-title { block-size: 105px }",
+    ".pf-wsection-icon { inline-size: 56px }",
+    ".pf-wsection-icon { block-size: 56px }",
+    ".pf-wsection-fields { max-inline-size: 640px }",
+    ".pf-compound .pf-select { inline-size: 82px }",
+    ".pf-plot[data-h=\"160\"] { block-size: 160px }",
+    ".pf-plot[data-h=\"440\"] { block-size: 440px }",
+    ".pf-tab[data-tabw=\"200\"] { inline-size: 200px }",
+    ".pf-tab[data-tabw=\"94\"] { inline-size: 94px }",
+    ".pf-table-card[data-h=\"528\"] { block-size: 528px }",
+    ".pf-filter-bar[data-in-head=\"true\"] { block-size: 78px }"
   ],
   "lowContrast": 0,
-  "contrastMatchingProduct": 2,
+  "contrastMatchingProduct": 1,
   "productLow": [
     {
       "col": "rgb(255,255,255)",

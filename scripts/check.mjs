@@ -83,7 +83,13 @@ for (const page of ['dashboard.html', 'listings.html', 'components.html']) {
      catalogue quotes the product's JSX inside <code>, so a naive search finds
      `style={{…}}` that is documentation rather than markup. */
   const html = raw.slice(raw.indexOf('<body')).replace(/<!--[\s\S]*?-->/g, '');
-  const attr = html.match(/<[a-zA-Z][^>]*?\sstyle\s*=\s*"[^"]*"/g) || [];
+  /* An inlined illustration is exempt. The rule exists so that presentation
+     lives in the stylesheet and not in the markup, and it should: but svg.js
+     paints two of EmptyListing's shapes through `mask-type` and
+     `mix-blend-mode`, which are the illustration's own drawing instructions
+     rather than page styling. Dropping them rendered the art near-black. */
+  const withoutArt = html.replace(/<svg[\s\S]*?<\/svg>/g, '');
+  const attr = withoutArt.match(/<[a-zA-Z][^>]*?\sstyle\s*=\s*"[^"]*"/g) || [];
   attr.length ? bad(`${page} has ${attr.length} style attribute(s) in the body`)
               : ok(`${page} — no style attributes`);
   const refs = [...new Set([...html.matchAll(/href="#(pf-[\w]+)"/g)].map((m) => m[1]))];
