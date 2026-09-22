@@ -1,5 +1,5 @@
 {
-  "finalPath": "/en/listings",
+  "finalPath": "/en/post-listing/88240117",
   "shell": true,
   "errorCard": false,
   "overlay": {
@@ -9,7 +9,7 @@
     "dropdown": false
   },
   "spinning": false,
-  "pageHeight": 967,
-  "note": "Pending (1) — columns Property · Timeline · Status · Actions",
+  "pageHeight": 900,
+  "note": "Actions[4] — \"Apply Discount\" (listingUtilities.js:222); it may navigate rather than open",
   "url": "http://127.0.0.1:3000/en/listings"
 }

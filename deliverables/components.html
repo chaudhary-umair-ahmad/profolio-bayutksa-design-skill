@@ -1840,14 +1840,16 @@ body.cat{background:var(--bg-content);display:grid;grid-template-columns:230px 1
       applied; upgrade-icons/styled.js:29 gives it <code>--icon-bg</code> #28b16d at −2/−2.</span></header>
   <div class="cat-body">
     <div class="cat-row">
-      <div class="cat-item"><span class="cat-label">not applied — and disabled, as every circle on the listings screen is</span>
-        <div class="cat-stage" data-ground="white"><span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot" disabled><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span></div></div>
-      <div class="cat-item"><span class="cat-label">applied</span>
+      <div class="cat-item"><span class="cat-label">enabled — the DEFAULT. this account can buy it</span>
+        <div class="cat-stage" data-ground="white"><span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i"><use href="#pf-IconSuperHot"/></svg></button></span></div></div>
+      <div class="cat-item"><span class="cat-label">applied — coloured, ticked, and disabled (there is nothing left to buy)</span>
         <div class="cat-stage" data-ground="white"><span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="hot" data-applied type="button" aria-label="Hot" disabled><svg class="i"><use href="#pf-IconSuperHot"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span></div></div>
+      <div class="cat-item"><span class="cat-label">disabled — not applied and not applicable</span>
+        <div class="cat-stage" data-ground="white"><span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot" disabled><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span></div></div>
     </div>
     <table class="cat-spec">
       <tr><th>tokens</th><td><code>--applied-check</code> 14 · <code>--applied-check-inset</code> −2 · <code>--icon-applied</code> 19 · <code>--action-cell</code> 36 · <code>--action-gap-dense</code> 4</td></tr>
-      <tr><th>state</th><td>platformActions.js:142 disables a circle when it is neither applied nor applicable AND when it is applied — so every one of them is at <code>--disabled-opacity</code> 0.54 on this screen</td></tr>
+      <tr><th>state</th><td>platformActions.js:142 disables a circle when it is neither applied nor applicable AND when it is applied. <strong>Enabled is the normal state</strong>: the real screen shows six enabled circles on nine of its ten rows. This catalogue said the opposite for a day, because the harness account could not buy anything and every circle came back dead — see authoring/qa-listings.md.</td></tr>
     </table>
   </div>
 </section>

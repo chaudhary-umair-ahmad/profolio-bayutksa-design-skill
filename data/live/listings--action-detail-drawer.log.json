@@ -1,6 +1,6 @@
 {
   "finalPath": "/en/listings",
-  "shell": true,
+  "shell": false,
   "errorCard": false,
   "overlay": {
     "modal": false,
@@ -9,7 +9,7 @@
     "dropdown": false
   },
   "spinning": false,
-  "pageHeight": 967,
-  "note": "Pending (1) — columns Property · Timeline · Status · Actions",
+  "pageHeight": 900,
+  "note": "Actions[2] — IoMdEye is detail-drawer (table-actions.js:31), so this should open a drawer",
   "url": "http://127.0.0.1:3000/en/listings"
 }

@@ -14,6 +14,13 @@
  *   Upgrades column: 6 buttons   Actions column: 5 buttons
  */
 
+/** the Nth upgrade circle of the first row (the second-from-last cell) */
+const upgradeBtn = (i) => async (p) => {
+  const tds = p.locator('.ant-table-row').first().locator('td');
+  const n = await tds.count();
+  await tds.nth(n - 2).locator('button').nth(i).click({ timeout: 8000 });
+};
+
 /** the Nth button of the Nth-from-last cell of the first row */
 const rowBtn = (fromEnd, i) => async (p) => {
   const tds = p.locator('.ant-table-row').first().locator('td');
@@ -89,6 +96,43 @@ export default [
     note: 'Ad License Requests (0) — a different table entirely (adLicenseTableColumnMapper)',
     do: async (p) => { await p.getByRole('tab', { name: /^Ad License/ }).click(); await p.waitForTimeout(1500); },
   },
+  /* ── the flows the old fixture account hid ────────────────────────────
+     Every upgrade circle and the sixth row action were disabled or absent
+     until harness/fixtures.mjs learned to say `is_applicable` and
+     `discount_applicable`. Now they can be clicked, so they can be captured.
+     A step that opens nothing is reported as a failure and costs one line —
+     which is the cheapest way to find out what each control actually does. */
+  {
+    name: 'upgrade-signature',
+    note: 'Upgrades[0] — Signature',
+    do: async (p) => { await upgradeBtn(0)(p); await p.waitForTimeout(1200); },
+  },
+  {
+    name: 'upgrade-hot',
+    note: 'Upgrades[1] — Hot (applied on some rows, so click row 0)',
+    do: async (p) => { await upgradeBtn(1)(p); await p.waitForTimeout(1200); },
+  },
+  {
+    name: 'upgrade-refresh',
+    note: 'Upgrades[2] — Refresh',
+    do: async (p) => { await upgradeBtn(2)(p); await p.waitForTimeout(1200); },
+  },
+  {
+    name: 'upgrade-photography',
+    note: 'Upgrades[3] — Photography service',
+    do: async (p) => { await upgradeBtn(3)(p); await p.waitForTimeout(1200); },
+  },
+  {
+    name: 'action-detail-drawer',
+    note: 'Actions[2] — IoMdEye is detail-drawer (table-actions.js:31), so this should open a drawer',
+    do: async (p) => { await rowBtn(1, 2)(p); await p.waitForTimeout(1200); },
+  },
+  {
+    name: 'action-discount',
+    note: 'Actions[4] — "Apply Discount" (listingUtilities.js:222); it may navigate rather than open',
+    do: async (p) => { await rowBtn(1, 4)(p); await p.waitForTimeout(1200); },
+  },
+
   /* the two states that are not a click: what the screen looks like while the
      listings query is in flight, and what it looks like when it fails. Both
      are the PRODUCT's own rendering — a skeleton it ships and an error card it

@@ -77,7 +77,10 @@ const ACTIONS = [
   ['Preview on Bayut',    'FiArrowUpRight',      null],
   ['Listing details',     'IoMdEye',             null],
   ['Edit',                'MdEdit',              null],
-  ['Sell or Rent Property', 'IconSellRentListing', null],
+  /* the tooltip says "Apply Discount" (listingUtilities.js:222), even though
+     the icon type is sell-rent-listing and the generic label map calls it
+     "Sell or Rent Property". The tooltip is what a user reads. */
+  ['Apply Discount',      'IconSellRentListing', null],
   ['Delete',              'HiOutlineTrash',      'modal-delete'],
 ];
 const [beds, baths, area] = ['IconBedroom', 'IconBathroom', 'IconAreaSize'];

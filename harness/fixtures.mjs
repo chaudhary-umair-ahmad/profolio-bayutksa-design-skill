@@ -38,7 +38,10 @@ const STATUSES = [
   { id: 3, slug: 'pending', name: 'Pending' },
   { id: 4, slug: 'removed', name: 'Removed' },
 ];
-const SUMMARY = { active: page.listings.active, draft: 2, pending: 1, removed: 0 };
+/* shaped like the real account rather than a tidy one — the real screen reads
+   Active (51) · Draft (1) · Pending (4) · Removed (172) · Ad License (5), and
+   three-digit counts are what the tabs have to hold */
+const SUMMARY = { active: page.listings.active, draft: 1, pending: 4, removed: 172 };
 
 /* "64 Sq. M." has dots after the number; strip separators, then take the leading number */
 const num = (s) => parseFloat(String(s).replace(/,/g, '').match(/-?\d+(\.\d+)?/)?.[0] ?? 'NaN');
@@ -53,7 +56,31 @@ const listings = page.recentListings.map((r, i) => {
   const [city, district, area] = r.location.split(', ');
   const purpose = purposeOf(r.title);
   const posted = day(2 + i * 3);
-  const applied = (slug) => ({ slug, is_applied: r.product === slug.replace('-listing', '') || slug === 'basic-listing' });
+  /* products_information is an ARRAY over the wire.
+     transformers/listings.js:113 reduces it to an object keyed by slug, which
+     is the shape products.js:5 and :85 then read. I changed this to an object
+     first, on the strength of those readers, and the table stopped rendering
+     entirely — 225 nodes instead of 1571, because line 97 calls `.find()` on
+     it before the reduce ever runs. The array is right.
+
+     What was actually missing is `is_applicable` — whether this account can
+     buy the upgrade — and the four SERVICE entries, which were not in the
+     array at all. Without them every product resolved to
+     `applied:false, canApply:false`, and platformActions.js:142 disables a
+     circle that is neither: six dead circles on every row, which I then wrote
+     into the design system as the product's behaviour.
+
+     The real screen shows six enabled circles on nine of its ten rows
+     (data/live/listings.real.capture.json) and one row with three disabled,
+     so row 8 keeps its services unavailable and the page carries all three
+     states, as the real one does.                                         */
+  const applied = (slug) => r.product === slug.replace('-listing', '') || slug === 'basic-listing';
+  const product = (slug) => ({ slug, is_applied: applied(slug), is_applicable: !applied(slug) });
+  /* a service is applied only when its status is 'completed' (products.js:7);
+     'requested' is the pending state, which draws RequestedStateIcon in the
+     warning colour */
+  const service = (slug, is_applicable = true) => ({ slug, status: null, is_applied: false, is_applicable });
+  const servicesOff = i === 8;
   return {
     id: num(r.bayutId),
     price: num(r.price),
@@ -73,6 +100,12 @@ const listings = page.recentListings.map((r, i) => {
     images: [{ main: 1, sizes: { thumbnail: `/harness-img/${r.bayutId}.svg`, medium: `/harness-img/${r.bayutId}.svg` } }],
     images_count: r.images,
     ad_license: r.regaId,
+    /* listingUtilities.js:220 — the sixth row action renders only when the
+       backend says the listing is discountable AND the tenant flag is on
+       (SHOW_LISTING_DISCOUNT_TAG is true for bayut). It was missing here, so
+       the harness rendered five buttons and I wrote "five" into the design
+       system. The action was reachable all along; the fixture hid it. */
+    discount_applicable: true,
     expiry_days: 30,
     posted_at: posted.toISOString(),
     created_at: posted.toISOString(),
@@ -102,7 +135,13 @@ const listings = page.recentListings.map((r, i) => {
       disposition: { slug: 'live', name: 'Live' },
       posted_at: posted.toISOString(),
       expiry_date: day(-28).toISOString(),
-      products_information: [applied('basic-listing'), applied('hot-listing'), applied('signature-listing')],
+      products_information: [
+        product('basic-listing'), product('hot-listing'), product('signature-listing'),
+        service('refresh', !servicesOff),
+        service('photography-service', !servicesOff),
+        service('videography-service', !servicesOff),
+        service('drone-footage-service', !servicesOff),
+      ],
     }],
     _row: r,   /* stripped before sending; used to build the stats overlay */
   };
@@ -152,6 +191,22 @@ const ROUTES = [
   [/^\/api\/surge\/users\/current$/,                 () => user],
   [/^\/api\/surge\/users\/\d+$/,                     () => ({ user: { ...U, profile_image: AVATAR } })],
   [/^\/api\/surge\/agencies\/\d+\/licenses$/,          () => ({ licenses: [], pagination: {} })],
+  /* Clicking an upgrade circle calls this before anything opens:
+     tenant/bayut/apis/listings.js:167. The hook (useApplyProductModalData.js:172)
+     shows "Product can not be applied" and opens NOTHING when the answer has no
+     applicableProduct — which is why the six now-enabled circles still did
+     nothing. The transformer reads res.bayut.products and res.bayut.credits.available. */
+  [/^\/api\/surge\/products\/applicable_products/,    () => ({ bayut: {
+      credits: { available: num(C.available) },
+      products: [
+        { id: 2, slug: 'hot-listing',           title: 'Hot Listing',       usage_type: 'credit', required_quantity: 5,  price: 5,  default_expiry_days: 30 },
+        { id: 3, slug: 'signature-listing',     title: 'Signature Listing', usage_type: 'credit', required_quantity: 10, price: 10, default_expiry_days: 30 },
+        { id: 4, slug: 'refresh',               title: 'Refresh',           usage_type: 'credit', required_quantity: 1,  price: 1,  default_expiry_days: 30 },
+        { id: 5, slug: 'photography-service',   title: 'Photography',       usage_type: 'credit', required_quantity: 3,  price: 3,  default_expiry_days: 30 },
+        { id: 6, slug: 'videography-service',   title: 'Videography',       usage_type: 'credit', required_quantity: 4,  price: 4,  default_expiry_days: 30 },
+        { id: 7, slug: 'drone-footage-service', title: 'Drone Footage',     usage_type: 'credit', required_quantity: 6,  price: 6,  default_expiry_days: 30 },
+      ],
+  } })],
   [/^\/api\/surge\/products$/,                       () => ({ products: [] })],
   [/^\/api\/surge\/agencies\/\d+$/,                  () => ({ agency: { ...AGENCY, owner: { id: U.id, name: U.name }, users: [{ id: U.id, name: U.name, agency_admin: true, platform_mapping: U.platform_mapping }] } })],
   [/^\/api\/surge\/notifications\/stats$/,           () => ({ stats: { unread_notifications_count: U.unread_notifications_count } })],

@@ -103,7 +103,7 @@
       "classification": "high"
     },
     "quality_lister": "high",
-    "unread_notifications_count": 46,
+    "unread_notifications_count": 128,
     "_avatar": "no profile_image on purpose: the avatar fallback is what the design system documents, and a photo would only compare a picture against a glyph"
   },
   "banners": []
