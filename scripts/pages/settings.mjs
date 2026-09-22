@@ -78,8 +78,11 @@ const headerCard = (p) => `        <section class="pf-card pf-settings-head">
         </section>`;
 
 /* a field is a 22-tall label over a 44-tall control; `span` makes it 835 */
-const field = (f, i) => {
-  const id = `f-${i}`;
+/* namespaced by page: `f-0` on four pages is four elements with one id the
+   moment they share a document, and a <label for> then points at whichever
+   came first */
+const field = (slug) => (f, i) => {
+  const id = `${slug}-f-${i}`;
   const cls = ['pf-sfield', f.span ? 'span-all' : '', f.tall ? 'tall' : '', f.upload ? 'upload' : '', f.type === 'password' ? 'password' : ''].filter(Boolean).join(' ');
   /* a measured row height, where the product's differs from the 74 a label and
      a control come to — Agency Settings has a 118 and an 85 */
@@ -126,7 +129,7 @@ ${/* only the profile page carries a 997x152 header card; Agency Settings and
           <section class="pf-card pf-settings-form">
             <h5 class="pf-card-title">${esc(p.formTitle)}</h5>
             <form class="pf-form-grid"${p.cols ? ` data-cols="${p.cols}"` : ''}>
-${p.fields.map(field).join('\n')}
+${p.fields.map(field(p.slug)).join('\n')}
             </form>
             <div class="pf-form-actions">
               <button class="pf-btn" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Cancel</span></button>

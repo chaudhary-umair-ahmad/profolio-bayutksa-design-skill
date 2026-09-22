@@ -115,13 +115,13 @@ ${(b.body || []).map((x) => BODY[x.kind](x)).join('\n')}
 
 /* the page's own filter bar, the same component Listings carries above its
    table — four fields, Show More, Clear filters, Search */
-const filterBar = (f) => `      <div class="pf-filter-bar">
+const filterBar = (f, slug) => `      <div class="pf-filter-bar">
         <div class="pf-filter-fields">
 ${f.fields.map((x, i) => `          <div class="pf-field">
-            <label class="pf-field-label" for="fb-${i}">${esc(x.label)}</label>
+            <label class="pf-field-label" for="${slug}-fb-${i}">${esc(x.label)}</label>
 ${x.type === 'select'
-  ? `            <button class="pf-select" id="fb-${i}" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">${esc(x.placeholder)}</span><span class="pf-select-arrow">${icon('DownOutlined', 12)}</span></button>`
-  : `            <span class="pf-input"><input id="fb-${i}" type="text" placeholder="${esc(x.placeholder)}"><span class="pf-input-suffix"></span></span>`}
+  ? `            <button class="pf-select" id="${slug}-fb-${i}" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">${esc(x.placeholder)}</span><span class="pf-select-arrow">${icon('DownOutlined', 12)}</span></button>`
+  : `            <span class="pf-input"><input id="${slug}-fb-${i}" type="text" placeholder="${esc(x.placeholder)}"><span class="pf-input-suffix"></span></span>`}
           </div>`).join('\n')}
         </div>
         <div class="pf-filter-actions">
@@ -144,7 +144,7 @@ for (const p of cfg.pages) {
 ${p.notes.map((n) => `       ${n}`).join('\n')}
      ═══════════════════════════════════════════════════════════════════════ -->`;
   const html = open({ title: p.title, current: p.rail, docTitle: `${p.title} — Profolio KSA`, comment, contentGap: 8 })
-    + (p.filterBar ? filterBar(p.filterBar) + '\n' : '')
+    + (p.filterBar ? filterBar(p.filterBar, p.slug) + '\n' : '')
     + (p.column ? `      <div class="pf-settings-main">\n` : '')
     + p.rows.map(row).join('\n') + '\n'
     + (p.column ? '      </div>\n' : '')

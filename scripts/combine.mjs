@@ -1,19 +1,31 @@
 #!/usr/bin/env node
 /**
- * Emits deliverables/profolio-ksa.html — one self-contained file carrying all
- * three deliverables behind a tab bar:
+ * Emits deliverables/profolio-ksa.html — ONE self-contained file carrying every
+ * deliverable behind a tab bar: every page in deliverables/, the component
+ * catalogue, and the extraction report.
  *
- *   Report     extraction-report.md, rendered
- *   Catalogue  components.html
- *   Dashboard  dashboard.html
+ * The pages keep living as separate files; this is the artefact you hand to
+ * someone who just wants to open one thing. Nothing is fetched — the
+ * stylesheet, the icon sprite, the embedded faces and the interaction layer
+ * are all inlined, so it works from a file:// URL with no network at all.
  *
- * The three keep living as separate files; this is the build artefact you hand
- * to someone who just wants to open one thing. No network calls except the
- * Google Fonts stylesheet the pages already load; everything else is inlined.
+ * THREE THINGS IT USED TO GET WRONG
+ *
+ *   It named its three pages in the source. A page built after it was written
+ *   simply did not appear, which is the same hand-kept-list failure that had
+ *   already bitten check.mjs and bundle.mjs. It reads deliverables/ now.
+ *
+ *   It never inlined prototype.js, so every overlay in the combined file was
+ *   dead: the modals, the drawers, the popovers and the tabs all rendered and
+ *   none of them opened.
+ *
+ *   Eleven pages each carry the same three shell overlays, so the combined DOM
+ *   had eleven #popover-account elements and getElementById found the first
+ *   whatever you clicked. Overlays are deduped by id.
  *
  *   node scripts/combine.mjs
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -22,9 +34,8 @@ const read = (f) => readFileSync(join(D, f), 'utf8');
 
 const css   = read('profolio.css');
 const fonts = read('fonts.css');
+const proto = read('prototype.js');
 const cat   = read('components.html');
-const dash  = read('dashboard.html');
-const list  = read('listings.html');
 const md    = readFileSync(join(D, '..', 'authoring', 'extraction-report.md'), 'utf8');
 
 /* ── slice out the parts ──────────────────────────────────────────────── */
@@ -38,9 +49,79 @@ const sprite    = between(cat,  '<svg class="pf-sprite"', '</defs></svg>', 'spri
 const catChrome = between(cat,  '/* ── CATALOGUE CHROME ONLY', '</style>', 'catalogue chrome')
                     .replace(/<\/style>$/, '');
 const catBody   = between(cat,  '<nav class="cat-nav">', '</main>', 'catalogue body');
-const dashBody  = between(dash, '<div class="pf-shell">', '<!-- /.pf-shell -->', 'dashboard body');
-const fbTab     = between(dash, '<div class="pf-feedback-tab">', '</div>', 'feedback tab');
-const listBody  = between(list, '<div class="pf-shell">', '<!-- /.pf-shell -->', 'listings body');
+
+/* EVERY page, in the order they should be walked. A page not named here still
+   appears — it just sorts after the ones that are. */
+const ORDER = ['dashboard', 'listings', 'credits-usage', 'reports-summary', 'reports-listing-report',
+               'reports-leads-reports', 'lms-leads', 'ad-license',
+               'user-settings-user-profile', 'user-settings-agency-profile', 'user-settings-change-password'];
+const TITLES = {
+  'dashboard': 'Overview',
+  'listings': 'My Listings',
+  'credits-usage': 'Credits Usage',
+  'reports-summary': 'Reports',
+  'reports-listing-report': 'Listing Report',
+  'reports-leads-reports': 'Leads Report',
+  'lms-leads': 'Leads',
+  'ad-license': 'Ad License',
+  'user-settings-user-profile': 'User Settings',
+  'user-settings-agency-profile': 'Agency Settings',
+  'user-settings-change-password': 'Change Password',
+};
+
+const slugs = readdirSync(D)
+  .filter((f) => f.endsWith('.html'))
+  .filter((f) => !/bundled|components|not-built|inline-art|qa-|\.qa\.|profolio-ksa/.test(f))
+  .map((f) => f.replace(/\.html$/, ''))
+  .sort((a, b) => {
+    const ia = ORDER.indexOf(a), ib = ORDER.indexOf(b);
+    return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
+  });
+
+/* Each generated page is  <body> sprite · comment · .pf-shell · overlays  */
+const seenOverlay = new Set();
+const instanceRules = new Set();
+const pages = slugs.map((slug) => {
+  const src = read(`${slug}.html`);
+  const body = between(src, '<div class="pf-shell">', '<!-- /.pf-shell -->', `${slug} shell`);
+  const after = src.slice(src.indexOf('<!-- /.pf-shell -->') + 19, src.lastIndexOf('</body>'));
+
+  /* the instance <style> block carries DATA — a ring percentage, a meter fill */
+  const style = /<style>([\s\S]*?)<\/style>/.exec(src);
+  if (style) {
+    for (const line of style[1].split('\n')) {
+      const m = /^\.((?:pct|fill)-[\w.]+)\{[^}]*\}/.exec(line.trim());
+      if (m) instanceRules.add(line.trim());
+    }
+  }
+
+  /* Overlays are deduped by id across pages: the three shell overlays are
+     identical on all eleven, and eleven #popover-account elements means
+     getElementById returns whichever came first. */
+  /* Split by LINES, not by a regex. An overlay contains nested <div>s and a
+     non-greedy `[\s\S]*?</div>` stops at the first one, which split
+     modal-delete and modal-quota in half and then matched their tails as
+     overlays of their own. Every generated overlay opens with a <div at
+     column 0 and closes with a </div> at column 0. */
+  const overlays = [];
+  const lines = after.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    if (!/^<div /.test(lines[i])) continue;
+    const id = /\sid="([^"]+)"/.exec(lines[i]);
+    let j = i;
+    while (j < lines.length && lines[j] !== '</div>') j++;
+    const block = lines.slice(i, j + 1).join('\n');
+    i = j;
+    if (!id) { overlays.push(block); continue; }   /* a drawer's bare mask */
+    if (seenOverlay.has(id[1])) continue;
+    seenOverlay.add(id[1]);
+    overlays.push(block);
+  }
+  const protoBar = /<div class="pf-proto-bar"[\s\S]*?<\/div>\s*$/.exec(after);
+  return { slug, title: TITLES[slug] || slug, body, overlays, protoBar: protoBar ? protoBar[0] : '' };
+});
+
+const allOverlays = pages.flatMap((p) => p.overlays).join('\n');
 
 /* ── markdown → html (only what the report actually uses) ─────────────── */
 const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -149,10 +230,9 @@ ${css}
    Custom-property values that carry DATA (a percentage), not presentation.
    Here so neither view needs a single style attribute in its markup.
    ═══════════════════════════════════════════════════════════════════════ */
-.pct-90{--ring-pct:90}
+${[...instanceRules].sort().join('\n')}
 .pct-40{--ring-pct:40}
 .pct-100{--ring-pct:100;--ring-color:var(--success)}
-.fill-97{--meter-pct:97.17}
 .fill-50{--meter-pct:50}
 .fill-8{--meter-pct:8}
 
@@ -262,24 +342,26 @@ body{margin:var(--sp-0)}
 ${sprite}
 
 <nav class="cmb-tabbar" role="tablist" aria-label="Deliverables">
-  <span class="cmb-brand">Profolio KSA<span>design system · /dashboard + /listings</span></span>
-  <button class="cmb-tab" role="tab" data-view="dashboard" aria-selected="true" type="button">Dashboard</button>
-  <button class="cmb-tab" role="tab" data-view="listings" aria-selected="false" type="button">My Listings</button>
+  <span class="cmb-brand">Profolio KSA<span>design system · ${pages.length} pages</span></span>
+${pages.map((p, i) => `  <button class="cmb-tab" role="tab" data-view="${p.slug}" aria-selected="${i === 0}" type="button">${p.title}</button>`).join('\n')}
   <button class="cmb-tab" role="tab" data-view="catalogue" aria-selected="false" type="button">Catalogue</button>
   <button class="cmb-tab" role="tab" data-view="report" aria-selected="false" type="button">Extraction report</button>
-  <span class="cmb-meta">sourced from profolio-reactjs @ b83e805</span>
+  <span class="cmb-meta">sourced from profolio-reactjs</span>
 </nav>
 
-<!-- ═════ DASHBOARD ═════════════════════════════════════════════════════ -->
-<div id="view-dashboard">
-${dashBody}
-${fbTab}
-</div>
+<!-- ═════ THE PAGES ═════════════════════════════════════════════════════
+     Each one is its own .pf-shell, so each carries its own rail state and
+     header title. Their overlays are pooled below, deduped by id. -->
+${pages.map((p, i) => `<div id="view-${p.slug}"${i === 0 ? '' : ' hidden'}>
+${p.body}
+${p.protoBar}
+</div>`).join('\n\n')}
 
-<!-- ═════ LISTINGS ══════════════════════════════════════════════════════ -->
-<div id="view-listings" hidden>
-${listBody}
-</div>
+<!-- ═════ OVERLAYS ══════════════════════════════════════════════════════
+     Every modal, drawer, popover, listbox and tooltip from every page, once.
+     The three shell overlays are shared by all eleven pages; keeping one copy
+     is what stops getElementById returning whichever came first. -->
+${allOverlays}
 
 <!-- ═════ CATALOGUE ═════════════════════════════════════════════════════ -->
 <div id="view-catalogue" hidden>
@@ -295,6 +377,12 @@ ${toc}
 ${report}
   </article>
 </div>
+
+<!-- the interaction layer, inlined: without it every overlay in this file
+     renders and none of them opens -->
+<script>
+${proto}
+</script>
 
 <script>
 /* Tabs and in-page jumps are buttons driving scrollIntoView, never <a href="#…">.
@@ -319,7 +407,9 @@ ${report}
   // the catalogue's own nav ships as <a href="#c-…">; intercept so it scrolls
   // instead of navigating
   document.addEventListener('click', function (e) {
-    var el = e.target.closest('[data-go], a[href^="#"]');
+    /* only the catalogue's own nav — a product page's links are real
+       destinations and a data-open trigger is prototype.js's business */
+    var el = e.target.closest('[data-go], .cat-nav a[href^="#"]');
     if (!el) return;
     var id = el.dataset.go || el.getAttribute('href').slice(1);
     e.preventDefault();
@@ -338,5 +428,28 @@ ${report}
 </html>
 `;
 
+/* Eleven pages that were each correct alone can still be wrong together, and
+   the way they go wrong is an id collision: a form field called `f-0` on two
+   pages, or the empty-state illustration's own clipPath ids, inlined once per
+   page. The browser resolves every duplicate to the first, so a label on page
+   nine focuses a field on page two and an illustration clips itself to
+   another page's copy. Nothing about that looks broken in the source — so it
+   is caught here, where the pages first meet, rather than by eye. */
+/* markup only: prototype.js's own comments show example markup, and a code
+   sample in the catalogue is text rather than an element */
+const markup = html
+  .replace(/<script[\s\S]*?<\/script>/gi, '')
+  .replace(/<style[\s\S]*?<\/style>/gi, '')
+  .replace(/<!--[\s\S]*?-->/g, '');
+const ids = [...markup.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
+const dupes = [...new Set(ids.filter((id, i) => ids.indexOf(id) !== i))];
+if (dupes.length) {
+  console.error(`\n  REFUSING TO WRITE — ${dupes.length} id(s) appear more than once in the combined file:`);
+  for (const d of dupes.slice(0, 20)) console.error(`    ${d}`);
+  if (dupes.length > 20) console.error(`    … and ${dupes.length - 20} more`);
+  console.error('\n  Namespace them in the generator that emits them, not here.');
+  process.exit(1);
+}
+
 writeFileSync(join(D, 'profolio-ksa.html'), html);
-console.log('  deliverables/profolio-ksa.html', (html.length / 1024).toFixed(0) + 'KB');
+console.log('  deliverables/profolio-ksa.html', (html.length / 1024).toFixed(0) + 'KB', `· ${ids.length} ids, none repeated`);

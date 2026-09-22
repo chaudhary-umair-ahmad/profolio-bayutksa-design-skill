@@ -10,7 +10,7 @@
  * Nav labels and order are menuList.js's, character for character.
  */
 import { readFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const D = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'deliverables');
@@ -51,9 +51,26 @@ export const sprite = () => {
 /* the EmptyState illustration. EmptyState.js:31 passes
    color={tenantTheme['primary-light-2']}, and the art carries its own fills,
    so it is inlined from deliverables/inline-art.html rather than sprited. */
-export const emptyArt = () => readFileSync(join(D, 'inline-art.html'), 'utf8')
-  .match(/<svg class="pf-emptylisting"[\s\S]*?<\/svg>/)[0]
-  .replace('class="pf-emptylisting"', 'class="pf-empty-art"');
+/* The illustration carries its own <clipPath id="…"> and references it by
+   url(#…). Inlined more than once — three empty tabs on Listings, a fourth in
+   the error state, and again on every page that has a table — every copy
+   declares the same id and the browser resolves all of them to the first. The
+   ids are suffixed per call so each copy clips itself.
+
+   The suffix carries the GENERATOR's name as well as the count. Every page is
+   built by its own process, so a bare counter restarts at 1 in each of them and
+   two copies collide the moment combine.mjs puts both pages in one document —
+   which is exactly what it did. `listings-1` and `blocks-1` cannot. */
+const artFrom = basename(process.argv[1] || 'page').replace(/\.mjs$/, '');
+let artCopies = 0;
+export const emptyArt = () => {
+  const n = `${artFrom}-${++artCopies}`;
+  return readFileSync(join(D, 'inline-art.html'), 'utf8')
+    .match(/<svg class="pf-emptylisting"[\s\S]*?<\/svg>/)[0]
+    .replace('class="pf-emptylisting"', 'class="pf-empty-art"')
+    .replace(/\bid="([\w-]+)"/g, (_, id) => `id="${id}-${n}"`)
+    .replace(/url\(#([\w-]+)\)/g, (_, id) => `url(#${id}-${n})`);
+};
 
 export const wordmark = () => readFileSync(join(D, 'inline-art.html'), 'utf8')
   .match(/<svg class="pf-profoliologo"[\s\S]*?<\/svg>/)[0]
