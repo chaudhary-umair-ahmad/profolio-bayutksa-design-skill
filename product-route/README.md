@@ -77,11 +77,51 @@ drawer    1  inline
 popover   1  inline
 ```
 
+## The second route: `/design-capture/flows`
+
+`DesignCaptureFlows.js`, registered the same way. Where the first route renders
+the component vocabulary, this one renders **the My Listings flows** — the real
+modals and drawers, mounted from the same files the table mounts them from and
+opened through the same refs the row actions use.
+
+The inventory is the product's, not a guess. `listing-row-actions.js:89` gives
+a row exactly six things to do:
+
+| ref method | what it opens | here |
+|---|---|---|
+| `showDeleteListingModal` | ConfirmationModal + the reason list | ✅ renders |
+| `trucheckModal` | TruCheckModal | ✅ renders |
+| `showBookingModal` | BookingModal (daily-rental only) | ✅ renders, portalled |
+| `showListingDetail` | ListingDrawer | ✅ renders, portalled — in its loading state, since there is no server |
+| `showEditListingPage` | navigates to `/post-listing/:id` | not an overlay |
+| `showListingOnClassified` | opens the classified site | not an overlay |
+
+Two caveats worth knowing before you save:
+
+- **`getContainer={false}` only works where the wrapper forwards it.**
+  ConfirmationModal and TruCheckModal do, so they sit inside their own section.
+  BookingModal and ListingDrawer do not, so antd portals them to `<body>` and
+  they float over everything. They are still completely captured — markup and
+  generated CSS are in the file either way — but they cover the rest of the
+  page. Use `?only=<name>` to render one at a time:
+
+  ```
+  /design-capture/flows                             all of them, one save
+  /design-capture/flows?only=booking                just that one, clean
+  /design-capture/flows?only=listing-detail-drawer
+  ```
+
+- **Each specimen has its own error boundary.** These components expect a
+  listing, a store and an API; here they get a static item and no server. One
+  that fails says so in place and the rest of the page still saves.
+
 ## Using it
 
-1. Open `/<lang>/design-capture` on staging (or locally).
-2. Save the page with SingleFile.
-3. `node scripts/measure-real.mjs <file> --route design-capture`
+1. Open `/<lang>/design-capture` on staging (or locally) — save with SingleFile.
+2. Open `/<lang>/design-capture/flows` — save.
+3. Then `?only=booking` and `?only=listing-detail-drawer` — save each.
+4. Send the files. `node scripts/measure-real.mjs <file> --route design-capture`
+   walks each one.
 
 Each specimen carries `data-spec="<name>"` — `button/primary`, `modal/default`,
 `drawer/right`, `round-action/states`. That attribute is the contract: a
