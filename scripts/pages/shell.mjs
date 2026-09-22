@@ -19,13 +19,22 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 /* label, icon, and the page it opens. A route we have not built yet points at
    not-built.html, which says so — better than a dead link, and it keeps the
    gaps visible while walking the prototype. */
+/* NINE, not eleven. Measured on the real screen
+   (data/live/listings.real.capture.json) and then traced to the source:
+
+     Inbox    menuList.js:46 renders it only when !HIDE_INBOX, and
+              tenant/bayut/constants/constants.js:240 sets HIDE_INBOX: true.
+              It never appears for this tenant. We were drawing it anyway.
+     TruLeads menuList.js:58 needs user.is_lms_enabled AND IS_LMS_ENABLED AND
+              !HIDE_REPORTS. The tenant flag is true, so this one is per
+              ACCOUNT — the real account does not have it. Kept here as a
+              comment rather than deleted, because a design for an LMS account
+              does show it. */
 export const NAV = [
   ['Overview',           'SideMenuDashboard',    'dashboard.html'],
   ['Post Listing',       'PostListingIcon',      null],
   ['My Listings',        'MyListingIcon',        'listings.html'],
   ['Credits Usage',      'SideMenuQuota',        null],
-  ['Inbox',              'SideMenuInbox',        null],
-  ['TruLeads',           'DashboardLmsIcon',     null],
   ['Agent Performance',  'AgentPerformanceIcon', null],
   ['Reports',            'SideMenuReports',      null],
   ['Agency Staff',       'SideMenuAgency',       null],

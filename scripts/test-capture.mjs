@@ -9,6 +9,7 @@ import pkg from '/opt/node22/lib/node_modules/playwright/index.js';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { LEAKS, findLeaks, hashyClasses } from './leaks.mjs';
 const { chromium } = pkg;
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -43,28 +44,14 @@ const icons = JSON.stringify(cap).match(/"icon":"pf-/g) || [];
 icons.length ? ok(`${icons.length} icon references kept`) : bad('no icon references — glyphs would be unidentifiable');
 
 /* ── and nothing it promised not to ────────────────────────────────────── */
+/* the rules live in scripts/leaks.mjs so that measure-real.mjs holds a
+   capture taken from a REAL signed-in page to exactly the same promise */
 function leakCheck(label, json) {
-  const noIcons = json.replace(/"icon":"[^"]*"/g, '');
-  let clean = true;
-  for (const [what, re] of leaks) {
-    const m = noIcons.match(re);
-    if (m) { bad(`${label} contains ${what} — ${JSON.stringify(m[0]).slice(0, 60)}`); clean = false; }
-  }
-  const classes = [...json.matchAll(/"class":\[([^\]]*)\]/g)].flatMap((m) => m[1].split(',')).map((c) => c.replace(/"/g, ''));
-  const hashy = classes.filter((c) => /^(css-|jsx-|sc-)|[0-9a-f]{6,}/i.test(c));
-  if (hashy.length) { bad(`${label}: hashed class names survived: ${hashy.slice(0, 3).join(', ')}`); clean = false; }
-  return clean;
+  const found = findLeaks(json);
+  for (const line of found) bad(`${label} ${line}`);
+  return found.length === 0;
 }
-const leaks = [
-  ['visible text', /Alfalw|Overview|Platinum|Riyadh|Listings|Credits/],
-  ['a Bayut or REGA id', /\b(88\d{6}|7201\d{6})\b/],
-  ['an href or src', /"(href|src|srcset|action)"\s*:/],
-  ['a data-\\* attribute', /"data-[\w-]+"\s*:/],
-  ['an element id', /"id"\s*:/],
-  ['an email', /[\w.+-]+@[\w-]+\.\w+/],
-  ['a phone number', /\+?9665\d{8}|\b05\d{8}\b/],
-  ['a text or value field', /"(text|value|placeholder|title|alt|ariaLabel)"\s*:/],
-];
+const leaks = LEAKS;
 for (const [what, re] of leaks) {
   const m = jsonNoIcons.match(re);
   m ? bad(`capture contains ${what} — ${JSON.stringify(m[0]).slice(0, 60)}`)
@@ -72,8 +59,7 @@ for (const [what, re] of leaks) {
 }
 
 /* a generated class name would be noise at best and an id at worst */
-const classes = [...json.matchAll(/"class":\[([^\]]*)\]/g)].flatMap((m) => m[1].split(',')).map((s) => s.replace(/"/g, ''));
-const hashy = classes.filter((c) => /^(css-|jsx-|sc-)|[0-9a-f]{6,}/i.test(c));
+const { all: classes, hashy } = hashyClasses(json);
 hashy.length ? bad(`hashed class names survived: ${hashy.slice(0, 3).join(', ')}`)
              : ok(`${new Set(classes).size} distinct class names, none hashed`);
 

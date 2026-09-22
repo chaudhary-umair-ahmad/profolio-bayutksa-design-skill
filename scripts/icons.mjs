@@ -70,6 +70,10 @@ const WANTED = {
   IconBathroom: 'baths',
   // row actions — components/table/table-actions/table-actions.js
   IconSellRentListing: 'Sell or Rent Property',
+  /* the first row action. icons.js:922 renders it at size 18 with a 6px
+     inline-end margin, which is why that button measures 40 wide and the
+     other five measure 36. We were drawing HiCheck in its place. */
+  TruCheckIcon: 'TruCheck (row action 1)',
   RequestedStateIcon: 'upgrade requested',
   // upgrade services — tenant/bayut/data/products.js
   DroneIcon: 'Drone Footage (#79cdd1)',

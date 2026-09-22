@@ -419,7 +419,20 @@
   --filter-label-gap:8px;              /* <Group gap=8> between label and control */
   --filter-field-gap:8px;              /* Row gutter 8 → four 243px fields in 996px */
   --filter-actions-h:48px;             /* measured: the Show More / Clear / Search row */
-  --filter-search-h:42px;              /* filters.js searchButton btnHeight=42, an inline style */
+  /* MEASURED ON THE REAL SCREEN — data/live/listings.real.capture.json — and
+     all three disagree with what this checkout's filters.js would render:
+       Show More      142×40  16/700   (source: size="small"  → 13/600)
+       Clear filters   74×40  13/600   (source: size="small"  → 13/600, 32 tall)
+       Search          90×40  12/700   (source: size="large", btnHeight 42, 16)
+     The real page wins. The heights agreeing at 40 across all three is the
+     tell: this is a set, not three independent buttons. */
+  --filter-btn-h:40px;
+  --fs-showmore:16px;
+  --showmore-fg:#4F4F4F;               /* measured — not the #5A5F7D of a default button */
+  --fs-search:12px;
+  --filter-search-h:40px;              /* MEASURED. filters.js sets btnHeight=42 as an inline style and
+                                          this checkout would render 42 — the real page renders 40. */
+  --filter-search-pad:12px;            /* measured; the source's large size pads 16 */
   --form-item-mb:24px;                 /* antd Form.Item margin-bottom = marginLG */
   --input-pad-block:10px;              /* .ant-input-affix-wrapper padding 10px 11px (data/antd-css.json) */
   --input-border:var(--border-normal); /* #DEDEDE borderColorNormal */
@@ -1651,6 +1664,17 @@ table{border-collapse:collapse}
 .pf-select{justify-content:space-between;text-align:start;cursor:pointer;font-family:inherit}
 .pf-select .pf-placeholder{color:var(--text-placeholder)}
 .pf-select-arrow{display:flex;color:var(--text-quaternary);flex:none}
+.pf-filter-actions .pf-btn{block-size:var(--filter-btn-h)}
+/* Show More, measured: 16/700 in #4F4F4F, no border, 2px of margin all round
+   (filters.js passes style={{border:0, margin:2}}), icon after the label. */
+.pf-filter-actions .pf-btn[data-variant="tint"]{
+  font-size:var(--fs-showmore);font-weight:var(--fw-700);
+  color:var(--showmore-fg);
+  border:0;
+  margin:var(--sp-2);
+  gap:var(--sp-8);
+}
+.pf-filter-actions .pf-btn[data-variant="primary"]{font-size:var(--fs-search);font-weight:var(--fw-700)}
 .pf-filter-actions{
   display:flex;
   align-items:center;
@@ -1659,7 +1683,7 @@ table{border-collapse:collapse}
   align-self:end;                                /* bottoms out on the 44px controls … */
   margin-block-end:var(--form-item-mb);          /* … above the Form.Item margin */
 }
-.pf-filter-actions .pf-btn[data-variant="primary"]{height:var(--filter-search-h);padding-inline:var(--sp-16)}
+.pf-filter-actions .pf-btn[data-variant="primary"]{height:var(--filter-search-h);padding-inline:var(--filter-search-pad)}
                                                                   /* filters.js: size="large", btnHeight=42 inline */
 /* two more button variants the filter bar introduces — button/styled.js */
 .pf-btn[data-variant="tint"]{--btn-bg:var(--primary-light-4);--btn-fg:var(--gray-color);--btn-bd:transparent}
@@ -1726,7 +1750,12 @@ table{border-collapse:collapse}
    antd <Pagination showSizeChanger={false}> inside dataTable/style.js
    TablePagination — justify end, item radius 4.
    ═══════════════════════════════════════════════════════════════════════ */
+/* the real .ant-pagination is 308 wide at x=1108: content-sized and pushed to
+   the end, not a full-width row with justify-end. Ours measured 1332 from 84 —
+   the same picture with the wrong box. */
 .pf-pagination{
+  inline-size:fit-content;
+  margin-inline-start:auto;
   display:flex;
   justify-content:flex-end;
   align-items:center;

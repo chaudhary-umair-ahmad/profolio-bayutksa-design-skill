@@ -64,9 +64,14 @@ export const REGIONS = [
   { id: 'filter.label',   ours: '.pf-field-label',   w: 3, scope: 'filter.bar', live: (n) => n.tag === 'label' && n.style.fontSize === '12px', mine: (n) => cls(n, 'pf-field-label'), props: [...GEOM, ...TYPE] },
   { id: 'filter.input',   ours: '.pf-input',         w: 2, scope: 'filter.bar', live: (n) => cls(n, 'ant-input-affix-wrapper'), mine: (n) => cls(n, 'pf-input'),       props: [...GEOM, ...PAD, ...BOXY, 'fontSize', 'lineHeight'] },
   { id: 'filter.select',  ours: '.pf-select',        w: 2, scope: 'filter.bar', live: (n) => cls(n, 'ant-select-selector'),   mine: (n) => cls(n, 'pf-select'),        props: [...GEOM, 'paddingInlineStart', 'paddingInlineEnd', ...BOXY, 'fontSize'] },
-  { id: 'filter.showmore',ours: '.pf-btn[data-variant="tint"]', w: 1, scope: 'filter.bar', live: (n) => cls(n, 'ant-btn-default') && n.style.fontSize === '13px', mine: (n) => cls(n, 'pf-btn') && rgb(n.style.backgroundColor) === 'rgb(242,250,250)' && n.style.fontSize === '13px', props: [...GEOM, ...PAD, ...TYPE, 'backgroundColor', 'borderTopLeftRadius'] },
+  { id: 'filter.showmore',ours: '.pf-btn[data-variant="tint"]', w: 1, scope: 'filter.bar', /* matched by its TINT, not its font size: the real page renders Show More at
+       16/700 and this checkout's source at 13/600, and a region has to find the
+       same button on both sides */
+    live: (n) => cls(n, 'ant-btn') && rgb(n.style.backgroundColor) === 'rgb(242,250,250)', mine: (n) => cls(n, 'pf-btn') && rgb(n.style.backgroundColor) === 'rgb(242,250,250)', props: [...GEOM, ...PAD, ...TYPE, 'backgroundColor', 'borderTopLeftRadius'] },
   { id: 'filter.clear',   ours: '.pf-btn[data-variant="link-danger"]', w: 1, scope: 'filter.bar', live: (n) => cls(n, 'ant-btn-link') && rgb(n.style.color) === 'rgb(247,49,49)', mine: (n) => cls(n, 'pf-btn') && rgb(n.style.color) === 'rgb(247,49,49)', props: [...GEOM, ...TYPE] },
-  { id: 'filter.search',  ours: '.pf-filter-actions .pf-btn[data-variant="primary"]', w: 2, scope: 'filter.bar', live: (n) => cls(n, 'ant-btn-primary') && n.style.fontSize === '16px', mine: (n) => cls(n, 'pf-btn') && n.style.fontSize === '16px' && rgb(n.style.backgroundColor) === 'rgb(0,97,105)', props: [...GEOM, ...PAD, ...TYPE, 'backgroundColor', 'borderTopLeftRadius'] },
+  { id: 'filter.search',  ours: '.pf-filter-actions .pf-btn[data-variant="primary"]', w: 2, scope: 'filter.bar', /* likewise: primary-on-primary inside the filter bar. The real Search is
+       12/700 and the source's is 16/600. */
+    live: (n) => cls(n, 'ant-btn') && rgb(n.style.backgroundColor) === 'rgb(0,97,105)', mine: (n) => cls(n, 'pf-btn') && rgb(n.style.backgroundColor) === 'rgb(0,97,105)', props: [...GEOM, ...PAD, ...TYPE, 'backgroundColor', 'borderTopLeftRadius'] },
 
   { id: 'table.card',     ours: '.pf-table-card',    w: 2, live: (n) => cls(n, 'ant-card') && cls(n, 'ant-card-contain-tabs'), mine: (n) => cls(n, 'pf-table-card'), props: [...GEOM, 'backgroundColor', 'borderTopColor', 'borderTopWidth', 'boxShadow'] },
   { id: 'table.card.head',ours: '.pf-table-card-head', w: 1, scope: 'table.card', live: (n) => cls(n, 'ant-card-head'),       mine: (n) => cls(n, 'pf-table-card-head'), props: [...GEOM, 'paddingInlineStart', 'borderBottomColor'] },

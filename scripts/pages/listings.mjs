@@ -28,41 +28,57 @@ const PRODUCT = {
   hot:       { label: 'Hot',       icon: 'IconSuperHot' },
   signature: { label: 'Signature', icon: 'BsFillLightningChargeFill' },
 };
-/* An upgrade circle is COLOURED ONLY WHEN THE UPGRADE IS APPLIED, and every
-   one of them is disabled for this user. Both were wrong here: we lit five of
-   six circles in their brand colours on every row, which is the state the
-   product shows for an applied upgrade only.
+/* THREE states, and the default one is ENABLED AND COLOURED.
+   data/live/listings.real.capture.json — nine of its ten rows show six
+   enabled circles, two of those carry an applied tick, and one row shows
+   2 enabled · 1 applied · 3 disabled. So all three occur, on one screen:
 
-   data/live/listings.capture.json, six circles per row across ten rows:
-     not applied  #F4F5F7 under rgb(173,180,210), 16px glyph
-     applied      the product colour at 10%, 19px glyph (a different icon —
-                  the tick is drawn into the art, not a badge element)
-     all of them  opacity 0.54, because the row's upgrades are disabled
-                  ([disabled] in utils.less:142, and the click times out)
+     enabled   the product's colour at 10% under that colour, opacity 1
+     applied   the same, plus the 14px #28b16d tick (upgrade-icons.js:50)
+     disabled  #F4F5F7 under rgb(173,180,210) at 0.54 — platformActions.js:142
+               disables a circle that is neither applied nor applicable
 
-   table-actions.js reads products_information[].is_applied; our fixture rows
-   carry `product`, which is the applied one. The four service upgrades are
-   never applied in this fixture. */
-const UPGRADES = (product) => [
-  ['signature', 'Signature',     'BsFillLightningChargeFill', product === 'signature'],
-  ['hot',       'Hot',           'IconSuperHot',              product === 'hot'],
-  ['refresh',   'Refresh',       'MdRefresh',                 false],
-  ['photo',     'Photography',   'HiCamera',                  false],
-  ['video',     'Videography',   'HiVideoCamera',             false],
-  ['drone',     'Drone Footage', 'DroneIcon',                 false],
+   Yesterday I changed this page to render ALL SIX DISABLED on every row,
+   because every circle in the harness capture came back disabled. That is
+   what an account with no credits looks like, not what the product does.
+   The colourful version this replaced was closer to right than its
+   replacement — the error was calling a fixture's state a rule.
+
+   `applicable` here stands for "this account can buy it", which the real
+   account can. The fixture row's `product` is the applied one. */
+const UPGRADES = (product, applicable = true) => [
+  ['signature', 'Signature',     'BsFillLightningChargeFill', product === 'signature', applicable],
+  ['hot',       'Hot',           'IconSuperHot',              product === 'hot',       applicable],
+  ['refresh',   'Refresh',       'MdRefresh',                 false,                   applicable],
+  ['photo',     'Photography',   'HiCamera',                  false,                   applicable],
+  ['video',     'Videography',   'HiVideoCamera',             false,                   applicable],
+  ['drone',     'Drone Footage', 'DroneIcon',                 false,                   applicable],
 ];
-/* FIVE, not six. The product's Actions cell was counted in the state capture —
-   `colActions:5btn` — and each was clicked to see what it opens:
-     [0] TruCheck modal   [1] share (external)   [2] preview (external)
-     [3] Edit → /post-listing/:id                [4] Delete Listing modal
-   We had six: an extra "Apply Discount", which renders only for a discounted
-   listing, and "Mark as sold" in place of TruCheck. */
+/* SIX, measured on the real screen — data/live/listings.real.capture.json,
+   every one of its ten rows.
+
+   This said FIVE, and said so confidently: "the product's Actions cell was
+   counted in the state capture … and each was clicked to see what it opens."
+   All true, and all of it against a FIXTURE listing. That listing offers no
+   Sell-or-Rent action, so the harness rendered five and I wrote five down as
+   the product's rule. It is the same mistake as the upgrade circles below.
+
+   The icons are the product's own (table-actions.js:11 getIcon):
+     [0] TruCheckIcon        — 18px with a 6px inline-end margin, which is why
+                               this button measures 40 wide and the rest 36.
+                               We were drawing HiCheck here.
+     [1] FiArrowUpRight      preview-on-bayut
+     [2] IoMdEye             detail-drawer
+     [3] MdEdit              edit
+     [4] IconSellRentListing sell-rent-listing — the "%" glyph
+     [5] HiOutlineTrash      delete                                        */
 const ACTIONS = [
-  ['TruCheck', 'HiCheck',         'modal-trucheck'],
-  ['Share',    'FiArrowUpRight',  null],
-  ['Preview',  'IoMdEye',         null],
-  ['Edit',     'MdEdit',          null],
-  ['Delete',   'HiOutlineTrash',  'modal-delete'],
+  ['TruCheck',            'TruCheckIcon',        'modal-trucheck'],
+  ['Preview on Bayut',    'FiArrowUpRight',      null],
+  ['Listing details',     'IoMdEye',             null],
+  ['Edit',                'MdEdit',              null],
+  ['Sell or Rent Property', 'IconSellRentListing', null],
+  ['Delete',              'HiOutlineTrash',      'modal-delete'],
 ];
 const [beds, baths, area] = ['IconBedroom', 'IconBathroom', 'IconAreaSize'];
 
@@ -97,7 +113,13 @@ const CELL = {
                 <div>
                   <div class="pf-listing-price"><bdi>ر.س</bdi> ${r.price} <span class="pf-tag" data-tone="${r.product}">${icon(p.icon, 14)}${p.label}</span> <span class="pf-score" data-band="medium">${r.score}</span></div>
                   <a class="pf-listing-title" href="#">${esc(r.title)}</a>
-                  <div class="pf-listing-specs"><span>${icon(beds, 14)} ${r.beds}</span><span>${icon(baths, 14)} ${r.baths}</span><span>${icon(area, 14)} ${esc(r.area)}</span></div>
+                  <div class="pf-listing-specs">${r.beds > 0
+                    ? `<span>${icon(beds, 14)} ${r.beds}</span><span>${icon(baths, 14)} ${r.baths}</span>`
+                    /* beds 0 → the label "Studio", and the BATH SPEC IS DROPPED
+                       ENTIRELY. staticLists.js:288 renders '' for beds when the
+                       count is 0; the real page shows two specs on such a row,
+                       not three — measured on every row of listings.real. */
+                    : `<span>${icon(beds, 14)} Studio</span>`}<span>${icon(area, 14)} ${esc(r.area)}</span></div>
                   <div class="pf-listing-loc">${esc(r.location)}</div>
                   <div class="pf-listing-ids"><span>Bayut ID: ${r.bayutId}</span><span>REGA ID: ${r.regaId}</span></div>
                 </div>
@@ -113,7 +135,12 @@ const CELL = {
   status: () => `            <td><span class="pf-status-pill" data-status="green">Live</span></td>`,
   upgrades: (r) => `            <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-${UPGRADES(r.product).map(([tone, label, ic, applied]) => `                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="${applied ? tone : 'muted'}"${applied ? ' data-applied' : ''} type="button" aria-label="${label}" disabled>${icon(ic, applied ? null : 16)}</button>${applied ? `<span class="pf-applied-check">${icon('HiCheck', null)}</span>` : ''}</span>`).join('\n')}
+${UPGRADES(r.product, r.upgradesApplicable !== false).map(([tone, label, ic, applied, applicable]) => {
+  /* an applied circle is disabled too — platformActions.js:142 disables both
+     ends: nothing to buy when it is already yours */
+  const off = !applied && !applicable;
+  return `                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="${off ? 'muted' : tone}"${applied ? ' data-applied' : ''} type="button" aria-label="${label}"${applied || off ? ' disabled' : ''}>${icon(ic, applied ? null : 16)}</button>${applied ? `<span class="pf-applied-check">${icon('HiCheck', null)}</span>` : ''}</span>`;
+}).join('\n')}
               </div>
             </td>`,
   actions: () => `            <td class="col-actions">
