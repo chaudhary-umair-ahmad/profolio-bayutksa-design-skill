@@ -77,6 +77,36 @@ const hoverIn = (row, td, sel, { wait = '.ant-popover-inner', i = 0 } = {}) => a
   await p.waitForTimeout(400);
 };
 
+/**
+ * Click the row action whose TOOLTIP says `label`, not the one at some index.
+ *
+ * Every index in this file has been wrong at least once. A row action's
+ * position depends on the row — Apply Discount only renders when the listing
+ * is discountable, Mark as Booked only on a daily rental — so "Actions[2]"
+ * meant Preview on the day it was written and View on Bayut a week later,
+ * which is how a step meant to open a drawer ended up navigating to the
+ * classified site and capturing a blank page. The buttons carry no accessible
+ * name, but they all carry a Tooltip, so: hover each one, read it, click the
+ * one that matches.
+ */
+const actionByTooltip = (row, label) => async (p) => {
+  const tds = p.locator('.ant-table-row').nth(row).locator('td');
+  const cell = tds.nth((await tds.count()) - 1);
+  const n = await cell.locator('button').count();
+  for (let i = 0; i < n; i++) {
+    await away(p);
+    const b = cell.locator('button').nth(i);
+    await b.hover({ force: true });
+    await p.waitForTimeout(500);
+    const t = await p.evaluate(() => {
+      const el = document.querySelector('.ant-tooltip:not(.ant-tooltip-hidden) .ant-tooltip-inner');
+      return el ? el.textContent.trim() : '';
+    });
+    if (t === label) { await b.click({ timeout: 8000 }); return; }
+  }
+  throw new Error(`no row action tooltipped "${label}" in row ${row}`);
+};
+
 const clickIn = (row, td, sel, { wait = '.ant-popover-inner', i = 0 } = {}) => async (p) => {
   await away(p);
   const all = p.locator('.ant-table-row').nth(row).locator('td').nth(td).locator(sel);
@@ -90,8 +120,8 @@ const clickIn = (row, td, sel, { wait = '.ant-popover-inner', i = 0 } = {}) => a
 export default [
   {
     name: 'modal-trucheck',
-    note: 'Actions[0] — 620×376 “TruCheck Eligible”',
-    do: async (p) => { await rowBtn(1, 0)(p); await p.waitForSelector('.ant-modal', { timeout: 8000 }); },
+    note: 'the action tooltipped “TruCheck Eligible” — 620×376',
+    do: async (p) => { await actionByTooltip(0, 'TruCheck Eligible')(p); await p.waitForSelector('.ant-modal', { timeout: 8000 }); },
   },
   {
     name: 'modal-delete',
@@ -101,11 +131,9 @@ export default [
        rental, so the same index means different things on different rows. This
        step used to say Actions[4] and quietly started opening Apply Discount
        the day the fixtures learned to offer a discount. */
-    note: 'the LAST row action — 620×226 “Delete Listing / Why are you deleting your listing?”',
+    note: 'the action tooltipped “Delete” — 620×226 “Delete Listing / Why are you deleting your listing?”',
     do: async (p) => {
-      const tds = p.locator('.ant-table-row').first().locator('td');
-      const btns = tds.nth((await tds.count()) - 1).locator('button');
-      await btns.nth((await btns.count()) - 1).click({ timeout: 8000 });
+      await actionByTooltip(0, 'Delete')(p);
       await p.waitForSelector('.ant-modal', { timeout: 8000 });
     },
   },
@@ -194,13 +222,13 @@ export default [
   },
   {
     name: 'action-detail-drawer',
-    note: 'Actions[2] — IoMdEye is detail-drawer (table-actions.js:31), so this should open a drawer',
-    do: async (p) => { await rowBtn(1, 2)(p); await p.waitForTimeout(1200); },
+    note: 'the action tooltipped "Preview" — ListingDrawer, in its loading state (there is no listing-detail fixture yet)',
+    do: async (p) => { await actionByTooltip(0, 'Preview')(p); await p.waitForSelector('.ant-drawer-content', { timeout: 8000 }); await p.waitForTimeout(600); },
   },
   {
     name: 'action-discount',
-    note: 'Actions[4] — "Apply Discount" (listingUtilities.js:222); it may navigate rather than open',
-    do: async (p) => { await rowBtn(1, 4)(p); await p.waitForTimeout(1200); },
+    note: 'the action tooltipped "Apply Discount" — it NAVIGATES to the edit page (listingUtilities.js:217-237), so this capture is of leaving, not of an overlay',
+    do: async (p) => { await actionByTooltip(0, 'Apply Discount')(p); await p.waitForTimeout(1500); },
   },
 
   /* ── the popovers and tooltips in the table body ───────────────────────
@@ -359,7 +387,18 @@ export default [
       const btns = tds.nth(n - 1).locator('button');
       await btns.nth((await btns.count()) - 2).click({ timeout: 8000 });
       await p.waitForSelector('.ant-modal', { timeout: 8000 });
-      await p.waitForTimeout(500);
+      /* Clicking row 4 scrolls the page to reach it, and a `fixed` overlay's
+         box is recorded in DOCUMENT coordinates — so the modal landed at
+         y=852 in the capture while our page, which never scrolls, put it at
+         y=250. The design QA compares regions by position and read every part
+         of this modal as 100% different: the same modal, 600px apart.
+         Scroll back before the snapshot. */
+      await p.evaluate(() => {
+        document.documentElement.style.overflow = 'auto';
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+      });
+      await p.waitForTimeout(600);
     },
   },
   {

@@ -1,52 +1,48 @@
 {
   "route": "dashboard",
-  "at": "2026-09-21T17:46:03.452Z",
+  "at": "2026-09-22T08:42:31.842Z",
   "shellFails": [
     {
       "id": "shell.title",
-      "diff": 20.9
-    },
-    {
-      "id": "shell.header",
-      "diff": 9.9
+      "diff": 17.8
     }
   ],
   "diffs": [
     {
       "id": "table.cell",
-      "diff": 26.7
+      "diff": 24.6
     },
     {
       "id": "shell.title",
-      "diff": 20.9
+      "diff": 17.8
     },
     {
       "id": "table",
-      "diff": 14.4
-    },
-    {
-      "id": "table.row",
-      "diff": 13.6
-    },
-    {
-      "id": "shell.content",
       "diff": 11.9
     },
     {
-      "id": "shell.header",
-      "diff": 9.9
+      "id": "table.row",
+      "diff": 11.2
+    },
+    {
+      "id": "shell.content",
+      "diff": 9.8
     },
     {
       "id": "shell.sider",
-      "diff": 5
+      "diff": 4.5
+    },
+    {
+      "id": "shell.header",
+      "diff": 4.5
     },
     {
       "id": "shell.footer",
-      "diff": 2
+      "diff": 1.8
     },
     {
       "id": "table.head",
-      "diff": 1
+      "diff": 0.9
     }
   ],
   "offScale": {
@@ -109,5 +105,6 @@
     "tabs.ink"
   ],
   "rtlOverflow": false,
-  "physical": 0
+  "physical": 0,
+  "states": []
 }

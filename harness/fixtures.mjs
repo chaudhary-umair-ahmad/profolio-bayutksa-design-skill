@@ -321,6 +321,17 @@ const ROUTES = [
   [/^\/api\/surge\/(languages|area_units|experience_list)$/, () => ({})],
   [/^\/api\/surge\/statuses$/,                       () => ({ statuses: [] })],
   [/^\/api\/surge\/ad_license_requests$/,            () => ({ ad_license_requests: [], pagination: {} })],
+  /* ListingDrawer's own fetch — apis/surgePostListingEndpoints.js:65
+     `/api/surge/listings/:id/edit`. Unanswered it resolved to {}, the
+     transformer threw inside the drawer and the capture came back as a blank
+     page, which is why the detail drawer has only ever been measured in its
+     SKELETON state. Answer it with the same listing the table row was built
+     from and the drawer has something to render. */
+  [/^\/api\/surge\/listings\/\d+\/edit$/, (search, mode, pathname) => {
+      const id = Number((pathname || '').match(/listings\/(\d+)\/edit/)?.[1]);
+      const l = listings.find((x) => x.id === id) || listings[0];
+      return { listing: { ...clean(l), dynamic_data: { dynamic_fields: { features: [] } } } };
+    }],
   [/^\/api\/surge\/listings\/summary$/,              () => ({ summary: SUMMARY })],
   /* The tab IS a query param — listings.js:99 reads
      `f[nested.platform_listings.status.slug]` and passes the slug to
@@ -376,7 +387,7 @@ const ROUTES = [
  *   care simply ignore it.
  */
 export function answer(method, pathname, search = '', mode = null) {
-  for (const [re, fn] of ROUTES) if (re.test(pathname)) return fn(search, mode);
+  for (const [re, fn] of ROUTES) if (re.test(pathname)) return fn(search, mode, pathname);
   return undefined;
 }
 

@@ -14,10 +14,13 @@
 /* ── INSTANCE DATA ──────────────────────────────────────────────────────
    Custom-property values carrying DATA (a percentage), not presentation.
    Kept out of the body so there is not one style attribute in the markup.
-   ──────────────────────────────────────────────────────────────────── */
+   ─────────────────────────────────────────────────────────────────────── */
 .pct-90{--ring-pct:90}                /* profile completion score */
-.fill-97{--meter-pct:97.17}           /* 72,880 / 75,000 — QuotaCreditsStatWidget */
-</style>
+.pct-90{--ring-pct:90}                /* profile completion score */
+.fill-97{--meter-pct:97.17}           /* 72,880 / 75,000 — QuotaCreditsStatWidget */</style>
+<!-- the interaction layer: overlays, tabs and page states. Declarative —
+     the markup carries data-open / data-panel / data-state-panel and nothing else. -->
+<script src="prototype.js" defer></script>
 </head>
 <body>
 <svg class="pf-sprite" aria-hidden="true" focusable="false"><defs>
@@ -386,9 +389,13 @@
   <symbol id="pf-PiClockClockwiseFill" viewBox="0 0 256 256" fill="currentColor" stroke="currentColor" stroke-width="0">
     <path d="M136,80v43.47l36.12,21.67a8,8,0,0,1-8.24,13.72l-40-24A8,8,0,0,1,120,128V80a8,8,0,0,1,16,0Zm91.06-23.39a8,8,0,0,0-8.72,1.73L206,70.71c-3.23-3.51-6.56-7-10.1-10.59a96,96,0,1,0-2,137.7,8,8,0,0,0-11-11.64A80,80,0,1,1,184.54,71.4c3.54,3.58,6.87,7.1,10.11,10.63L178.34,98.34A8,8,0,0,0,184,112h40a8,8,0,0,0,8-8V64A8,8,0,0,0,227.06,56.61Z"/>
   </symbol>
-  <!-- credits info · react-icons/bs -->
+  <!-- credits info — the CreditsQuota card, and the ONLY BsInfoLg on Listings · react-icons/bs -->
   <symbol id="pf-BsInfoLg" viewBox="0 0 16 16" fill="currentColor" stroke="currentColor" stroke-width="0">
     <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"/>
+  </symbol>
+  <!-- the table-body info icon — four popovers hang off it · react-icons/ai -->
+  <symbol id="pf-AiOutlineInfoCircle" viewBox="0 0 1024 1024" fill="currentColor" stroke="currentColor" stroke-width="0">
+    <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"/><path d="M464 336a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"/>
   </symbol>
   <!-- Settings · react-icons/io5 -->
   <symbol id="pf-IoSettingsOutline" viewBox="0 0 512 512" fill="currentColor" stroke="currentColor" stroke-width="0">
@@ -515,24 +522,12 @@
     <path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"/>
   </symbol>
 </defs></svg>
-<!-- ═══════════════════════════════════════════════════════════════════════
-     OVERVIEW · /dashboard · tenant bayut (KSA)
-     Composition order is src/container/pages/dashboard/dashboard.js:
-
-       <Main><Group>
-         {dashboardBanner && <DashboardPromoBanner/>}   ← absent in this capture
-         {user?.id && <TruBrokerAndProfileCard/>}       → .pf-alert
-         desktopDashboard()
-           <ContainerWidgets>                            → .pf-stack
-             renderMultiPlatformsLabel()   .mb-24        → account switcher
-             renderListingBreakDownWidget()              → .pf-two-col
-                 <ListingBreakdown/>  (left)  "Listings"
-                 <CreditsQuota/>      (right) "Credits Balance"
-             <ReportsLeadsTrafficSection/>               → "Performance"
-             renderListings()                            → Recent Listings
-     ═══════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════
+     OVERVIEW — the shell from scripts/pages/shell.mjs, the body from
+     scripts/pages/dashboard-body.html, composed by scripts/pages/dashboard.mjs.
+     Measured against data/live/dashboard.capture.json.
+     ═══════════════════════════════════════════════════════════════════════ -->
 <div class="pf-shell">
-
   <!-- ── icon rail · collapsed (60px), the shipped default state ────── -->
   <div class="pf-rail pf-rail-fixed">
     <div class="pf-rail-brand"><span class="pf-rail-logo"><svg class="pf-wordmark" width="205" height="33" viewBox="0 0 205 33" role="img" aria-label="brand wordmark">
@@ -569,39 +564,37 @@
   </text>
 </svg></span></div>
     <nav class="pf-rail-list" aria-label="Main">
-      <a class="pf-rail-item" aria-current="page" href="#" title="Overview"><svg class="i i-20"><use href="#pf-SideMenuDashboard"/></svg></a>
-      <a class="pf-rail-item" href="#" title="Post Listing"><svg class="i i-20"><use href="#pf-PostListingIcon"/></svg></a>
-      <a class="pf-rail-item" href="#" title="My Listings"><svg class="i i-20"><use href="#pf-MyListingIcon"/></svg></a>
-      <a class="pf-rail-item" href="#" title="Credits Usage"><svg class="i i-20"><use href="#pf-SideMenuQuota"/></svg></a>
-      <a class="pf-rail-item" href="#" title="Inbox"><svg class="i i-20"><use href="#pf-SideMenuInbox"/></svg></a>
-      <a class="pf-rail-item" href="#" title="TruLeads"><svg class="i i-20"><use href="#pf-DashboardLmsIcon"/></svg></a>
-      <a class="pf-rail-item" href="#" title="Agent Performance"><svg class="i i-20"><use href="#pf-AgentPerformanceIcon"/></svg></a>
-      <a class="pf-rail-item" href="#" title="Reports"><svg class="i i-20"><use href="#pf-SideMenuReports"/></svg></a>
-      <a class="pf-rail-item" href="#" title="Agency Staff"><svg class="i i-20"><use href="#pf-SideMenuAgency"/></svg></a>
-      <a class="pf-rail-item" href="#" title="Settings"><svg class="i i-20"><use href="#pf-IoSettingsOutline"/></svg></a>
-      <a class="pf-rail-item" href="#" title="Credits &amp; Packages"><svg class="i i-20"><use href="#pf-SideMenuPropShop"/></svg></a>
+      <a class="pf-rail-item" aria-current="page" href="dashboard.html" title="Overview"><svg class="i i-20"><use href="#pf-SideMenuDashboard"/></svg></a>
+      <a class="pf-rail-item" href="not-built.html?screen=Post%20Listing" title="Post Listing"><svg class="i i-20"><use href="#pf-PostListingIcon"/></svg></a>
+      <a class="pf-rail-item" href="listings.html" title="My Listings"><svg class="i i-20"><use href="#pf-MyListingIcon"/></svg></a>
+      <a class="pf-rail-item" href="not-built.html?screen=Credits%20Usage" title="Credits Usage"><svg class="i i-20"><use href="#pf-SideMenuQuota"/></svg></a>
+      <a class="pf-rail-item" href="not-built.html?screen=Agent%20Performance" title="Agent Performance"><svg class="i i-20"><use href="#pf-AgentPerformanceIcon"/></svg></a>
+      <a class="pf-rail-item" href="not-built.html?screen=Reports" title="Reports"><svg class="i i-20"><use href="#pf-SideMenuReports"/></svg></a>
+      <a class="pf-rail-item" href="not-built.html?screen=Agency%20Staff" title="Agency Staff"><svg class="i i-20"><use href="#pf-SideMenuAgency"/></svg></a>
+      <a class="pf-rail-item" href="not-built.html?screen=Settings" title="Settings"><svg class="i i-20"><use href="#pf-IoSettingsOutline"/></svg></a>
+      <a class="pf-rail-item" href="not-built.html?screen=Credits%20%26%20Packages" title="Credits &amp; Packages"><svg class="i i-20"><use href="#pf-SideMenuPropShop"/></svg></a>
     </nav>
     <div class="pf-rail-bottom">
-      <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="العربية"><svg class="i i-20"><use href="#pf-LanguageSwitcherIcon"/></svg></button>
-      <button class="pf-btn" data-variant="ghost" data-block="true" type="button" title="Help &amp; Support"><svg class="i i-20"><use href="#pf-HelpSupportIcon"/></svg></button>
+      <a class="pf-btn" data-variant="ghost" data-block="true" title="العربية" href="not-built.html?screen=Arabic"><svg class="i i-20"><use href="#pf-LanguageSwitcherIcon"/></svg></a>
+      <a class="pf-btn" data-variant="ghost" data-block="true" title="Help &amp; Support" href="not-built.html?screen=Help%20%26%20Support"><svg class="i i-20"><use href="#pf-HelpSupportIcon"/></svg></a>
     </div>
   </div>
-
   <div class="pf-main">
-
     <!-- ── header ──────────────────────────────────────────────────── -->
     <header class="pf-header pf-header-fixed">
       <div class="pf-header-brand"><span class="pf-page-title">Overview</span></div>
       <div class="pf-header-actions">
-        <button class="pf-btn" data-variant="link" type="button"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
-        <a class="pf-classified-pill" href="#"><svg class="i i-18"><use href="#pf-SidebarClassifiedLinkIcon"/></svg>Go to Bayut.sa</a>
-        <button class="pf-btn" data-variant="primary" type="button"><svg class="i i-16"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></button>
-        <button class="pf-bell" type="button" aria-label="Notifications"><svg class="i i-20"><use href="#pf-GrNotification"/></svg><span class="pf-badge">46</span></button>
-        <span class="pf-progress-ring pct-90"><span class="pf-avatar"><svg class="i i-16"><use href="#pf-FiUser"/></svg></span></span>
+        <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
+        <!-- the one link in the shell that LEAVES the product. It carried
+             href="#", which is a dead click dressed as a destination. -->
+        <a class="pf-classified-pill" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-18"><use href="#pf-SidebarClassifiedLinkIcon"/></svg>Go to Bayut.sa</a>
+        <a class="pf-btn" data-variant="primary" href="not-built.html?screen=Post%20Listing"><svg class="i i-16"><use href="#pf-PostListingIcon"/></svg><span>Post Listing</span></a>
+        <button class="pf-bell" type="button" aria-label="Notifications" data-open="popover-notifications"><svg class="i i-20"><use href="#pf-GrNotification"/></svg><span class="pf-badge">46</span></button>
+        <button class="pf-avatar-button" type="button" aria-label="Account" data-open="popover-account"><span class="pf-progress-ring pct-90"><span class="pf-avatar"><svg class="i i-16"><use href="#pf-FiUser"/></svg></span></span></button>
       </div>
     </header>
-
     <main class="pf-content">
+
 
       <!-- ── TruBrokerAndProfileCard → ProfileCompletionBanner ──────── -->
       <div class="pf-alert">
@@ -1244,13 +1237,93 @@
 
       </div><!-- /.pf-stack ContainerWidgets -->
     </main>
-
     <footer class="pf-footer">© 2026 – All Rights Reserved</footer>
   </div><!-- /.pf-main -->
 </div><!-- /.pf-shell -->
 
-<!-- third-party widget, no source in profolio-reactjs — geometry is a placeholder -->
-<div class="pf-feedback-tab"><span>FEEDBACK</span></div>
+<!-- ═════ SHELL OVERLAYS ═══════════════════════════════════════════════
+     Every one of these was opened on the product by the harness and measured
+     before it was written. The capture behind each is named on the overlay.
+       data/live/listings--modal-download-app     360x409 modal, 166 QR
+       data/live/listings--popover-notifications  590x776 popover, radius 8
+       data/live/listings--popover-account        400x233 popover, radius 10
+     ═══════════════════════════════════════════════════════════════════ -->
+
+<!-- Download App — the title is 20/600 here, not the modal default 16/700:
+     the product passes its own <span class="fw-600 fs20"> as the title. -->
+<div class="pf-mask" id="modal-download-app" hidden>
+  <div class="pf-modal" data-size="small" role="dialog" aria-modal="true" aria-labelledby="dl-title">
+    <div class="pf-modal-head">
+      <span class="pf-modal-title" data-size="lg" id="dl-title">Get the Bayut KSA App</span>
+      <button class="pf-overlay-close" type="button" aria-label="Close" data-close><svg class="i i-16"><use href="#pf-IoMdClose"/></svg></button>
+    </div>
+    <div class="pf-modal-body">
+      <div class="pf-center-column">
+        <div class="pf-modal-lead">Scan the QR code to download the app</div>
+        <!-- the product embeds a generated QR; a design system ships the box -->
+        <div class="pf-qr pf-skeleton" role="img" aria-label="QR code placeholder"></div>
+      </div>
+      <div class="pf-divider-text"><span>OR</span></div>
+      <!-- vendor badge art we do not ship, at the measured 111x33 / 113x35 -->
+      <div class="pf-store-badges">
+        <span class="pf-store-badge">App Store</span>
+        <span class="pf-store-badge">Google Play</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notification centre. Unread rows are #F7FCFC, read rows white; the
+     timestamp is 12px #9D9D9D and the glyph is the primary colour. -->
+<div class="pf-popover" data-kind="notifications" id="popover-notifications" data-anchor="header-end" role="dialog" aria-label="Notifications" hidden>
+  <div class="pf-noti">
+    <div class="pf-noti-head">
+      <div class="pf-noti-head-start">
+        <h5 class="pf-noti-title">Notifications</h5>
+        <button class="pf-btn" data-variant="ghost" type="button" aria-label="Refresh" data-noop="refetches the notification list; there is no server behind this page"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+      </div>
+      <button class="pf-btn" data-variant="link" type="button" data-noop="marks every notification read; a data mutation, not a navigation">Mark all as read</button>
+    </div>
+    <div class="pf-noti-card" data-unread>
+      <div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">Your listing is live</span></div>
+      <span class="pf-noti-time">an hour ago</span>
+    </div>
+    <div class="pf-noti-card" data-unread>
+      <div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">Credits expiring soon</span></div>
+      <span class="pf-noti-time">a day ago</span>
+    </div>
+    <div class="pf-noti-card">
+      <div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">TruCheck visit scheduled</span></div>
+      <span class="pf-noti-time">3 days ago</span>
+    </div>
+    <div class="pf-noti-rule"></div>
+  </div>
+</div>
+
+<!-- Account menu. auth-info-style.js:250 .user-info, :280 .dropdwon-links —
+     the two list items carry a 1px gray400 top border, which is where the
+     rules under the badges come from. The Nafath wordmark is the product's
+     own 20x9 SVG and is not in our sprite; the label stands in for it. -->
+<div class="pf-popover" data-kind="account" id="popover-account" data-anchor="header-end" role="dialog" aria-label="Account" hidden>
+  <div class="pf-user-info">
+    <div class="pf-user-row">
+      <span class="pf-user-avatar"><svg class="i i-20"><use href="#pf-FiUser"/></svg></span>
+      <div class="pf-user-meta">
+        <div class="pf-user-name">Faisal Al-Harbi</div>
+        <div class="pf-user-sub">
+          <span class="pf-user-role">Agency User</span><svg class="i"><use href="#pf-GoDotFill"/></svg><span class="pf-user-email">faisal@najdhorizon.example</span>
+        </div>
+      </div>
+    </div>
+    <span class="pf-verified">Nafath Verified<svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg></span>
+    <span class="pf-verified">REGA Verified<svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg></span>
+  </div>
+  <ul class="pf-menu-list">
+    <li><a href="not-built.html?screen=Settings"><svg class="i i-16"><use href="#pf-FiUser"/></svg><span>Account Settings</span></a></li>
+    <li><button type="button" data-close><svg class="i i-16"><use href="#pf-FiLogOut"/></svg><span>Sign Out</span></button></li>
+  </ul>
+</div>
+
 
 </body>
 </html>

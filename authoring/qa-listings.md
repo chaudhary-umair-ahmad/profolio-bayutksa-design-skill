@@ -340,8 +340,115 @@ carries `.ant-tabs-tab-btn`.
 - The **Download App** modal body is 17.4% different because the QR and the two
   store badges are art we do not ship; they are drawn as labelled placeholders
   at the measured 166×166 and 111×33.
-- Six row-action overlays (hide, unhide, booking, change owner, apply discount,
-  the listing drawer) are **not built**, because they do not render for these
-  fixtures and there is nothing to measure. They need the fixture backlog
-  first — an overlay drawn from imagination is exactly what this method exists
-  to prevent.
+### That last paragraph was wrong twice over, and is now deleted
+
+It used to read:
+
+> Six row-action overlays (hide, unhide, booking, change owner, apply discount,
+> the listing drawer) are **not built**, because they do not render for these
+> fixtures and there is nothing to measure.
+
+Two things wrong with it:
+
+- **booking and the listing drawer are built**, and were measured before they
+  were drawn — `listings--modal-booking` at 800×234 and
+  `listings--action-detail-drawer` at 576 wide.
+- **hide, unhide and change-owner are not row actions on this screen at all.**
+  `listingUtilities.js:9` lists seven for `ksa`: trucheck · listing_detail ·
+  listing_detail_drawer · edit_listing · sell_rent_listing · booking ·
+  delete_listing. The other three belong to other tenants' lists; they came
+  from a generic `getIcon` switch and were never checked against the bayut one.
+
+A prose list cannot be held to the page, which is how it drifted in both
+directions at once. **`authoring/listings-buttons.md` replaces it**: one row per
+interactive element, each with the `file:line` that decides it and the capture
+file our value came from, and `npm run check` fails when the page and that file
+disagree. Quote its two numbers instead of this section.
+
+---
+
+# Pass 4 — every state, and a fourth instance promoted to a default
+
+`node scripts/qa-design.mjs listings` now scores **35 states, none of them
+"not built"**. It scored 8 before, with the rest reported as missing.
+
+    listings   shell ok · off-scale 0 · contrast 0 ours / 74 the product's
+               rtl ok · physical 0 · not modelled 2
+               worst regions: table.cell 27.9% · filter.clear 22.9% ·
+                              filter.showmore 20.7%
+
+The three worst regions are the same three in almost every state, and they are
+the column-width and label-metric differences this document has carried since
+pass 2. Nothing an overlay does changes them.
+
+## What the state sweep found
+
+**A fourth instance promoted to a default, and the worst of the four.**
+`--modal-top: 250px`, commented "measured y of a 400-tall modal in a 900
+viewport". Every modal on this screen carries `ant-modal-centered` — there is
+no modal top at all. 250 is what centring gives a 400-tall modal, so the value
+matched the delete modal it was measured from and nothing else:
+
+| modal | height | product y | ours at `--modal-top` |
+|---|---|---|---|
+| delete | 400 | 250 | 250 ✓ by coincidence |
+| trucheck | 376 | 262 | 250 |
+| download-app | 409 | 245 | 250 |
+| booking | 234 | 333 | 250 |
+
+It hid for weeks because every modal built until now happened to be about 400
+tall. The mask centres now and the token is gone. `modal-booking` went from
+**100% different in every region** to 17.1%, which is the shared table-cell
+figure the whole page carries.
+
+**A scroll artifact that looked like a fidelity failure.** `modal-booking` is
+opened from row 4, so the click scrolls the page, and a `fixed` overlay's box
+is recorded in DOCUMENT coordinates — the product's modal landed at y=852 while
+ours, on a page that never scrolls, sat at y=250. The same modal, 600px apart,
+scored 100%. The interaction step scrolls back before it snaps now.
+
+**Two steps were clicking the wrong button.** `modal-delete` said "Actions[4]"
+and `action-detail-drawer` said "Actions[2]", and a row action's index depends
+on the row — Apply Discount only renders when the listing is discountable, Mark
+as Booked only on a daily rental. The delete step had been opening Apply
+Discount, and the drawer step had been clicking View on Bayut and capturing a
+blank page, which is why the detail drawer had only ever been measured as three
+skeleton bars. Both target by TOOLTIP now: hover each action, read it, click the
+one that matches.
+
+**The detail drawer was never a skeleton.** It fetches
+`/api/surge/listings/:id/edit` (`surgePostListingEndpoints.js:65`), that call
+went unanswered in the harness, the transformer threw and the capture came back
+blank. Answered, it renders: 576 wide, header 63, body 837 over a 528 column,
+gallery 528×424.
+
+## Still open
+
+- **Table column widths**, unchanged and deliberate: both are auto-layout over
+  the same content, and forcing a `<colgroup>` of measured widths would match
+  one render and teach the system nothing. `table.cell` at 27.9% and the page
+  height follow from it, in every state.
+- `filter.clear` 22.9% and `filter.showmore` 20.7% — label widths, the
+  browser's own metrics.
+- The **Download App** modal body at 17.4%: the QR and the two store badges are
+  art we do not ship, drawn as labelled placeholders at the measured 166×166
+  and 111×33.
+- The three **quota modals' titles** at 29–33%: a title box width, not a layout
+  difference.
+- `action-discount` scores 5 regions, because that capture is of the product
+  NAVIGATING AWAY — the action is a link, and what it captured is the next
+  screen beginning to load. It is kept because a capture that proves an action
+  navigates is worth having; it is not a fidelity comparison.
+
+## The dashboard
+
+`deliverables/dashboard.html` goes through `scripts/pages/shell.mjs` now. It was
+hand-written, and by the time anyone looked it carried an **eleven-item rail
+still listing Inbox and TruLeads**, every rail item on `href="#"`, no
+`prototype.js` and not one `data-open` — 166 controls, none of them wired. Its
+shell is the same shell as Listings now and its three overlays work.
+
+Its own body still has 149 dead controls. That is the Overview screen's audit,
+and it wants its own `authoring/dashboard-buttons.md`; this document covers
+Listings. `shell.title` at 17.8% is unchanged by the move — it was failing
+before it and is a page-title width, measured the same both ways.

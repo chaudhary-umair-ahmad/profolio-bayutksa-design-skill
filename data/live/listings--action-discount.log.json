@@ -10,6 +10,6 @@
   },
   "spinning": false,
   "pageHeight": 900,
-  "note": "Actions[4] — \"Apply Discount\" (listingUtilities.js:222); it may navigate rather than open",
+  "note": "the action tooltipped \"Apply Discount\" — it NAVIGATES to the edit page (listingUtilities.js:217-237), so this capture is of leaving, not of an overlay",
   "url": "http://127.0.0.1:3000/en/listings"
 }

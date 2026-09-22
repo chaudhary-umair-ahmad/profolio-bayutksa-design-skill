@@ -13,18 +13,21 @@
   <p class="pf-notbuilt-lede">You followed a link in the prototype to a route that has no page behind it.
      That is deliberate: a dead link would hide the gap, this makes it countable.</p>
   <h2>What exists</h2>
+  <!-- NINE, and the same nine scripts/pages/shell.mjs puts in the rail.
+       This listed Inbox and TruLeads for a week after the rail dropped them:
+       menuList.js:46 hides Inbox for this tenant (HIDE_INBOX) and :58 gates
+       TruLeads on the account. This is the page every unbuilt route lands
+       on, so it is the worst place in the deliverable to be out of date. -->
   <ul class="pf-notbuilt-list">
     <li><a href="dashboard.html">Overview</a><em>built</em></li>
     <li><span>Post Listing</span><em>not built yet</em></li>
     <li><a href="listings.html">My Listings</a><em>built</em></li>
     <li><span>Credits Usage</span><em>not built yet</em></li>
-    <li><span>Inbox</span><em>not built yet</em></li>
-    <li><span>TruLeads</span><em>not built yet</em></li>
     <li><span>Agent Performance</span><em>not built yet</em></li>
     <li><span>Reports</span><em>not built yet</em></li>
     <li><span>Agency Staff</span><em>not built yet</em></li>
     <li><span>Settings</span><em>not built yet</em></li>
-    <li><span>Credits & Packages</span><em>not built yet</em></li>
+    <li><span>Credits &amp; Packages</span><em>not built yet</em></li>
   </ul>
   <p class="pf-notbuilt-lede">Each built page is measured against the product's own render and carries a
      <code>qa-&lt;route&gt;.html</code> report beside it.</p>

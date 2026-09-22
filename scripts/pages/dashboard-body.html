@@ -1,0 +1,642 @@
+
+
+      <!-- ── TruBrokerAndProfileCard → ProfileCompletionBanner ──────── -->
+      <div class="pf-alert">
+        <span class="pf-progress-ring pct-90">
+          <span class="pf-avatar" data-size="lg"><svg class="i i-20"><use href="#pf-FiUser"/></svg></span>
+          <span class="pf-ring-label">90%</span>
+        </span>
+        <div class="pf-alert-body">
+          <div class="pf-alert-text">
+            <div class="pf-alert-title">Your profile is incomplete</div>
+            Agents with a complete profile are likely to attract more leads.<a class="pf-alert-link" href="#">Why is this important?</a>
+          </div>
+          <button class="pf-btn" data-variant="primary" type="button"><span>Complete your Profile</span></button>
+        </div>
+      </div>
+
+      <!-- ── ContainerWidgets ───────────────────────────────────────── -->
+      <div class="pf-stack">
+
+        <!-- renderMultiPlatformsLabel() → .mb-24 -->
+        <div class="pf-stack" data-gap="row">
+          <div class="pf-switcher">
+            <span class="pf-avatar"><svg class="i i-16"><use href="#pf-FiUser"/></svg></span>
+            <span class="pf-switcher-name">Najd Horizon Real Estate</span>
+            <button class="pf-switcher-toggle" type="button" aria-label="Switch account"><svg class="i i-14"><use href="#pf-MdKeyboardArrowDown"/></svg></button>
+          </div>
+        </div>
+
+        <!-- renderListingBreakDownWidget() → Group template="repeat(2, minmax(0,1fr))" gap="16px" -->
+        <div class="pf-two-col">
+
+          <!-- ListingBreakdown · linear={false} -->
+          <section class="pf-card">
+            <div class="pf-card-head">
+              <span class="pf-card-title">Listings</span>
+              <a class="pf-card-action" href="#">View All Listings</a>
+            </div>
+            <div class="pf-card-body" data-pad="breakdown">
+              <div class="pf-breakdown">
+                <div class="pf-stat" data-emphasis="leader">
+                  <svg class="i i-32 pf-glyph-tile"><use href="#pf-ActiveListingIcon"/></svg>
+                  <div><div class="pf-stat-title">Active</div><div class="pf-stat-value">20</div></div>
+                </div>
+                <hr class="pf-divider" data-orientation="vertical" data-stretch="true">
+                <div class="pf-breakdown-rows">
+                  <div class="pf-stat-grid">
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="for-sale"><svg class="i i-16"><use href="#pf-IconForSale"/></svg></span><div><div class="pf-stat-title">For Sale</div><div class="pf-stat-value">20</div></div></div>
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="for-rent"><svg class="i i-16"><use href="#pf-IconForRent"/></svg></span><div><div class="pf-stat-title">To Rent</div><div class="pf-stat-value">0</div></div></div>
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="primary"><svg class="i i-16"><use href="#pf-IconRental"/></svg></span><div><div class="pf-stat-title">Daily Rentals</div><div class="pf-stat-value">0</div></div></div>
+                  </div>
+                  <div class="pf-stat-grid">
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></span><div><div class="pf-stat-title">Signature</div><div class="pf-stat-value">12</div></div></div>
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></span><div><div class="pf-stat-title">Hot</div><div class="pf-stat-value">5</div></div></div>
+                    <div class="pf-stat" data-title-size="13"><span class="pf-icon-tile" data-tone="basic"><svg class="i i-16"><use href="#pf-IconBasic"/></svg></span><div><div class="pf-stat-title">Basic</div><div class="pf-stat-value">3</div></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- CreditsQuota -->
+          <section class="pf-card">
+            <div class="pf-card-head">
+              <span class="pf-card-title">Credits Balance</span>
+              <button class="pf-btn" data-variant="icon-circle" type="button" aria-label="About credits"><svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></button>
+            </div>
+            <div class="pf-card-body">
+              <div class="pf-credit-stats">
+                <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Available Credits</div><div class="pf-stat-value">72,880</div></div></div>
+                <hr class="pf-divider" data-orientation="vertical">
+                <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Used</div><div class="pf-stat-value">2,120</div></div></div>
+                <hr class="pf-divider" data-orientation="vertical">
+                <div class="pf-stat" data-emphasis="lead"><div><div class="pf-stat-title">Total</div><div class="pf-stat-value">75,000</div></div></div>
+                <hr class="pf-divider" data-orientation="vertical">
+                <div class="pf-plan">
+                  <div class="pf-plan-label">Current Plan</div>
+                  <div class="pf-plan-badge"><span class="pf-icon-tile" data-size="xs" data-tone="plan"><svg class="i i-14"><use href="#pf-IconPkgPlatinumPlus"/></svg></span>Platinum Plus</div>
+                </div>
+              </div>
+              <span class="pf-credit-meter fill-97"></span>
+              <div class="pf-credit-actions">
+                <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#pf-IoAddCircleOutline"/></svg><span>Top-Up your Credits</span></button>
+                <button class="pf-btn" data-variant="primary-outlined" type="button"><svg class="i i-16"><use href="#pf-PiClockClockwiseFill"/></svg><span>Credits Usage</span></button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ReportsLeadsTrafficSection → LeadsStatsGraphWidget -->
+        <section class="pf-card">
+          <div class="pf-card-head" data-pad="16">
+            <span class="pf-card-title">Performance</span>
+            <div class="pf-card-toolbar">
+              <div class="pf-segmented" role="tablist">
+                <button class="pf-segmented-item" role="tab" aria-selected="true" type="button">All</button>
+                <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">For Sale</button>
+                <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">For Rent</button>
+                <button class="pf-segmented-item" role="tab" aria-selected="false" type="button">Daily Rentals</button>
+              </div>
+              <span class="pf-datepicker">Last 30 Days<svg class="i i-16"><use href="#pf-FiCalendar"/></svg></span>
+            </div>
+          </div>
+
+          <div class="pf-metric-bar" role="tablist">
+            <button class="pf-metric-tab" role="tab" aria-selected="true" type="button">
+              <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="primary"><svg class="i i-20"><use href="#pf-IoMdEye"/></svg></span><span><span class="pf-stat-title">Views</span><span class="pf-stat-value">24,853</span></span></span>
+            </button>
+            <button class="pf-metric-tab" role="tab" aria-selected="false" type="button">
+              <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="clicks"><svg class="i i-20"><use href="#pf-HiCursorClick"/></svg></span><span><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">387</span></span></span>
+            </button>
+            <button class="pf-metric-tab" role="tab" aria-selected="false" type="button">
+              <span class="pf-stat" data-emphasis="lead"><span class="pf-icon-tile" data-size="lg" data-tone="leads"><svg class="i i-20"><use href="#pf-MdPhone"/></svg></span><span><span class="pf-stat-title">Leads</span><span class="pf-stat-value">12</span></span></span>
+            </button>
+            <div class="pf-metric-extra">
+              <span class="pf-inline-metric"><svg class="i i-16"><use href="#pf-MdPhone"/></svg><span class="pf-stat-title">Calls</span><span class="pf-stat-value">3</span></span>
+              <hr class="pf-divider" data-orientation="vertical">
+              <span class="pf-inline-metric"><svg class="i i-16"><use href="#pf-IconWhatsapp"/></svg><span class="pf-stat-title">WhatsApp</span><span class="pf-stat-value">9</span></span>
+              <hr class="pf-divider" data-orientation="vertical">
+              <span class="pf-inline-metric"><svg class="i i-16"><use href="#pf-MdSms"/></svg><span class="pf-stat-title">SMS</span><span class="pf-stat-value">0</span></span>
+              <hr class="pf-divider" data-orientation="vertical">
+              <span class="pf-inline-metric"><svg class="i i-16"><use href="#pf-MdEmail"/></svg><span class="pf-stat-title">Emails</span><span class="pf-stat-value">0</span></span>
+            </div>
+          </div>
+
+          <div class="pf-card-body">
+            <div class="pf-chart-toolbar">
+              <div class="pf-chip-group" role="radiogroup">
+                <button class="pf-chip" role="radio" aria-checked="true" type="button"><span class="pf-dot" data-tone="all"></span>All</button>
+                <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="basic"></span>Basic</button>
+                <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="hot"></span>Hot</button>
+                <button class="pf-chip" role="radio" aria-checked="false" type="button"><span class="pf-dot" data-tone="signature"></span>Signature</button>
+              </div>
+            </div>
+            <div class="pf-chart">
+              <svg viewBox="0 0 1200 340" role="img" aria-label="Views by date, Aug 23 to Sep 21">
+                <line class="grid-h" x1="58" y1="227.2" x2="1188" y2="227.2"/>
+                <text class="tick" x="50" y="231.2" text-anchor="end">500</text>
+                <line class="grid-h" x1="58" y1="174.4" x2="1188" y2="174.4"/>
+                <text class="tick" x="50" y="178.4" text-anchor="end">1000</text>
+                <line class="grid-h" x1="58" y1="121.6" x2="1188" y2="121.6"/>
+                <text class="tick" x="50" y="125.6" text-anchor="end">1500</text>
+                <line class="grid-h" x1="58" y1="68.8" x2="1188" y2="68.8"/>
+                <text class="tick" x="50" y="72.8" text-anchor="end">2000</text>
+                <line class="grid-h" x1="58" y1="16.0" x2="1188" y2="16.0"/>
+                <text class="tick" x="50" y="20.0" text-anchor="end">2500</text>
+                <line class="axis-x" x1="58" y1="280" x2="1188" y2="280"/>
+                <text class="tick tick-x" x="58.0" y="302" text-anchor="middle">Aug 23</text>
+                <text class="tick tick-x" x="97.0" y="302" text-anchor="middle">Aug 24</text>
+                <text class="tick tick-x" x="135.9" y="302" text-anchor="middle">Aug 25</text>
+                <text class="tick tick-x" x="174.9" y="302" text-anchor="middle">Aug 26</text>
+                <text class="tick tick-x" x="213.9" y="302" text-anchor="middle">Aug 27</text>
+                <text class="tick tick-x" x="252.8" y="302" text-anchor="middle">Aug 28</text>
+                <text class="tick tick-x" x="291.8" y="302" text-anchor="middle">Aug 29</text>
+                <text class="tick tick-x" x="330.8" y="302" text-anchor="middle">Aug 30</text>
+                <text class="tick tick-x" x="369.7" y="302" text-anchor="middle">Aug 31</text>
+                <text class="tick tick-x" x="408.7" y="302" text-anchor="middle">Sep 01</text>
+                <text class="tick tick-x" x="447.7" y="302" text-anchor="middle">Sep 02</text>
+                <text class="tick tick-x" x="486.6" y="302" text-anchor="middle">Sep 03</text>
+                <text class="tick tick-x" x="525.6" y="302" text-anchor="middle">Sep 04</text>
+                <text class="tick tick-x" x="564.6" y="302" text-anchor="middle">Sep 05</text>
+                <text class="tick tick-x" x="603.5" y="302" text-anchor="middle">Sep 06</text>
+                <text class="tick tick-x" x="642.5" y="302" text-anchor="middle">Sep 07</text>
+                <text class="tick tick-x" x="681.4" y="302" text-anchor="middle">Sep 08</text>
+                <text class="tick tick-x" x="720.4" y="302" text-anchor="middle">Sep 09</text>
+                <text class="tick tick-x" x="759.4" y="302" text-anchor="middle">Sep 10</text>
+                <text class="tick tick-x" x="798.3" y="302" text-anchor="middle">Sep 11</text>
+                <text class="tick tick-x" x="837.3" y="302" text-anchor="middle">Sep 12</text>
+                <text class="tick tick-x" x="876.3" y="302" text-anchor="middle">Sep 13</text>
+                <text class="tick tick-x" x="915.2" y="302" text-anchor="middle">Sep 14</text>
+                <text class="tick tick-x" x="954.2" y="302" text-anchor="middle">Sep 15</text>
+                <text class="tick tick-x" x="993.2" y="302" text-anchor="middle">Sep 16</text>
+                <text class="tick tick-x" x="1032.1" y="302" text-anchor="middle">Sep 17</text>
+                <text class="tick tick-x" x="1071.1" y="302" text-anchor="middle">Sep 18</text>
+                <text class="tick tick-x" x="1110.1" y="302" text-anchor="middle">Sep 19</text>
+                <text class="tick tick-x" x="1149.0" y="302" text-anchor="middle">Sep 20</text>
+                <text class="tick tick-x" x="1188.0" y="302" text-anchor="middle">Sep 21</text>
+                <polyline class="series" points="58.0,280.0 97.0,280.0 135.9,276.8 174.9,275.8 213.9,275.8 252.8,274.7 291.8,267.3 330.8,212.4 369.7,245.2 408.7,228.3 447.7,192.4 486.6,191.3 525.6,196.6 564.6,173.3 603.5,130.0 642.5,94.1 681.4,98.4 720.4,130.0 759.4,152.2 798.3,121.6 837.3,38.2 876.3,115.3 915.2,142.7 954.2,180.7 993.2,185.0 1032.1,178.6 1071.1,153.3 1110.1,161.7 1149.0,173.3 1188.0,220.9"/>
+                <circle class="marker" cx="58.0" cy="280.0" r="2.6"/>
+                <circle class="marker" cx="97.0" cy="280.0" r="2.6"/>
+                <circle class="marker" cx="135.9" cy="276.8" r="2.6"/>
+                <circle class="marker" cx="174.9" cy="275.8" r="2.6"/>
+                <circle class="marker" cx="213.9" cy="275.8" r="2.6"/>
+                <circle class="marker" cx="252.8" cy="274.7" r="2.6"/>
+                <circle class="marker" cx="291.8" cy="267.3" r="2.6"/>
+                <circle class="marker" cx="330.8" cy="212.4" r="2.6"/>
+                <circle class="marker" cx="369.7" cy="245.2" r="2.6"/>
+                <circle class="marker" cx="408.7" cy="228.3" r="2.6"/>
+                <circle class="marker" cx="447.7" cy="192.4" r="2.6"/>
+                <circle class="marker" cx="486.6" cy="191.3" r="2.6"/>
+                <circle class="marker" cx="525.6" cy="196.6" r="2.6"/>
+                <circle class="marker" cx="564.6" cy="173.3" r="2.6"/>
+                <circle class="marker" cx="603.5" cy="130.0" r="2.6"/>
+                <circle class="marker" cx="642.5" cy="94.1" r="2.6"/>
+                <circle class="marker" cx="681.4" cy="98.4" r="2.6"/>
+                <circle class="marker" cx="720.4" cy="130.0" r="2.6"/>
+                <circle class="marker" cx="759.4" cy="152.2" r="2.6"/>
+                <circle class="marker" cx="798.3" cy="121.6" r="2.6"/>
+                <circle class="marker" cx="837.3" cy="38.2" r="2.6"/>
+                <circle class="marker" cx="876.3" cy="115.3" r="2.6"/>
+                <circle class="marker" cx="915.2" cy="142.7" r="2.6"/>
+                <circle class="marker" cx="954.2" cy="180.7" r="2.6"/>
+                <circle class="marker" cx="993.2" cy="185.0" r="2.6"/>
+                <circle class="marker" cx="1032.1" cy="178.6" r="2.6"/>
+                <circle class="marker" cx="1071.1" cy="153.3" r="2.6"/>
+                <circle class="marker" cx="1110.1" cy="161.7" r="2.6"/>
+                <circle class="marker" cx="1149.0" cy="173.3" r="2.6"/>
+                <circle class="marker" cx="1188.0" cy="220.9" r="2.6"/>
+              </svg>
+            </div>          </div>
+        </section>
+
+        <!-- renderListings() — the heading Row sits OUTSIDE the card -->
+        <div>
+          <div class="pf-section-head">
+            <span class="pf-section-title">Recent Listings</span>
+            <a class="pf-card-action" data-tone="muted" href="#">View All Listings <svg class="i i-14"><use href="#pf-FiArrowUpRight"/></svg></a>
+          </div>
+          <section class="pf-card">
+            <div class="pf-card-body" data-pad="none">
+              <table class="pf-table">
+                <thead>
+                  <tr><th class="col-property">Property</th><th>Timeline</th><th>Performance</th><th>Status</th><th class="col-upgrades">Upgrades</th><th class="col-actions">Actions</th></tr>
+                </thead>
+                <tbody>
+
+          <tr>
+            <td class="col-property">
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">21</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,250,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium">62%</span></div>
+                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 64 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, North Riyadh, Al Wurud</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88240117</span><span>REGA ID: 7201340882</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 09, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">896</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">35</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">2</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td class="col-upgrades">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button>
+              </div>
+            </td>
+            <td class="col-actions">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#pf-HiCheck"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-property">
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">18</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,399,000 <span class="pf-tag" data-tone="basic"><svg class="i i-14"><use href="#pf-IconBasic"/></svg>Basic</span> <span class="pf-score" data-band="medium">62%</span></div>
+                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 73 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, North Riyadh, Al Masif</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88240112</span><span>REGA ID: 7201340856</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 09, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">796</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">17</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">1</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td class="col-upgrades">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button>
+              </div>
+            </td>
+            <td class="col-actions">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#pf-HiCheck"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-property">
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">26</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,999,000 <span class="pf-tag" data-tone="hot"><svg class="i i-14"><use href="#pf-IconSuperHot"/></svg>Hot</span> <span class="pf-score" data-band="medium">54%</span></div>
+                  <a class="pf-listing-title" href="#">Floor for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 4</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 5</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 79 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, North Riyadh, Al Mughrizat</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88238421</span><span>REGA ID: 7201340887</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 07, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,600</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">18</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td class="col-upgrades">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button>
+                <button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button>
+              </div>
+            </td>
+            <td class="col-actions">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#pf-HiCheck"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-property">
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">31</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,049,000 <span class="pf-tag" data-tone="hot"><svg class="i i-14"><use href="#pf-IconSuperHot"/></svg>Hot</span> <span class="pf-score" data-band="medium">50%</span></div>
+                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 79 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Rawabi</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88236048</span><span>REGA ID: 7201340868</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 06, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">2,015</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">18</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td class="col-upgrades">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button>
+                <button class="pf-round-action" data-tone="hot" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button>
+              </div>
+            </td>
+            <td class="col-actions">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#pf-HiCheck"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-property">
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">38</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 2,330,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">43%</span></div>
+                  <a class="pf-listing-title" href="#">Villa for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 5</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 6</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 79 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Nahdah</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88235710</span><span>REGA ID: 7201340875</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 05, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">2,669</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">36</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">2</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td class="col-upgrades">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button>
+              </div>
+            </td>
+            <td class="col-actions">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#pf-HiCheck"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-property">
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">47</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 4,900,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">46%</span></div>
+                  <a class="pf-listing-title" href="#">Villa for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 6</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 7</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 399 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Al Diriyah, As Sulaymaniyah</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88234837</span><span>REGA ID: 7201351018</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Sep 02, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">2,386</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">66</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">1</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td class="col-upgrades">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button>
+              </div>
+            </td>
+            <td class="col-actions">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#pf-HiCheck"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-property">
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">18</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 870,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">31%</span></div>
+                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 131 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88232857</span><span>REGA ID: 7201347658</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,192</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">13</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td class="col-upgrades">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button>
+              </div>
+            </td>
+            <td class="col-actions">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#pf-HiCheck"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-property">
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">19</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 920,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">34%</span></div>
+                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 140 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88230489</span><span>REGA ID: 7201347647</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,050</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">6</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td class="col-upgrades">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button>
+              </div>
+            </td>
+            <td class="col-actions">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#pf-HiCheck"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-property">
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">20</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 995,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">39%</span></div>
+                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 150 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88230479</span><span>REGA ID: 7201347611</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">1,007</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">3</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td class="col-upgrades">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button>
+              </div>
+            </td>
+            <td class="col-actions">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#pf-HiCheck"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-property">
+              <div class="pf-listing">
+                <span class="pf-listing-thumb"><span class="pf-listing-count">24</span></span>
+                <div>
+                  <div class="pf-listing-price"><bdi>ر.س</bdi> 1,050,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium">33%</span></div>
+                  <a class="pf-listing-title" href="#">Apartment for Sale | Ready</a>
+                  <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 156 Sq. M.</span></div>
+                  <div class="pf-listing-loc">Riyadh, East Riyadh, Al Yarmuk</div>
+                  <div class="pf-listing-ids"><span>Bayut ID: 88230478</span><span>REGA ID: 7201347593</span></div>
+                </div>
+              </div>
+            </td>
+            <td>Posted on Aug 31, 2026 <svg class="i i-14"><use href="#pf-BsInfoLg"/></svg></td>
+            <td>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Views</span><span class="pf-stat-value">749</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Clicks</span><span class="pf-stat-value">5</span></div></div>
+              <div class="pf-stat" data-inline="true"><div><span class="pf-stat-title">Leads</span><span class="pf-stat-value">0</span></div></div>
+            </td>
+            <td><span class="pf-status-pill" data-status="green">Live</span></td>
+            <td class="col-upgrades">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" data-tone="signature" type="button" aria-label="Signature"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button>
+                <button class="pf-round-action" data-tone="muted" type="button" aria-label="Hot"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button>
+                <button class="pf-round-action" data-tone="refresh" type="button" aria-label="Refresh"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button>
+                <button class="pf-round-action" data-tone="photo" type="button" aria-label="Photography"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="video" type="button" aria-label="Videography"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button>
+                <button class="pf-round-action" data-tone="drone" type="button" aria-label="Drone Footage"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button>
+              </div>
+            </td>
+            <td class="col-actions">
+              <div class="pf-action-grid">
+                <button class="pf-round-action" type="button" aria-label="Mark as sold"><svg class="i i-16"><use href="#pf-HiCheck"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Share"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Preview"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></button>
+                <button class="pf-round-action" type="button" aria-label="Delete"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg></button>
+              </div>
+            </td>
+          </tr>                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+      </div><!-- /.pf-stack ContainerWidgets -->

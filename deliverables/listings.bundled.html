@@ -471,7 +471,15 @@
   --modal-w-lg:800px;                  /* Mark as Booked — data/live/design-capture-flows-only-booking */
   --modal-radius:8px;                  /* .ant-modal-content */
   --modal-shadow:0 2px 8px rgba(0, 0, 0, 0.15);
-  --modal-top:250px;                   /* measured y of a 400-tall modal in a 900 viewport */
+  /* THERE IS NO MODAL TOP. Every modal on this screen carries
+     `ant-modal-centered` — delete, trucheck, download-app, booking and both
+     shapes of the quota modal — so the top is whatever centring gives:
+       delete       400 tall → y 250      trucheck   376 → 262
+       download-app 409      → y 245      booking    234 → 333
+     250 was measured off the delete modal and written down as the rule, and
+     it matched only because that modal happens to be 400 tall. The fourth
+     instance-promoted-to-default in this stylesheet, and it hid until a modal
+     of a different height was built. */
   --modal-head-pad:16px 24px;         /* head measures 57 tall, padding-inline 24 */
   --modal-body-pad:24px;
   --modal-foot-pad:16px 24px;         /* MEASURED 16, not the 20 I had: the foot
@@ -587,6 +595,12 @@
      this system. authoring/listings-buttons.md carries the row that says so.
      48 is the input height this stylesheet already uses, squared. */
   --otp-box:48px;
+  /* the LOADED listing-detail drawer, measured from
+     data/live/listings--action-detail-drawer.capture.json: body 576x837 over a
+     528 content column, gallery 528x424, price 20/700, spec row 299x20 */
+  --detail-col:528px;
+  --detail-gallery-h:424px;
+  --fs-detail-price:20px;
   /* MEASURED now, from the product's own empty tab — these were [TBC] guesses.
      data/live/listings--tab-removed.capture.json: the wrapper is a grid with
      32px gaps and a 300px minimum, the illustration is 164x89 intrinsic and
@@ -1889,7 +1903,7 @@ table{border-collapse:collapse}
   z-index:var(--overlay-z);
   background:var(--mask-bg);
   display:flex;
-  align-items:flex-start;
+  align-items:center;
   justify-content:center;
 }
 .pf-mask[hidden]{display:none}
@@ -1897,7 +1911,6 @@ table{border-collapse:collapse}
 .pf-modal{
   width:var(--modal-w);
   max-width:calc(100vw - var(--sp-32));
-  margin-block-start:var(--modal-top);
   background:var(--card-bg);
   border-radius:var(--modal-radius);
   box-shadow:var(--modal-shadow);
@@ -2422,6 +2435,48 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 }
 .pf-otp-box:focus-visible{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
 
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · listing detail drawer, LOADED
+   It had only ever been drawn as three skeleton bars, because the drawer's own
+   fetch went unanswered in the harness and the component threw. With the
+   endpoint answered it renders, and this is what it renders.
+   data/live/listings--action-detail-drawer.capture.json
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-detail-gallery{
+  position:relative;
+  block-size:var(--detail-gallery-h);
+  margin-block-end:var(--sp-24);
+  border-radius:var(--radius-card);
+  overflow:hidden;
+}
+.pf-detail-photo{
+  display:block;inline-size:100%;block-size:100%;
+  background:var(--bg-gray-deep);
+}
+.pf-detail-gallery .pf-btn{position:absolute;inset-block-end:var(--sp-12);inset-inline-start:var(--sp-12)}
+/* the block between the gallery and the first section — measured 528x102 */
+.pf-detail-head{padding-block-end:var(--sp-8)}
+.pf-detail-label{color:var(--gray-600);font-size:var(--fs-12)}
+.pf-detail-price{
+  color:var(--primary);
+  font-size:var(--fs-detail-price);
+  font-weight:var(--fw-700);
+}
+.pf-detail-title{font-size:var(--fs-18);font-weight:var(--fw-600);margin-block:var(--sp-8) var(--sp-16)}
+.pf-detail-section{margin-block-start:var(--sp-24)}
+.pf-detail-h{font-size:var(--fs-18);font-weight:var(--fw-600);margin-block-end:var(--sp-8)}
+.pf-detail-list{margin:var(--sp-0);padding:var(--sp-0)}
+.pf-detail-row{
+  display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-16);
+  padding-block:var(--sp-12);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+}
+.pf-detail-row:last-child{border-block-end:0}
+.pf-detail-row dt{color:var(--gray-600);margin:var(--sp-0)}
+.pf-detail-row dd{margin:var(--sp-0);text-align:end}
+.pf-detail-about{color:var(--gray-700);margin:var(--sp-0)}
+
 </style>
 <style>
 /* ── INSTANCE DATA ──────────────────────────────────────────────────────
@@ -2716,8 +2771,34 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
      (data/live/listings--<name>.png) has to resolve here or the QA says so. */
 
   function goTo(name) {
-    var el = document.getElementById(name);
-    if (el && /pf-mask|pf-drawer|pf-popover/.test(el.className)) { open(name, null); return true; }
+    /* A capture's name and an overlay's id are not the same vocabulary, and
+       forcing them to be would name this page's overlays after the clicks that
+       produced them: #upgrade-signature instead of #modal-quota. So anything
+       that REPRODUCES a captured state declares which ones —
+
+         <div id="modal-quota" data-states="upgrade-signature upgrade-hot …">
+         <span class="pf-round-action-wrap" data-tip="Mark Signature"
+               data-states="tooltip-upgrade">
+
+       which is also the clearest place to record that four captures of four
+       different circles are four captures of one overlay. */
+    var el = document.querySelector('[data-states~="' + name + '"]') || document.getElementById(name);
+    if (el) {
+      /* a tooltip state is not an overlay to open but a trigger to hover */
+      if (el.hasAttribute('data-tip')) { tipFor(el); return true; }
+      if (/pf-mask|pf-drawer|pf-popover|pf-listbox|pf-tip/.test(el.className)) {
+        /* an anchored overlay needs something to anchor to, and a deep link
+           arrives with no trigger — use the first one that points at it */
+        open(el.id, document.querySelector('[data-open="' + el.id + '"]'));
+        return true;
+      }
+      if (el.hasAttribute('data-panel')) { selectTab(el); return true; }
+      if (el.hasAttribute('data-state-panel')) { setState(el.getAttribute('data-state-panel')); return true; }
+      /* a control that declares a state but opens nothing IS the state: the
+         product gives a disabled non-service circle no tooltip at all, and
+         "nothing appears" is what that capture recorded */
+      return true;
+    }
     var tab = document.querySelector('[data-panel="' + name + '"]');
     if (tab) { selectTab(tab); return true; }
     if (document.querySelector('[data-state-panel="' + name + '"]')) { setState(name); return true; }
@@ -3340,7 +3421,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
            default, loading and error, each captured from the product rather
            than imagined. The prototype bar at the bottom switches between
            them; #state=loading reaches one directly. -->
-      <div data-state-panel="default">
+      <div data-state-panel="default" data-states="action-discount">
       <!-- ── DataTable: status tabs in the card head, the table in its body ──
            One panel per tab, all but the current one hidden. The column set
            per tab is listingUtilities.js:402's, and the row COUNT follows the
@@ -3390,10 +3471,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap" data-tip="Mark Signature"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Mark Signature" data-open="modal-quota"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Signature" data-states="tooltip-upgrade"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Mark Signature" data-open="modal-quota"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="Mark Hot"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Mark Hot" data-open="modal-quota"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap" data-tip="Request Photography Service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Photography Service" data-states="tooltip-upgrade-service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
@@ -3401,7 +3482,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
             <td class="col-actions">
               <div class="pf-action-grid">
                 <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" data-states="tooltip-action" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
                 <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
                 <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
                 <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
@@ -3519,10 +3600,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap" data-tip="Mark Signature"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Mark Signature" data-open="modal-quota"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Signature" data-states="tooltip-upgrade-applied"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Mark Signature" data-open="modal-quota"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="Hot Listing"><button class="pf-round-action" data-tone="hot" data-applied type="button" aria-label="Hot Listing" disabled><svg class="i"><use href="#pf-IconSuperHot"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
                 <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap" data-tip="Photography Service Requested"><button class="pf-round-action" data-tone="photo" data-pending type="button" aria-label="Photography Service Requested" disabled><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button><span class="pf-pending-mark"><svg class="i"><use href="#pf-MdRefresh"/></svg></span></span>
+                <span class="pf-round-action-wrap" data-tip="Photography Service Requested" data-states="tooltip-upgrade-pending"><button class="pf-round-action" data-tone="photo" data-pending type="button" aria-label="Photography Service Requested" disabled><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button><span class="pf-pending-mark"><svg class="i"><use href="#pf-MdRefresh"/></svg></span></span>
                 <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
@@ -3633,7 +3714,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
           <tr>
             <td class="col-property">
               <div class="pf-listing">
-                <span class="pf-listing-thumb"><span class="pf-listing-count">18</span><span class="pf-tag" data-tone="booked" data-tip="Booked Until Aug 31, 2026">Booked</span></span>
+                <span class="pf-listing-thumb"><span class="pf-listing-count">18</span><span class="pf-tag" data-tone="booked" data-tip="Booked Until Aug 31, 2026" data-states="tooltip-booked">Booked</span></span>
                 <div>
                   <div class="pf-listing-price"><bdi>ر.س</bdi> 870,000 <span class="pf-tag" data-tone="signature"><svg class="i i-14"><use href="#pf-BsFillLightningChargeFill"/></svg>Signature</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">31%</span></div>
                   <!-- NOT A LINK. listing-purpose.js:261 renders the price and
@@ -3744,8 +3825,8 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
               <div class="pf-action-grid" data-dense>
                 <span class="pf-round-action-wrap" data-tip="Signature Listing"><button class="pf-round-action" data-tone="signature" data-applied type="button" aria-label="Signature Listing" disabled><svg class="i"><use href="#pf-BsFillLightningChargeFill"/></svg></button><span class="pf-applied-check"><svg class="i"><use href="#pf-HiCheck"/></svg></span></span>
                 <span class="pf-round-action-wrap" data-tip="Mark Hot"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Mark Hot" data-open="modal-quota"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
-                <span class="pf-round-action-wrap"><button class="pf-round-action" data-tone="muted" type="button" aria-label="refresh" disabled><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap" data-tip="This service is not available in your region yet."><button class="pf-round-action" data-tone="muted" type="button" aria-label="This service is not available in your region yet." disabled><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-states="tooltip-upgrade-none"><button class="pf-round-action" data-tone="muted" type="button" aria-label="refresh" disabled><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="This service is not available in your region yet." data-states="tooltip-upgrade-unavailable"><button class="pf-round-action" data-tone="muted" type="button" aria-label="This service is not available in your region yet." disabled><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="This service is not available in your region yet."><button class="pf-round-action" data-tone="muted" type="button" aria-label="This service is not available in your region yet." disabled><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="This service is not available in your region yet."><button class="pf-round-action" data-tone="muted" type="button" aria-label="This service is not available in your region yet." disabled><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
@@ -3839,10 +3920,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
             <td><span class="pf-status-pill" data-status="green">Live</span></td>
             <td class="col-upgrades">
               <div class="pf-action-grid" data-dense>
-                <span class="pf-round-action-wrap" data-tip="Mark Signature"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Mark Signature" data-open="modal-quota"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Mark Signature" data-states="tooltip-upgrade"><button class="pf-round-action" data-tone="signature" type="button" aria-label="Mark Signature" data-open="modal-quota"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="Mark Hot"><button class="pf-round-action" data-tone="hot" type="button" aria-label="Mark Hot" data-open="modal-quota"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="Mark Refresh"><button class="pf-round-action" data-tone="refresh" type="button" aria-label="Mark Refresh" data-open="modal-quota"><svg class="i i-16"><use href="#pf-MdRefresh"/></svg></button></span>
-                <span class="pf-round-action-wrap" data-tip="Request Photography Service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
+                <span class="pf-round-action-wrap" data-tip="Request Photography Service" data-states="tooltip-upgrade-service"><button class="pf-round-action" data-tone="photo" type="button" aria-label="Request Photography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiCamera"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="Request Videography Service"><button class="pf-round-action" data-tone="video" type="button" aria-label="Request Videography Service" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-HiVideoCamera"/></svg></button></span>
                 <span class="pf-round-action-wrap" data-tip="Request Drone Footage"><button class="pf-round-action" data-tone="drone" type="button" aria-label="Request Drone Footage" data-open="modal-quota-service"><svg class="i i-16"><use href="#pf-DroneIcon"/></svg></button></span>
               </div>
@@ -3850,7 +3931,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
             <td class="col-actions">
               <div class="pf-action-grid">
                 <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" data-states="tooltip-action" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
                 <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
                 <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
                 <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
@@ -3922,7 +4003,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
             <td class="col-actions">
               <div class="pf-action-grid">
                 <button class="pf-round-action" type="button" aria-label="TruCheck Eligible" data-tip="TruCheck Eligible" data-placement="left" data-open="modal-trucheck"><svg class="i i-16"><use href="#pf-TruCheckIcon"/></svg></button>
-                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
+                <a class="pf-round-action" aria-label="View on Bayut" data-tip="View on Bayut" data-placement="left" data-states="tooltip-action" href="https://www.bayut.sa/" target="_blank" rel="noopener"><svg class="i i-16"><use href="#pf-FiArrowUpRight"/></svg></a>
                 <button class="pf-round-action" type="button" aria-label="Preview" data-tip="Preview" data-placement="left" data-open="drawer-listing-detail"><svg class="i i-16"><use href="#pf-IoMdEye"/></svg></button>
                 <a class="pf-round-action" aria-label="Edit" data-tip="Edit" data-placement="left" href="not-built.html?screen=Edit"><svg class="i i-16"><use href="#pf-MdEdit"/></svg></a>
                 <a class="pf-round-action" aria-label="Apply Discount" data-tip="Apply Discount" data-placement="left" href="not-built.html?screen=Apply%20Discount"><svg class="i i-16"><use href="#pf-IconSellRentListing"/></svg></a>
@@ -4421,34 +4502,64 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
       <span class="pf-modal-title" id="bk-title">Mark as Booked</span>
       <button class="pf-overlay-close" type="button" aria-label="Close" data-close><svg class="i i-16"><use href="#pf-IoMdClose"/></svg></button>
     </div>
+    <!-- NO LABEL. The product's body is 104 tall: 24 of padding each side and
+         a single 40-tall field in a 56-tall space item. A label here made ours
+         143 and the QA read modal.body as 100% different. -->
     <div class="pf-modal-body">
       <div class="pf-field">
-        <label class="pf-field-label" for="bk-range">Booked dates</label>
         <button class="pf-select" id="bk-range" type="button" data-open="popover-date-range" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow"><svg class="i i-16"><use href="#pf-MdDateRange"/></svg></span></button>
       </div>
     </div>
+    <!-- the footer's buttons are 40 tall (86 and 113 wide), not the 36 a
+         default-size pf-btn draws -->
     <div class="pf-modal-foot">
-      <button class="pf-btn" type="button" data-close><span>Cancel</span></button>
-      <button class="pf-btn" data-variant="primary" type="button" data-close><span>Add Range</span></button>
+      <button class="pf-btn" data-size="large" type="button" data-close><span>Cancel</span></button>
+      <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-close><span>Add Range</span></button>
     </div>
   </div>
 </div>
 
-<!-- data/live/design-capture-flows-only-listing-detail-drawer — 576 wide, head
-     59, title 20/600. The body is the SKELETON, because that is the state the
-     product renders before the listing arrives and the only one captured; the
-     loaded drawer needs a listing-detail fixture. -->
+<!-- data/live/listings--action-detail-drawer — 576 wide, head 63, body 837
+     with a 528 content column (24 each side). LOADED, not the skeleton: the
+     drawer fetches /api/surge/listings/:id/edit (surgePostListingEndpoints.js:65)
+     and that call went unanswered, so the transformer threw inside the drawer
+     and every capture of it came back blank. The harness answers it now.
+       gallery  528x424, with a 51x36 count button over it
+       head     a secondary label, the price at 20/700 in the primary colour,
+                an h5 title, then a 299x20 spec row of three items
+       list     an h5 and a 528x300 split list
+       about    an h5 and a single ellipsed line -->
 <div class="pf-mask" id="drawer-listing-detail-mask" hidden></div>
-<div class="pf-drawer" data-kind="detail" id="drawer-listing-detail" data-mask="drawer-listing-detail-mask" role="dialog" aria-modal="true" aria-labelledby="ld-title" hidden>
+<div class="pf-drawer" data-kind="detail" id="drawer-listing-detail" data-states="action-detail-drawer" data-mask="drawer-listing-detail-mask" role="dialog" aria-modal="true" aria-labelledby="ld-title" hidden>
   <div class="pf-drawer-head">
     <div class="pf-modal-title" id="ld-title">Listing Details</div>
     <button class="pf-overlay-close" type="button" aria-label="Close" data-close><svg class="i i-16"><use href="#pf-IoMdClose"/></svg></button>
   </div>
   <div class="pf-drawer-body">
-    <div class="pf-detail-skeleton">
-      <span class="pf-skeleton"></span>
-      <span class="pf-skeleton"></span>
-      <span class="pf-skeleton"></span>
+    <div class="pf-detail-gallery">
+      <span class="pf-detail-photo"></span>
+      <button class="pf-btn" data-variant="default" data-size="small" type="button" data-noop="the gallery pages through the listing's images; this page carries one placeholder"><svg class="i i-14"><use href="#pf-HiCamera"/></svg><span>21</span></button>
+    </div>
+    <div class="pf-detail-head">
+      <span class="pf-detail-label">Price</span>
+      <div class="pf-detail-price"><bdi>ر.س</bdi> 1,250,000</div>
+      <div class="pf-detail-title">Floor for Sale | Ready</div>
+      <div class="pf-listing-specs"><span><svg class="i i-14"><use href="#pf-IconBedroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconBathroom"/></svg> 3</span><span><svg class="i i-14"><use href="#pf-IconAreaSize"/></svg> 64 Sq. M.</span></div>
+    </div>
+    <div class="pf-detail-section">
+      <div class="pf-detail-h">Listing Information</div>
+      <dl class="pf-detail-list">
+        <div class="pf-detail-row"><dt>Bayut ID</dt><dd>88240117</dd></div>
+        <div class="pf-detail-row"><dt>REGA Ad License</dt><dd>7201340882</dd></div>
+        <div class="pf-detail-row"><dt>Purpose</dt><dd>For Sale</dd></div>
+        <div class="pf-detail-row"><dt>Type</dt><dd>Floor</dd></div>
+        <div class="pf-detail-row"><dt>Location</dt><dd>Riyadh, North Riyadh, Al Wurud</dd></div>
+        <div class="pf-detail-row"><dt>Posted on</dt><dd>Sep 09, 2026</dd></div>
+      </dl>
+    </div>
+    <div class="pf-detail-section">
+      <div class="pf-detail-h">About this property</div>
+      <p class="pf-detail-about">A well-presented unit in a quiet residential block, close to schools and daily amenities.</p>
     </div>
   </div>
 </div>
@@ -4536,7 +4647,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 <!-- data/live/listings--popover-status-rejected — 472x54, pad 16, placement
      right, and it opens on CLICK. The only click-triggered popover in the
      table body (platforms-status.js:16). -->
-<div class="pf-popover" data-kind="anchored" id="popover-status" data-anchor="trigger" data-placement="right" role="dialog" aria-label="Rejection reasons" hidden>
+<div class="pf-popover" data-kind="anchored" id="popover-status" data-states="popover-status-rejected" data-anchor="trigger" data-placement="right" role="dialog" aria-label="Rejection reasons" hidden>
   <div class="pf-popover-body">Images do not match the property, Price is outside the expected range</div>
 </div>
 
@@ -4566,7 +4677,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 </div>
 
 <!-- data/live/listings--select-purpose — 245x137, pad 11, options 223x38 -->
-<div class="pf-listbox" id="listbox-purpose" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Purpose" hidden>
+<div class="pf-listbox" id="listbox-purpose" data-states="select-purpose" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Purpose" hidden>
   <button class="pf-listbox-option" role="option" type="button" aria-selected="true" data-close>Sale</button>
   <button class="pf-listbox-option" role="option" type="button" data-close>Rent</button>
   <button class="pf-listbox-option" role="option" type="button" data-close>Daily Rental</button>
@@ -4575,7 +4686,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 <!-- data/live/listings--select-property-type — 245x278. A GROUPED panel, not
      the same one taller: a 223x35 group header at 12px, and its options
      indented to 25 instead of 12. -->
-<div class="pf-listbox" id="listbox-property-type" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Property Type" hidden>
+<div class="pf-listbox" id="listbox-property-type" data-states="select-property-type" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Property Type" hidden>
   <div class="pf-listbox-group" role="presentation">Residential</div>
   <button class="pf-listbox-option" role="option" type="button" data-close>Apartment</button>
   <button class="pf-listbox-option" role="option" type="button" data-close>Villa</button>
@@ -4590,7 +4701,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
      REACT-DATE-RANGE, not an antd picker (datePicker.js:15): two months side
      by side and a list of static ranges. The capture has 70 .rdrDay and no
      .ant-picker, which is the only reason this is not drawn as one. -->
-<div class="pf-popover" data-kind="date" id="popover-date-range" data-anchor="trigger" data-placement="bottom" role="dialog" aria-label="Search by Calendar" hidden>
+<div class="pf-popover" data-kind="date" id="popover-date-range" data-states="date-posted-on" data-anchor="trigger" data-placement="bottom" role="dialog" aria-label="Search by Calendar" hidden>
   <div class="pf-popover-title">Search by Calendar</div>
   <div class="pf-popover-body">
     <div class="pf-daterange">
@@ -4620,7 +4731,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     <button class="pf-btn" data-variant="primary" type="button" data-close><span>Confirm</span></button>
   </div>
 </div>
-<div class="pf-mask" id="modal-quota" hidden>
+<div class="pf-mask" id="modal-quota" data-states="upgrade-signature upgrade-hot upgrade-refresh" hidden>
   <div class="pf-modal" data-size="quota" role="dialog" aria-modal="true" aria-labelledby="modal-quota-title">
     <div class="pf-modal-head">
       <span class="pf-modal-title" id="modal-quota-title">Mark Signature</span>
@@ -4643,7 +4754,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     </div>
   </div>
 </div>
-<div class="pf-mask" id="modal-quota-service" hidden>
+<div class="pf-mask" id="modal-quota-service" data-states="upgrade-photography" hidden>
   <div class="pf-modal" data-size="quota" role="dialog" aria-modal="true" aria-labelledby="modal-quota-service-title">
     <div class="pf-modal-head">
       <span class="pf-modal-title" id="modal-quota-service-title">Request Photography Service</span>

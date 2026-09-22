@@ -219,7 +219,7 @@ kebab Dropdown (`:111-126`).
 |---|---|---|---|---|---|
 | 1 | TruCheck | → **TruCheckModal** | `listingUtilities.js:191-203`, `listing-row-actions.js:103-105` | built → `modal-trucheck` | `listings--modal-trucheck` |
 | 2 | View on Bayut | **external** `openExternalUrl(public_url)` | `listingUtilities.js:251-263` | built — an external link to the classified site | — |
-| 3 | Preview | → **ListingDrawer** `.open(id)` | `listingUtilities.js:265-277` | built → `drawer-listing-detail`, **skeleton body** | `listings--action-detail-drawer` |
+| 3 | Preview | → **ListingDrawer** `.open(id)` | `listingUtilities.js:265-277` | built → `drawer-listing-detail`, **loaded** — gallery, price, spec row, information list, description | `listings--action-detail-drawer` — 576 wide, head 63, body 837 over a 528 column, gallery 528×424 |
 | 4 | Edit | navigates `/post-listing/:property_id` | `listingUtilities.js:204-216` | stub | — |
 | 5 | Apply Discount | stores the discount session, then navigates. **`null` unless `discount_applicable`** | `listingUtilities.js:217-237` | stub, and absent on row 5 — `discount_applicable` false | `listings--action-discount` |
 | 6 | Mark as Booked | → **BookingModal**. **Only `listing_purpose.slug === 'daily-rental'`** | `listingUtilities.js:238-250` | built → `modal-booking`, on rows 4 and 9 | `listings--modal-booking` — **800×234** in context, head 57 pad 16/24, body 104 pad 24, foot 73 |
@@ -345,14 +345,14 @@ numbers. Add a control to the page and the check fails until it has a row here.
 `dead` is the number this file exists to drive to zero.
 
 ```census
-button 197
+button 198
 a 57
 input 12
-total 266
+total 267
 reachable 221
 disabled 15
 field 12
-acknowledged 18
+acknowledged 19
 dead 0
 hashHref 0
 ```

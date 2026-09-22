@@ -20,6 +20,9 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { census, declaredCensus } from './census.mjs';
+import { NAV } from './pages/shell.mjs';
+
+const navLabels = NAV.map(([label]) => label);
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fails = [], warns = [];
@@ -217,6 +220,25 @@ for (const page of ['dashboard.html', 'listings.html']) {
 
   if (/prototype\.js/.test(readFileSync(join(D, page), 'utf8')) === false && opens.length)
     bad(`${page} has overlay triggers but never loads prototype.js`);
+}
+
+/* ── 3c2 · not-built.html must list the rail the rail actually has ────────
+   It is the page every unbuilt route lands on, so it is the worst place in the
+   deliverable to be out of date — and it listed Inbox and TruLeads for a week
+   after shell.mjs dropped them. NAV is the one source. */
+{
+  const nb = join(D, 'not-built.html');
+  if (!existsSync(nb)) bad('not-built.html missing — every stub link lands there');
+  else {
+    const html = readFileSync(nb, 'utf8').replace(/<!--[\s\S]*?-->/g, '');
+    const listed = [...html.matchAll(/<li>(?:<a[^>]*>|<span>)([^<]+)</g)].map((m) => m[1].trim());
+    const want = navLabels.map((l) => l.replace(/&/g, '&amp;'));
+    const extra = listed.filter((l) => !want.includes(l));
+    const missing = want.filter((l) => !listed.includes(l));
+    (extra.length || missing.length)
+      ? bad(`not-built.html does not match the rail — ${[extra.map((e) => `extra: ${e}`), missing.map((m) => `missing: ${m}`)].flat().join(', ')}`)
+      : ok(`not-built.html lists the same ${want.length} rail entries as shell.mjs`);
+  }
 }
 
 /* ── 3d · the audit matrix must still describe the page ────────────────────

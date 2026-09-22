@@ -1,15 +1,15 @@
 {
   "finalPath": "/en/listings",
-  "shell": false,
+  "shell": true,
   "errorCard": false,
   "overlay": {
     "modal": false,
-    "drawer": false,
+    "drawer": true,
     "popover": false,
     "dropdown": false
   },
   "spinning": false,
-  "pageHeight": 900,
-  "note": "Actions[2] — IoMdEye is detail-drawer (table-actions.js:31), so this should open a drawer",
+  "pageHeight": 1926,
+  "note": "the action tooltipped \"Preview\" — ListingDrawer, in its loading state (there is no listing-detail fixture yet)",
   "url": "http://127.0.0.1:3000/en/listings"
 }

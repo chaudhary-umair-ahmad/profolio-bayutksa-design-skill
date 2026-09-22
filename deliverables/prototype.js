@@ -280,8 +280,34 @@
      (data/live/listings--<name>.png) has to resolve here or the QA says so. */
 
   function goTo(name) {
-    var el = document.getElementById(name);
-    if (el && /pf-mask|pf-drawer|pf-popover/.test(el.className)) { open(name, null); return true; }
+    /* A capture's name and an overlay's id are not the same vocabulary, and
+       forcing them to be would name this page's overlays after the clicks that
+       produced them: #upgrade-signature instead of #modal-quota. So anything
+       that REPRODUCES a captured state declares which ones —
+
+         <div id="modal-quota" data-states="upgrade-signature upgrade-hot …">
+         <span class="pf-round-action-wrap" data-tip="Mark Signature"
+               data-states="tooltip-upgrade">
+
+       which is also the clearest place to record that four captures of four
+       different circles are four captures of one overlay. */
+    var el = document.querySelector('[data-states~="' + name + '"]') || document.getElementById(name);
+    if (el) {
+      /* a tooltip state is not an overlay to open but a trigger to hover */
+      if (el.hasAttribute('data-tip')) { tipFor(el); return true; }
+      if (/pf-mask|pf-drawer|pf-popover|pf-listbox|pf-tip/.test(el.className)) {
+        /* an anchored overlay needs something to anchor to, and a deep link
+           arrives with no trigger — use the first one that points at it */
+        open(el.id, document.querySelector('[data-open="' + el.id + '"]'));
+        return true;
+      }
+      if (el.hasAttribute('data-panel')) { selectTab(el); return true; }
+      if (el.hasAttribute('data-state-panel')) { setState(el.getAttribute('data-state-panel')); return true; }
+      /* a control that declares a state but opens nothing IS the state: the
+         product gives a disabled non-service circle no tooltip at all, and
+         "nothing appears" is what that capture recorded */
+      return true;
+    }
     var tab = document.querySelector('[data-panel="' + name + '"]');
     if (tab) { selectTab(tab); return true; }
     if (document.querySelector('[data-state-panel="' + name + '"]')) { setState(name); return true; }

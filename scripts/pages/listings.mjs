@@ -189,7 +189,7 @@ const CELL = {
                 <span class="pf-listing-thumb"><span class="pf-listing-count">${r.images}</span>${role.booked
                   /* listing-purpose.js:217 — a Tooltip'd chip over the thumbnail,
                      and only when the listing has booked ranges. 230x40 */
-                  ? `<span class="pf-tag" data-tone="booked" data-tip="Booked Until ${esc(r.posted)}">Booked</span>` : ''}</span>
+                  ? `<span class="pf-tag" data-tone="booked" data-tip="Booked Until ${esc(r.posted)}" data-states="tooltip-booked">Booked</span>` : ''}</span>
                 <div>
                   <div class="pf-listing-price"><bdi>ر.س</bdi> ${r.price} <span class="pf-tag" data-tone="${r.product}">${icon(p.icon, 14)}${p.label}</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">${r.score}</span></div>
                   <!-- NOT A LINK. listing-purpose.js:261 renders the price and
@@ -256,8 +256,17 @@ ${UPGRADES(r, i).map(({ tone, ic, applied, pending, off, tip, isService }) => {
      puts it too. */
   const dis = applied || pending || off;
   const tipAttr = tip ? ` data-tip="${esc(tip)}"` : '';
+  /* which captured tooltip this wrapper reproduces, so scripts/qa-design.mjs
+     can reach it by name. The harness hovered row 0's first and fourth
+     circles, row 3's first and fourth, and row 8's third and fourth. */
+  const st = {
+    '0-signature': 'tooltip-upgrade', '0-photo': 'tooltip-upgrade-service',
+    '3-signature': 'tooltip-upgrade-applied', '3-photo': 'tooltip-upgrade-pending',
+    '8-refresh': 'tooltip-upgrade-none', '8-photo': 'tooltip-upgrade-unavailable',
+  }[`${i}-${tone}`];
+  const stAttr = st ? ` data-states="${st}"` : '';
   const state = off ? ' data-tone="muted"' : ` data-tone="${tone}"`;
-  return `                <span class="pf-round-action-wrap"${tipAttr}><button class="pf-round-action"${state}${applied ? ' data-applied' : ''}${pending ? ' data-pending' : ''} type="button" aria-label="${esc(tip || tone)}"${dis ? ' disabled' : ` data-open="${isService ? 'modal-quota-service' : 'modal-quota'}"`}>${icon(ic, applied ? null : 16)}</button>${applied ? `<span class="pf-applied-check">${icon('HiCheck', null)}</span>` : ''}${pending ? `<span class="pf-pending-mark">${icon('MdRefresh', null)}</span>` : ''}</span>`;
+  return `                <span class="pf-round-action-wrap"${tipAttr}${stAttr}><button class="pf-round-action"${state}${applied ? ' data-applied' : ''}${pending ? ' data-pending' : ''} type="button" aria-label="${esc(tip || tone)}"${dis ? ' disabled' : ` data-open="${isService ? 'modal-quota-service' : 'modal-quota'}"`}>${icon(ic, applied ? null : 16)}</button>${applied ? `<span class="pf-applied-check">${icon('HiCheck', null)}</span>` : ''}${pending ? `<span class="pf-pending-mark">${icon('MdRefresh', null)}</span>` : ''}</span>`;
 }).join('\n')}
               </div>
             </td>`;
@@ -265,7 +274,8 @@ ${UPGRADES(r, i).map(({ tone, ic, applied, pending, off, tip, isService }) => {
   actions: (r, i) => `            <td class="col-actions">
               <div class="pf-action-grid">
 ${ACTIONS(r, i).map(([label, ic, opens]) => {
-  const tip = ` data-tip="${esc(label)}" data-placement="left"`;
+  /* the harness hovered Actions[1] of row 0 — View on Bayut, 132x40 */
+  const tip = ` data-tip="${esc(label)}" data-placement="left"${i === 0 && label === 'View on Bayut' ? ' data-states="tooltip-action"' : ''}`;
   /* an action that opens an overlay is a button; one that NAVIGATES is a link,
      the same way the rail handles a screen we have not built; the one that
      LEAVES the app is a link to the classified site. None of them is a dead
@@ -379,34 +389,60 @@ ${['Property is no longer available', 'Rented out through Bayut', 'Sold through 
       <span class="pf-modal-title" id="bk-title">Mark as Booked</span>
       <button class="pf-overlay-close" type="button" aria-label="Close" data-close>${icon('IoMdClose', 16)}</button>
     </div>
+    <!-- NO LABEL. The product's body is 104 tall: 24 of padding each side and
+         a single 40-tall field in a 56-tall space item. A label here made ours
+         143 and the QA read modal.body as 100% different. -->
     <div class="pf-modal-body">
       <div class="pf-field">
-        <label class="pf-field-label" for="bk-range">Booked dates</label>
         <button class="pf-select" id="bk-range" type="button" data-open="popover-date-range" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow">${icon('MdDateRange', 16)}</span></button>
       </div>
     </div>
+    <!-- the footer's buttons are 40 tall (86 and 113 wide), not the 36 a
+         default-size pf-btn draws -->
     <div class="pf-modal-foot">
-      <button class="pf-btn" type="button" data-close><span>Cancel</span></button>
-      <button class="pf-btn" data-variant="primary" type="button" data-close><span>Add Range</span></button>
+      <button class="pf-btn" data-size="large" type="button" data-close><span>Cancel</span></button>
+      <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-close><span>Add Range</span></button>
     </div>
   </div>
 </div>
 
-<!-- data/live/design-capture-flows-only-listing-detail-drawer — 576 wide, head
-     59, title 20/600. The body is the SKELETON, because that is the state the
-     product renders before the listing arrives and the only one captured; the
-     loaded drawer needs a listing-detail fixture. -->
+<!-- data/live/listings--action-detail-drawer — 576 wide, head 63, body 837
+     with a 528 content column (24 each side). LOADED, not the skeleton: the
+     drawer fetches /api/surge/listings/:id/edit (surgePostListingEndpoints.js:65)
+     and that call went unanswered, so the transformer threw inside the drawer
+     and every capture of it came back blank. The harness answers it now.
+       gallery  528x424, with a 51x36 count button over it
+       head     a secondary label, the price at 20/700 in the primary colour,
+                an h5 title, then a 299x20 spec row of three items
+       list     an h5 and a 528x300 split list
+       about    an h5 and a single ellipsed line -->
 <div class="pf-mask" id="drawer-listing-detail-mask" hidden></div>
-<div class="pf-drawer" data-kind="detail" id="drawer-listing-detail" data-mask="drawer-listing-detail-mask" role="dialog" aria-modal="true" aria-labelledby="ld-title" hidden>
+<div class="pf-drawer" data-kind="detail" id="drawer-listing-detail" data-states="action-detail-drawer" data-mask="drawer-listing-detail-mask" role="dialog" aria-modal="true" aria-labelledby="ld-title" hidden>
   <div class="pf-drawer-head">
     <div class="pf-modal-title" id="ld-title">Listing Details</div>
     <button class="pf-overlay-close" type="button" aria-label="Close" data-close>${icon('IoMdClose', 16)}</button>
   </div>
   <div class="pf-drawer-body">
-    <div class="pf-detail-skeleton">
-      <span class="pf-skeleton"></span>
-      <span class="pf-skeleton"></span>
-      <span class="pf-skeleton"></span>
+    <div class="pf-detail-gallery">
+      <span class="pf-detail-photo"></span>
+      <button class="pf-btn" data-variant="default" data-size="small" type="button" data-noop="the gallery pages through the listing's images; this page carries one placeholder">${icon('HiCamera', 14)}<span>${esc(String(rows[0].images))}</span></button>
+    </div>
+    <div class="pf-detail-head">
+      <span class="pf-detail-label">Price</span>
+      <div class="pf-detail-price"><bdi>ر.س</bdi> ${esc(rows[0].price)}</div>
+      <div class="pf-detail-title">${esc(rows[0].title)}</div>
+      <div class="pf-listing-specs"><span>${icon(beds, 14)} ${rows[0].beds}</span><span>${icon(baths, 14)} ${rows[0].baths}</span><span>${icon(area, 14)} ${esc(rows[0].area)}</span></div>
+    </div>
+    <div class="pf-detail-section">
+      <div class="pf-detail-h">Listing Information</div>
+      <dl class="pf-detail-list">
+${[['Bayut ID', rows[0].bayutId], ['REGA Ad License', rows[0].regaId], ['Purpose', 'For Sale'], ['Type', 'Floor'], ['Location', rows[0].location], ['Posted on', rows[0].posted]]
+  .map(([k, v]) => `        <div class="pf-detail-row"><dt>${esc(k)}</dt><dd>${esc(String(v))}</dd></div>`).join('\n')}
+      </dl>
+    </div>
+    <div class="pf-detail-section">
+      <div class="pf-detail-h">About this property</div>
+      <p class="pf-detail-about">A well-presented unit in a quiet residential block, close to schools and daily amenities.</p>
     </div>
   </div>
 </div>
@@ -498,7 +534,7 @@ const tableOverlays = `
 <!-- data/live/listings--popover-status-rejected — 472x54, pad 16, placement
      right, and it opens on CLICK. The only click-triggered popover in the
      table body (platforms-status.js:16). -->
-<div class="pf-popover" data-kind="anchored" id="popover-status" data-anchor="trigger" data-placement="right" role="dialog" aria-label="Rejection reasons" hidden>
+<div class="pf-popover" data-kind="anchored" id="popover-status" data-states="popover-status-rejected" data-anchor="trigger" data-placement="right" role="dialog" aria-label="Rejection reasons" hidden>
   <div class="pf-popover-body">Images do not match the property, Price is outside the expected range</div>
 </div>
 
@@ -518,14 +554,14 @@ ${rows_.map(([k, v]) => `      <div class="pf-lead-row"><span>${k}</span><span>$
 </div>
 
 <!-- data/live/listings--select-purpose — 245x137, pad 11, options 223x38 -->
-<div class="pf-listbox" id="listbox-purpose" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Purpose" hidden>
+<div class="pf-listbox" id="listbox-purpose" data-states="select-purpose" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Purpose" hidden>
 ${['Sale', 'Rent', 'Daily Rental'].map((o, n) => `  <button class="pf-listbox-option" role="option" type="button"${n === 0 ? ' aria-selected="true"' : ''} data-close>${esc(o)}</button>`).join('\n')}
 </div>
 
 <!-- data/live/listings--select-property-type — 245x278. A GROUPED panel, not
      the same one taller: a 223x35 group header at 12px, and its options
      indented to 25 instead of 12. -->
-<div class="pf-listbox" id="listbox-property-type" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Property Type" hidden>
+<div class="pf-listbox" id="listbox-property-type" data-states="select-property-type" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Property Type" hidden>
   <div class="pf-listbox-group" role="presentation">Residential</div>
 ${['Apartment', 'Villa', 'Floor', 'Chalet', 'Townhouse', 'Duplex', 'Penthouse'].map((o) => `  <button class="pf-listbox-option" role="option" type="button" data-close>${esc(o)}</button>`).join('\n')}
 </div>
@@ -534,7 +570,7 @@ ${['Apartment', 'Villa', 'Floor', 'Chalet', 'Townhouse', 'Duplex', 'Penthouse'].
      REACT-DATE-RANGE, not an antd picker (datePicker.js:15): two months side
      by side and a list of static ranges. The capture has 70 .rdrDay and no
      .ant-picker, which is the only reason this is not drawn as one. -->
-<div class="pf-popover" data-kind="date" id="popover-date-range" data-anchor="trigger" data-placement="bottom" role="dialog" aria-label="Search by Calendar" hidden>
+<div class="pf-popover" data-kind="date" id="popover-date-range" data-states="date-posted-on" data-anchor="trigger" data-placement="bottom" role="dialog" aria-label="Search by Calendar" hidden>
   <div class="pf-popover-title">Search by Calendar</div>
   <div class="pf-popover-body">
     <div class="pf-daterange">
@@ -564,8 +600,8 @@ ${['September 2026', 'October 2026'].map((m) => `        <div class="pf-daterang
      data/live/listings--upgrade-photography  708x546, body 416 — the three
                                               SERVICES add the ServiceOptions
                                               form, which is the 132px */
-const quotaModal = (id, title, extra = '') => `
-<div class="pf-mask" id="${id}" hidden>
+const quotaModal = (id, title, states, extra = '') => `
+<div class="pf-mask" id="${id}" data-states="${states}" hidden>
   <div class="pf-modal" data-size="quota" role="dialog" aria-modal="true" aria-labelledby="${id}-title">
     <div class="pf-modal-head">
       <span class="pf-modal-title" id="${id}-title">${title}</span>
@@ -654,7 +690,7 @@ ${page.filters.map(field).join('\n')}
            default, loading and error, each captured from the product rather
            than imagined. The prototype bar at the bottom switches between
            them; #state=loading reaches one directly. -->
-      <div data-state-panel="default">
+      <div data-state-panel="default" data-states="action-discount">
       <!-- ── DataTable: status tabs in the card head, the table in its body ──
            One panel per tab, all but the current one hidden. The column set
            per tab is listingUtilities.js:402's, and the row COUNT follows the
@@ -745,8 +781,10 @@ ${page.tabs.map((t) => `              <button class="pf-tab" role="tab"${t.curre
         </section>
       </div>
 ` + close({ overlays: overlays + tableOverlays
-  + quotaModal('modal-quota', 'Mark Signature')
-  + quotaModal('modal-quota-service', 'Request Photography Service', serviceOptions)
+  /* four captures of four different circles are four captures of ONE overlay;
+     data-states is where that is written down */
+  + quotaModal('modal-quota', 'Mark Signature', 'upgrade-signature upgrade-hot upgrade-refresh')
+  + quotaModal('modal-quota-service', 'Request Photography Service', 'upgrade-photography', serviceOptions)
   + otpModal, states: protoBar });
 
 const out = join(ROOT, 'deliverables', 'listings.html');

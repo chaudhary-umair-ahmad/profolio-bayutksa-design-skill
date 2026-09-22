@@ -470,7 +470,15 @@
   --modal-w-lg:800px;                  /* Mark as Booked — data/live/design-capture-flows-only-booking */
   --modal-radius:8px;                  /* .ant-modal-content */
   --modal-shadow:0 2px 8px rgba(0, 0, 0, 0.15);
-  --modal-top:250px;                   /* measured y of a 400-tall modal in a 900 viewport */
+  /* THERE IS NO MODAL TOP. Every modal on this screen carries
+     `ant-modal-centered` — delete, trucheck, download-app, booking and both
+     shapes of the quota modal — so the top is whatever centring gives:
+       delete       400 tall → y 250      trucheck   376 → 262
+       download-app 409      → y 245      booking    234 → 333
+     250 was measured off the delete modal and written down as the rule, and
+     it matched only because that modal happens to be 400 tall. The fourth
+     instance-promoted-to-default in this stylesheet, and it hid until a modal
+     of a different height was built. */
   --modal-head-pad:16px 24px;         /* head measures 57 tall, padding-inline 24 */
   --modal-body-pad:24px;
   --modal-foot-pad:16px 24px;         /* MEASURED 16, not the 20 I had: the foot
@@ -586,6 +594,12 @@
      this system. authoring/listings-buttons.md carries the row that says so.
      48 is the input height this stylesheet already uses, squared. */
   --otp-box:48px;
+  /* the LOADED listing-detail drawer, measured from
+     data/live/listings--action-detail-drawer.capture.json: body 576x837 over a
+     528 content column, gallery 528x424, price 20/700, spec row 299x20 */
+  --detail-col:528px;
+  --detail-gallery-h:424px;
+  --fs-detail-price:20px;
   /* MEASURED now, from the product's own empty tab — these were [TBC] guesses.
      data/live/listings--tab-removed.capture.json: the wrapper is a grid with
      32px gaps and a 300px minimum, the illustration is 164x89 intrinsic and
@@ -1888,7 +1902,7 @@ table{border-collapse:collapse}
   z-index:var(--overlay-z);
   background:var(--mask-bg);
   display:flex;
-  align-items:flex-start;
+  align-items:center;
   justify-content:center;
 }
 .pf-mask[hidden]{display:none}
@@ -1896,7 +1910,6 @@ table{border-collapse:collapse}
 .pf-modal{
   width:var(--modal-w);
   max-width:calc(100vw - var(--sp-32));
-  margin-block-start:var(--modal-top);
   background:var(--card-bg);
   border-radius:var(--modal-radius);
   box-shadow:var(--modal-shadow);
@@ -2420,6 +2433,48 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   background:var(--white);color:var(--base);
 }
 .pf-otp-box:focus-visible{outline:var(--sp-2) solid var(--primary-light-1);outline-offset:var(--sp-2)}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · listing detail drawer, LOADED
+   It had only ever been drawn as three skeleton bars, because the drawer's own
+   fetch went unanswered in the harness and the component threw. With the
+   endpoint answered it renders, and this is what it renders.
+   data/live/listings--action-detail-drawer.capture.json
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-detail-gallery{
+  position:relative;
+  block-size:var(--detail-gallery-h);
+  margin-block-end:var(--sp-24);
+  border-radius:var(--radius-card);
+  overflow:hidden;
+}
+.pf-detail-photo{
+  display:block;inline-size:100%;block-size:100%;
+  background:var(--bg-gray-deep);
+}
+.pf-detail-gallery .pf-btn{position:absolute;inset-block-end:var(--sp-12);inset-inline-start:var(--sp-12)}
+/* the block between the gallery and the first section — measured 528x102 */
+.pf-detail-head{padding-block-end:var(--sp-8)}
+.pf-detail-label{color:var(--gray-600);font-size:var(--fs-12)}
+.pf-detail-price{
+  color:var(--primary);
+  font-size:var(--fs-detail-price);
+  font-weight:var(--fw-700);
+}
+.pf-detail-title{font-size:var(--fs-18);font-weight:var(--fw-600);margin-block:var(--sp-8) var(--sp-16)}
+.pf-detail-section{margin-block-start:var(--sp-24)}
+.pf-detail-h{font-size:var(--fs-18);font-weight:var(--fw-600);margin-block-end:var(--sp-8)}
+.pf-detail-list{margin:var(--sp-0);padding:var(--sp-0)}
+.pf-detail-row{
+  display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-16);
+  padding-block:var(--sp-12);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+}
+.pf-detail-row:last-child{border-block-end:0}
+.pf-detail-row dt{color:var(--gray-600);margin:var(--sp-0)}
+.pf-detail-row dd{margin:var(--sp-0);text-align:end}
+.pf-detail-about{color:var(--gray-700);margin:var(--sp-0)}
 
 </style>
 <style>
