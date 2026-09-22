@@ -1,6 +1,6 @@
 {
   "route": "listings",
-  "at": "2026-09-22T10:20:01.262Z",
+  "at": "2026-09-22T10:25:47.748Z",
   "shellFails": [],
   "diffs": [
     {
@@ -744,16 +744,16 @@
       "shellFails": [],
       "diffs": [
         {
-          "id": "table.cell",
-          "diff": 17.1
-        },
-        {
           "id": "filter.showmore",
           "diff": 16.8
         },
         {
           "id": "filter.clear",
           "diff": 16
+        },
+        {
+          "id": "table.cell",
+          "diff": 15
         },
         {
           "id": "filter.search",
@@ -765,7 +765,7 @@
         },
         {
           "id": "modal.mask",
-          "diff": 5.8
+          "diff": 5.2
         },
         {
           "id": "shell.sider",
@@ -776,20 +776,8 @@
           "diff": 3.9
         },
         {
-          "id": "modal",
-          "diff": 3.7
-        },
-        {
           "id": "table.card.head",
           "diff": 3.2
-        },
-        {
-          "id": "table",
-          "diff": 3.1
-        },
-        {
-          "id": "table.card",
-          "diff": 3.1
         },
         {
           "id": "tabs.tab",
@@ -800,8 +788,20 @@
           "diff": 3
         },
         {
+          "id": "table.card",
+          "diff": 2.7
+        },
+        {
+          "id": "table",
+          "diff": 2.7
+        },
+        {
+          "id": "modal",
+          "diff": 2.6
+        },
+        {
           "id": "shell.content",
-          "diff": 2.9
+          "diff": 2.6
         },
         {
           "id": "shell.header",
@@ -869,7 +869,7 @@
         },
         {
           "id": "table.row",
-          "diff": 9.1
+          "diff": 7.2
         }
       ],
       "notModelled": [
@@ -1154,10 +1154,6 @@
       "shellFails": [],
       "diffs": [
         {
-          "id": "table.cell",
-          "diff": 20.3
-        },
-        {
           "id": "filter.showmore",
           "diff": 16.8
         },
@@ -1166,40 +1162,28 @@
           "diff": 16
         },
         {
-          "id": "modal.body",
-          "diff": 13.9
+          "id": "table.cell",
+          "diff": 14.1
         },
         {
           "id": "filter.search",
           "diff": 13
         },
         {
-          "id": "modal.mask",
-          "diff": 12.1
-        },
-        {
-          "id": "modal",
-          "diff": 10.4
-        },
-        {
           "id": "tabs.nav",
           "diff": 7.6
         },
         {
-          "id": "table.head",
-          "diff": 7.6
+          "id": "modal",
+          "diff": 6.6
         },
         {
-          "id": "table",
-          "diff": 7
+          "id": "modal.body",
+          "diff": 6.6
         },
         {
-          "id": "table.card",
-          "diff": 6.9
-        },
-        {
-          "id": "shell.content",
-          "diff": 6.2
+          "id": "modal.mask",
+          "diff": 5.8
         },
         {
           "id": "shell.sider",
@@ -1214,12 +1198,28 @@
           "diff": 3.2
         },
         {
+          "id": "table",
+          "diff": 3.1
+        },
+        {
+          "id": "table.card",
+          "diff": 3.1
+        },
+        {
           "id": "tabs.tab",
           "diff": 3.1
         },
         {
+          "id": "shell.content",
+          "diff": 2.9
+        },
+        {
           "id": "shell.header",
           "diff": 2.2
+        },
+        {
+          "id": "table.head",
+          "diff": 0.7
         },
         {
           "id": "tabs.active",
@@ -1267,7 +1267,7 @@
         },
         {
           "id": "table.row",
-          "diff": 24.4
+          "diff": 7.2
         }
       ],
       "notModelled": [
@@ -1399,7 +1399,7 @@
       "diffs": [
         {
           "id": "table.cell",
-          "diff": 29.6
+          "diff": 29.7
         },
         {
           "id": "filter.clear",
@@ -1419,26 +1419,26 @@
         },
         {
           "id": "popover",
-          "diff": 8
+          "diff": 8.1
         },
         {
           "id": "filter.bar",
-          "diff": 5.9
+          "diff": 6.1
         },
         {
           "id": "table.card",
-          "diff": 4.9
+          "diff": 4.7
         },
         {
           "id": "table",
-          "diff": 4.8
-        },
-        {
-          "id": "shell.content",
-          "diff": 4.5
+          "diff": 4.7
         },
         {
           "id": "shell.sider",
+          "diff": 4.4
+        },
+        {
+          "id": "shell.content",
           "diff": 4.4
         },
         {
@@ -1455,7 +1455,7 @@
         },
         {
           "id": "table.head",
-          "diff": 2.5
+          "diff": 1.9
         },
         {
           "id": "filter.select",
@@ -1494,16 +1494,16 @@
           "diff": 95.1
         },
         {
-          "id": "tabs.nav",
-          "diff": 12.9
+          "id": "table.row",
+          "diff": 13.1
         },
         {
-          "id": "table.row",
-          "diff": 12.9
+          "id": "tabs.nav",
+          "diff": 9.5
         },
         {
           "id": "table.card.head",
-          "diff": 6.9
+          "diff": 5.3
         }
       ],
       "notModelled": [
@@ -1537,23 +1537,23 @@
         },
         {
           "id": "table.row",
-          "diff": 12.2
+          "diff": 12.3
         },
         {
           "id": "popover",
-          "diff": 10.4
+          "diff": 10.1
         },
         {
           "id": "tabs.nav",
           "diff": 9.7
         },
         {
-          "id": "filter.bar",
-          "diff": 6.5
+          "id": "table.card.head",
+          "diff": 6.8
         },
         {
-          "id": "table.card.head",
-          "diff": 5.7
+          "id": "filter.bar",
+          "diff": 5.9
         },
         {
           "id": "table.card",
@@ -1621,7 +1621,7 @@
         },
         {
           "id": "filter.select",
-          "diff": 5.8
+          "diff": 2.4
         }
       ],
       "notModelled": [
@@ -3635,7 +3635,7 @@
         },
         {
           "id": "table.cell",
-          "diff": 17.6
+          "diff": 17.2
         },
         {
           "id": "filter.showmore",
@@ -3646,16 +3646,12 @@
           "diff": 16
         },
         {
-          "id": "table.head",
-          "diff": 13.1
-        },
-        {
           "id": "filter.search",
           "diff": 13
         },
         {
-          "id": "modal.mask",
-          "diff": 8.3
+          "id": "modal.body",
+          "diff": 8.2
         },
         {
           "id": "tabs.nav",
@@ -3663,39 +3659,43 @@
         },
         {
           "id": "modal",
-          "diff": 7.6
+          "diff": 7.3
         },
         {
-          "id": "modal.body",
-          "diff": 7.6
+          "id": "modal.mask",
+          "diff": 6.6
+        },
+        {
+          "id": "table.head",
+          "diff": 5.2
         },
         {
           "id": "modal.foot",
-          "diff": 4.7
-        },
-        {
-          "id": "table",
-          "diff": 4.6
-        },
-        {
-          "id": "table.card",
-          "diff": 4.6
+          "diff": 5
         },
         {
           "id": "shell.sider",
           "diff": 4.4
         },
         {
-          "id": "shell.content",
-          "diff": 4.2
-        },
-        {
           "id": "filter.bar",
           "diff": 3.9
         },
         {
+          "id": "table",
+          "diff": 3.6
+        },
+        {
+          "id": "table.card",
+          "diff": 3.6
+        },
+        {
           "id": "modal.head",
           "diff": 3.5
+        },
+        {
+          "id": "shell.content",
+          "diff": 3.3
         },
         {
           "id": "table.card.head",
@@ -3755,7 +3755,7 @@
         },
         {
           "id": "table.row",
-          "diff": 11.4
+          "diff": 11.6
         }
       ],
       "notModelled": [
@@ -3768,8 +3768,16 @@
       "shellFails": [],
       "diffs": [
         {
+          "id": "filter.select",
+          "diff": 29.6
+        },
+        {
+          "id": "filter.bar",
+          "diff": 24.4
+        },
+        {
           "id": "table.cell",
-          "diff": 17.2
+          "diff": 18
         },
         {
           "id": "filter.showmore",
@@ -3780,48 +3788,44 @@
           "diff": 16
         },
         {
-          "id": "filter.bar",
-          "diff": 13.4
-        },
-        {
           "id": "filter.search",
           "diff": 13
         },
         {
           "id": "modal.mask",
-          "diff": 8.9
+          "diff": 11.3
         },
         {
           "id": "modal.body",
-          "diff": 6.8
+          "diff": 7.5
         },
         {
           "id": "modal",
-          "diff": 6.6
-        },
-        {
-          "id": "modal.foot",
-          "diff": 4.7
+          "diff": 7
         },
         {
           "id": "shell.content",
-          "diff": 4.5
+          "diff": 5.7
+        },
+        {
+          "id": "table",
+          "diff": 5.2
+        },
+        {
+          "id": "table.card",
+          "diff": 5.1
+        },
+        {
+          "id": "modal.foot",
+          "diff": 5.1
         },
         {
           "id": "shell.sider",
           "diff": 4.4
         },
         {
-          "id": "table.card",
-          "diff": 4.3
-        },
-        {
-          "id": "table",
-          "diff": 4.3
-        },
-        {
           "id": "table.head",
-          "diff": 3.7
+          "diff": 4.2
         },
         {
           "id": "tabs.tab",
@@ -3840,10 +3844,6 @@
           "diff": 0.1
         },
         {
-          "id": "filter.select",
-          "diff": 0.1
-        },
-        {
           "id": "shell.title",
           "diff": 0
         },
@@ -3884,16 +3884,16 @@
           "diff": 31.3
         },
         {
-          "id": "tabs.nav",
-          "diff": 12.6
+          "id": "table.row",
+          "diff": 13
         },
         {
-          "id": "table.row",
-          "diff": 12.5
+          "id": "tabs.nav",
+          "diff": 9
         },
         {
           "id": "table.card.head",
-          "diff": 5.3
+          "diff": 4.4
         }
       ],
       "notModelled": [
@@ -3911,7 +3911,7 @@
         },
         {
           "id": "table.cell",
-          "diff": 17.6
+          "diff": 17.2
         },
         {
           "id": "filter.showmore",
@@ -3922,48 +3922,36 @@
           "diff": 16
         },
         {
-          "id": "table.head",
-          "diff": 13.3
-        },
-        {
           "id": "filter.search",
           "diff": 13
         },
         {
-          "id": "modal.mask",
-          "diff": 8.4
-        },
-        {
-          "id": "modal",
-          "diff": 7.8
-        },
-        {
           "id": "modal.body",
-          "diff": 7.7
+          "diff": 8.4
         },
         {
           "id": "tabs.nav",
           "diff": 7.6
         },
         {
-          "id": "table",
-          "diff": 4.7
+          "id": "modal",
+          "diff": 7.5
+        },
+        {
+          "id": "modal.mask",
+          "diff": 6.7
+        },
+        {
+          "id": "table.head",
+          "diff": 5.3
         },
         {
           "id": "modal.foot",
-          "diff": 4.7
-        },
-        {
-          "id": "table.card",
-          "diff": 4.7
+          "diff": 5
         },
         {
           "id": "shell.sider",
           "diff": 4.4
-        },
-        {
-          "id": "shell.content",
-          "diff": 4.2
         },
         {
           "id": "modal.head",
@@ -3972,6 +3960,18 @@
         {
           "id": "filter.bar",
           "diff": 3.9
+        },
+        {
+          "id": "table",
+          "diff": 3.7
+        },
+        {
+          "id": "table.card",
+          "diff": 3.6
+        },
+        {
+          "id": "shell.content",
+          "diff": 3.3
         },
         {
           "id": "table.card.head",
@@ -4031,7 +4031,7 @@
         },
         {
           "id": "table.row",
-          "diff": 11.9
+          "diff": 12.1
         }
       ],
       "notModelled": [
@@ -4049,7 +4049,7 @@
         },
         {
           "id": "table.cell",
-          "diff": 17.6
+          "diff": 17.2
         },
         {
           "id": "filter.showmore",
@@ -4060,43 +4060,35 @@
           "diff": 16
         },
         {
-          "id": "table.head",
-          "diff": 13.3
-        },
-        {
           "id": "filter.search",
           "diff": 13
         },
         {
-          "id": "modal.mask",
-          "diff": 8
-        },
-        {
-          "id": "modal",
-          "diff": 7.7
+          "id": "modal.body",
+          "diff": 8.3
         },
         {
           "id": "tabs.nav",
           "diff": 7.6
         },
         {
-          "id": "modal.body",
-          "diff": 7.6
+          "id": "modal",
+          "diff": 7.4
+        },
+        {
+          "id": "modal.mask",
+          "diff": 6.3
+        },
+        {
+          "id": "table.head",
+          "diff": 5.5
         },
         {
           "id": "modal.foot",
-          "diff": 4.7
-        },
-        {
-          "id": "table",
-          "diff": 4.5
+          "diff": 5
         },
         {
           "id": "shell.sider",
-          "diff": 4.4
-        },
-        {
-          "id": "table.card",
           "diff": 4.4
         },
         {
@@ -4104,16 +4096,24 @@
           "diff": 4.4
         },
         {
-          "id": "shell.content",
-          "diff": 4
-        },
-        {
           "id": "filter.bar",
           "diff": 3.9
         },
         {
+          "id": "table",
+          "diff": 3.4
+        },
+        {
+          "id": "table.card",
+          "diff": 3.4
+        },
+        {
           "id": "table.card.head",
           "diff": 3.2
+        },
+        {
+          "id": "shell.content",
+          "diff": 3.1
         },
         {
           "id": "tabs.tab",
@@ -4169,7 +4169,7 @@
         },
         {
           "id": "table.row",
-          "diff": 10.1
+          "diff": 10.3
         }
       ],
       "notModelled": [

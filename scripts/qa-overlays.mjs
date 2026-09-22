@@ -158,9 +158,15 @@ function compare(name, kind, a, b) {
   if (ia !== null && ib !== null && Math.abs(ia - ib) > 2) faults.push({ w: 2, m: `content inset ${ib} vs ${ia}` });
 
   const pa = parts(a), pb = parts(b);
-  for (const k of ['button', 'link', 'input']) {
-    if (pa[k] !== pb[k]) faults.push({ w: k === 'input' ? 2 : 3, m: `${pb[k]} ${k}(s), the product has ${pa[k]}` });
-  }
+  /* Count what is INTERACTIVE, not what tag it is. This prototype turns a
+     navigation into <a href="not-built.html"> where the product uses a Button
+     with an onClick — a deliberate convention (see authoring/listings-buttons.md),
+     not a defect, and flagging it made three matching overlays look broken.
+     The split is still reported, as a note. */
+  const actA = pa.button + pa.link, actB = pb.button + pb.link;
+  if (actA !== actB) faults.push({ w: 3, m: `${actB} interactive control(s), the product has ${actA}` });
+  else if (pa.button !== pb.button) faults.push({ w: 0, m: `note: ${pb.link} link(s) where the product has ${pa.link} — this page links its navigations` });
+  if (pa.input !== pb.input) faults.push({ w: 2, m: `${pb.input} input(s), the product has ${pa.input}` });
   return { name, kind, faults, theirs: { ...A, bands: ba, ...pa }, ours: { ...B, bands: bb, ...pb } };
 }
 
@@ -196,7 +202,11 @@ scored.sort((x, y) => y.faults.reduce((a, f) => a + f.w, 0) - x.faults.reduce((a
 console.log(`\n  OVERLAY INTERIORS — ${scored.length} compared, ${results.length - scored.length} with no overlay\n`);
 let bad = 0;
 for (const r of scored) {
-  if (!r.faults.length) { console.log(`  ok    ${r.name.padEnd(28)} ${r.kind}`); continue; }
+  const real = r.faults.filter((f) => f.w > 0);
+  if (!real.length) {
+    console.log(`  ok    ${r.name.padEnd(28)} ${r.kind}${r.faults.length ? '  (' + r.faults[0].m + ')' : ''}`);
+    continue;
+  }
   bad++;
   console.log(`  DIFF  ${r.name.padEnd(28)} ${r.kind}`);
   for (const f of r.faults.sort((a, b) => b.w - a.w)) console.log(`          ${f.m}`);

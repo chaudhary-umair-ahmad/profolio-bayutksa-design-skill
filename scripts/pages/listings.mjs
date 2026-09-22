@@ -364,41 +364,44 @@ ${['Property is no longer available', 'Rented out through Bayut', 'Sold through 
   </div>
 </div>
 
-<!-- data/live/listings--modal-trucheck — 620x376 -->
+<!-- data/live/listings--modal-trucheck — 620x376, and it has NO HEADER AND
+     NO FOOTER. The body is the whole modal: a 254x157 illustration with a
+     34x34 status badge floating over it, an h4 with a 20px glyph, and two
+     paragraphs. This was built as an ordinary title/body/footer modal at 246
+     tall, which is a different component wearing the same name. -->
 <div class="pf-mask" id="modal-trucheck" hidden>
-  <div class="pf-modal" role="dialog" aria-modal="true" aria-labelledby="tc-title">
-    <div class="pf-modal-head">
-      <span class="pf-modal-title" id="tc-title">TruCheck Eligible</span>
-      <button class="pf-overlay-close" type="button" aria-label="Close" data-close>${icon('IoMdClose', 16)}</button>
-    </div>
+  <div class="pf-modal" data-chrome="none" role="dialog" aria-modal="true" aria-labelledby="tc-title">
+    <button class="pf-overlay-close" type="button" aria-label="Close" data-close>${icon('IoMdClose', 16)}</button>
     <div class="pf-modal-body">
-      <p>TruCheck is a cutting-edge technology solution that allows real estate agents to easily validate the properties they list on Bayut.</p>
-    </div>
-    <div class="pf-modal-foot">
-      <button class="pf-btn" type="button" data-close><span>Close</span></button>
+      <div class="pf-tc">
+        <div class="pf-tc-art">
+          <span class="pf-tc-illustration" role="img" aria-label="TruCheck illustration"></span>
+          <span class="pf-tc-status">${icon('TruCheckIcon', 20)}</span>
+        </div>
+        <h4 class="pf-tc-title" id="tc-title">${icon('TruCheckIcon', 20)}TruCheck Eligible</h4>
+        <p class="pf-tc-text">TruCheck is a cutting-edge technology solution that allows real estate agents to easily validate the properties they list on Bayut.</p>
+        <p class="pf-tc-text">Request a TruCheck visit and our team will verify the property so buyers know the listing is real.</p>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- data/live/design-capture-flows-only-booking — 800 wide, head 57, body 104,
-     foot 73. Reachable only from a daily-rental row, which is the product's
-     own rule (listingUtilities.js:238) rather than a simplification here. -->
+<!-- data/live/listings--modal-booking — 800x234: head 57, body 104, foot 73.
+     The body holds ONE 40-tall field in a 56-tall space item (40 plus a 16
+     gap) with 24 of padding each side, and no label. The footer buttons are
+     86x40 and 113x40. Reachable only from a daily-rental row, which is the
+     product's own rule (listingUtilities.js:238). -->
 <div class="pf-mask" id="modal-booking" hidden>
   <div class="pf-modal" data-size="large" role="dialog" aria-modal="true" aria-labelledby="bk-title">
     <div class="pf-modal-head">
       <span class="pf-modal-title" id="bk-title">Mark as Booked</span>
       <button class="pf-overlay-close" type="button" aria-label="Close" data-close>${icon('IoMdClose', 16)}</button>
     </div>
-    <!-- NO LABEL. The product's body is 104 tall: 24 of padding each side and
-         a single 40-tall field in a 56-tall space item. A label here made ours
-         143 and the QA read modal.body as 100% different. -->
     <div class="pf-modal-body">
-      <div class="pf-field">
+      <div class="pf-field" data-spaced="true">
         <button class="pf-select" id="bk-range" type="button" data-open="popover-date-range" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow">${icon('MdDateRange', 16)}</span></button>
       </div>
     </div>
-    <!-- the footer's buttons are 40 tall (86 and 113 wide), not the 36 a
-         default-size pf-btn draws -->
     <div class="pf-modal-foot">
       <button class="pf-btn" data-size="large" type="button" data-close><span>Cancel</span></button>
       <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-close><span>Add Range</span></button>
@@ -519,32 +522,40 @@ const tableOverlays = `
      hairline border. antd ships a dark pill; the product overrides it. -->
 <div class="pf-tip" id="pf-tip" role="tooltip" hidden></div>
 
-<!-- data/live/listings--popover-health — 440x352, placement right. The inner
-     carries NO padding: this panel dresses its own rows. Three buttons live in
-     it, which is why it is a popover and not a tooltip. -->
+<!-- data/live/listings--popover-health — 440x352, placement right.
+       header  440x83  — a 16/600 title and a 14px subtitle in a 320-wide
+                         column at 24,18, and the score tag 50x30 at x366
+       body    440x269 — an ant-list of FIVE items: 41 41 71 59 57, each with
+                         a 408-wide row inset 16
+     This was built with a 101-tall header and THREE rows, which is the shape
+     of health.js read quickly rather than the shape the product renders:
+     Bayut shows Exterior, Interior and Duplicate image rows, not one. -->
 <div class="pf-popover" data-kind="health" id="popover-health" data-anchor="trigger" data-placement="right" role="dialog" aria-label="Overall Quality" hidden>
   <div class="pf-popover-body">
     <div class="pf-health-head">
-      <div>
-        <div class="pf-modal-title">Overall Quality</div>
-        <div class="pf-listing-loc">Higher quality means more listing visibility &amp; leads</div>
+      <div class="pf-health-head-text">
+        <div class="pf-health-title">Overall Quality</div>
+        <div class="pf-health-sub">Higher quality means more listing visibility &amp; leads</div>
       </div>
       <span class="pf-score" data-band="medium">62%</span>
     </div>
-    <div class="pf-health-row">
-      <span class="pf-health-label">${icon('MdRefresh', 16)} Freshness</span>
-      <!-- health.js:110 — this opens QuotaCreditModal, the same overlay the
-           Refresh circle opens -->
-      <button class="pf-btn" data-variant="link" data-size="small" type="button" data-open="modal-quota"><span>Refresh</span></button>
-    </div>
-    <div class="pf-health-row">
-      <span class="pf-health-label">${icon('HiCamera', 16)} Images</span>
-      <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=${encodeURIComponent('Post Listing — Images')}"><span>Add</span></a>
-    </div>
-    <div class="pf-health-row">
-      <span class="pf-health-label">${icon('PiSealCheckFill', 16)} Features</span>
-      <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=${encodeURIComponent('Post Listing — Amenities')}"><span>Add</span></a>
-    </div>
+    <ul class="pf-health-list">
+${[
+  ['MdRefresh', 'Freshness', 'Posted 3 days ago', ['refresh', 'Refresh']],
+  ['HiCamera', 'Exterior Images', '8 uploaded', null],
+  ['HiCamera', 'Interior Images', '3 of 6 uploaded', ['link', 'Add']],
+  ['HiCamera', 'Duplicate Images', 'None found', null],
+  ['PiSealCheckFill', 'Features', '4 of 12 added', ['link', 'Add']],
+].map(([ic, label, note, action]) => `      <li class="pf-health-item">
+        <span class="pf-health-label">${icon(ic, 16)}<span>${label}</span></span>
+        <span class="pf-health-note">${note}</span>
+${action ? (action[0] === 'refresh'
+  /* health.js:110 — Freshness opens QuotaCreditModal, the same overlay the
+     Refresh circle opens. The two Adds navigate into the edit page. */
+  ? `        <button class="pf-btn" data-variant="link" data-size="small" type="button" data-open="modal-quota"><span>${action[1]}</span></button>`
+  : `        <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=${encodeURIComponent('Post Listing — ' + label)}"><span>${action[1]}</span></a>`) : ''}
+      </li>`).join('\n')}
+    </ul>
   </div>
 </div>
 
@@ -565,17 +576,19 @@ const tableOverlays = `
   <div class="pf-popover-body">Images do not match the property, Price is outside the expected range</div>
 </div>
 
-<!-- data/live/listings--popover-leads — 216x235, pad 16. The LMS breakdown;
-     a non-LMS account gets a plainer 120px list (listing-stats.js:97). -->
+<!-- data/live/listings--popover-leads — 216x235, content 184x203 at inset 16.
+     FOUR groups, each a 22-tall heading row and a 22-tall value row, with a
+     1px dashed rule costing 9 between them: 4x44 + 3x9 = 203. This was built
+     with padded groups and came out 298. -->
 <div class="pf-popover" data-kind="leads" id="popover-leads" data-anchor="trigger" data-placement="top" role="dialog" aria-label="Leads breakdown" hidden>
   <div class="pf-popover-body">
-${[['Calls', [['Calls Clicked', '0']]],
-   ['Whatsapp', [['WhatsApp Clicked', '0'], ['Chats Initiated', '0']]],
-   ['Emails', [['Emails Clicked', '0'], ['Emails Received', '0']]],
-   ['SMS', [['SMS Clicked', '0']]]]
-  .map(([group, rows_]) => `    <div class="pf-lead-group">
-      <div class="pf-lead-title">${group}</div>
-${rows_.map(([k, v]) => `      <div class="pf-lead-row"><span>${k}</span><span>${v}</span></div>`).join('\n')}
+${[['GrNotification', 'Calls', 'Calls Clicked', '0'],
+   ['GrNotification', 'Whatsapp', 'WhatsApp Clicked', '0'],
+   ['GrNotification', 'Emails', 'Emails Clicked', '0'],
+   ['GrNotification', 'SMS', 'SMS Clicked', '0']]
+  .map(([ic, group, k, v]) => `    <div class="pf-lead-group">
+      <div class="pf-lead-head">${icon(ic, 14)}<span>${group}</span></div>
+      <div class="pf-lead-row"><span>${k}</span><strong>${v}</strong></div>
     </div>`).join('\n')}
   </div>
 </div>
@@ -634,20 +647,33 @@ const quotaModal = (id, title, states, extra = '') => `
       <span class="pf-modal-title" id="${id}-title">${title}</span>
       <button class="pf-overlay-close" type="button" aria-label="Close" data-close>${icon('IoMdClose', 16)}</button>
     </div>
+    <!-- BODY 284, inset 24, and it is NOT a credits table — that was invented.
+         data/live/listings--upgrade-signature.capture.json:
+           alert        660x40  at 24,24   (mb-8)
+           summary row  660x22  at 24,72   (mb-8) — two bold labels, the right
+                                            one carrying a muted 12px sub
+           radio group  660x158 at 24,102  — TWO payment cards of 660x67 with
+                                            a 12 gap, each a radio label 384x41
+                                            and a 35x25 price block at the end
+         24 + 40 + 8 + 22 + 8 + 158 + 24 = 284. -->
     <div class="pf-modal-body">
       <div class="pf-alert" data-tone="info">${icon('AiOutlineInfoCircle', 16)}<span>Credits will be deducted from your account once the request is approved.</span></div>
+      <div class="pf-quota-summary">
+        <span>${title.replace(/^(Mark|Request)\s+/, '')}</span>
+        <span>Credits available <small>34 of 75,000</small></span>
+      </div>
 ${extra}
-      <table class="pf-credit-table">
-        <thead><tr><th>Product</th><th>Credits required</th><th>Credits available</th></tr></thead>
-        <tbody>
-          <tr><td>${title.replace(/^(Mark|Request)\s+/, '')}</td><td>1</td><td>34</td></tr>
-          <tr class="pf-credit-total"><td>Total</td><td>1</td><td>34</td></tr>
-        </tbody>
-      </table>
+      <div class="pf-pay-group" role="radiogroup" aria-label="Payment option">
+${[['Pay with credits', '1'], ['Pay with card', '1']].map(([label, cost], n) => `        <label class="pf-pay-card"${n === 0 ? ' data-checked="true"' : ''}>
+          <input type="radio" name="${id}-pay"${n === 0 ? ' checked' : ''}>
+          <span class="pf-pay-label">${label}</span>
+          <span class="pf-pay-price">${cost}</span>
+        </label>`).join('\n')}
+      </div>
     </div>
     <div class="pf-modal-foot">
-      <button class="pf-btn" type="button" data-close><span>Cancel</span></button>
-      <button class="pf-btn" data-variant="primary" type="button" data-close><span>Request Now</span></button>
+      <button class="pf-btn" data-size="large" type="button" data-close><span>Cancel</span></button>
+      <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-close><span>Request Now</span></button>
     </div>
   </div>
 </div>`;
