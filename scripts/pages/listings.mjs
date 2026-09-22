@@ -334,11 +334,21 @@ const pg = page.pagination;
 /* no angle brackets in an attribute value: scripts/census.mjs reads the
    page with a regex, and a `>` inside a value ends the tag as far as it is
    concerned — three working controls counted as dead the first time round. */
+/* dataTable.js:65-86 pushes `page=<n>` into the URL and refetches, and there is
+   no second page of fixture rows to fetch. data-noop is a control that cannot
+   work here AND KNOWS IT, which is what keeps it out of the dead count in
+   scripts/census.mjs.
+
+   The page numbers are ANCHORS, as the product's are — `ant-pagination-item`
+   wraps an <a>. Turning them into buttons to carry data-noop cost the
+   `pager.item` region entirely and made `pager.nav` match a page number
+   instead of the prev arrow: the layout score went 92.3 to 88.4 on that one
+   change. A no-op belongs on the element the product uses, not instead of it. */
 const NOPAGE = 'the pager pushes the page number into the URL and refetches; there is one page of fixture rows';
 const pager = `      <ul class="pf-pagination">
-        <li class="pf-page-item"${pg.current === 1 ? ' aria-disabled="true"' : ''}><button type="button" aria-label="Previous page"${pg.current === 1 ? ' disabled' : ` data-noop="${NOPAGE}"`}>${icon('LeftOutlined', 12)}</button></li>
-${Array.from({ length: pg.pages }, (_, i) => i + 1).map((n) => `        <li class="pf-page-item"${n === pg.current ? ' aria-current="page"' : ''}><button type="button" data-noop="${NOPAGE}">${n}</button></li>`).join('\n')}
-        <li class="pf-page-item"${pg.current === pg.pages ? ' aria-disabled="true"' : ''}><button type="button" aria-label="Next page"${pg.current === pg.pages ? ' disabled' : ` data-noop="${NOPAGE}"`}>${icon('RightOutlined', 12)}</button></li>
+        <li class="pf-page-item" data-nav="prev"${pg.current === 1 ? ' aria-disabled="true"' : ''}><button type="button" aria-label="Previous page"${pg.current === 1 ? ' disabled' : ` data-noop="${NOPAGE}"`}>${icon('LeftOutlined', 12)}</button></li>
+${Array.from({ length: pg.pages }, (_, i) => i + 1).map((n) => `        <li class="pf-page-item"${n === pg.current ? ' aria-current="page"' : ''}><a data-noop="${NOPAGE}">${n}</a></li>`).join('\n')}
+        <li class="pf-page-item" data-nav="next"${pg.current === pg.pages ? ' aria-disabled="true"' : ''}><button type="button" aria-label="Next page"${pg.current === pg.pages ? ' disabled' : ` data-noop="${NOPAGE}"`}>${icon('RightOutlined', 12)}</button></li>
       </ul>`;
 
 /* ── the page ─────────────────────────────────────────────────────────── */

@@ -1,6 +1,6 @@
 {
   "route": "listings",
-  "at": "2026-09-22T10:55:29.721Z",
+  "at": "2026-09-22T11:10:54.449Z",
   "shellFails": [],
   "diffs": [
     {
@@ -37,7 +37,7 @@
     },
     {
       "id": "shell.content",
-      "diff": 10.4
+      "diff": 10.3
     },
     {
       "id": "tabs.nav",
@@ -56,12 +56,12 @@
       "diff": 4
     },
     {
-      "id": "pager",
-      "diff": 3.7
-    },
-    {
       "id": "tabs.tab",
       "diff": 3.4
+    },
+    {
+      "id": "pager",
+      "diff": 3.2
     },
     {
       "id": "shell.header",
@@ -74,10 +74,6 @@
     {
       "id": "shell.footer",
       "diff": 1.6
-    },
-    {
-      "id": "pager.nav",
-      "diff": 1.2
     },
     {
       "id": "filter.select",
@@ -100,7 +96,15 @@
       "diff": 0
     },
     {
+      "id": "pager.item",
+      "diff": 0
+    },
+    {
       "id": "pager.active",
+      "diff": 0
+    },
+    {
+      "id": "pager.nav",
       "diff": 0
     },
     {
@@ -179,8 +183,7 @@
     }
   ],
   "notModelled": [
-    "tabs.ink",
-    "pager.item"
+    "tabs.ink"
   ],
   "rtlOverflow": false,
   "physical": 0,
@@ -227,7 +230,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 2.7
+          "diff": 2.6
         },
         {
           "id": "table.head",
@@ -263,6 +266,10 @@
         },
         {
           "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
           "diff": 0
         },
         {
@@ -307,8 +314,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -346,7 +352,7 @@
       "diffs": [
         {
           "id": "shell.content",
-          "diff": 15.4
+          "diff": 15.3
         },
         {
           "id": "table.card",
@@ -378,6 +384,10 @@
         },
         {
           "id": "pager",
+          "diff": 0
+        },
+        {
+          "id": "pager.item",
           "diff": 0
         },
         {
@@ -466,8 +476,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -551,6 +560,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -592,8 +605,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -861,6 +873,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -882,8 +898,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -999,6 +1014,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -1020,8 +1039,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -1137,6 +1155,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -1154,8 +1176,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -1263,6 +1284,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -1280,8 +1305,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -1373,6 +1397,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -1398,8 +1426,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -1491,6 +1518,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -1516,8 +1547,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -1578,7 +1608,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 4.4
+          "diff": 4.3
         },
         {
           "id": "tabs.tab",
@@ -1617,6 +1647,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -1634,8 +1668,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -1715,6 +1748,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -1752,8 +1789,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -1857,6 +1893,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -1870,8 +1910,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -1971,6 +2010,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -1988,8 +2031,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -2089,6 +2131,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -2106,8 +2152,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -2148,7 +2193,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 10.6
+          "diff": 10.5
         },
         {
           "id": "tabs.nav",
@@ -2167,12 +2212,12 @@
           "diff": 4.4
         },
         {
-          "id": "pager",
-          "diff": 3.7
-        },
-        {
           "id": "tabs.tab",
           "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
         },
         {
           "id": "shell.header",
@@ -2185,10 +2230,6 @@
         {
           "id": "shell.footer",
           "diff": 1.6
-        },
-        {
-          "id": "pager.nav",
-          "diff": 1.2
         },
         {
           "id": "filter.select",
@@ -2211,7 +2252,15 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
           "diff": 0
         },
         {
@@ -2220,8 +2269,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -2285,12 +2333,12 @@
           "diff": 4.4
         },
         {
-          "id": "pager",
-          "diff": 3.7
-        },
-        {
           "id": "tabs.tab",
           "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
         },
         {
           "id": "shell.header",
@@ -2303,10 +2351,6 @@
         {
           "id": "shell.footer",
           "diff": 1.6
-        },
-        {
-          "id": "pager.nav",
-          "diff": 1.2
         },
         {
           "id": "table.head",
@@ -2325,7 +2369,15 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
           "diff": 0
         },
         {
@@ -2334,8 +2386,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -2566,7 +2617,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 7.2
+          "diff": 7.3
         },
         {
           "id": "table.card",
@@ -2760,7 +2811,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 10.4
+          "diff": 10.3
         },
         {
           "id": "tabs.nav",
@@ -2779,12 +2830,12 @@
           "diff": 4
         },
         {
-          "id": "pager",
-          "diff": 3.7
-        },
-        {
           "id": "tabs.tab",
           "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
         },
         {
           "id": "shell.header",
@@ -2797,10 +2848,6 @@
         {
           "id": "shell.footer",
           "diff": 1.6
-        },
-        {
-          "id": "pager.nav",
-          "diff": 1.2
         },
         {
           "id": "filter.select",
@@ -2823,7 +2870,15 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
           "diff": 0
         },
         {
@@ -2832,8 +2887,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -2893,12 +2947,12 @@
           "diff": 4
         },
         {
-          "id": "pager",
-          "diff": 3.7
-        },
-        {
           "id": "tabs.tab",
           "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
         },
         {
           "id": "shell.header",
@@ -2911,10 +2965,6 @@
         {
           "id": "shell.footer",
           "diff": 1.6
-        },
-        {
-          "id": "pager.nav",
-          "diff": 1.2
         },
         {
           "id": "filter.select",
@@ -2937,7 +2987,15 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
           "diff": 0
         },
         {
@@ -2946,8 +3004,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -3007,12 +3064,12 @@
           "diff": 4
         },
         {
-          "id": "pager",
-          "diff": 3.7
-        },
-        {
           "id": "tabs.tab",
           "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
         },
         {
           "id": "shell.header",
@@ -3025,10 +3082,6 @@
         {
           "id": "shell.footer",
           "diff": 1.6
-        },
-        {
-          "id": "pager.nav",
-          "diff": 1.2
         },
         {
           "id": "filter.select",
@@ -3051,7 +3104,15 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
           "diff": 0
         },
         {
@@ -3060,8 +3121,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -3121,12 +3181,12 @@
           "diff": 4
         },
         {
-          "id": "pager",
-          "diff": 3.7
-        },
-        {
           "id": "tabs.tab",
           "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
         },
         {
           "id": "shell.header",
@@ -3139,10 +3199,6 @@
         {
           "id": "shell.footer",
           "diff": 1.6
-        },
-        {
-          "id": "pager.nav",
-          "diff": 1.2
         },
         {
           "id": "filter.select",
@@ -3165,7 +3221,15 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
           "diff": 0
         },
         {
@@ -3174,8 +3238,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -3216,7 +3279,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 10.6
+          "diff": 10.5
         },
         {
           "id": "tabs.nav",
@@ -3235,12 +3298,12 @@
           "diff": 4
         },
         {
-          "id": "pager",
-          "diff": 3.7
-        },
-        {
           "id": "tabs.tab",
           "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
         },
         {
           "id": "shell.header",
@@ -3253,10 +3316,6 @@
         {
           "id": "shell.footer",
           "diff": 1.6
-        },
-        {
-          "id": "pager.nav",
-          "diff": 1.2
         },
         {
           "id": "filter.select",
@@ -3279,7 +3338,15 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
           "diff": 0
         },
         {
@@ -3288,8 +3355,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -3349,12 +3415,12 @@
           "diff": 4
         },
         {
-          "id": "pager",
-          "diff": 3.7
-        },
-        {
           "id": "tabs.tab",
           "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
         },
         {
           "id": "shell.header",
@@ -3367,10 +3433,6 @@
         {
           "id": "shell.footer",
           "diff": 1.6
-        },
-        {
-          "id": "pager.nav",
-          "diff": 1.2
         },
         {
           "id": "filter.select",
@@ -3393,7 +3455,15 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
           "diff": 0
         },
         {
@@ -3402,8 +3472,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -3463,12 +3532,12 @@
           "diff": 4
         },
         {
-          "id": "pager",
-          "diff": 3.7
-        },
-        {
           "id": "tabs.tab",
           "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
         },
         {
           "id": "shell.header",
@@ -3481,10 +3550,6 @@
         {
           "id": "shell.footer",
           "diff": 1.6
-        },
-        {
-          "id": "pager.nav",
-          "diff": 1.2
         },
         {
           "id": "filter.select",
@@ -3507,7 +3572,15 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
           "diff": 0
         },
         {
@@ -3516,8 +3589,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -3577,12 +3649,12 @@
           "diff": 4
         },
         {
-          "id": "pager",
-          "diff": 3.7
-        },
-        {
           "id": "tabs.tab",
           "diff": 3.4
+        },
+        {
+          "id": "pager",
+          "diff": 3.2
         },
         {
           "id": "shell.header",
@@ -3595,10 +3667,6 @@
         {
           "id": "shell.footer",
           "diff": 1.6
-        },
-        {
-          "id": "pager.nav",
-          "diff": 1.2
         },
         {
           "id": "filter.select",
@@ -3621,7 +3689,15 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
+          "diff": 0
+        },
+        {
+          "id": "pager.nav",
           "diff": 0
         },
         {
@@ -3630,8 +3706,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -3751,6 +3826,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -3768,8 +3847,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -3834,7 +3912,7 @@
         },
         {
           "id": "shell.content",
-          "diff": 3.1
+          "diff": 3
         },
         {
           "id": "shell.header",
@@ -3877,6 +3955,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -3906,8 +3988,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -4027,6 +4108,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -4044,8 +4129,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     },
     {
@@ -4165,6 +4249,10 @@
           "diff": 0
         },
         {
+          "id": "pager.item",
+          "diff": 0
+        },
+        {
           "id": "pager.active",
           "diff": 0
         },
@@ -4182,8 +4270,7 @@
         }
       ],
       "notModelled": [
-        "tabs.ink",
-        "pager.item"
+        "tabs.ink"
       ]
     }
   ]

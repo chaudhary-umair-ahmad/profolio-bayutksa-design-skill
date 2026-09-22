@@ -351,14 +351,14 @@ numbers. Add a control to the page and the check fails until it has a row here.
 `dead` is the number this file exists to drive to zero.
 
 ```census
-button 200
-a 58
+button 198
+a 64
 input 20
-total 278
+total 282
 reachable 221
 disabled 15
 field 20
-acknowledged 22
+acknowledged 26
 dead 0
 hashHref 0
 ```

@@ -2318,7 +2318,13 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   cursor:pointer;font:inherit;
 }
 .pf-proto-bar button[aria-pressed="true"]{background:var(--white);color:var(--dark);font-weight:var(--fw-600)}
+/* A page state stacks its children the way the content area does, so that the
+   pager can sit at the END of the row the way the product's does. As a plain
+   block the pager's `margin-inline-start:auto` never took, and it measured at
+   x=84 against the product's 1108 — the right size in the wrong place. */
+[data-state-panel]{display:grid;gap:var(--sp-8);align-content:start}
 [data-state-panel][hidden]{display:none}
+.pf-pagination{justify-self:end}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · radio
@@ -4604,10 +4610,14 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
         </div>
       </section>
       <ul class="pf-pagination">
-        <li class="pf-page-item" aria-disabled="true"><button type="button" aria-label="Previous page" disabled><svg class="i i-12"><use href="#pf-LeftOutlined"/></svg></button></li>
-        <li class="pf-page-item" aria-current="page"><button type="button" data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows">1</button></li>
-        <li class="pf-page-item"><button type="button" data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows">2</button></li>
-        <li class="pf-page-item"><button type="button" aria-label="Next page" data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
+        <li class="pf-page-item" data-nav="prev" aria-disabled="true"><button type="button" aria-label="Previous page" disabled><svg class="i i-12"><use href="#pf-LeftOutlined"/></svg></button></li>
+        <li class="pf-page-item" aria-current="page"><a data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows">1</a></li>
+        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows">2</a></li>
+        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows">3</a></li>
+        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows">4</a></li>
+        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows">5</a></li>
+        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows">6</a></li>
+        <li class="pf-page-item" data-nav="next"><button type="button" aria-label="Next page" data-noop="the pager pushes the page number into the URL and refetches; there is one page of fixture rows"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
       </ul>
       </div><!-- /default -->
 

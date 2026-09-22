@@ -1,12 +1,12 @@
 {
-  "score": 92.3,
+  "score": 92.9,
   "checks": 351,
   "disagreements": [
     {
       "id": "shell.content",
       "prop": "height",
       "live": "1817.62px",
-      "ours": "1797.3px",
+      "ours": "1812.38px",
       "w": 3
     },
     {
@@ -27,21 +27,21 @@
       "id": "table",
       "prop": "height",
       "live": "1572.8px",
-      "ours": "1559.45px",
+      "ours": "1566.53px",
       "w": 2
     },
     {
       "id": "table.card",
       "prop": "height",
       "live": "1618.78px",
-      "ours": "1606.45px",
+      "ours": "1613.53px",
       "w": 2
     },
     {
       "id": "table.cell",
       "prop": "box.w",
       "live": 484,
-      "ours": 470,
+      "ours": 411,
       "w": 2
     },
     {
@@ -55,7 +55,7 @@
       "id": "table.head",
       "prop": "box.w",
       "live": 484,
-      "ours": 470,
+      "ours": 411,
       "w": 2
     },
     {
@@ -88,25 +88,11 @@
     },
     {
       "id": "pager",
-      "prop": "box.x",
-      "live": 1108,
-      "ours": 84,
-      "w": 1
-    },
-    {
-      "id": "pager",
       "prop": "box.y",
       "live": 1818,
-      "ours": 1797,
-      "w": 1
-    },
-    {
-      "id": "pager",
-      "prop": "width",
-      "live": "308px",
-      "ours": "156px",
+      "ours": 1812,
       "w": 1
     }
   ],
-  "at": "2026-09-22T07:29:37.531Z"
+  "at": "2026-09-22T11:10:54.624Z"
 }

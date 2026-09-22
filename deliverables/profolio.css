@@ -2264,7 +2264,13 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   cursor:pointer;font:inherit;
 }
 .pf-proto-bar button[aria-pressed="true"]{background:var(--white);color:var(--dark);font-weight:var(--fw-600)}
+/* A page state stacks its children the way the content area does, so that the
+   pager can sit at the END of the row the way the product's does. As a plain
+   block the pager's `margin-inline-start:auto` never took, and it measured at
+   x=84 against the product's 1108 — the right size in the wrong place. */
+[data-state-panel]{display:grid;gap:var(--sp-8);align-content:start}
 [data-state-panel][hidden]{display:none}
+.pf-pagination{justify-self:end}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · radio
