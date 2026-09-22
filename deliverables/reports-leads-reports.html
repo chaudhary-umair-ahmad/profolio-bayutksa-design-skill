@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Change Password — Profolio KSA</title>
+<title>Leads Report — Profolio KSA</title>
 <!-- the product's own faces, embedded; no network -->
 <link rel="stylesheet" href="fonts.css">
 <!-- THE shared stylesheet — the same file components.html links.
@@ -16,7 +16,7 @@
    Kept out of the body so there is not one style attribute in the markup.
    ─────────────────────────────────────────────────────────────────────── */
 .pct-90{--ring-pct:90}                /* profile completion score */
-.fill-90{--meter-pct:90}     /* profile completion */</style>
+</style>
 <!-- the interaction layer: overlays, tabs and page states. Declarative —
      the markup carries data-open / data-panel / data-state-panel and nothing else. -->
 <script src="prototype.js" defer></script>
@@ -522,12 +522,12 @@
   </symbol>
 </defs></svg>
 <!-- ═══════════════════════════════════════════════════════════════════
-     CHANGE PASSWORD — scripts/pages/settings.mjs from data/fixtures/settings.json
-     Measured against data/live/user-settings-change-password.capture.json:
-       left 336 · nav card 326x256 · completion card 326x240
-       right 1007 · header card 997x152 · form card 997x416
-       form 835 wide, two 390 columns, 54 gutter, 98 row pitch
-     Labels and types: src/tenant/bayut/data/profileFields.js
+     LEADS REPORT — scripts/pages/blocks.mjs from data/fixtures/blocks.json
+     Every size below is read off data/live/reports-leads-reports.capture.json:
+       content 1380x1389 · a 1332x528 plot over a 1332x797 table block
+       the FIRST row is the tabbed card 1332x528 at y80 — tabs 609x84
+       the card head is 158: a 76-tall filter row over an 84-tall tab strip with a 556-wide extra slot
+       its pager spans the content width (1332 at x84), not right-aligned like Listings'
      ═══════════════════════════════════════════════════════════════════════ -->
 <div class="pf-shell">
   <!-- ── icon rail · collapsed (60px), the shipped default state ────── -->
@@ -571,9 +571,9 @@
       <a class="pf-rail-item" href="listings.html" title="My Listings"><svg class="i i-20"><use href="#pf-MyListingIcon"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Credits%20Usage" title="Credits Usage"><svg class="i i-20"><use href="#pf-SideMenuQuota"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Agent%20Performance" title="Agent Performance"><svg class="i i-20"><use href="#pf-AgentPerformanceIcon"/></svg></a>
-      <a class="pf-rail-item" href="reports-summary.html" title="Reports"><svg class="i i-20"><use href="#pf-SideMenuReports"/></svg></a>
+      <a class="pf-rail-item" aria-current="page" href="reports-summary.html" title="Reports"><svg class="i i-20"><use href="#pf-SideMenuReports"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Agency%20Staff" title="Agency Staff"><svg class="i i-20"><use href="#pf-SideMenuAgency"/></svg></a>
-      <a class="pf-rail-item" aria-current="page" href="user-settings-user-profile.html" title="Settings"><svg class="i i-20"><use href="#pf-IoSettingsOutline"/></svg></a>
+      <a class="pf-rail-item" href="user-settings-user-profile.html" title="Settings"><svg class="i i-20"><use href="#pf-IoSettingsOutline"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Credits%20%26%20Packages" title="Credits &amp; Packages"><svg class="i i-20"><use href="#pf-SideMenuPropShop"/></svg></a>
     </nav>
     <div class="pf-rail-bottom">
@@ -584,7 +584,7 @@
   <div class="pf-main">
     <!-- ── header ──────────────────────────────────────────────────── -->
     <header class="pf-header pf-header-fixed">
-      <div class="pf-header-brand"><span class="pf-page-title">Settings</span></div>
+      <div class="pf-header-brand"><span class="pf-page-title">Leads Report</span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
         <!-- the one link in the shell that LEAVES the product. It carried
@@ -596,63 +596,154 @@
       </div>
     </header>
     <main class="pf-content" data-gap="8">
-      <div class="pf-settings-grid">
-        <div class="pf-settings-side">
-        <section class="pf-card pf-settings-nav">
-          <nav aria-label="Settings">
-            <ul>
-              <li><a href="user-settings-user-profile.html"><svg class="i i-16"><use href="#pf-FiUser"/></svg><span>User Settings</span></a></li>
-              <li><a href="user-settings-agency-profile.html"><svg class="i i-16"><use href="#pf-SideMenuSetting"/></svg><span>Agency Settings</span></a></li>
-              <li><a href="not-built.html?screen=Licenses"><svg class="i i-16"><use href="#pf-PiIdentificationCard"/></svg><span>Licenses</span></a></li>
-              <li><a href="not-built.html?screen=Preferences"><svg class="i i-16"><use href="#pf-VscSettings"/></svg><span>Preferences</span></a></li>
-              <li><a href="not-built.html?screen=Bank%20Detail"><svg class="i i-16"><use href="#pf-FiCreditCard"/></svg><span>Bank Detail</span></a></li>
-              <li><a href="user-settings-change-password.html" aria-current="page"><svg class="i i-16"><use href="#pf-MdPassword"/></svg><span>Change Password</span></a></li>
-            </ul>
-          </nav>
+      <div class="pf-block-row" style-cols="full" data-cols="full">
+        <section class="pf-table-card" data-h="528">
+          <div class="pf-table-card-head" data-tall="true">
+            <!-- a 76-tall row above the tabs: the product puts the page's filter
+                 controls here, not in a bar of their own -->
+            <!-- it IS the filter bar, so it carries that class: the design QA
+                 scopes filter.field and filter.clear inside filter.bar, and a
+                 differently-named wrapper left both regions unresolved -->
+            <div class="pf-filter-bar" data-in-head="true">
+              <div class="pf-filter-fields">
+                <div class="pf-field"><button class="pf-select" id="lr-0" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button></div>
+                <div class="pf-field"><button class="pf-select" id="lr-1" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Listing</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button></div>
+                <div class="pf-field"><button class="pf-select" id="lr-2" type="button" aria-haspopup="listbox" data-open="listbox-blocks" data-placement="bottom"><span class="pf-placeholder">Select Channel</span><span class="pf-select-arrow"><svg class="i i-12"><use href="#pf-DownOutlined"/></svg></span></button></div>
+              </div>
+              <button class="pf-btn" data-variant="link-danger" data-size="small" type="button" data-noop="clearing a filter is a URL push and a refetch"><span>Clear filters</span></button>
+            </div>
+            <div class="pf-tabs" role="tablist">
+              <button class="pf-tab" role="tab" type="button" aria-selected="true" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Summary</span></button>
+              <button class="pf-tab" role="tab" type="button" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Listing Report</span></button>
+              <button class="pf-tab" role="tab" type="button" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Leads Report</span></button>
+            </div>
+            <div class="pf-tabs-extra"><a class="pf-btn" data-variant="primary" data-size="small" href="not-built.html?screen=Download"><span>Download</span></a></div>
+          </div>
+            <div class="pf-plot" data-h="440" role="img" aria-label="Leads by channel">
+              <span class="pf-plot-note">Leads by channel</span>
+            </div>
         </section>
-        <section class="pf-card pf-completion">
-          <div class="pf-completion-head">
-            <span class="pf-completion-title">Profile Completion</span>
-            <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Profile%20Completion"><span>Complete Profile</span></a>
-          </div>
-          <div class="pf-completion-meter">
-            <!-- the same .pf-credit-meter the dashboard's quota widget uses;
-                 a second progress component would be a second truth -->
-            <span class="pf-credit-meter fill-90"></span>
-            <span class="pf-completion-pct">90%</span>
-          </div>
-          <div class="pf-completion-body">
-            <a class="pf-btn" data-variant="primary" data-size="small" href="not-built.html?screen=TruBroker"><span>Become a TruBroker</span></a>
-            <span class="pf-mini-card"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg>Nafath Verified</span>
-            <span class="pf-mini-card"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg>REGA Verified</span>
-          </div>
-        </section>
-        </div>
-        <div class="pf-settings-main">
-
-          <section class="pf-card pf-settings-form">
-            <h5 class="pf-card-title">Change Password</h5>
-            <form class="pf-form-grid">
-            <div class="pf-sfield span-all password">
-              <label class="pf-field-label" for="f-0">Enter Old Password</label>
-              <span class="pf-input"><input id="f-0" type="text" placeholder="Enter Old Password"><span class="pf-input-suffix"></span></span>
-            </div>
-            <div class="pf-sfield span-all password">
-              <label class="pf-field-label" for="f-1">Enter New Password</label>
-              <span class="pf-input"><input id="f-1" type="text" placeholder="Enter New Password"><span class="pf-input-suffix"></span></span>
-            </div>
-            <div class="pf-sfield span-all password">
-              <label class="pf-field-label" for="f-2">Confirm Password</label>
-              <span class="pf-input"><input id="f-2" type="text" placeholder="Confirm Password"><span class="pf-input-suffix"></span></span>
-            </div>
-            </form>
-            <div class="pf-form-actions">
-              <button class="pf-btn" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Cancel</span></button>
-              <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Save Changes</span></button>
-            </div>
-          </section>
-        </div>
       </div>
+      <div class="pf-block-row" style-cols="full" data-cols="full">
+        <section class="pf-card pf-block" data-w="1332">
+          <div class="pf-block-head">Leads<a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Download"><span>Download</span></a></div>
+          <div class="pf-block-body">
+            <table class="pf-table">
+              <thead><tr><th>Listing</th><th>Channel</th><th>Received</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td colspan="4">
+                    <div class="pf-empty">
+                      <svg class="pf-empty-art" width="164" height="89" viewBox="0 0 164 89" role="img" aria-label="No Record Found illustration">
+  <path
+  d="M17.357 15.687c0-8.666 7.025-15.69 15.69-15.69h90.982c8.665 0 15.689 7.024 15.689 15.69 0 8.664-7.024 15.688-15.689 15.688H33.047c-8.665 0-15.69-7.024-15.69-15.688m18.811 57.631c0-8.664 7.024-15.688 15.69-15.688h82.924c8.664 0 15.689 7.024 15.689 15.688 0 8.666-7.025 15.69-15.689 15.69H51.857c-8.665 0-15.689-7.024-15.689-15.69"
+  />
+  <path
+  d="M.586 53.193c0-8.664 7.024-15.689 15.69-15.689h131.449c8.666 0 15.69 7.025 15.69 15.69s-7.024 15.689-15.69 15.689H16.275c-8.665 0-15.69-7.024-15.69-15.69"
+  />
+  <path
+  fill="currentColor"
+  d="M89.392 24.57a18.7 18.7 0 0 1 6.058-4.053V8.952a5.78 5.78 0 0 0-5.78-5.78H49.206a5.78 5.78 0 0 0-5.78 5.78v11.562a5.78 5.78 0 0 0 5.78 5.78h38.678c.466-.595.96-1.175 1.508-1.723"
+  />
+  <circle cx="50.426" cy="12.008" r="4" fill="#fff" />
+  <rect width="26" height="2.1" x="57.426" y="8.008" fill="#fff" rx="1.05" />
+  <rect width="32" height="2.1" x="57.426" y="13.109" fill="#fff" rx="1.05" />
+  <rect width="21" height="2.1" x="57.426" y="18.211" fill="#fff" rx="1.05" />
+  <path
+  fill="currentColor"
+  d="M104.119 29.188H63.656a5.78 5.78 0 0 0-5.781 5.78v11.561a5.78 5.78 0 0 0 5.78 5.78h40.464a5.78 5.78 0 0 0 5.78-5.78V34.968a5.78 5.78 0 0 0-5.78-5.78"
+  />
+  <circle cx="66.426" cy="38.008" r="4" fill="#fff" />
+  <rect width="26" height="2.1" x="73.426" y="34.008" fill="#fff" rx="1.05" />
+  <rect width="32" height="2.1" x="73.426" y="39.109" fill="#fff" rx="1.05" />
+  <rect width="21" height="2.1" x="73.426" y="44.211" fill="#fff" rx="1.05" />
+  <path
+  fill="currentColor"
+  d="M89.67 55.195H49.206a5.78 5.78 0 0 0-5.78 5.78v11.562a5.78 5.78 0 0 0 5.78 5.78H89.67a5.78 5.78 0 0 0 5.781-5.78V60.976a5.78 5.78 0 0 0-5.78-5.78"
+  />
+  <circle cx="50.426" cy="64.008" r="4" fill="#fff" />
+  <rect width="26" height="2.1" x="57.426" y="60.008" fill="#fff" rx="1.05" />
+  <rect width="32" height="2.1" x="57.426" y="65.109" fill="#fff" rx="1.05" />
+  <rect width="21" height="2.1" x="57.426" y="70.211" fill="#fff" rx="1.05" />
+  <g>
+  <path
+  fill="url(#EmptyListing__EmptyListing1)"
+  d="M108.456 26.29H62.212a5.78 5.78 0 0 0-5.78 5.78v23.12a5.78 5.78 0 0 0 5.78 5.78h46.244a5.78 5.78 0 0 0 5.78-5.78V32.07a5.78 5.78 0 0 0-5.78-5.78"
+  />
+  <path
+  fill="currentColor"
+  d="M98.34 37.85H72.327a2.89 2.89 0 0 1 0-5.78H98.34a2.89 2.89 0 0 1 0 5.78m7.225 8.664H72.328a2.89 2.89 0 0 1 0-5.78h33.237a2.89 2.89 0 0 1 0 5.78m-14.451 8.68H72.327a2.89 2.89 0 0 1 0-5.78h18.787a2.89 2.89 0 0 1 0 5.78"
+  />
+  </g>
+  <path
+  fill="#fff"
+  d="M86.207 38.532c0-12.172 9.867-22.04 22.038-22.04 12.172 0 22.04 9.868 22.04 22.04 0 12.17-9.868 22.038-22.04 22.038-12.17 0-22.038-9.867-22.038-22.038"
+  />
+  <path
+  fill="currentColor"
+  d="M108.245 63.195a24.5 24.5 0 0 1-17.442-7.224 24.5 24.5 0 0 1-7.225-17.442c0-6.59 2.566-12.783 7.225-17.442s10.853-7.225 17.442-7.225 12.783 2.566 17.442 7.225a24.5 24.5 0 0 1 7.225 17.442 24.6 24.6 0 0 1-6.541 16.73 2.628 2.628 0 0 1-3.861-3.565 19.35 19.35 0 0 0 5.146-13.165c0-10.704-8.708-19.412-19.411-19.412s-19.411 8.708-19.411 19.412S97.54 57.94 108.245 57.94c2.415 0 4.77-.437 7-1.3a2.628 2.628 0 1 1 1.896 4.902 24.6 24.6 0 0 1-8.896 1.653"
+  />
+  <path
+  fill="currentColor"
+  d="M142.002 74.063a2.62 2.62 0 0 1-1.858-.77l-17.718-17.719a2.628 2.628 0 0 1 3.715-3.716l17.719 17.719a2.628 2.628 0 0 1-1.858 4.486"
+  />
+  <path
+  fill="#fff"
+  d="m142.709 78.981-12.777-12.776a4.36 4.36 0 0 1 0-6.164l.67-.67a4.36 4.36 0 0 1 6.163 0l12.777 12.778a4.356 4.356 0 0 1 0 6.163l-.669.67a4.36 4.36 0 0 1-6.164 0"
+  />
+  <path
+  fill="currentColor"
+  d="M133.687 60.72c-.443 0-.886.169-1.224.506l-.67.67a1.72 1.72 0 0 0-.507 1.223c0 .463.18.897.507 1.224l12.778 12.777c.327.327.761.507 1.224.507s.896-.18 1.223-.507l.67-.67c.327-.326.506-.76.506-1.223a1.72 1.72 0 0 0-.506-1.224L134.91 61.227a1.72 1.72 0 0 0-1.223-.506m12.108 22.163a6.94 6.94 0 0 1-4.94-2.046L128.077 68.06a6.94 6.94 0 0 1-2.046-4.94c0-1.865.726-3.62 2.046-4.94l.67-.669a6.99 6.99 0 0 1 9.879 0l12.778 12.777a6.994 6.994 0 0 1 0 9.88l-.67.67a6.94 6.94 0 0 1-4.939 2.046"
+  />
+  <path
+  fill="#fff"
+  d="M132.966 38.528c0 2.18-.284 4.293-.815 6.305a13.46 13.46 0 0 1-3.545.472c-7.444 0-13.477-6.035-13.477-13.478 0-5.713 3.552-10.593 8.568-12.555 5.65 4.513 9.269 11.462 9.269 19.256"
+  />
+  <path
+  fill="currentColor"
+  d="M115.047 28.327c0-7.443 6.034-13.477 13.478-13.477 7.443 0 13.478 6.034 13.478 13.477s-6.035 13.478-13.478 13.478c-7.444 0-13.478-6.035-13.478-13.478"
+  />
+  <path
+  fill="#fff"
+  d="M128.544 33.778q.792 0 1.252-.503.46-.502.674-1.702t.215-3.317q0-2.14-.215-3.34-.213-1.198-.674-1.7-.46-.504-1.252-.504t-1.263.503q-.47.503-.674 1.701-.204 1.2-.204 3.34 0 2.118.204 3.317t.674 1.702 1.263.503m0 2.183q-1.712 0-2.676-.856-.963-.855-1.359-2.569-.396-1.712-.396-4.28t.396-4.292 1.359-2.58q.965-.855 2.676-.856 1.713.001 2.665.856.952.857 1.349 2.58.396 1.724.396 4.292t-.396 4.28q-.397 1.714-1.349 2.569t-2.665.856"
+  />
+  <path
+  fill="currentColor"
+  d="M94.91 40.54c-.82 0-1.484-.666-1.484-1.484 0-8.209 6.678-14.886 14.885-14.886a1.482 1.482 0 1 1 0 2.967c-6.572 0-11.918 5.346-11.918 11.919 0 .819-.665 1.483-1.484 1.483"
+  />
+  <defs>
+  <radialGradient
+  id="EmptyListing__EmptyListing1"
+  cx="0"
+  cy="0"
+  r="1"
+  gradientTransform="translate(96.144 26.396) scale(32.4114)"
+  gradientUnits="userSpaceOnUse"
+  >
+  <stop stop-color="#F2F2F2" />
+  <stop offset="1" stop-color="#D3D3D3" />
+  </radialGradient>
+  </defs>
+</svg>
+                      <div><div class="pf-empty-title">No Record Found</div></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+      <ul class="pf-pagination" data-span="full">
+        <li class="pf-page-item" data-nav="prev" aria-disabled="true"><button type="button" aria-label="Previous page" disabled><svg class="i i-12"><use href="#pf-LeftOutlined"/></svg></button></li>
+        <li class="pf-page-item" aria-current="page"><a data-noop="the pager pushes the page number into the URL and refetches">1</a></li>
+        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">2</a></li>
+        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">3</a></li>
+        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">4</a></li>
+        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">5</a></li>
+        <li class="pf-page-item"><a data-noop="the pager pushes the page number into the URL and refetches">6</a></li>
+        <li class="pf-page-item" data-nav="next"><button type="button" aria-label="Next page" data-noop="the pager pushes the page number into the URL and refetches"><svg class="i i-12"><use href="#pf-RightOutlined"/></svg></button></li>
+      </ul>
     </main>
     <footer class="pf-footer">© 2026 – All Rights Reserved</footer>
   </div><!-- /.pf-main -->
@@ -765,13 +856,12 @@
   </ul>
 </div>
 
-<!-- one listbox for every select on the page, anchored to whichever opened it —
-     245 wide, 11 of padding, options 223x38, measured on Listings' own selects -->
-<div class="pf-listbox" id="listbox-settings" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Options" hidden>
+<!-- the same 245-wide listbox every select on every page opens -->
+<div class="pf-listbox" id="listbox-blocks" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Options" hidden>
   <div class="pf-listbox-scroll">
-    <button class="pf-listbox-option" role="option" type="button" aria-selected="true" data-close>Riyadh</button>
-    <button class="pf-listbox-option" role="option" type="button" data-close>Jeddah</button>
-    <button class="pf-listbox-option" role="option" type="button" data-close>Dammam</button>
+    <button class="pf-listbox-option" role="option" type="button" aria-selected="true" data-close>Last 7 days</button>
+    <button class="pf-listbox-option" role="option" type="button" data-close>Last 30 days</button>
+    <button class="pf-listbox-option" role="option" type="button" data-close>Last 90 days</button>
   </div>
 </div>
 

@@ -1,0 +1,182 @@
+{
+  "score": 77.1,
+  "checks": 179,
+  "disagreements": [
+    {
+      "id": "filter.label",
+      "prop": "width",
+      "live": "236.203px",
+      "ours": "242.391px",
+      "w": 3
+    },
+    {
+      "id": "filter.input",
+      "prop": "width",
+      "live": "236.203px",
+      "ours": "242.391px",
+      "w": 2
+    },
+    {
+      "id": "filter.input",
+      "prop": "lineHeight",
+      "live": "14px",
+      "ours": "21.994px",
+      "w": 2
+    },
+    {
+      "id": "filter.search",
+      "prop": "width",
+      "live": "114.562px",
+      "ours": "87.3906px",
+      "w": 2
+    },
+    {
+      "id": "filter.search",
+      "prop": "height",
+      "live": "42px",
+      "ours": "40px",
+      "w": 2
+    },
+    {
+      "id": "filter.search",
+      "prop": "paddingTop",
+      "live": "6.85714px",
+      "ours": "5.14285px",
+      "w": 2
+    },
+    {
+      "id": "filter.search",
+      "prop": "paddingBottom",
+      "live": "6.85714px",
+      "ours": "5.14285px",
+      "w": 2
+    },
+    {
+      "id": "filter.search",
+      "prop": "paddingInlineStart",
+      "live": "16px",
+      "ours": "12px",
+      "w": 2
+    },
+    {
+      "id": "filter.search",
+      "prop": "paddingInlineEnd",
+      "live": "16px",
+      "ours": "12px",
+      "w": 2
+    },
+    {
+      "id": "filter.search",
+      "prop": "fontSize",
+      "live": "16px",
+      "ours": "12px",
+      "w": 2
+    },
+    {
+      "id": "filter.search",
+      "prop": "fontWeight",
+      "live": "600",
+      "ours": "700",
+      "w": 2
+    },
+    {
+      "id": "filter.search",
+      "prop": "lineHeight",
+      "live": "24px",
+      "ours": "18px",
+      "w": 2
+    },
+    {
+      "id": "table",
+      "prop": "box.y",
+      "live": 183,
+      "ours": 231,
+      "w": 2
+    },
+    {
+      "id": "table",
+      "prop": "width",
+      "live": "1334px",
+      "ours": "1282px",
+      "w": 2
+    },
+    {
+      "id": "table",
+      "prop": "height",
+      "live": "553px",
+      "ours": "387.984px",
+      "w": 2
+    },
+    {
+      "id": "filter.clear",
+      "prop": "width",
+      "live": "71.9219px",
+      "ours": "70px",
+      "w": 1
+    },
+    {
+      "id": "filter.clear",
+      "prop": "height",
+      "live": "32px",
+      "ours": "40px",
+      "w": 1
+    },
+    {
+      "id": "filter.field",
+      "prop": "width",
+      "live": "236.203px",
+      "ours": "242.391px",
+      "w": 1
+    },
+    {
+      "id": "filter.showmore",
+      "prop": "height",
+      "live": "42px",
+      "ours": "40px",
+      "w": 1
+    },
+    {
+      "id": "filter.showmore",
+      "prop": "paddingInlineStart",
+      "live": "14px",
+      "ours": "16px",
+      "w": 1
+    },
+    {
+      "id": "filter.showmore",
+      "prop": "paddingInlineEnd",
+      "live": "14px",
+      "ours": "16px",
+      "w": 1
+    },
+    {
+      "id": "filter.showmore",
+      "prop": "fontSize",
+      "live": "14px",
+      "ours": "16px",
+      "w": 1
+    },
+    {
+      "id": "filter.showmore",
+      "prop": "fontWeight",
+      "live": "600",
+      "ours": "700",
+      "w": 1
+    },
+    {
+      "id": "filter.showmore",
+      "prop": "lineHeight",
+      "live": "28px",
+      "ours": "25.136px",
+      "w": 1
+    },
+    {
+      "id": "filter.showmore",
+      "prop": "color",
+      "live": "rgb(0, 97, 105)",
+      "ours": "rgb(79, 79, 79)",
+      "w": 1
+    }
+  ],
+  "at": "2026-09-22T11:30:32.843Z"
+}

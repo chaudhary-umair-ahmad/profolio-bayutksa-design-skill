@@ -36,7 +36,7 @@ export const NAV = [
   ['My Listings',        'MyListingIcon',        'listings.html'],
   ['Credits Usage',      'SideMenuQuota',        null],
   ['Agent Performance',  'AgentPerformanceIcon', null],
-  ['Reports',            'SideMenuReports',      null],
+  ['Reports',            'SideMenuReports',      'reports-summary.html'],
   ['Agency Staff',       'SideMenuAgency',       null],
   ['Settings',           'IoSettingsOutline',    'user-settings-user-profile.html'],
   ['Credits & Packages', 'SideMenuPropShop',     null],

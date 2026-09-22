@@ -1,0 +1,137 @@
+{
+  "route": "reports-listing-report",
+  "at": "2026-09-22T11:28:37.404Z",
+  "shellFails": [
+    {
+      "id": "shell.title",
+      "diff": 39.8
+    },
+    {
+      "id": "shell.header",
+      "diff": 9.3
+    }
+  ],
+  "diffs": [
+    {
+      "id": "shell.title",
+      "diff": 39.8
+    },
+    {
+      "id": "tabs.active",
+      "diff": 31.4
+    },
+    {
+      "id": "tabs.tab",
+      "diff": 14.8
+    },
+    {
+      "id": "tabs.nav",
+      "diff": 14.5
+    },
+    {
+      "id": "shell.header",
+      "diff": 9.3
+    },
+    {
+      "id": "shell.sider",
+      "diff": 4.6
+    },
+    {
+      "id": "table",
+      "diff": 4.4
+    },
+    {
+      "id": "table.card",
+      "diff": 4.2
+    },
+    {
+      "id": "shell.content",
+      "diff": 3.5
+    },
+    {
+      "id": "pager",
+      "diff": 3.4
+    },
+    {
+      "id": "table.card.head",
+      "diff": 3.3
+    },
+    {
+      "id": "pager.active",
+      "diff": 3.1
+    },
+    {
+      "id": "shell.footer",
+      "diff": 2.1
+    },
+    {
+      "id": "pager.nav",
+      "diff": 1.2
+    },
+    {
+      "id": "pager.item",
+      "diff": 0.8
+    }
+  ],
+  "offScale": {
+    "size": [],
+    "weight": [],
+    "space": []
+  },
+  "literals": [
+    ".pf-sfield[data-h=\"118\"] { block-size: 118px }",
+    ".pf-block-row[data-cols=\"533 783\"] { grid-template-columns: 533px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"narrow\"] { grid-template-columns: minmax(var(--sp-0),1035px) }",
+    ".pf-plot[data-h=\"160\"] { block-size: 160px }",
+    ".pf-plot[data-h=\"440\"] { block-size: 440px }",
+    ".pf-tab[data-tabw=\"200\"] { inline-size: 200px }",
+    ".pf-tab[data-tabw=\"94\"] { inline-size: 94px }",
+    ".pf-table-card[data-h=\"528\"] { block-size: 528px }",
+    ".pf-filter-row { block-size: 76px }"
+  ],
+  "lowContrast": 0,
+  "contrastMatchingProduct": 8,
+  "productLow": [
+    {
+      "col": "rgb(255,255,255)",
+      "n": 5,
+      "ratio": 1
+    },
+    {
+      "col": "rgb(222,222,222)",
+      "n": 2,
+      "ratio": 1.35
+    },
+    {
+      "col": "rgb(157,157,157)",
+      "n": 1,
+      "ratio": 2.71
+    },
+    {
+      "col": "rgb(40,177,109)",
+      "n": 1,
+      "ratio": 2.76
+    },
+    {
+      "col": "rgb(71,158,235)",
+      "n": 2,
+      "ratio": 2.85
+    },
+    {
+      "col": "rgb(175,111,255)",
+      "n": 1,
+      "ratio": 3.21
+    },
+    {
+      "col": "rgb(247,49,49)",
+      "n": 1,
+      "ratio": 3.86
+    }
+  ],
+  "notModelled": [
+    "tabs.ink"
+  ],
+  "rtlOverflow": false,
+  "physical": 0,
+  "states": []
+}

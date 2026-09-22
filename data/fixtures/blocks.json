@@ -1,0 +1,409 @@
+{
+  "_": "Pages made of measured blocks. Every width, height and count is read off data/live/<route>.capture.json; labels come from the product's own source. These screens mostly render EMPTY STATES because the fixture account has no report or lead data, and reproducing what rendered is the method — inventing rows the product did not draw is what check-captures.mjs exists to prevent.",
+  "listbox": [
+    "Last 7 days",
+    "Last 30 days",
+    "Last 90 days"
+  ],
+  "pages": [
+    {
+      "slug": "reports-summary",
+      "route": "reports-summary",
+      "title": "Reports",
+      "rail": "Reports",
+      "notes": [
+        "content 1380x824 · header row 1332x240 (533 + 16 + 783)",
+        "stat card head 47, body 192, seven 103-wide items on a 4-column grid",
+        "chart card head 47, body 192 with a 733x160 plot",
+        "the second row is a 1332x528 plot",
+        "the second row is a TABBED card 1332x528 — tabs 609x84, each 200 wide"
+      ],
+      "rows": [
+        {
+          "cols": "533 783",
+          "blocks": [
+            {
+              "title": "Listings Summary",
+              "w": 533,
+              "h": 240,
+              "body": [
+                {
+                  "kind": "stats",
+                  "items": [
+                    {
+                      "icon": "MyListingIcon",
+                      "label": "Total",
+                      "value": "51"
+                    },
+                    {
+                      "icon": "IconBasic",
+                      "label": "Basic",
+                      "value": "34"
+                    },
+                    {
+                      "icon": "IconSuperHot",
+                      "label": "Hot",
+                      "value": "9"
+                    },
+                    {
+                      "icon": "BsFillLightningChargeFill",
+                      "label": "Signature",
+                      "value": "8"
+                    },
+                    {
+                      "icon": "MdEdit",
+                      "label": "Draft",
+                      "value": "1"
+                    },
+                    {
+                      "icon": "GoDotFill",
+                      "label": "Pending",
+                      "value": "4"
+                    },
+                    {
+                      "icon": "HiOutlineTrash",
+                      "label": "Removed",
+                      "value": "172"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Listings Performance",
+              "w": 783,
+              "h": 240,
+              "body": [
+                {
+                  "kind": "plot",
+                  "h": 160,
+                  "label": "Views, clicks and leads over time"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": "full",
+          "blocks": [
+            {
+              "tabs": [
+                "Summary",
+                "Listing Report",
+                "Leads Report"
+              ],
+              "tabw": 200,
+              "h": 528,
+              "w": 1332,
+              "body": [
+                {
+                  "kind": "plot",
+                  "h": 440,
+                  "label": "Leads by channel"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "reports-listing-report",
+      "route": "reports-listing-report",
+      "title": "Listing Report",
+      "rail": "Reports",
+      "notes": [
+        "content 1380x1780 · the same 1332x240 header row",
+        "then a card 1332x1484: head 46, body 1437 holding the table",
+        "the card is TABBED 1332x1484 — tabs 254x46, each 94 wide"
+      ],
+      "rows": [
+        {
+          "cols": "533 783",
+          "blocks": [
+            {
+              "title": "Listings Summary",
+              "w": 533,
+              "h": 240,
+              "body": [
+                {
+                  "kind": "stats",
+                  "items": [
+                    {
+                      "icon": "MyListingIcon",
+                      "label": "Total",
+                      "value": "51"
+                    },
+                    {
+                      "icon": "IconBasic",
+                      "label": "Basic",
+                      "value": "34"
+                    },
+                    {
+                      "icon": "IconSuperHot",
+                      "label": "Hot",
+                      "value": "9"
+                    },
+                    {
+                      "icon": "BsFillLightningChargeFill",
+                      "label": "Signature",
+                      "value": "8"
+                    },
+                    {
+                      "icon": "MdEdit",
+                      "label": "Draft",
+                      "value": "1"
+                    },
+                    {
+                      "icon": "GoDotFill",
+                      "label": "Pending",
+                      "value": "4"
+                    },
+                    {
+                      "icon": "HiOutlineTrash",
+                      "label": "Removed",
+                      "value": "172"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Listings Performance",
+              "w": 783,
+              "h": 240,
+              "body": [
+                {
+                  "kind": "plot",
+                  "h": 160,
+                  "label": "Views, clicks and leads over time"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "cols": "full",
+          "blocks": [
+            {
+              "tabs": [
+                "Summary",
+                "Listing Report",
+                "Leads Report"
+              ],
+              "tabw": 94,
+              "w": 1332,
+              "body": [
+                {
+                  "kind": "table",
+                  "columns": [
+                    "Property",
+                    "Product",
+                    "Views",
+                    "Clicks",
+                    "Leads",
+                    "Posted on"
+                  ],
+                  "empty": "No Record Found"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pager": 6
+    },
+    {
+      "slug": "reports-leads-reports",
+      "route": "reports-leads-reports",
+      "title": "Leads Report",
+      "rail": "Reports",
+      "notes": [
+        "content 1380x1389 · a 1332x528 plot over a 1332x797 table block",
+        "the FIRST row is the tabbed card 1332x528 at y80 — tabs 609x84",
+        "the card head is 158: a 76-tall filter row over an 84-tall tab strip with a 556-wide extra slot",
+        "its pager spans the content width (1332 at x84), not right-aligned like Listings'"
+      ],
+      "rows": [
+        {
+          "cols": "full",
+          "blocks": [
+            {
+              "tabs": [
+                "Summary",
+                "Listing Report",
+                "Leads Report"
+              ],
+              "tabw": 200,
+              "h": 528,
+              "w": 1332,
+              "body": [
+                {
+                  "kind": "plot",
+                  "h": 440,
+                  "label": "Leads by channel"
+                }
+              ],
+              "headRow": {
+                "fields": [
+                  "Select Date Range",
+                  "Select Listing",
+                  "Select Channel"
+                ]
+              },
+              "extra": "Download",
+              "id": "lr"
+            }
+          ]
+        },
+        {
+          "cols": "full",
+          "blocks": [
+            {
+              "title": "Leads",
+              "headAction": "Download",
+              "w": 1332,
+              "body": [
+                {
+                  "kind": "table",
+                  "columns": [
+                    "Listing",
+                    "Channel",
+                    "Received",
+                    "Status"
+                  ],
+                  "empty": "No Record Found"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pager": 6,
+      "pagerFull": true
+    },
+    {
+      "slug": "lms-leads",
+      "route": "lms-leads",
+      "title": "Leads",
+      "rail": "Reports",
+      "notes": [
+        "content 1380x800 · one 1332x672 block",
+        "it carries the same filter bar Listings does — filter.input, .field, .showmore, .clear and .search all resolve on the product's capture"
+      ],
+      "rows": [
+        {
+          "cols": "full",
+          "blocks": [
+            {
+              "title": "Leads",
+              "w": 1332,
+              "body": [
+                {
+                  "kind": "table",
+                  "columns": [
+                    "Lead",
+                    "Listing",
+                    "Channel",
+                    "Received",
+                    "Status"
+                  ],
+                  "empty": "No Record Found"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "filterBar": {
+        "fields": [
+          {
+            "label": "Lead ID",
+            "placeholder": "Enter Lead ID",
+            "type": "input"
+          },
+          {
+            "label": "Listing",
+            "placeholder": "Select Listing",
+            "type": "select"
+          },
+          {
+            "label": "Channel",
+            "placeholder": "Select Channel",
+            "type": "select"
+          },
+          {
+            "label": "Status",
+            "placeholder": "Select Status",
+            "type": "select"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "ad-license",
+      "route": "ad-license",
+      "title": "Ad License",
+      "rail": "My Listings",
+      "notes": [
+        "content 1380x814 · a single 1035-wide column at x173",
+        "a 79x32 back button, an h2 1035x30, a form 1035x720",
+        "its 1035-wide column is antd's ant-col-lg-18, the same one the settings pages use, so it carries .pf-settings-main and the field regions resolve inside it"
+      ],
+      "rows": [
+        {
+          "cols": "narrow",
+          "blocks": [
+            {
+              "title": "Get an Ad License",
+              "w": 1035,
+              "id": "adl",
+              "body": [
+                {
+                  "kind": "form",
+                  "id": "adl",
+                  "cols": 413,
+                  "fields": [
+                    {
+                      "label": "Deed Number",
+                      "placeholder": "Enter Deed Number",
+                      "type": "input"
+                    },
+                    {
+                      "label": "Deed Date",
+                      "placeholder": "Select Deed Date",
+                      "type": "select"
+                    },
+                    {
+                      "label": "ID Number",
+                      "placeholder": "Enter ID Number",
+                      "type": "input"
+                    },
+                    {
+                      "label": "Date of Birth",
+                      "placeholder": "Select Date of Birth",
+                      "type": "select"
+                    },
+                    {
+                      "label": "Property Type",
+                      "placeholder": "Select Property Type",
+                      "type": "input",
+                      "span": true
+                    },
+                    {
+                      "label": "Property Address",
+                      "placeholder": "Enter Property Address",
+                      "type": "input",
+                      "span": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "column": true
+    }
+  ]
+}

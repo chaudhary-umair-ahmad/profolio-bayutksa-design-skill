@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Change Password — Profolio KSA</title>
+<title>Reports — Profolio KSA</title>
 <!-- the product's own faces, embedded; no network -->
 <link rel="stylesheet" href="fonts.css">
 <!-- THE shared stylesheet — the same file components.html links.
@@ -16,7 +16,7 @@
    Kept out of the body so there is not one style attribute in the markup.
    ─────────────────────────────────────────────────────────────────────── */
 .pct-90{--ring-pct:90}                /* profile completion score */
-.fill-90{--meter-pct:90}     /* profile completion */</style>
+</style>
 <!-- the interaction layer: overlays, tabs and page states. Declarative —
      the markup carries data-open / data-panel / data-state-panel and nothing else. -->
 <script src="prototype.js" defer></script>
@@ -522,12 +522,13 @@
   </symbol>
 </defs></svg>
 <!-- ═══════════════════════════════════════════════════════════════════
-     CHANGE PASSWORD — scripts/pages/settings.mjs from data/fixtures/settings.json
-     Measured against data/live/user-settings-change-password.capture.json:
-       left 336 · nav card 326x256 · completion card 326x240
-       right 1007 · header card 997x152 · form card 997x416
-       form 835 wide, two 390 columns, 54 gutter, 98 row pitch
-     Labels and types: src/tenant/bayut/data/profileFields.js
+     REPORTS — scripts/pages/blocks.mjs from data/fixtures/blocks.json
+     Every size below is read off data/live/reports-summary.capture.json:
+       content 1380x824 · header row 1332x240 (533 + 16 + 783)
+       stat card head 47, body 192, seven 103-wide items on a 4-column grid
+       chart card head 47, body 192 with a 733x160 plot
+       the second row is a 1332x528 plot
+       the second row is a TABBED card 1332x528 — tabs 609x84, each 200 wide
      ═══════════════════════════════════════════════════════════════════════ -->
 <div class="pf-shell">
   <!-- ── icon rail · collapsed (60px), the shipped default state ────── -->
@@ -571,9 +572,9 @@
       <a class="pf-rail-item" href="listings.html" title="My Listings"><svg class="i i-20"><use href="#pf-MyListingIcon"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Credits%20Usage" title="Credits Usage"><svg class="i i-20"><use href="#pf-SideMenuQuota"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Agent%20Performance" title="Agent Performance"><svg class="i i-20"><use href="#pf-AgentPerformanceIcon"/></svg></a>
-      <a class="pf-rail-item" href="reports-summary.html" title="Reports"><svg class="i i-20"><use href="#pf-SideMenuReports"/></svg></a>
+      <a class="pf-rail-item" aria-current="page" href="reports-summary.html" title="Reports"><svg class="i i-20"><use href="#pf-SideMenuReports"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Agency%20Staff" title="Agency Staff"><svg class="i i-20"><use href="#pf-SideMenuAgency"/></svg></a>
-      <a class="pf-rail-item" aria-current="page" href="user-settings-user-profile.html" title="Settings"><svg class="i i-20"><use href="#pf-IoSettingsOutline"/></svg></a>
+      <a class="pf-rail-item" href="user-settings-user-profile.html" title="Settings"><svg class="i i-20"><use href="#pf-IoSettingsOutline"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Credits%20%26%20Packages" title="Credits &amp; Packages"><svg class="i i-20"><use href="#pf-SideMenuPropShop"/></svg></a>
     </nav>
     <div class="pf-rail-bottom">
@@ -584,7 +585,7 @@
   <div class="pf-main">
     <!-- ── header ──────────────────────────────────────────────────── -->
     <header class="pf-header pf-header-fixed">
-      <div class="pf-header-brand"><span class="pf-page-title">Settings</span></div>
+      <div class="pf-header-brand"><span class="pf-page-title">Reports</span></div>
       <div class="pf-header-actions">
         <button class="pf-btn" data-variant="link" type="button" data-open="modal-download-app"><svg class="i i-16"><use href="#pf-MdPhoneIphone"/></svg><span>Download App</span></button>
         <!-- the one link in the shell that LEAVES the product. It carried
@@ -596,62 +597,45 @@
       </div>
     </header>
     <main class="pf-content" data-gap="8">
-      <div class="pf-settings-grid">
-        <div class="pf-settings-side">
-        <section class="pf-card pf-settings-nav">
-          <nav aria-label="Settings">
-            <ul>
-              <li><a href="user-settings-user-profile.html"><svg class="i i-16"><use href="#pf-FiUser"/></svg><span>User Settings</span></a></li>
-              <li><a href="user-settings-agency-profile.html"><svg class="i i-16"><use href="#pf-SideMenuSetting"/></svg><span>Agency Settings</span></a></li>
-              <li><a href="not-built.html?screen=Licenses"><svg class="i i-16"><use href="#pf-PiIdentificationCard"/></svg><span>Licenses</span></a></li>
-              <li><a href="not-built.html?screen=Preferences"><svg class="i i-16"><use href="#pf-VscSettings"/></svg><span>Preferences</span></a></li>
-              <li><a href="not-built.html?screen=Bank%20Detail"><svg class="i i-16"><use href="#pf-FiCreditCard"/></svg><span>Bank Detail</span></a></li>
-              <li><a href="user-settings-change-password.html" aria-current="page"><svg class="i i-16"><use href="#pf-MdPassword"/></svg><span>Change Password</span></a></li>
-            </ul>
-          </nav>
-        </section>
-        <section class="pf-card pf-completion">
-          <div class="pf-completion-head">
-            <span class="pf-completion-title">Profile Completion</span>
-            <a class="pf-btn" data-variant="link" data-size="small" href="not-built.html?screen=Profile%20Completion"><span>Complete Profile</span></a>
-          </div>
-          <div class="pf-completion-meter">
-            <!-- the same .pf-credit-meter the dashboard's quota widget uses;
-                 a second progress component would be a second truth -->
-            <span class="pf-credit-meter fill-90"></span>
-            <span class="pf-completion-pct">90%</span>
-          </div>
-          <div class="pf-completion-body">
-            <a class="pf-btn" data-variant="primary" data-size="small" href="not-built.html?screen=TruBroker"><span>Become a TruBroker</span></a>
-            <span class="pf-mini-card"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg>Nafath Verified</span>
-            <span class="pf-mini-card"><svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg>REGA Verified</span>
+      <div class="pf-block-row" style-cols="533 783" data-cols="533 783">
+        <section class="pf-card pf-block" data-w="533" data-h="240">
+          <div class="pf-block-head">Listings Summary</div>
+          <div class="pf-block-body">
+            <div class="pf-stat-grid">
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-MyListingIcon"/></svg><div><span class="pf-stat-title">Total</span><span class="pf-stat-value">51</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconBasic"/></svg><div><span class="pf-stat-title">Basic</span><span class="pf-stat-value">34</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-IconSuperHot"/></svg><div><span class="pf-stat-title">Hot</span><span class="pf-stat-value">9</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-BsFillLightningChargeFill"/></svg><div><span class="pf-stat-title">Signature</span><span class="pf-stat-value">8</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-MdEdit"/></svg><div><span class="pf-stat-title">Draft</span><span class="pf-stat-value">1</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-GoDotFill"/></svg><div><span class="pf-stat-title">Pending</span><span class="pf-stat-value">4</span></div></div>
+              <div class="pf-stat-item"><svg class="i i-16"><use href="#pf-HiOutlineTrash"/></svg><div><span class="pf-stat-title">Removed</span><span class="pf-stat-value">172</span></div></div>
+            </div>
           </div>
         </section>
-        </div>
-        <div class="pf-settings-main">
+        <section class="pf-card pf-block" data-w="783" data-h="240">
+          <div class="pf-block-head">Listings Performance</div>
+          <div class="pf-block-body">
+            <div class="pf-plot" data-h="160" role="img" aria-label="Views, clicks and leads over time">
+              <span class="pf-plot-note">Views, clicks and leads over time</span>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="pf-block-row" style-cols="full" data-cols="full">
+        <section class="pf-table-card" data-h="528">
+          <div class="pf-table-card-head">
 
-          <section class="pf-card pf-settings-form">
-            <h5 class="pf-card-title">Change Password</h5>
-            <form class="pf-form-grid">
-            <div class="pf-sfield span-all password">
-              <label class="pf-field-label" for="f-0">Enter Old Password</label>
-              <span class="pf-input"><input id="f-0" type="text" placeholder="Enter Old Password"><span class="pf-input-suffix"></span></span>
+            <div class="pf-tabs" role="tablist">
+              <button class="pf-tab" role="tab" type="button" aria-selected="true" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Summary</span></button>
+              <button class="pf-tab" role="tab" type="button" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Listing Report</span></button>
+              <button class="pf-tab" role="tab" type="button" data-tabw="200" data-noop="each tab refetches; the capture has the first"><span class="pf-tab-label">Leads Report</span></button>
             </div>
-            <div class="pf-sfield span-all password">
-              <label class="pf-field-label" for="f-1">Enter New Password</label>
-              <span class="pf-input"><input id="f-1" type="text" placeholder="Enter New Password"><span class="pf-input-suffix"></span></span>
+
+          </div>
+            <div class="pf-plot" data-h="440" role="img" aria-label="Leads by channel">
+              <span class="pf-plot-note">Leads by channel</span>
             </div>
-            <div class="pf-sfield span-all password">
-              <label class="pf-field-label" for="f-2">Confirm Password</label>
-              <span class="pf-input"><input id="f-2" type="text" placeholder="Confirm Password"><span class="pf-input-suffix"></span></span>
-            </div>
-            </form>
-            <div class="pf-form-actions">
-              <button class="pf-btn" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Cancel</span></button>
-              <button class="pf-btn" data-variant="primary" data-size="large" type="button" data-noop="the form is not wired to a server in this page"><span>Save Changes</span></button>
-            </div>
-          </section>
-        </div>
+        </section>
       </div>
     </main>
     <footer class="pf-footer">© 2026 – All Rights Reserved</footer>
@@ -765,13 +749,12 @@
   </ul>
 </div>
 
-<!-- one listbox for every select on the page, anchored to whichever opened it —
-     245 wide, 11 of padding, options 223x38, measured on Listings' own selects -->
-<div class="pf-listbox" id="listbox-settings" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Options" hidden>
+<!-- the same 245-wide listbox every select on every page opens -->
+<div class="pf-listbox" id="listbox-blocks" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Options" hidden>
   <div class="pf-listbox-scroll">
-    <button class="pf-listbox-option" role="option" type="button" aria-selected="true" data-close>Riyadh</button>
-    <button class="pf-listbox-option" role="option" type="button" data-close>Jeddah</button>
-    <button class="pf-listbox-option" role="option" type="button" data-close>Dammam</button>
+    <button class="pf-listbox-option" role="option" type="button" aria-selected="true" data-close>Last 7 days</button>
+    <button class="pf-listbox-option" role="option" type="button" data-close>Last 30 days</button>
+    <button class="pf-listbox-option" role="option" type="button" data-close>Last 90 days</button>
   </div>
 </div>
 

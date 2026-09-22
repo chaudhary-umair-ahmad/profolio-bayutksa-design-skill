@@ -1,0 +1,116 @@
+{
+  "route": "reports-summary",
+  "at": "2026-09-22T11:27:43.941Z",
+  "shellFails": [
+    {
+      "id": "shell.title",
+      "diff": 34.9
+    },
+    {
+      "id": "shell.header",
+      "diff": 8.7
+    }
+  ],
+  "diffs": [
+    {
+      "id": "shell.title",
+      "diff": 34.9
+    },
+    {
+      "id": "tabs.active",
+      "diff": 16.1
+    },
+    {
+      "id": "tabs.nav",
+      "diff": 10.3
+    },
+    {
+      "id": "table.card.head",
+      "diff": 9.2
+    },
+    {
+      "id": "shell.header",
+      "diff": 8.7
+    },
+    {
+      "id": "tabs.tab",
+      "diff": 7.2
+    },
+    {
+      "id": "shell.sider",
+      "diff": 4.6
+    },
+    {
+      "id": "table.card",
+      "diff": 3.1
+    },
+    {
+      "id": "shell.content",
+      "diff": 2.8
+    },
+    {
+      "id": "shell.footer",
+      "diff": 2.1
+    }
+  ],
+  "offScale": {
+    "size": [],
+    "weight": [],
+    "space": []
+  },
+  "literals": [
+    ".pf-sfield[data-h=\"118\"] { block-size: 118px }",
+    ".pf-block-row[data-cols=\"533 783\"] { grid-template-columns: 533px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"narrow\"] { grid-template-columns: minmax(var(--sp-0),1035px) }",
+    ".pf-plot[data-h=\"160\"] { block-size: 160px }",
+    ".pf-plot[data-h=\"440\"] { block-size: 440px }",
+    ".pf-tab[data-tabw=\"200\"] { inline-size: 200px }",
+    ".pf-tab[data-tabw=\"94\"] { inline-size: 94px }",
+    ".pf-table-card[data-h=\"528\"] { block-size: 528px }"
+  ],
+  "lowContrast": 0,
+  "contrastMatchingProduct": 3,
+  "productLow": [
+    {
+      "col": "rgb(255,255,255)",
+      "n": 12,
+      "ratio": 1
+    },
+    {
+      "col": "rgb(222,222,222)",
+      "n": 2,
+      "ratio": 1.35
+    },
+    {
+      "col": "rgb(157,157,157)",
+      "n": 1,
+      "ratio": 2.71
+    },
+    {
+      "col": "rgb(40,177,109)",
+      "n": 1,
+      "ratio": 2.76
+    },
+    {
+      "col": "rgb(71,158,235)",
+      "n": 2,
+      "ratio": 2.85
+    },
+    {
+      "col": "rgb(175,111,255)",
+      "n": 1,
+      "ratio": 3.21
+    },
+    {
+      "col": "rgb(247,49,49)",
+      "n": 1,
+      "ratio": 3.86
+    }
+  ],
+  "notModelled": [
+    "tabs.ink"
+  ],
+  "rtlOverflow": false,
+  "physical": 0,
+  "states": []
+}

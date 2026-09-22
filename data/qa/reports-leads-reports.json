@@ -1,0 +1,130 @@
+{
+  "route": "reports-leads-reports",
+  "at": "2026-09-22T11:29:12.047Z",
+  "shellFails": [
+    {
+      "id": "shell.title",
+      "diff": 36
+    },
+    {
+      "id": "shell.header",
+      "diff": 9.8
+    }
+  ],
+  "diffs": [
+    {
+      "id": "shell.title",
+      "diff": 36
+    },
+    {
+      "id": "filter.field",
+      "diff": 22.4
+    },
+    {
+      "id": "filter.clear",
+      "diff": 19.6
+    },
+    {
+      "id": "tabs.active",
+      "diff": 16.1
+    },
+    {
+      "id": "filter.bar",
+      "diff": 11.3
+    },
+    {
+      "id": "tabs.nav",
+      "diff": 10.7
+    },
+    {
+      "id": "shell.header",
+      "diff": 9.8
+    },
+    {
+      "id": "table.card.head",
+      "diff": 7.8
+    },
+    {
+      "id": "tabs.tab",
+      "diff": 7.2
+    },
+    {
+      "id": "shell.sider",
+      "diff": 4.6
+    },
+    {
+      "id": "table.card",
+      "diff": 3.9
+    },
+    {
+      "id": "shell.content",
+      "diff": 3.6
+    },
+    {
+      "id": "pager.active",
+      "diff": 3.1
+    },
+    {
+      "id": "table",
+      "diff": 3.1
+    },
+    {
+      "id": "shell.footer",
+      "diff": 2.1
+    },
+    {
+      "id": "pager",
+      "diff": 1
+    },
+    {
+      "id": "pager.item",
+      "diff": 0.8
+    },
+    {
+      "id": "pager.nav",
+      "diff": 0
+    }
+  ],
+  "offScale": {
+    "size": [],
+    "weight": [],
+    "space": []
+  },
+  "literals": [
+    ".pf-sfield[data-h=\"118\"] { block-size: 118px }",
+    ".pf-block-row[data-cols=\"533 783\"] { grid-template-columns: 533px minmax(var(--sp-0),1fr) }",
+    ".pf-block-row[data-cols=\"narrow\"] { grid-template-columns: minmax(var(--sp-0),1035px) }",
+    ".pf-plot[data-h=\"160\"] { block-size: 160px }",
+    ".pf-plot[data-h=\"440\"] { block-size: 440px }",
+    ".pf-tab[data-tabw=\"200\"] { inline-size: 200px }",
+    ".pf-tab[data-tabw=\"94\"] { inline-size: 94px }",
+    ".pf-table-card[data-h=\"528\"] { block-size: 528px }",
+    ".pf-filter-bar[data-in-head=\"true\"] { block-size: 78px }"
+  ],
+  "lowContrast": 0,
+  "contrastMatchingProduct": 10,
+  "productLow": [
+    {
+      "col": "rgb(255,255,255)",
+      "n": 13,
+      "ratio": 1
+    },
+    {
+      "col": "rgb(157,157,157)",
+      "n": 1,
+      "ratio": 2.71
+    },
+    {
+      "col": "rgb(247,49,49)",
+      "n": 2,
+      "ratio": 3.86
+    }
+  ],
+  "notModelled": [
+    "filter.search",
+    "tabs.ink"
+  ],
+  "rtlOverflow": false,
+  "physical": 0,
+  "states": []
+}

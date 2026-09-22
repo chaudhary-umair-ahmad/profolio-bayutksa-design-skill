@@ -625,6 +625,13 @@
   --input-disabled-bg:rgba(0,0,0,.04);  /* .ant-input-disabled, measured */
   --sfield-upload:133px;               /* the image-select row that ends the form */
   --sfield-upload-art:103px;
+  /* pages made of measured blocks — reports, LMS, ad-license.
+     data/live/reports-summary.capture.json: card head 47, body 192, and a
+     seven-item stat grid of 103-wide pairs on four columns */
+  --block-head-h:47px;
+  --block-gap:16px;
+  --block-stat-w:103px;
+  --block-icon:32px;
   --detail-col:528px;
   --detail-gallery-h:424px;
   --fs-detail-price:20px;
@@ -2940,3 +2947,73 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   font:inherit;resize:none;
 }
 .pf-form-actions{display:flex;justify-content:flex-end;gap:var(--sp-12);margin-block-start:var(--sp-24)}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE · blocks — reports, LMS, ad-license
+   A row of cards, each a 47-tall head over a body of one kind.
+   data/live/reports-*.capture.json · lms-leads · ad-license
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-block-row{display:grid;gap:var(--block-gap);align-items:start}
+.pf-block-row[data-cols="533 783"]{grid-template-columns:533px minmax(var(--sp-0),1fr)}
+.pf-block-row[data-cols="narrow"]{grid-template-columns:minmax(var(--sp-0),1035px);justify-content:center}
+.pf-block{display:flex;flex-direction:column;min-inline-size:var(--sp-0)}
+.pf-block[data-h]{block-size:auto}
+.pf-block-head{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12);
+  block-size:var(--block-head-h);
+  padding-inline:var(--sp-12);
+  border-block-end:var(--border-w) solid var(--drawer-border);
+  font-size:var(--fs-card-title);font-weight:var(--fw-600);
+  box-sizing:border-box;
+}
+.pf-block-body{padding:var(--sp-24);flex:1;min-inline-size:var(--sp-0)}
+.pf-block-body > .pf-table{margin:calc(var(--sp-24) * -1)}
+
+/* the stat grid — four columns of 103-wide icon/value pairs */
+.pf-stat-grid{display:grid;grid-template-columns:repeat(4,var(--block-stat-w));gap:var(--sp-24) var(--sp-24)}
+.pf-stat-item{display:flex;align-items:center;gap:var(--sp-8)}
+.pf-stat-item svg{
+  inline-size:var(--block-icon);block-size:var(--block-icon);
+  padding:var(--sp-8);flex:none;
+  border-radius:var(--radius-icon-tile);
+  background:var(--primary-light-4);color:var(--primary);
+  box-sizing:border-box;
+}
+.pf-stat-item > div{display:flex;flex-direction:column}
+
+/* the plot area. No chart library ships with this system, so a chart is the
+   box it occupies and says so — the same honesty as the QR placeholder. */
+.pf-plot{
+  display:grid;place-items:center;
+  border-radius:var(--radius-card);
+  background:var(--bg-gray-deep);
+  color:var(--gray-600);
+  font-size:var(--fs-12);
+}
+.pf-plot[data-h="160"]{block-size:160px}
+.pf-plot[data-h="440"]{block-size:440px}
+.pf-plot-note{padding:var(--sp-8)}
+/* the reports tabs are wider than the listings ones — 200 against 94 on the
+   same component, measured on each page */
+.pf-tab[data-tabw="200"]{inline-size:200px;justify-content:center}
+.pf-tab[data-tabw="94"]{inline-size:94px;justify-content:center}
+.pf-table-card[data-h="528"]{block-size:528px}
+/* a card head that carries the page's filters above its tabs — 158 tall:
+   a 76 row over the 84 tab strip. data/live/reports-leads-reports */
+.pf-table-card-head[data-tall="true"]{display:flex;flex-direction:column;block-size:auto;padding:var(--sp-0)}
+/* the same filter bar, inside a card head rather than above the card */
+.pf-filter-bar[data-in-head="true"]{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-16);
+  block-size:78px;
+  padding:var(--sp-0) var(--sp-16);
+  border:0;background:none;
+  box-sizing:border-box;
+}
+.pf-filter-bar[data-in-head="true"] .pf-filter-fields{display:flex;gap:var(--sp-16);flex:1}
+/* on the leads report the pager spans the content width instead of sitting at
+   its end — measured 1332 at x84 against Listings' 308 at 1108 */
+.pf-pagination[data-span="full"]{inline-size:100%;justify-self:stretch;justify-content:flex-end}
+.pf-tabs-extra{margin-inline-start:auto;display:flex;align-items:center;padding-inline:var(--sp-16)}
+.pf-table-card-head[data-tall="true"] .pf-tabs{padding-inline:var(--sp-16)}
+.pf-table-card[data-h="528"] .pf-block-body{flex:1}
