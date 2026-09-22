@@ -140,14 +140,14 @@ The four inline filters stay in the bar and are **not** repeated here.
 |---|---|---|---|---|
 | thumbnail | **opens the Listing Detail Drawer** (`cursor:pointer`) | `listing-purpose.js:79-82, 236-241` | missing — the Preview action opens the same drawer, so the flow is reachable; this second entry point is not | `listings--action-detail-drawer` |
 | image-count Badge | inert (`stopPropagation` only) | `listing-purpose.js:207-215` | built, inert — correct | `listings.capture.json` |
-| "Booked" chip | Tooltip "Booked Until \<date\>" | `listing-purpose.js:217-234` | built — row 6 | `listings--tooltip-booked` — **230×40** |
+| "Booked" chip | Tooltip "Booked Until \<date\>" | `listing-purpose.js:217-234` | built — caption over value, 40 tall | `listings--tooltip-booked` — **230×40**, bands 13 + 22. Ours is 250 wide: the value is a date RANGE and ours is the fixture's own 7-day range, which renders 20 wider than the product account's. A text width, like `filter.clear` |
 | discount tag | inert | `listing-purpose.js:242-254` | built, inert — correct | `listings.capture.json` |
 | listing price / title | **not a link** in the product | `listing-purpose.js:261` | built — inert text, as the product renders it. It carried `href="#"` on thirteen rows | — |
 | external-link icon | `target="_blank"` to `props.url` | `listing-purpose.js:282-284` | N/A — `showExternalLink` never set by the Bayut transformer | — |
 | health / quality chip | **hover Popover**: Overall Quality panel. The trigger is the tag whose text is a percentage — td0 carries three tags and only that one opens anything | `listing-health.js:122-146` | built → `popover-health`, on hover and on click | `listings--popover-health` — **440×352**, placement right, inner has **no padding** (the panel styles its own) |
 | health popover · Refresh | opens QuotaCreditModal | `health.js:110-121` | built → `modal-quota` | `listings--popover-health` |
-| health popover · Add (Images) | navigates `/post-listing/:id#images` | `health.js:132-145` | stub | `listings--popover-health` |
-| health popover · Add (Features) | navigates `/post-listing/:id#amenities` | `health.js:247-257` | stub | `listings--popover-health` |
+| health popover · Add (Images) | navigates `/post-listing/:id#images` | `health.js:132-145` | missing — the product renders it only when images are incomplete, and this listing's are not | unmeasured — needs a fixture short of images |
+| health popover · Add (Features) | navigates `/post-listing/:id#amenities` | `health.js:247-257` | missing — same gate, same reason | unmeasured — needs a fixture short of features |
 | product badge / status tag | inert | `listing-purpose.js:267-281` | built, inert — correct | `listings.capture.json` |
 | purpose / type Tag | inert | `listing-purpose.js:288-304` | built, inert — correct | `listings.capture.json` |
 | spec icons + area | inert | `listing-purpose.js:306-329` | built, inert — correct | `listings.capture.json` |
@@ -352,10 +352,10 @@ numbers. Add a control to the page and the check fails until it has a row here.
 
 ```census
 button 200
-a 60
+a 58
 input 20
-total 280
-reachable 223
+total 278
+reachable 221
 disabled 15
 field 20
 acknowledged 22

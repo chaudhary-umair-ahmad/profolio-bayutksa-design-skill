@@ -106,6 +106,9 @@ const UPGRADE_DEFS = [
    opens nothing, which is itself the measurement. */
 const UNAVAILABLE = 'This service is not available in your region yet.';
 
+/* which tooltip states have already been pinned to a circle — see below */
+const claimed = new Set();
+
 const UPGRADES = (r, i) => {
   const role = ROLE(i);
   return UPGRADE_DEFS.map(([tone, ic, title, appliedTitle, pendingTitle, isService]) => {
@@ -189,7 +192,7 @@ const CELL = {
                 <span class="pf-listing-thumb"><span class="pf-listing-count">${r.images}</span>${role.booked
                   /* listing-purpose.js:217 — a Tooltip'd chip over the thumbnail,
                      and only when the listing has booked ranges. 230x40 */
-                  ? `<span class="pf-tag" data-tone="booked" data-tip="Booked Until ${esc(r.posted)}" data-states="tooltip-booked">Booked</span>` : ''}</span>
+                  ? `<span class="pf-tag" data-tone="booked" data-tip-caption="Booked Until" data-tip="${esc(page.bookedRange)}" data-states="tooltip-booked">Booked</span>` : ''}</span>
                 <div>
                   <div class="pf-listing-price"><bdi>ر.س</bdi> ${r.price} <span class="pf-tag" data-tone="${r.product}">${icon(p.icon, 14)}${p.label}</span> <span class="pf-score" data-band="medium" data-open="popover-health" data-hover data-placement="right" tabindex="0" role="button">${r.score}</span></div>
                   <!-- NOT A LINK. listing-purpose.js:261 renders the price and
@@ -259,11 +262,22 @@ ${UPGRADES(r, i).map(({ tone, ic, applied, pending, off, tip, isService }) => {
   /* which captured tooltip this wrapper reproduces, so scripts/qa-design.mjs
      can reach it by name. The harness hovered row 0's first and fourth
      circles, row 3's first and fourth, and row 8's third and fourth. */
-  const st = {
-    '0-signature': 'tooltip-upgrade', '0-photo': 'tooltip-upgrade-service',
-    '3-signature': 'tooltip-upgrade-applied', '3-photo': 'tooltip-upgrade-pending',
-    '8-refresh': 'tooltip-upgrade-none', '8-photo': 'tooltip-upgrade-unavailable',
-  }[`${i}-${tone}`];
+  /* NOT a row-and-tone map. The applied circle is whichever one the row's
+     product is, and pinning "3-signature" to the applied state labelled a
+     circle that was not applied — the tooltip read "Mark Signature" where the
+     product reads "Signature Listing". Name the STATE, and let the state find
+     the circle that is in it. */
+  const want = applied && tone === 'signature' ? 'tooltip-upgrade-applied'
+    : pending ? 'tooltip-upgrade-pending'
+    : off ? (isService ? 'tooltip-upgrade-unavailable' : 'tooltip-upgrade-none')
+    : !applied && !off && tone === 'signature' ? 'tooltip-upgrade'
+    : !applied && !off && tone === 'photo' ? 'tooltip-upgrade-service'
+    : null;
+  /* claim each state ONCE: thirteen rows carry the same six circles, and
+     tagging every applied one left seven elements answering to the same state
+     name — the first of which was a Hot circle, so the capture of an applied
+     SIGNATURE compared against "Hot Listing". */
+  const st = want && !claimed.has(want) ? (claimed.add(want), want) : null;
   const stAttr = st ? ` data-states="${st}"` : '';
   const state = off ? ' data-tone="muted"' : ` data-tone="${tone}"`;
   return `                <span class="pf-round-action-wrap"${tipAttr}${stAttr}><button class="pf-round-action"${state}${applied ? ' data-applied' : ''}${pending ? ' data-pending' : ''} type="button" aria-label="${esc(tip || tone)}"${dis ? ' disabled' : ` data-open="${isService ? 'modal-quota-service' : 'modal-quota'}"`}>${icon(ic, applied ? null : 16)}</button>${applied ? `<span class="pf-applied-check">${icon('HiCheck', null)}</span>` : ''}${pending ? `<span class="pf-pending-mark">${icon('MdRefresh', null)}</span>` : ''}</span>`;
@@ -275,7 +289,7 @@ ${UPGRADES(r, i).map(({ tone, ic, applied, pending, off, tip, isService }) => {
               <div class="pf-action-grid">
 ${ACTIONS(r, i).map(([label, ic, opens]) => {
   /* the harness hovered Actions[1] of row 0 — View on Bayut, 132x40 */
-  const tip = ` data-tip="${esc(label)}" data-placement="left"${i === 0 && label === 'View on Bayut' ? ' data-states="tooltip-action"' : ''}`;
+  const tip = ` data-tip="${esc(label)}" data-tip-kind="plain" data-placement="left"${i === 0 && label === 'View on Bayut' ? ' data-states="tooltip-action"' : ''}`;
   /* an action that opens an overlay is a button; one that NAVIGATES is a link,
      the same way the rail handles a screen we have not built; the one that
      LEAVES the app is a link to the classified site. None of them is a dead
@@ -399,7 +413,7 @@ ${['Property is no longer available', 'Rented out through Bayut', 'Sold through 
     </div>
     <div class="pf-modal-body">
       <div class="pf-field" data-spaced="true">
-        <button class="pf-select" id="bk-range" type="button" data-open="popover-date-range" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow">${icon('MdDateRange', 16)}</span></button>
+        <button class="pf-btn" id="bk-range" type="button" data-open="popover-date-range" data-placement="bottom">${icon('MdDateRange', 16)}<span>Select Date Range</span></button>
       </div>
     </div>
     <div class="pf-modal-foot">
@@ -428,6 +442,9 @@ ${['Property is no longer available', 'Rented out through Bayut', 'Sold through 
   <div class="pf-drawer-body">
     <div class="pf-detail-gallery">
       <span class="pf-detail-photo"></span>
+      <!-- the product's detail drawer has exactly ONE interactive element in
+           it and this 51x36 button is it — the close sits in the drawer's
+           extra slot as an icon, not a button -->
       <button class="pf-btn" data-variant="default" data-size="small" type="button" data-noop="the gallery pages through the listing's images; this page carries one placeholder">${icon('HiCamera', 14)}<span>${esc(String(rows[0].images))}</span></button>
     </div>
     <div class="pf-detail-head">
@@ -489,7 +506,7 @@ ${[['Price Range', null, '0', '10,000,000'], ['Area Range', 'Sq. M.', '0', '5,00
         <div class="pf-range-head">
           <label class="pf-field-label" for="rng-${i}-min">${label}</label>
           <div class="pf-range-head">
-${unit ? `            <button class="pf-select" type="button" data-open="listbox-purpose" data-placement="bottom"><span>${unit}</span><span class="pf-select-arrow">${icon('DownOutlined', 12)}</span></button>` : ''}
+${unit ? `            <button class="pf-select" data-size="small" type="button" data-open="listbox-purpose" data-placement="bottom"><span>${unit}</span><span class="pf-select-arrow">${icon('DownOutlined', 12)}</span></button>` : ''}
             <button class="pf-btn" data-variant="link" data-size="small" type="button" data-noop="Reset clears this range only; there is nothing to clear in a static page"><span>Reset</span></button>
           </div>
         </div>
@@ -540,12 +557,18 @@ const tableOverlays = `
       <span class="pf-score" data-band="medium">62%</span>
     </div>
     <ul class="pf-health-list">
-${[
+${/* ONE button, which is what the capture has. health.js:132 and :247 render
+     an Add beside Images and Features only when they are incomplete, and on
+     this listing they are not — the same account-shaped absence that taught
+     this system four wrong rules before. Those two rows are in
+     authoring/listings-buttons.md as states needing a fixture that is short of
+     images, not drawn here on the strength of reading the source. */
+[
   ['MdRefresh', 'Freshness', 'Posted 3 days ago', ['refresh', 'Refresh']],
   ['HiCamera', 'Exterior Images', '8 uploaded', null],
-  ['HiCamera', 'Interior Images', '3 of 6 uploaded', ['link', 'Add']],
+  ['HiCamera', 'Interior Images', '6 uploaded', null],
   ['HiCamera', 'Duplicate Images', 'None found', null],
-  ['PiSealCheckFill', 'Features', '4 of 12 added', ['link', 'Add']],
+  ['PiSealCheckFill', 'Features', '12 added', null],
 ].map(([ic, label, note, action]) => `      <li class="pf-health-item">
         <span class="pf-health-label">${icon(ic, 16)}<span>${label}</span></span>
         <span class="pf-health-note">${note}</span>
@@ -595,22 +618,29 @@ ${[['GrNotification', 'Calls', 'Calls Clicked', '0'],
 
 <!-- data/live/listings--select-purpose — 245x137, pad 11, options 223x38 -->
 <div class="pf-listbox" id="listbox-purpose" data-states="select-purpose" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Purpose" hidden>
-${['Sale', 'Rent', 'Daily Rental'].map((o, n) => `  <button class="pf-listbox-option" role="option" type="button"${n === 0 ? ' aria-selected="true"' : ''} data-close>${esc(o)}</button>`).join('\n')}
+  <div class="pf-listbox-scroll">
+${['Sale', 'Rent', 'Daily Rental'].map((o, n) => `    <button class="pf-listbox-option" role="option" type="button"${n === 0 ? ' aria-selected="true"' : ''} data-close>${esc(o)}</button>`).join('\n')}
+  </div>
 </div>
 
 <!-- data/live/listings--select-property-type — 245x278. A GROUPED panel, not
      the same one taller: a 223x35 group header at 12px, and its options
      indented to 25 instead of 12. -->
+<!-- the panel SCROLLS: eight options of 38 under a 35 group header is 301, and
+     the product caps the scroll area at 256 (278 with its 11 of padding). A
+     listbox that grows with its options is the wrong component. -->
 <div class="pf-listbox" id="listbox-property-type" data-states="select-property-type" data-anchor="trigger" data-placement="bottom" role="listbox" aria-label="Property Type" hidden>
-  <div class="pf-listbox-group" role="presentation">Residential</div>
-${['Apartment', 'Villa', 'Floor', 'Chalet', 'Townhouse', 'Duplex', 'Penthouse'].map((o) => `  <button class="pf-listbox-option" role="option" type="button" data-close>${esc(o)}</button>`).join('\n')}
+  <div class="pf-listbox-scroll">
+    <div class="pf-listbox-group" role="presentation">Residential</div>
+${['Apartment', 'Villa', 'Floor', 'Chalet', 'Townhouse', 'Duplex', 'Penthouse'].map((o) => `    <button class="pf-listbox-option" role="option" type="button" data-close>${esc(o)}</button>`).join('\n')}
+  </div>
 </div>
 
 <!-- data/live/listings--date-posted-on — the popover is 802x381 and holds
      REACT-DATE-RANGE, not an antd picker (datePicker.js:15): two months side
      by side and a list of static ranges. The capture has 70 .rdrDay and no
      .ant-picker, which is the only reason this is not drawn as one. -->
-<div class="pf-popover" data-kind="date" id="popover-date-range" data-states="date-posted-on" data-anchor="trigger" data-placement="bottom" role="dialog" aria-label="Search by Calendar" hidden>
+<div class="pf-popover" data-kind="date" id="popover-date-range" data-states="date-posted-on" data-state-with="drawer-filters" data-anchor="trigger" data-placement="bottom" role="dialog" aria-label="Search by Calendar" hidden>
   <div class="pf-popover-title">Search by Calendar</div>
   <div class="pf-popover-body">
     <div class="pf-daterange">
@@ -640,29 +670,41 @@ ${['September 2026', 'October 2026'].map((m) => `        <div class="pf-daterang
      data/live/listings--upgrade-photography  708x546, body 416 — the three
                                               SERVICES add the ServiceOptions
                                               form, which is the 132px */
-const quotaModal = (id, title, states, extra = '') => `
+const quotaModal = (id, title, states, service = false) => `
 <div class="pf-mask" id="${id}" data-states="${states}" hidden>
   <div class="pf-modal" data-size="quota" role="dialog" aria-modal="true" aria-labelledby="${id}-title">
     <div class="pf-modal-head">
       <span class="pf-modal-title" id="${id}-title">${title}</span>
       <button class="pf-overlay-close" type="button" aria-label="Close" data-close>${icon('IoMdClose', 16)}</button>
     </div>
-    <!-- BODY 284, inset 24, and it is NOT a credits table — that was invented.
-         data/live/listings--upgrade-signature.capture.json:
+    <!-- Two shapes of one body, and they are not "the same plus a form".
+         data/live/listings--upgrade-signature.capture.json — body 284:
            alert        660x40  at 24,24   (mb-8)
-           summary row  660x22  at 24,72   (mb-8) — two bold labels, the right
-                                            one carrying a muted 12px sub
-           radio group  660x158 at 24,102  — TWO payment cards of 660x67 with
-                                            a 12 gap, each a radio label 384x41
-                                            and a 35x25 price block at the end
-         24 + 40 + 8 + 22 + 8 + 158 + 24 = 284. -->
+           summary row  660x22  at 24,72   (mb-8)
+           radio group  660x158 at 24,102  — TWO payment cards of 660x67, 12 apart
+         data/live/listings--upgrade-photography.capture.json — body 416:
+           ServiceOptions 660x156 at 24,24 FIRST, and NO ALERT AT ALL —
+             two fields of 74 (a 22 label over a 44 control), 8 apart
+           summary row  660x22  at 24,204
+           radio group  660x158 at 24,234
+         Building the service variant as the plain one plus a form put the
+         alert back in and ran it 78 over. -->
     <div class="pf-modal-body">
-      <div class="pf-alert" data-tone="info">${icon('AiOutlineInfoCircle', 16)}<span>Credits will be deducted from your account once the request is approved.</span></div>
+${service ? `      <div class="pf-service-options">
+        <div class="pf-service-field">
+          <label class="pf-field-label" for="${id}-date">Requested date</label>
+          <button class="pf-select" id="${id}-date" type="button" data-open="popover-date-range" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow">${icon('MdDateRange', 16)}</span></button>
+        </div>
+        <div class="pf-service-field">
+          <label class="pf-field-label" for="${id}-note">Comments</label>
+          <span class="pf-input"><input id="${id}-note" type="text" placeholder="Anything the crew should know"><span class="pf-input-suffix"></span></span>
+        </div>
+      </div>`
+  : `      <div class="pf-alert" data-tone="info">${icon('AiOutlineInfoCircle', 16)}<span>Credits will be deducted from your account once the request is approved.</span></div>`}
       <div class="pf-quota-summary">
         <span>${title.replace(/^(Mark|Request)\s+/, '')}</span>
         <span>Credits available <small>34 of 75,000</small></span>
       </div>
-${extra}
       <div class="pf-pay-group" role="radiogroup" aria-label="Payment option">
 ${[['Pay with credits', '1'], ['Pay with card', '1']].map(([label, cost], n) => `        <label class="pf-pay-card"${n === 0 ? ' data-checked="true"' : ''}>
           <input type="radio" name="${id}-pay"${n === 0 ? ' checked' : ''}>
@@ -677,18 +719,6 @@ ${[['Pay with credits', '1'], ['Pay with card', '1']].map(([label, cost], n) => 
     </div>
   </div>
 </div>`;
-
-const serviceOptions = `      <div class="pf-stack">
-        <div class="pf-field">
-          <label class="pf-field-label" for="svc-date">Requested date</label>
-          <button class="pf-select" id="svc-date" type="button" data-open="popover-date-range" data-placement="bottom"><span class="pf-placeholder">Select Date Range</span><span class="pf-select-arrow">${icon('MdDateRange', 16)}</span></button>
-        </div>
-        <div class="pf-field">
-          <label class="pf-field-label" for="svc-note">Comments</label>
-          <span class="pf-input"><input id="svc-note" type="text" placeholder="Anything the crew should know"><span class="pf-input-suffix"></span></span>
-        </div>
-      </div>
-`;
 
 /* platformActions.js:174-213. UNMEASURED, and marked as such in
    authoring/listings-buttons.md: a pending-otp-verification row renders
@@ -837,7 +867,7 @@ ${page.tabs.map((t) => `              <button class="pf-tab" role="tab"${t.curre
   /* four captures of four different circles are four captures of ONE overlay;
      data-states is where that is written down */
   + quotaModal('modal-quota', 'Mark Signature', 'upgrade-signature upgrade-hot upgrade-refresh')
-  + quotaModal('modal-quota-service', 'Request Photography Service', 'upgrade-photography', serviceOptions)
+  + quotaModal('modal-quota-service', 'Request Photography Service', 'upgrade-photography', true)
   + otpModal, states: protoBar });
 
 const out = join(ROOT, 'deliverables', 'listings.html');

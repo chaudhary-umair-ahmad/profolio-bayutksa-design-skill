@@ -522,9 +522,19 @@
   --menu-item-gap:10px;                /* auth-info-style.js:293 .dropdwon-links a gap */
   --menu-item-pad:12px 4px;            /* auth-info-style.js:294 */
   --noti-row-gap:20px;                 /* .ant-card-body inner flex gap */
+  /* the notification list is a FIXED scroll region, measured 558x700 —
+     data/live/listings--popover-notifications.capture.json .rc-virtual-list.
+     Cards are 43 with a 4px pitch, so three of them fill 142 of the 700. */
+  --noti-list-h:700px;
+  --noti-card-h:43px;
+  --noti-card-gap:4px;
+  --menu-item-h:50px;                  /* ul.dropdwon-links li, measured */
+  --verified-h:26px;                   /* the first badge */
+  --verified-h-lg:34px;                /* the second, which carries a wordmark */
   --qr-size:166px;                     /* .ant-image in the Download App modal */
   --store-badge-w:111px;               /* App Store badge svg — Google Play is 113 */
   --store-badge-h:33px;
+  --store-badge-h-lg:42px;             /* the <a> around it — 40 and 42, row takes 42 */
   /* 8 is the COMPONENT's radius — measured on /design-capture, where a popover
      renders with no product class on it. The 10 that used to be here is the
      account menu's, which carries .menu-main; the notification centre keeps
@@ -558,7 +568,9 @@
   --tip-pad:6px 20px;
   --tip-h:40px;                        /* min-height; a two-line tip is 54 */
   --tip-shadow:0 8px 15px rgba(146,153,184,.082);
-  --tip-maxw:250px;                    /* the widest measured — the service tips */
+  --tip-maxw:250px;                    /* border-box: content tops out at 208 */
+  --tip-lh:20px;
+  --tip-note-lh:13px;                  /* the caption line of the Booked tip */                       /* the h6 line box — one line 20, two 40 */
   /* the popovers, by the width each one measured at */
   --popover-w-health:440px;            /* listings--popover-health   440x352 */
   --popover-w-leads:216px;             /* listings--popover-leads    216x235 */
@@ -580,6 +592,7 @@
   --listbox-item-active:rgba(95,99,242,.02);
   --listbox-group-h:35px;
   --listbox-z:1050;
+  --listbox-scroll-h:256px;            /* the panel scrolls past this, measured */
   /* QuotaCreditModal, the overlay all 72 upgrade circles open. Two shapes, one
      width: the three SERVICES add the ServiceOptions form and grow the body.
        data/live/listings--upgrade-signature.capture.json    708x414, body 284
@@ -608,6 +621,37 @@
   --slider-rail:rgba(95, 99, 242, 0.2);
   --slider-knob:8px;
   --numinput-h:44px;
+  /* TruCheckModal has no header and no footer — the body is the whole modal.
+     data/live/listings--modal-trucheck.capture.json:
+       content 572x328 inset 24 · illustration 254x157 · status badge 34x34
+       title 20 tall with a 20px glyph · text block 103 */
+  --tc-art-w:254px;
+  --tc-art-h:157px;
+  --tc-status:34px;
+  /* the health popover's five rows, measured 41 41 71 59 57 */
+  --health-head-h:83px;
+  --health-head-pad:24px;
+  --health-row-pad:16px;
+  --lead-row-h:22px;                   /* every row in the leads popover */
+  --lead-rule-gap:9px;                 /* 4 + the dashed rule + 4 */
+  /* QuotaCreditModal's body is an alert, a summary row and TWO payment cards —
+     data/live/listings--upgrade-signature.capture.json, not a credits table */
+  --pay-card-h:67px;
+  --pay-card-gap:12px;
+  --quota-alert-h:40px;
+  /* ServiceOptions — two fields of 74 (a 22 label over a 44 control), 8 apart,
+     and the block carries mb-24. data/live/listings--upgrade-photography */
+  --service-field-h:74px;
+  --service-control-h:44px;
+  /* the health rows, transcribed from the capture. The product's five items
+     measure 41 41 71 59 57 and the text that makes them those heights is not
+     recoverable from a capture — the walker records geometry, never words — so
+     the heights are transcribed rather than reproduced. */
+  --health-row-1:41px;
+  --health-row-2:41px;
+  --health-row-3:71px;
+  --health-row-4:59px;
+  --health-row-5:57px;
   --detail-col:528px;
   --detail-gallery-h:424px;
   --fs-detail-price:20px;
@@ -2048,7 +2092,10 @@ table{border-collapse:collapse}
    data/live/listings--popover-account.capture.json
    ═══════════════════════════════════════════════════════════════════════ */
 .pf-user-info{padding-inline:var(--sp-16);padding-block:var(--sp-12) var(--sp-0)}
-.pf-user-row{display:flex;align-items:center;gap:var(--menu-item-gap)}
+/* 368x40 measured — the row is the avatar's height, and the two lines of meta
+   have to fit inside it. Ours ran 47 because the name and the sub-line carried
+   the body line-height. */
+.pf-user-row{display:flex;align-items:center;gap:var(--menu-item-gap);block-size:var(--avatar-40)}
 /* NOT .pf-avatar — that name is the header's 30px one, and a 40px rule under
    the same name covered the profile-completion ring on every page */
 .pf-user-avatar{
@@ -2061,7 +2108,7 @@ table{border-collapse:collapse}
 }
 .pf-user-avatar svg{inline-size:var(--icon-20);block-size:var(--icon-20)}
 .pf-user-meta{min-inline-size:var(--sp-0);overflow:hidden}
-.pf-user-name{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--dark)}
+.pf-user-name{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--dark);line-height:var(--lh-tight)}
 .pf-user-sub{
   display:flex;align-items:center;gap:var(--sp-4);flex-wrap:nowrap;
   min-inline-size:var(--sp-0);
@@ -2081,8 +2128,17 @@ table{border-collapse:collapse}
   font-size:var(--fs-12);color:var(--base);
 }
 .pf-verified svg{color:var(--info-alt)}    /* #479eeb seal-check */
+/* the second badge sits in its own 34-tall row — it carries the Nafath
+   wordmark in the product and is taller than the first */
+/* the first badge carries mb-8, so this row starts 8 below it */
+.pf-verified-row{display:flex;align-items:center;block-size:var(--verified-h-lg);margin-block-start:var(--sp-8)}
+.pf-verified[data-size="lg"]{block-size:var(--verified-h-lg)}
 .pf-menu-list{list-style:none;margin:var(--sp-0);padding:var(--sp-0)}
 .pf-menu-list > li{border-block-start:var(--border-w) solid var(--gray-400)}  /* auth-info-style.js:283 gray400 */
+/* the li is 50 INCLUDING its top rule — ours was 51 because the rule sat
+   outside a 50-tall link */
+.pf-menu-list > li{block-size:var(--menu-item-h);box-sizing:border-box}
+.pf-menu-list > li > a,.pf-menu-list > li > button{block-size:100%}
 .pf-menu-list a,.pf-menu-list button{
   display:flex;align-items:center;gap:var(--menu-item-gap);
   padding:var(--menu-item-pad);
@@ -2106,6 +2162,8 @@ table{border-collapse:collapse}
 .pf-noti-head-start{display:flex;align-items:center}
 .pf-noti-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--base);margin:var(--sp-0)}
 .pf-noti-card{
+  block-size:var(--noti-card-h);
+  flex:none;
   display:flex;align-items:center;justify-content:space-between;gap:var(--noti-row-gap);
   padding:var(--sp-12);
   margin-block-end:var(--sp-4);
@@ -2118,7 +2176,14 @@ table{border-collapse:collapse}
 .pf-noti-card-meta svg{color:var(--primary);inline-size:var(--icon-20);block-size:var(--icon-20);flex-shrink:0}
 .pf-noti-card-title{font-size:var(--fs-base);font-weight:var(--fw-600);color:var(--dark)}
 .pf-noti-time{font-size:var(--fs-12);color:var(--gray-600)}   /* #9D9D9D, measured */
-.pf-noti-rule{block-size:var(--border-w);background:var(--drawer-border);margin-block-start:var(--sp-12)}
+.pf-noti-rule{block-size:var(--border-w);background:var(--drawer-border);margin-block-start:var(--sp-4);border-block-start:var(--border-w) dashed var(--drawer-border)}
+/* the scroll region, not a stack: it is 700 tall whether or not there are
+   enough notifications to fill it */
+.pf-noti-list{
+  block-size:var(--noti-list-h);
+  overflow-y:auto;
+  display:flex;flex-direction:column;gap:var(--noti-card-gap);
+}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · Download App modal body
@@ -2129,7 +2194,16 @@ table{border-collapse:collapse}
    placeholders at the measured size, and qa-listings.md says so.
    ═══════════════════════════════════════════════════════════════════════ */
 .pf-center-column{display:flex;flex-direction:column;align-items:center;gap:var(--sp-8);text-align:center}
-.pf-qr{inline-size:var(--qr-size);block-size:var(--qr-size)}
+/* NOT .pf-skeleton. That class declares height:16px and sits later in this
+   file, so it won the cascade and the QR rendered 166 WIDE AND 16 TALL —
+   150px of the modal's missing 159. It is placeholder art, not a loading
+   state, so it carries its own fill. */
+.pf-qr{
+  inline-size:var(--qr-size);
+  block-size:var(--qr-size);
+  background:var(--border-light);
+  border-radius:var(--radius-tag);
+}
 .pf-divider-text{
   display:flex;align-items:center;gap:var(--sp-16);
   margin-block:var(--sp-16);
@@ -2138,7 +2212,10 @@ table{border-collapse:collapse}
 .pf-divider-text::before,.pf-divider-text::after{content:"";flex:1;block-size:var(--border-w);background:var(--drawer-border)}
 .pf-store-badges{display:flex;align-items:center;justify-content:center;gap:var(--menu-item-gap)}
 .pf-store-badge{
-  inline-size:var(--store-badge-w);block-size:var(--store-badge-h);
+  /* the SVG art is 111x33 and 113x35; the <a> around it measures 40 and 42,
+     and the row takes the taller. A second block-size declaration below this
+     one used to win and the row came out 33. */
+  inline-size:var(--store-badge-w);block-size:var(--store-badge-h-lg);
   display:grid;place-items:center;
   border:var(--border-w) solid var(--gray-400);
   border-radius:var(--radius-control);
@@ -2278,10 +2355,17 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
    every row action: white, hairline-bordered, #5A5F7D.
    data/live/listings--tooltip-action.capture.json · --upgrade · --upgrade-service
    ═══════════════════════════════════════════════════════════════════════ */
+/* the content is an h6 — 16/600, line-height 20 — not body text. Ours rendered
+   at 14/400, which is why "Mark Signature" measured 97 against the product's
+   111 and "Request Photography Service" never wrapped to the second line the
+   product shows. */
 .pf-tip{
   position:absolute;
   z-index:var(--popover-z);
+  box-sizing:border-box;
   max-width:var(--tip-maxw);
+  font-size:var(--fs-card-title);
+  font-weight:var(--fw-600);
   min-height:var(--tip-h);
   display:flex;
   align-items:center;
@@ -2291,11 +2375,27 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   background:var(--white);
   color:var(--tip-fg);
   box-shadow:var(--tip-shadow);
-  font-size:var(--fs-base);
-  line-height:var(--lh-base);
+  line-height:var(--tip-lh);
   pointer-events:none;
 }
+/* TWO SKINS, and they are not the same component wearing two labels. An
+   upgrade circle's tooltip is ActionPopOver, whose heading is an h6 at 16/600
+   with a 20 line box. A row action's tooltip is a plain string at body size —
+   measured 132x40 for "View on Bayut" against the circle's 153x40 for the
+   shorter "Mark Signature". Making them all h6 put the row tips 15 over. */
+.pf-tip[data-kind="plain"]{
+  font-size:var(--fs-base);
+  font-weight:var(--fw-400);
+  line-height:var(--lh-base);
+}
 .pf-tip[hidden]{display:none}
+/* a two-line tip stacks its caption over its value */
+.pf-tip{flex-direction:column;align-items:flex-start;justify-content:center}
+.pf-tip-text{display:block}
+/* the caption line of a two-line tip — 13 tall against the value's 22 */
+/* a two-line tip is 40 tall over a 13 + 22 stack, so it pads 2 rather than 6 */
+.pf-tip:has(.pf-tip-note){padding-block:var(--sp-2)}
+.pf-tip-note{display:block;font-size:var(--fs-12);font-weight:var(--fw-400);line-height:var(--tip-note-lh);color:var(--gray-600)}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · the table-body popovers
@@ -2308,7 +2408,12 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   max-width:var(--popover-w-date);
   box-shadow:var(--popover-shadow);
 }
-.pf-popover[data-kind="anchored"] .pf-popover-body{padding:var(--popover-pad)}
+/* every anchored popover pads 16, including the leads one — it carried
+   data-kind="leads" and so fell back to the shell popover's 12/16, which is
+   the whole of its 8px shortfall */
+.pf-popover[data-kind="anchored"] .pf-popover-body,
+.pf-popover[data-kind="leads"] .pf-popover-body,
+.pf-popover[data-kind="date"] .pf-popover-body{padding:var(--popover-pad)}
 .pf-popover[data-kind="health"]{width:var(--popover-w-health)}
 /* the health panel styles its own content, so the inner padding is zero —
    measured: inner 440x352 and inner-content 440x352, the same box */
@@ -2317,24 +2422,59 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 .pf-popover[data-kind="date"]{width:var(--popover-w-date)}
 
 /* the health panel */
+/* header 440x83: a 320-wide text column at 24,18 and the score tag at x366 */
 .pf-health-head{
-  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12);
-  padding:var(--popover-pad);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp-12);
+  block-size:var(--health-head-h);
+  padding:var(--sp-16) var(--health-head-pad);
   border-block-end:var(--border-w) solid var(--drawer-border);
+  box-sizing:border-box;
 }
-.pf-health-row{
-  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12);
-  padding:var(--sp-12) var(--popover-pad);
+.pf-health-head-text{min-inline-size:var(--sp-0)}
+.pf-health-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);color:var(--dark)}
+.pf-health-sub{font-size:var(--fs-base);color:var(--gray-700);line-height:var(--lh-tight)}
+.pf-health-head .pf-score{margin-block-start:var(--sp-8)}
+/* FIVE items, not three — Bayut renders Exterior, Interior and Duplicate
+   image rows separately (health.js:130-225) */
+.pf-health-list{list-style:none;margin:var(--sp-0);padding:var(--sp-0)}
+.pf-health-item{
+  display:flex;align-items:center;gap:var(--sp-12);
+  padding-inline:var(--health-row-pad);
   border-block-end:var(--border-w) solid var(--drawer-border);
+  box-sizing:border-box;
 }
-.pf-health-row:last-child{border-block-end:0}
+.pf-health-item:nth-child(1){block-size:var(--health-row-1)}
+.pf-health-item:nth-child(2){block-size:var(--health-row-2)}
+.pf-health-item:nth-child(3){block-size:var(--health-row-3)}
+.pf-health-item:nth-child(4){block-size:var(--health-row-4)}
+.pf-health-item:nth-child(5){block-size:var(--health-row-5)}
+.pf-health-item:last-child{border-block-end:0}
+.pf-health-note{margin-inline-start:auto;color:var(--gray-600);font-size:var(--fs-12)}
+.pf-health-item .pf-btn{flex:none}
 .pf-health-label{display:flex;align-items:center;gap:var(--sp-8);color:var(--gray-600)}
 
-/* the leads breakdown — a dashed rule between groups, as listing-stats.js draws */
-.pf-lead-group{padding-block:var(--sp-8);border-block-end:var(--border-w) dashed var(--drawer-border)}
-.pf-lead-group:last-child{border-block-end:0}
-.pf-lead-row{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12)}
-.pf-lead-title{color:var(--gray-600);font-size:var(--fs-12)}
+/* the leads breakdown. Each group is exactly two 22-tall rows with NO padding,
+   and the dashed rule between groups costs 9 — 4px, the 1px rule, 4px.
+   4 x 44 + 3 x 9 = 203, which is the content height measured. */
+/* the rule between groups costs exactly 9 — 4 above it, the 1px dash, 4 below.
+   Doing that with padding and a border came out 5, and three of them left the
+   popover 8 short. The gap is the margin; the rule is drawn inside it. */
+.pf-lead-group + .pf-lead-group{
+  position:relative;
+  margin-block-start:var(--lead-rule-gap);
+}
+.pf-lead-group + .pf-lead-group::before{
+  content:"";
+  position:absolute;
+  inset-block-start:calc(var(--lead-rule-gap) / -2);
+  inset-inline:0;
+  border-block-start:var(--border-w) dashed var(--drawer-border);
+}
+.pf-lead-head,
+.pf-lead-row{display:flex;align-items:center;gap:var(--sp-8);block-size:var(--lead-row-h)}
+.pf-lead-row{justify-content:space-between}
+.pf-lead-head{color:var(--gray-600)}
+.pf-lead-head svg{flex:none}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · select listbox (.ant-select-dropdown)
@@ -2351,6 +2491,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   overflow:hidden;
 }
 .pf-listbox[hidden]{display:none}
+.pf-listbox-scroll{max-block-size:var(--listbox-scroll-h);overflow-y:auto}
 .pf-listbox-option{
   display:flex;align-items:center;gap:var(--sp-8);
   min-height:var(--listbox-item-h);
@@ -2375,14 +2516,45 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
    data/live/listings--upgrade-signature (708x414) · --upgrade-photography (708x546)
    ═══════════════════════════════════════════════════════════════════════ */
 .pf-modal[data-size="quota"]{width:var(--modal-w-quota)}
-.pf-credit-table{width:100%;border-collapse:collapse;margin-block:var(--sp-16)}
-.pf-credit-table th,.pf-credit-table td{
-  padding:var(--sp-8) var(--sp-12);
-  border-block-end:var(--border-w) solid var(--drawer-border);
-  text-align:start;
+.pf-quota-summary{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-16);
+  block-size:var(--lead-row-h);
+  margin-block:var(--sp-8);
+  font-weight:var(--fw-700);
 }
-.pf-credit-table th{color:var(--gray-600);font-weight:var(--fw-400)}
-.pf-credit-total td{font-weight:var(--fw-600);border-block-end:0}
+.pf-quota-summary small{font-size:var(--fs-12);font-weight:var(--fw-400);color:var(--gray-700);margin-inline-start:var(--sp-4)}
+.pf-service-options{margin-block-end:var(--sp-24)}
+.pf-service-field{block-size:var(--service-field-h);display:flex;flex-direction:column;gap:var(--sp-8)}
+.pf-service-field + .pf-service-field{margin-block-start:var(--sp-8)}
+.pf-service-field .pf-select,
+.pf-service-field .pf-input{block-size:var(--service-control-h)}
+/* the group carries a trailing 12 — the last card's mb-12 — so it measures 158,
+   not the 146 two cards and one gap come to. Our body landed inside tolerance
+   anyway because the alert was 16 too TALL: two errors cancelling, which is
+   how a wrong component passes a size check. */
+.pf-pay-group{
+  display:flex;flex-direction:column;gap:var(--pay-card-gap);
+  margin-block-end:var(--pay-card-gap);
+}
+/* 660x40 measured, one line — ours wrapped to two at 56 */
+.pf-modal[data-size="quota"] .pf-alert{block-size:var(--quota-alert-h);box-sizing:border-box}
+.pf-pay-card{
+  display:flex;align-items:center;gap:var(--sp-12);
+  block-size:var(--pay-card-h);
+  padding-inline:var(--sp-12);
+  border:var(--border-w) solid var(--gray-400);
+  border-radius:var(--radius-card);
+  cursor:pointer;
+  box-sizing:border-box;
+}
+.pf-pay-card[data-checked="true"]{border-color:var(--primary);background:var(--primary-light-4)}
+.pf-pay-card input{
+  appearance:none;inline-size:var(--radio-size);block-size:var(--radio-size);flex:none;
+  border:var(--border-w) solid var(--radio-border);border-radius:var(--radius-round);background:var(--white);
+}
+.pf-pay-card input:checked{border-color:var(--primary);box-shadow:inset 0 0 0 4px var(--primary)}
+.pf-pay-label{flex:1}
+.pf-pay-price{font-weight:var(--fw-700);font-size:var(--fs-card-title);color:var(--primary)}
 
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -2453,6 +2625,9 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
    endpoint answered it renders, and this is what it renders.
    data/live/listings--action-detail-drawer.capture.json
    ═══════════════════════════════════════════════════════════════════════ */
+/* the drawer body insets its content 24, not the 16 a first pass used */
+.pf-drawer[data-kind="detail"] .pf-drawer-body{padding:var(--sp-24)}
+
 .pf-detail-gallery{
   position:relative;
   block-size:var(--detail-gallery-h);
@@ -2465,6 +2640,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   background:var(--bg-gray-deep);
 }
 .pf-detail-gallery .pf-btn{position:absolute;inset-block-end:var(--sp-12);inset-inline-start:var(--sp-12)}
+.pf-select[data-size="small"]{block-size:var(--filter-btn-h);padding-inline:var(--sp-8)}
 /* the block between the gallery and the first section — measured 528x102 */
 .pf-detail-head{padding-block-end:var(--sp-8)}
 .pf-detail-label{color:var(--gray-600);font-size:var(--fs-12)}
@@ -2538,6 +2714,51 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 .pf-slider::before{inset-inline-start:0}
 .pf-slider::after{inset-inline-end:0}
 .pf-slider-marks{display:flex;justify-content:space-between;color:var(--gray-600);font-size:var(--fs-12)}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT · TruCheckModal — a modal with NO chrome
+   620x376 and not one header or footer band in it: an illustration with a
+   status badge over it, a title with a glyph, two paragraphs.
+   data/live/listings--modal-trucheck.capture.json
+   ═══════════════════════════════════════════════════════════════════════ */
+.pf-modal[data-chrome="none"]{position:relative;padding:var(--sp-0)}
+.pf-modal[data-chrome="none"] > .pf-overlay-close{
+  position:absolute;inset-block-start:var(--sp-12);inset-inline-end:var(--sp-12);
+}
+/* the booking modal's single field sits in a 56-tall space item: the 40-tall
+   control plus antd's 16px Space gap */
+/* the booking modal's control is a CENTRED 103x40 BUTTON, not a full-width
+   field: the product's body is a 56-tall Space item holding a 40-tall row with
+   one button in the middle of it. */
+.pf-field[data-spaced="true"]{margin-block-end:var(--sp-16);display:flex;justify-content:center}
+.pf-field[data-spaced="true"] .pf-btn{block-size:var(--service-control-h)}
+
+.pf-tc{display:flex;flex-direction:column;align-items:center;text-align:center}
+.pf-tc-art{position:relative}
+.pf-tc-illustration{
+  display:block;
+  inline-size:var(--tc-art-w);block-size:var(--tc-art-h);
+  border-radius:var(--radius-card);
+  background:var(--border-light);
+}
+.pf-tc-status{
+  position:absolute;inset-block-end:calc(var(--tc-status) / -2);inset-inline-end:calc(var(--tc-status) / -2);
+  inline-size:var(--tc-status);block-size:var(--tc-status);
+  border-radius:var(--radius-round);
+  background:var(--success);color:var(--white);
+  display:grid;place-items:center;
+}
+/* 20 tall with a 20px glyph, 30 under the illustration and 18 above the text —
+   measured. It ran 28 tall on the body line-height and pushed the modal 9 over. */
+.pf-tc-title{
+  display:flex;align-items:center;gap:var(--sp-8);
+  block-size:var(--icon-20);
+  margin-block:calc(var(--sp-32) - var(--sp-2)) var(--sp-16);
+  font-size:var(--fs-18);font-weight:var(--fw-700);line-height:1;
+}
+.pf-tc-text{margin:var(--sp-0);color:var(--gray-700)}
+.pf-tc-text + .pf-tc-text{margin-block-start:var(--sp-16)}
 
 </style>
 <style>
@@ -2717,7 +2938,25 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   function tipFor(trigger) {
     var tip = document.getElementById('pf-tip');
     if (!tip) return;
-    tip.textContent = trigger.getAttribute('data-tip');
+    /* a SPAN, not a text node: the product's tooltip content is an h6 element
+       and the overlay comparator reads the band inside, not the padded box */
+    /* two skins: an upgrade circle shows ActionPopOver's h6, a row action shows
+       a plain string. The trigger says which. */
+    tip.setAttribute('data-kind', trigger.getAttribute('data-tip-kind') || 'panel');
+    tip.textContent = '';
+    /* a two-line tip — the Booked chip's is a 13-tall CAPTION ABOVE a 22-tall
+       value, in that order */
+    var cap = trigger.getAttribute('data-tip-caption');
+    if (cap) {
+      var sub = document.createElement('span');
+      sub.className = 'pf-tip-note';
+      sub.textContent = cap;
+      tip.appendChild(sub);
+    }
+    var span = document.createElement('span');
+    span.className = 'pf-tip-text';
+    span.textContent = trigger.getAttribute('data-tip');
+    tip.appendChild(span);
     tip.hidden = false;
     anchor(tip, trigger, trigger.getAttribute('data-placement') || 'top');
   }
@@ -2849,6 +3088,11 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
     if (el) {
       /* a tooltip state is not an overlay to open but a trigger to hover */
       if (el.hasAttribute('data-tip')) { tipFor(el); return true; }
+      /* some captured states are two overlays deep — the date panel is opened
+         from inside the filters drawer, and reproducing it means opening the
+         drawer first or the comparison is against a page that has neither */
+      var withFirst = el.getAttribute('data-state-with');
+      if (withFirst) goTo(withFirst);
       if (/pf-mask|pf-drawer|pf-popover|pf-listbox|pf-tip/.test(el.className)) {
         /* an anchored overlay needs something to anchor to, and a deep link
            arrives with no trigger — use the first one that points at it */
@@ -4110,17 +4354,24 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
       <span class="pf-modal-title" data-size="lg" id="dl-title">Get the Bayut KSA App</span>
       <button class="pf-overlay-close" type="button" aria-label="Close" data-close><svg class="i i-16"><use href="#pf-IoMdClose"/></svg></button>
     </div>
+    <!-- BODY 346, and every band in it measured rather than stacked by eye:
+           label   284x25   16/600
+           QR      166x166  9px under the label
+           divider 312x25   17px under the QR
+           badges  312x42   16px under the divider, and they are LINKS
+         This was 187 tall with no links in it, which the region diff scored
+         at 17% and the overlay diff at -159. -->
     <div class="pf-modal-body">
       <div class="pf-center-column">
         <div class="pf-modal-lead">Scan the QR code to download the app</div>
         <!-- the product embeds a generated QR; a design system ships the box -->
-        <div class="pf-qr pf-skeleton" role="img" aria-label="QR code placeholder"></div>
+        <div class="pf-qr" role="img" aria-label="QR code placeholder"></div>
       </div>
       <div class="pf-divider-text"><span>OR</span></div>
       <!-- vendor badge art we do not ship, at the measured 111x33 / 113x35 -->
       <div class="pf-store-badges">
-        <span class="pf-store-badge">App Store</span>
-        <span class="pf-store-badge">Google Play</span>
+        <a class="pf-store-badge" href="not-built.html?screen=App%20Store">App Store</a>
+        <a class="pf-store-badge" href="not-built.html?screen=Google%20Play">Google Play</a>
       </div>
     </div>
   </div>
@@ -4137,19 +4388,26 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
       </div>
       <button class="pf-btn" data-variant="link" type="button" data-noop="marks every notification read; a data mutation, not a navigation">Mark all as read</button>
     </div>
-    <div class="pf-noti-card" data-unread>
-      <div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">Your listing is live</span></div>
-      <span class="pf-noti-time">an hour ago</span>
+    <!-- The list is a FIXED 700-TALL SCROLL REGION (rc-virtual-list), not a
+         stack that ends with the last card. Three cards of 43 with a 4px
+         pitch fill 142 of it and the rest is empty — which is why the product
+         popover is 776 tall on an account with three notifications. Ours
+         stopped at the last card and measured 241. -->
+    <div class="pf-noti-list">
+      <div class="pf-noti-card" data-unread>
+        <div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">Your listing is live</span></div>
+        <span class="pf-noti-time">an hour ago</span>
+      </div>
+      <div class="pf-noti-card" data-unread>
+        <div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">Credits expiring soon</span></div>
+        <span class="pf-noti-time">a day ago</span>
+      </div>
+      <div class="pf-noti-card">
+        <div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">TruCheck visit scheduled</span></div>
+        <span class="pf-noti-time">3 days ago</span>
+      </div>
+      <div class="pf-noti-rule"></div>
     </div>
-    <div class="pf-noti-card" data-unread>
-      <div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">Credits expiring soon</span></div>
-      <span class="pf-noti-time">a day ago</span>
-    </div>
-    <div class="pf-noti-card">
-      <div class="pf-noti-card-meta"><svg class="i i-20"><use href="#pf-IoRefreshSharp"/></svg><span class="pf-noti-card-title">TruCheck visit scheduled</span></div>
-      <span class="pf-noti-time">3 days ago</span>
-    </div>
-    <div class="pf-noti-rule"></div>
   </div>
 </div>
 
@@ -4168,12 +4426,16 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
         </div>
       </div>
     </div>
+    <!-- ONE tag at 152x26, then a 368x34 row — not two identical spans. The
+         second badge carries the Nafath wordmark and is 8px taller. -->
     <span class="pf-verified">Nafath Verified<svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg></span>
-    <span class="pf-verified">REGA Verified<svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg></span>
+    <div class="pf-verified-row"><span class="pf-verified" data-size="lg">REGA Verified<svg class="i i-14"><use href="#pf-PiSealCheckFill"/></svg></span></div>
   </div>
+  <!-- both items are LINKS in the product (400x50 each), and Sign Out was a
+       button here, which is one fewer link than the product has -->
   <ul class="pf-menu-list">
     <li><a href="not-built.html?screen=Settings"><svg class="i i-16"><use href="#pf-FiUser"/></svg><span>Account Settings</span></a></li>
-    <li><button type="button" data-close><svg class="i i-16"><use href="#pf-FiLogOut"/></svg><span>Sign Out</span></button></li>
+    <li><a href="not-built.html?screen=Sign%20Out"><svg class="i i-16"><use href="#pf-FiLogOut"/></svg><span>Sign Out</span></a></li>
   </ul>
 </div>
 

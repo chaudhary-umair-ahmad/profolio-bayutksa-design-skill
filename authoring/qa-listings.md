@@ -452,3 +452,65 @@ Its own body still has 149 dead controls. That is the Overview screen's audit,
 and it wants its own `authoring/dashboard-buttons.md`; this document covers
 Listings. `shell.title` at 17.8% is unchanged by the move — it was failing
 before it and is a page-title width, measured the same both ways.
+
+---
+
+# Pass 5 — the QA that looks inside, and what it found
+
+Everything above compares REGIONS, and a region is a bounding box. An overlay
+that is the right size on the outside and invented on the inside scores a few
+percent and passes, because most of a popover's pixels are white. Two that did:
+
+| overlay | region diff | what it actually was |
+|---|---|---|
+| health popover | 8% | 271 tall against 352, three rows where there are five |
+| date panel | 6% | the same fabricated month printed twice |
+
+`scripts/qa-overlays.mjs` walks both subtrees instead and compares what they are
+made of: outer size, the heights of the horizontal bands inside, where content
+starts, and the count of interactive controls and fields. **23 of 27 overlays
+failed it. 26 of 27 pass now.**
+
+## What was wrong, in order of size
+
+| overlay | was | why |
+|---|---|---|
+| notifications | −535 | the list is a fixed 700-tall scroll region, not a stack ending at the last card |
+| Download App | −159 | `.pf-qr` set `block-size:166px`; `.pf-skeleton` set `height:16px` **later in the file** and won |
+| TruCheck | −130 | it has **no header and no footer** — the body is the whole modal |
+| health | −81 | header 101 against 83, and three rows against five |
+| leads | +63 | padded groups; the product's are two 22-tall rows with a 9px rule |
+| property-type listbox | +45 | the panel scrolls past 256; ours grew with its options |
+| quota modals ×3 | −36 | the body is an alert, a summary row and **two payment cards** — the credits table in it was invented |
+| photography | +78 | the service variant has **no alert** and puts the form **first** |
+| account | −36 | the avatar row is 40, the second badge is its own 34-tall row |
+| tooltips | −16…−28 | the content is an **h6 at 16/600**, not body text, which is why nothing ever wrapped |
+| booking | +12 | its control is a centred 103×40 **button**, not a full-width field |
+
+## Two errors that cancelled
+
+The signature quota modal passed a size check at 288 against 284 while being
+built wrong twice over: the alert was 16 **too tall** and the payment group 12
+**too short**. That is how a wrong component passes a size check, and it is the
+argument for comparing bands rather than boxes.
+
+## Two bugs in how states were reached
+
+- Every applied upgrade circle claimed `tooltip-upgrade-applied`, so the state
+  resolved to the **first** one in the DOM — a Hot circle — and the capture of
+  an applied *Signature* compared against "Hot Listing". Each state claims one
+  element now.
+- `date-posted-on` is a popover opened from inside the filters drawer. Our page
+  opened the popover alone, so the comparison ran against a page with no
+  drawer. An overlay can now declare `data-state-with`.
+
+## Still open
+
+- `tooltip-booked` is 250 wide against 230. The value is a date range; ours is
+  the fixture's own 7-day range and the product account's was shorter. A text
+  width, like `filter.clear`.
+- The comparator reports two differences as NOTES rather than faults, because
+  they are markup convention and not anything visible: this page turns a
+  navigation into a link where the product uses a Button with an onClick, and
+  antd puts a search input inside every Select where we use a button that opens
+  a listbox.

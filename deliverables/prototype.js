@@ -163,7 +163,25 @@
   function tipFor(trigger) {
     var tip = document.getElementById('pf-tip');
     if (!tip) return;
-    tip.textContent = trigger.getAttribute('data-tip');
+    /* a SPAN, not a text node: the product's tooltip content is an h6 element
+       and the overlay comparator reads the band inside, not the padded box */
+    /* two skins: an upgrade circle shows ActionPopOver's h6, a row action shows
+       a plain string. The trigger says which. */
+    tip.setAttribute('data-kind', trigger.getAttribute('data-tip-kind') || 'panel');
+    tip.textContent = '';
+    /* a two-line tip — the Booked chip's is a 13-tall CAPTION ABOVE a 22-tall
+       value, in that order */
+    var cap = trigger.getAttribute('data-tip-caption');
+    if (cap) {
+      var sub = document.createElement('span');
+      sub.className = 'pf-tip-note';
+      sub.textContent = cap;
+      tip.appendChild(sub);
+    }
+    var span = document.createElement('span');
+    span.className = 'pf-tip-text';
+    span.textContent = trigger.getAttribute('data-tip');
+    tip.appendChild(span);
     tip.hidden = false;
     anchor(tip, trigger, trigger.getAttribute('data-placement') || 'top');
   }
@@ -295,6 +313,11 @@
     if (el) {
       /* a tooltip state is not an overlay to open but a trigger to hover */
       if (el.hasAttribute('data-tip')) { tipFor(el); return true; }
+      /* some captured states are two overlays deep — the date panel is opened
+         from inside the filters drawer, and reproducing it means opening the
+         drawer first or the comparison is against a page that has neither */
+      var withFirst = el.getAttribute('data-state-with');
+      if (withFirst) goTo(withFirst);
       if (/pf-mask|pf-drawer|pf-popover|pf-listbox|pf-tip/.test(el.className)) {
         /* an anchored overlay needs something to anchor to, and a deep link
            arrives with no trigger — use the first one that points at it */

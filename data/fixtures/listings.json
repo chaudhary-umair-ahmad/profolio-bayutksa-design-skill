@@ -5,10 +5,30 @@
   "railCurrent": "My Listings",
   "rowsFrom": "dashboard.json",
   "filters": [
-    { "type": "input",  "label": "Listing ID",             "placeholder": "Enter Listing ID",              "key": "listing_id" },
-    { "type": "input",  "label": "REGA Ad License Number", "placeholder": "Enter REGA Ad License Number",  "key": "ad_license" },
-    { "type": "select", "label": "Purpose",                "placeholder": "Select Purpose",                "key": "purpose_id" },
-    { "type": "select", "label": "Property Type",          "placeholder": "Select Property Types",         "key": "type_id" }
+    {
+      "type": "input",
+      "label": "Listing ID",
+      "placeholder": "Enter Listing ID",
+      "key": "listing_id"
+    },
+    {
+      "type": "input",
+      "label": "REGA Ad License Number",
+      "placeholder": "Enter REGA Ad License Number",
+      "key": "ad_license"
+    },
+    {
+      "type": "select",
+      "label": "Purpose",
+      "placeholder": "Select Purpose",
+      "key": "purpose_id"
+    },
+    {
+      "type": "select",
+      "label": "Property Type",
+      "placeholder": "Select Property Types",
+      "key": "type_id"
+    }
   ],
   "actions": {
     "showMore": "Show More",
@@ -16,11 +36,31 @@
     "search": "Search"
   },
   "tabs": [
-    { "label": "Active",              "count": 20, "current": true },
-    { "label": "Draft",               "count": 2 },
-    { "label": "Pending",             "count": 1 },
-    { "label": "Removed",             "count": 0 },
-    { "label": "Ad License Requests", "count": 0 }
+    {
+      "label": "Active",
+      "count": 20,
+      "current": true
+    },
+    {
+      "label": "Draft",
+      "count": 2
+    },
+    {
+      "label": "Pending",
+      "count": 1
+    },
+    {
+      "label": "Removed",
+      "count": 0
+    },
+    {
+      "label": "Ad License Requests",
+      "count": 0
+    }
   ],
-  "pagination": { "current": 1, "pages": 2 }
+  "pagination": {
+    "current": 1,
+    "pages": 2
+  },
+  "bookedRange": "Sep 21, 2026 – Sep 28, 2026"
 }

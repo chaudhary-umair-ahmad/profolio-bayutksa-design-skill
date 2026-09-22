@@ -514,7 +514,9 @@
   --tip-pad:6px 20px;
   --tip-h:40px;                        /* min-height; a two-line tip is 54 */
   --tip-shadow:0 8px 15px rgba(146,153,184,.082);
-  --tip-maxw:250px;                    /* the widest measured — the service tips */
+  --tip-maxw:250px;                    /* border-box: content tops out at 208 */
+  --tip-lh:20px;
+  --tip-note-lh:13px;                  /* the caption line of the Booked tip */                       /* the h6 line box — one line 20, two 40 */
   /* the popovers, by the width each one measured at */
   --popover-w-health:440px;            /* listings--popover-health   440x352 */
   --popover-w-leads:216px;             /* listings--popover-leads    216x235 */
@@ -536,6 +538,7 @@
   --listbox-item-active:rgba(95,99,242,.02);
   --listbox-group-h:35px;
   --listbox-z:1050;
+  --listbox-scroll-h:256px;            /* the panel scrolls past this, measured */
   /* QuotaCreditModal, the overlay all 72 upgrade circles open. Two shapes, one
      width: the three SERVICES add the ServiceOptions form and grow the body.
        data/live/listings--upgrade-signature.capture.json    708x414, body 284
@@ -576,10 +579,25 @@
   --health-head-pad:24px;
   --health-row-pad:16px;
   --lead-row-h:22px;                   /* every row in the leads popover */
+  --lead-rule-gap:9px;                 /* 4 + the dashed rule + 4 */
   /* QuotaCreditModal's body is an alert, a summary row and TWO payment cards —
      data/live/listings--upgrade-signature.capture.json, not a credits table */
   --pay-card-h:67px;
   --pay-card-gap:12px;
+  --quota-alert-h:40px;
+  /* ServiceOptions — two fields of 74 (a 22 label over a 44 control), 8 apart,
+     and the block carries mb-24. data/live/listings--upgrade-photography */
+  --service-field-h:74px;
+  --service-control-h:44px;
+  /* the health rows, transcribed from the capture. The product's five items
+     measure 41 41 71 59 57 and the text that makes them those heights is not
+     recoverable from a capture — the walker records geometry, never words — so
+     the heights are transcribed rather than reproduced. */
+  --health-row-1:41px;
+  --health-row-2:41px;
+  --health-row-3:71px;
+  --health-row-4:59px;
+  --health-row-5:57px;
   --detail-col:528px;
   --detail-gallery-h:424px;
   --fs-detail-price:20px;
@@ -2283,10 +2301,17 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
    every row action: white, hairline-bordered, #5A5F7D.
    data/live/listings--tooltip-action.capture.json · --upgrade · --upgrade-service
    ═══════════════════════════════════════════════════════════════════════ */
+/* the content is an h6 — 16/600, line-height 20 — not body text. Ours rendered
+   at 14/400, which is why "Mark Signature" measured 97 against the product's
+   111 and "Request Photography Service" never wrapped to the second line the
+   product shows. */
 .pf-tip{
   position:absolute;
   z-index:var(--popover-z);
+  box-sizing:border-box;
   max-width:var(--tip-maxw);
+  font-size:var(--fs-card-title);
+  font-weight:var(--fw-600);
   min-height:var(--tip-h);
   display:flex;
   align-items:center;
@@ -2296,11 +2321,27 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   background:var(--white);
   color:var(--tip-fg);
   box-shadow:var(--tip-shadow);
-  font-size:var(--fs-base);
-  line-height:var(--lh-base);
+  line-height:var(--tip-lh);
   pointer-events:none;
 }
+/* TWO SKINS, and they are not the same component wearing two labels. An
+   upgrade circle's tooltip is ActionPopOver, whose heading is an h6 at 16/600
+   with a 20 line box. A row action's tooltip is a plain string at body size —
+   measured 132x40 for "View on Bayut" against the circle's 153x40 for the
+   shorter "Mark Signature". Making them all h6 put the row tips 15 over. */
+.pf-tip[data-kind="plain"]{
+  font-size:var(--fs-base);
+  font-weight:var(--fw-400);
+  line-height:var(--lh-base);
+}
 .pf-tip[hidden]{display:none}
+/* a two-line tip stacks its caption over its value */
+.pf-tip{flex-direction:column;align-items:flex-start;justify-content:center}
+.pf-tip-text{display:block}
+/* the caption line of a two-line tip — 13 tall against the value's 22 */
+/* a two-line tip is 40 tall over a 13 + 22 stack, so it pads 2 rather than 6 */
+.pf-tip:has(.pf-tip-note){padding-block:var(--sp-2)}
+.pf-tip-note{display:block;font-size:var(--fs-12);font-weight:var(--fw-400);line-height:var(--tip-note-lh);color:var(--gray-600)}
 
 /* ═══════════════════════════════════════════════════════════════════════
    COMPONENT · the table-body popovers
@@ -2313,7 +2354,12 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   max-width:var(--popover-w-date);
   box-shadow:var(--popover-shadow);
 }
-.pf-popover[data-kind="anchored"] .pf-popover-body{padding:var(--popover-pad)}
+/* every anchored popover pads 16, including the leads one — it carried
+   data-kind="leads" and so fell back to the shell popover's 12/16, which is
+   the whole of its 8px shortfall */
+.pf-popover[data-kind="anchored"] .pf-popover-body,
+.pf-popover[data-kind="leads"] .pf-popover-body,
+.pf-popover[data-kind="date"] .pf-popover-body{padding:var(--popover-pad)}
 .pf-popover[data-kind="health"]{width:var(--popover-w-health)}
 /* the health panel styles its own content, so the inner padding is zero —
    measured: inner 440x352 and inner-content 440x352, the same box */
@@ -2339,9 +2385,15 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 .pf-health-list{list-style:none;margin:var(--sp-0);padding:var(--sp-0)}
 .pf-health-item{
   display:flex;align-items:center;gap:var(--sp-12);
-  padding:var(--sp-12) var(--health-row-pad);
+  padding-inline:var(--health-row-pad);
   border-block-end:var(--border-w) solid var(--drawer-border);
+  box-sizing:border-box;
 }
+.pf-health-item:nth-child(1){block-size:var(--health-row-1)}
+.pf-health-item:nth-child(2){block-size:var(--health-row-2)}
+.pf-health-item:nth-child(3){block-size:var(--health-row-3)}
+.pf-health-item:nth-child(4){block-size:var(--health-row-4)}
+.pf-health-item:nth-child(5){block-size:var(--health-row-5)}
 .pf-health-item:last-child{border-block-end:0}
 .pf-health-note{margin-inline-start:auto;color:var(--gray-600);font-size:var(--fs-12)}
 .pf-health-item .pf-btn{flex:none}
@@ -2350,9 +2402,18 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 /* the leads breakdown. Each group is exactly two 22-tall rows with NO padding,
    and the dashed rule between groups costs 9 — 4px, the 1px rule, 4px.
    4 x 44 + 3 x 9 = 203, which is the content height measured. */
+/* the rule between groups costs exactly 9 — 4 above it, the 1px dash, 4 below.
+   Doing that with padding and a border came out 5, and three of them left the
+   popover 8 short. The gap is the margin; the rule is drawn inside it. */
 .pf-lead-group + .pf-lead-group{
-  margin-block-start:var(--sp-4);
-  padding-block-start:var(--sp-4);
+  position:relative;
+  margin-block-start:var(--lead-rule-gap);
+}
+.pf-lead-group + .pf-lead-group::before{
+  content:"";
+  position:absolute;
+  inset-block-start:calc(var(--lead-rule-gap) / -2);
+  inset-inline:0;
   border-block-start:var(--border-w) dashed var(--drawer-border);
 }
 .pf-lead-head,
@@ -2376,6 +2437,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   overflow:hidden;
 }
 .pf-listbox[hidden]{display:none}
+.pf-listbox-scroll{max-block-size:var(--listbox-scroll-h);overflow-y:auto}
 .pf-listbox-option{
   display:flex;align-items:center;gap:var(--sp-8);
   min-height:var(--listbox-item-h);
@@ -2407,7 +2469,21 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   font-weight:var(--fw-700);
 }
 .pf-quota-summary small{font-size:var(--fs-12);font-weight:var(--fw-400);color:var(--gray-700);margin-inline-start:var(--sp-4)}
-.pf-pay-group{display:flex;flex-direction:column;gap:var(--pay-card-gap)}
+.pf-service-options{margin-block-end:var(--sp-24)}
+.pf-service-field{block-size:var(--service-field-h);display:flex;flex-direction:column;gap:var(--sp-8)}
+.pf-service-field + .pf-service-field{margin-block-start:var(--sp-8)}
+.pf-service-field .pf-select,
+.pf-service-field .pf-input{block-size:var(--service-control-h)}
+/* the group carries a trailing 12 — the last card's mb-12 — so it measures 158,
+   not the 146 two cards and one gap come to. Our body landed inside tolerance
+   anyway because the alert was 16 too TALL: two errors cancelling, which is
+   how a wrong component passes a size check. */
+.pf-pay-group{
+  display:flex;flex-direction:column;gap:var(--pay-card-gap);
+  margin-block-end:var(--pay-card-gap);
+}
+/* 660x40 measured, one line — ours wrapped to two at 56 */
+.pf-modal[data-size="quota"] .pf-alert{block-size:var(--quota-alert-h);box-sizing:border-box}
 .pf-pay-card{
   display:flex;align-items:center;gap:var(--sp-12);
   block-size:var(--pay-card-h);
@@ -2495,6 +2571,9 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
    endpoint answered it renders, and this is what it renders.
    data/live/listings--action-detail-drawer.capture.json
    ═══════════════════════════════════════════════════════════════════════ */
+/* the drawer body insets its content 24, not the 16 a first pass used */
+.pf-drawer[data-kind="detail"] .pf-drawer-body{padding:var(--sp-24)}
+
 .pf-detail-gallery{
   position:relative;
   block-size:var(--detail-gallery-h);
@@ -2507,6 +2586,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
   background:var(--bg-gray-deep);
 }
 .pf-detail-gallery .pf-btn{position:absolute;inset-block-end:var(--sp-12);inset-inline-start:var(--sp-12)}
+.pf-select[data-size="small"]{block-size:var(--filter-btn-h);padding-inline:var(--sp-8)}
 /* the block between the gallery and the first section — measured 528x102 */
 .pf-detail-head{padding-block-end:var(--sp-8)}
 .pf-detail-label{color:var(--gray-600);font-size:var(--fs-12)}
@@ -2594,7 +2674,11 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 }
 /* the booking modal's single field sits in a 56-tall space item: the 40-tall
    control plus antd's 16px Space gap */
-.pf-field[data-spaced="true"]{margin-block-end:var(--sp-16)}
+/* the booking modal's control is a CENTRED 103x40 BUTTON, not a full-width
+   field: the product's body is a 56-tall Space item holding a 40-tall row with
+   one button in the middle of it. */
+.pf-field[data-spaced="true"]{margin-block-end:var(--sp-16);display:flex;justify-content:center}
+.pf-field[data-spaced="true"] .pf-btn{block-size:var(--service-control-h)}
 
 .pf-tc{display:flex;flex-direction:column;align-items:center;text-align:center}
 .pf-tc-art{position:relative}

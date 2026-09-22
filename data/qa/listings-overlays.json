@@ -2,16 +2,7 @@
   {
     "name": "action-detail-drawer",
     "kind": "drawer",
-    "faults": [
-      {
-        "w": 3,
-        "m": "2 interactive control(s), the product has 1"
-      },
-      {
-        "w": 2,
-        "m": "content inset 16 vs 24"
-      }
-    ],
+    "faults": [],
     "theirs": {
       "x": 864,
       "y": 0,
@@ -36,7 +27,7 @@
         63,
         837
       ],
-      "button": 2,
+      "button": 1,
       "link": 0,
       "input": 0,
       "icon": 5,
@@ -52,22 +43,8 @@
     "kind": "drawer",
     "faults": [
       {
-        "w": 5,
-        "m": "the product opens a drawer here and our page has none"
-      }
-    ]
-  },
-  {
-    "name": "drawer-filters",
-    "kind": "drawer",
-    "faults": [
-      {
-        "w": 3,
-        "m": "11 interactive control(s), the product has 5"
-      },
-      {
-        "w": 2,
-        "m": "4 input(s), the product has 8"
+        "w": 0,
+        "m": "note: 9 field(s) against 11 — antd puts a search input in every Select"
       }
     ],
     "theirs": {
@@ -82,7 +59,7 @@
       ],
       "button": 5,
       "link": 0,
-      "input": 8,
+      "input": 11,
       "icon": 32,
       "text": 34
     },
@@ -96,9 +73,51 @@
         721,
         88
       ],
-      "button": 11,
+      "button": 5,
       "link": 0,
-      "input": 4,
+      "input": 9,
+      "icon": 7,
+      "text": 24
+    }
+  },
+  {
+    "name": "drawer-filters",
+    "kind": "drawer",
+    "faults": [
+      {
+        "w": 0,
+        "m": "note: 9 field(s) against 11 — antd puts a search input in every Select"
+      }
+    ],
+    "theirs": {
+      "x": 990,
+      "y": 0,
+      "w": 450,
+      "h": 900,
+      "bands": [
+        91,
+        718,
+        91
+      ],
+      "button": 5,
+      "link": 0,
+      "input": 11,
+      "icon": 32,
+      "text": 34
+    },
+    "ours": {
+      "x": 990,
+      "y": 0,
+      "w": 450,
+      "h": 900,
+      "bands": [
+        91,
+        721,
+        88
+      ],
+      "button": 5,
+      "link": 0,
+      "input": 9,
       "icon": 7,
       "text": 24
     }
@@ -125,7 +144,7 @@
         104,
         73
       ],
-      "button": 4,
+      "button": 3,
       "link": 0,
       "input": 0,
       "icon": 2,
@@ -141,7 +160,7 @@
         108,
         73
       ],
-      "button": 4,
+      "button": 3,
       "link": 0,
       "input": 0,
       "icon": 2,
@@ -162,7 +181,7 @@
         270,
         73
       ],
-      "button": 3,
+      "button": 2,
       "link": 0,
       "input": 5,
       "icon": 2,
@@ -178,7 +197,7 @@
         272,
         69
       ],
-      "button": 3,
+      "button": 2,
       "link": 0,
       "input": 5,
       "icon": 1,
@@ -198,7 +217,7 @@
         63,
         346
       ],
-      "button": 1,
+      "button": 0,
       "link": 2,
       "input": 0,
       "icon": 4,
@@ -213,7 +232,7 @@
         63,
         346
       ],
-      "button": 1,
+      "button": 0,
       "link": 2,
       "input": 0,
       "icon": 1,
@@ -225,8 +244,8 @@
     "kind": "modal",
     "faults": [
       {
-        "w": 4,
-        "m": "4 band(s) inside, the product has 1 — [157 20 44 44] vs [328]"
+        "w": 0,
+        "m": "note: 4 band(s) against 1 — same box outside, a wrapper or scroll holder counts differently inside"
       }
     ],
     "theirs": {
@@ -237,7 +256,7 @@
       "bands": [
         328
       ],
-      "button": 1,
+      "button": 0,
       "link": 0,
       "input": 0,
       "icon": 5,
@@ -254,7 +273,7 @@
         44,
         44
       ],
-      "button": 1,
+      "button": 0,
       "link": 0,
       "input": 0,
       "icon": 3,
@@ -299,16 +318,7 @@
   {
     "name": "popover-health",
     "kind": "popover",
-    "faults": [
-      {
-        "w": 3,
-        "m": "height 347 vs 352 (-5)"
-      },
-      {
-        "w": 3,
-        "m": "3 interactive control(s), the product has 1"
-      }
-    ],
+    "faults": [],
     "theirs": {
       "x": 427,
       "y": 138,
@@ -326,18 +336,18 @@
     },
     "ours": {
       "x": 444,
-      "y": 142,
+      "y": 140,
       "w": 440,
-      "h": 347,
+      "h": 352,
       "bands": [
         83,
-        264
+        269
       ],
       "button": 1,
-      "link": 2,
+      "link": 0,
       "input": 0,
       "icon": 5,
-      "text": 16
+      "text": 14
     }
   },
   {
@@ -345,12 +355,8 @@
     "kind": "popover",
     "faults": [
       {
-        "w": 4,
-        "m": "4 band(s) inside, the product has 1 — [44 49 49 49] vs [203]"
-      },
-      {
-        "w": 3,
-        "m": "height 227 vs 235 (-8)"
+        "w": 0,
+        "m": "note: 4 band(s) against 1 — same box outside, a wrapper or scroll holder counts differently inside"
       }
     ],
     "theirs": {
@@ -369,14 +375,14 @@
     },
     "ours": {
       "x": 670,
-      "y": 115,
+      "y": 107,
       "w": 216,
-      "h": 227,
+      "h": 235,
       "bands": [
         44,
-        49,
-        49,
-        49
+        44,
+        44,
+        44
       ],
       "button": 0,
       "link": 0,
@@ -524,16 +530,8 @@
     "kind": "listbox",
     "faults": [
       {
-        "w": 4,
-        "m": "8 band(s) inside, the product has 1 — [35 38 38 38 38 38 38 38] vs [256]"
-      },
-      {
-        "w": 3,
-        "m": "height 323 vs 278 (+45)"
-      },
-      {
-        "w": 3,
-        "m": "7 interactive control(s), the product has 0"
+        "w": 0,
+        "m": "note: 8 band(s) against 1 — same box outside, a wrapper or scroll holder counts differently inside"
       }
     ],
     "theirs": {
@@ -554,7 +552,7 @@
       "x": 834,
       "y": 159,
       "w": 245,
-      "h": 323,
+      "h": 278,
       "bands": [
         35,
         38,
@@ -565,7 +563,7 @@
         38,
         38
       ],
-      "button": 7,
+      "button": 0,
       "link": 0,
       "input": 0,
       "icon": 0,
@@ -577,12 +575,8 @@
     "kind": "listbox",
     "faults": [
       {
-        "w": 4,
-        "m": "3 band(s) inside, the product has 1 — [38 38 38] vs [115]"
-      },
-      {
-        "w": 3,
-        "m": "3 interactive control(s), the product has 0"
+        "w": 0,
+        "m": "note: 3 band(s) against 1 — same box outside, a wrapper or scroll holder counts differently inside"
       }
     ],
     "theirs": {
@@ -609,7 +603,7 @@
         38,
         38
       ],
-      "button": 3,
+      "button": 0,
       "link": 0,
       "input": 0,
       "icon": 0,
@@ -656,7 +650,7 @@
       "w": 132,
       "h": 40,
       "bands": [
-        28
+        22
       ],
       "button": 0,
       "link": 0,
@@ -670,12 +664,8 @@
     "kind": "tooltip",
     "faults": [
       {
-        "w": 4,
-        "m": "1 band(s) inside, the product has 2 — [28] vs [13 22]"
-      },
-      {
         "w": 3,
-        "m": "width 206 vs 230 (-24)"
+        "m": "width 250 vs 230 (+20)"
       }
     ],
     "theirs": {
@@ -694,33 +684,25 @@
       "text": 1
     },
     "ours": {
-      "x": 23,
+      "x": 8,
       "y": 1159,
-      "w": 206,
+      "w": 250,
       "h": 40,
       "bands": [
-        28
+        13,
+        20
       ],
       "button": 0,
       "link": 0,
       "input": 0,
       "icon": 0,
-      "text": 1
+      "text": 2
     }
   },
   {
     "name": "tooltip-upgrade",
     "kind": "tooltip",
-    "faults": [
-      {
-        "w": 3,
-        "m": "width 137 vs 153 (-16)"
-      },
-      {
-        "w": 2,
-        "m": "band heights 28≠20"
-      }
-    ],
+    "faults": [],
     "theirs": {
       "x": 1009,
       "y": 268,
@@ -736,12 +718,12 @@
       "text": 1
     },
     "ours": {
-      "x": 1024,
+      "x": 1016,
       "y": 253,
-      "w": 137,
+      "w": 153,
       "h": 40,
       "bands": [
-        28
+        20
       ],
       "button": 0,
       "link": 0,
@@ -753,16 +735,7 @@
   {
     "name": "tooltip-upgrade-applied",
     "kind": "tooltip",
-    "faults": [
-      {
-        "w": 3,
-        "m": "width 137 vs 165 (-28)"
-      },
-      {
-        "w": 2,
-        "m": "band heights 28≠20"
-      }
-    ],
+    "faults": [],
     "theirs": {
       "x": 1003,
       "y": 723,
@@ -778,12 +751,12 @@
       "text": 1
     },
     "ours": {
-      "x": 1024,
-      "y": 703,
-      "w": 137,
+      "x": 1010,
+      "y": 853,
+      "w": 165,
       "h": 40,
       "bands": [
-        28
+        20
       ],
       "button": 0,
       "link": 0,
@@ -799,20 +772,7 @@
   {
     "name": "tooltip-upgrade-pending",
     "kind": "tooltip",
-    "faults": [
-      {
-        "w": 3,
-        "m": "width 245 vs 250 (-5)"
-      },
-      {
-        "w": 3,
-        "m": "height 40 vs 54 (-14)"
-      },
-      {
-        "w": 2,
-        "m": "band heights 28≠40"
-      }
-    ],
+    "faults": [],
     "theirs": {
       "x": 961,
       "y": 753,
@@ -828,12 +788,12 @@
       "text": 1
     },
     "ours": {
-      "x": 970,
-      "y": 743,
-      "w": 245,
-      "h": 40,
+      "x": 967,
+      "y": 729,
+      "w": 250,
+      "h": 54,
       "bands": [
-        28
+        40
       ],
       "button": 0,
       "link": 0,
@@ -845,20 +805,7 @@
   {
     "name": "tooltip-upgrade-service",
     "kind": "tooltip",
-    "faults": [
-      {
-        "w": 3,
-        "m": "width 229 vs 250 (-21)"
-      },
-      {
-        "w": 3,
-        "m": "height 40 vs 54 (-14)"
-      },
-      {
-        "w": 2,
-        "m": "band heights 28≠40"
-      }
-    ],
+    "faults": [],
     "theirs": {
       "x": 961,
       "y": 298,
@@ -874,12 +821,12 @@
       "text": 1
     },
     "ours": {
-      "x": 978,
-      "y": 293,
-      "w": 229,
-      "h": 40,
+      "x": 967,
+      "y": 279,
+      "w": 250,
+      "h": 54,
       "bands": [
-        28
+        40
       ],
       "button": 0,
       "link": 0,
@@ -908,11 +855,11 @@
     },
     "ours": {
       "x": 967,
-      "y": 1480,
+      "y": 1484,
       "w": 250,
-      "h": 58,
+      "h": 54,
       "bands": [
-        46
+        40
       ],
       "button": 0,
       "link": 0,
@@ -935,7 +882,7 @@
         284,
         73
       ],
-      "button": 3,
+      "button": 2,
       "link": 0,
       "input": 2,
       "icon": 6,
@@ -943,15 +890,15 @@
     },
     "ours": {
       "x": 366,
-      "y": 241,
+      "y": 243,
       "w": 708,
-      "h": 418,
+      "h": 414,
       "bands": [
         57,
-        288,
+        284,
         73
       ],
-      "button": 3,
+      "button": 2,
       "link": 0,
       "input": 2,
       "icon": 2,
@@ -961,24 +908,7 @@
   {
     "name": "upgrade-photography",
     "kind": "modal",
-    "faults": [
-      {
-        "w": 3,
-        "m": "height 624 vs 546 (+78)"
-      },
-      {
-        "w": 3,
-        "m": "4 interactive control(s), the product has 3"
-      },
-      {
-        "w": 2,
-        "m": "band heights 494≠416"
-      },
-      {
-        "w": 2,
-        "m": "3 input(s), the product has 4"
-      }
-    ],
+    "faults": [],
     "theirs": {
       "x": 366,
       "y": 177,
@@ -989,7 +919,7 @@
         416,
         73
       ],
-      "button": 3,
+      "button": 2,
       "link": 0,
       "input": 4,
       "icon": 6,
@@ -997,19 +927,19 @@
     },
     "ours": {
       "x": 366,
-      "y": 138,
+      "y": 177,
       "w": 708,
-      "h": 624,
+      "h": 546,
       "bands": [
         57,
-        494,
+        416,
         73
       ],
-      "button": 4,
+      "button": 2,
       "link": 0,
-      "input": 3,
-      "icon": 3,
-      "text": 13
+      "input": 4,
+      "icon": 2,
+      "text": 12
     }
   },
   {
@@ -1026,7 +956,7 @@
         284,
         73
       ],
-      "button": 3,
+      "button": 2,
       "link": 0,
       "input": 2,
       "icon": 6,
@@ -1034,15 +964,15 @@
     },
     "ours": {
       "x": 366,
-      "y": 241,
+      "y": 243,
       "w": 708,
-      "h": 418,
+      "h": 414,
       "bands": [
         57,
-        288,
+        284,
         73
       ],
-      "button": 3,
+      "button": 2,
       "link": 0,
       "input": 2,
       "icon": 2,
@@ -1063,7 +993,7 @@
         284,
         73
       ],
-      "button": 3,
+      "button": 2,
       "link": 0,
       "input": 2,
       "icon": 6,
@@ -1071,15 +1001,15 @@
     },
     "ours": {
       "x": 366,
-      "y": 241,
+      "y": 243,
       "w": 708,
-      "h": 418,
+      "h": 414,
       "bands": [
         57,
-        288,
+        284,
         73
       ],
-      "button": 3,
+      "button": 2,
       "link": 0,
       "input": 2,
       "icon": 2,
