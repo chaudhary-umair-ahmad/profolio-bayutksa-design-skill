@@ -32,6 +32,84 @@ still has no number; this took one pass and has one.
 Two of those — the divider and the icon gap — were wrong on the **dashboard**
 too, and are now fixed there by the same stylesheet.
 
+# Against the real screen — 92.3%
+
+Everything above this line was measured against `harness/capture.mjs`: the
+product booted here, in Vite dev mode, on a fixture account. On 22 Sep a
+SingleFile of `profolio.staging.bayut.sa/en/listings` arrived, and
+`scripts/measure-real.mjs` walks it with the same walker, so it scores the
+same way. **92.3%**, and that is the number to quote.
+
+The reassuring part first: the real page is `1440 × 1918` and the harness
+renders `1440 × 1918`. Shell, header, rail, footer, fonts — all of it was
+right. What was wrong was not measurement. It was inference.
+
+## Three rules my fixture account invented
+
+| | the rule I wrote | what the real page shows |
+|---|---|---|
+| row actions | "**FIVE, not six.** … each was clicked to see what it opens" | **six**, on every row — the fifth is `sell-rent-listing`, the `%` glyph |
+| upgrade circles | every circle disabled at 0.54, on every row | **enabled** on nine of ten rows; one row has 2 enabled · 1 applied · 3 disabled |
+| the rail | eleven items | **nine** |
+
+Each has the same shape. I measured a real render, the render was honest, and
+the account behind it was not representative. A listing that offers no
+sell-or-rent action renders five buttons. An account with no credits renders
+six dead circles. A tenant constant (`HIDE_INBOX`) and an account flag
+(`is_lms_enabled`) between them remove two rail entries. All three went into
+the design system as facts about the product.
+
+The guard against this is not more measurement. It is **a second account**, and
+that is what the SingleFile is.
+
+## What it settled on sight
+
+- A **studio** row labels the bed spec `Studio` and **drops the bath spec
+  entirely** — two specs, not three (`staticLists.js:288` returns `''` for
+  beds when the count is 0).
+- The **pagination** is content-sized and pushed to the end (308 wide at
+  x=1108), not a full-width row with `justify-end`.
+- The first action button is **`TruCheckIcon` at 18px with a 6px inline-end
+  margin** (`icons.js:922`) — which is why it measures 40 wide and the other
+  five measure 36. We were drawing `HiCheck`.
+
+## The deployed build is ahead of this checkout
+
+The filter bar is the evidence, and it is worth stating plainly because it
+limits what the source can be trusted for:
+
+| | the real page | what `filters.js` in this checkout renders |
+|---|---|---|
+| Show More | 142×40, **16/700**, `#4F4F4F` | `size="small"` → 13/600, 32 tall |
+| Clear filters | 74×40, 13/600 | `size="small"` → 32 tall |
+| Search | 90×40, **12/700**, 12px padding | `size="large"`, `btnHeight=42` → 42 tall, 16px, 16px padding |
+
+Three buttons in one component, all disagreeing, and the heights agreeing at
+40 across all three — that is a set, deliberately restyled. The checkout is a
+single import commit dated **3 Aug 2026**; the capture is **22 Sep 2026**.
+
+So: **where the real page and the source disagree, the real page wins**, and
+the values above are taken from it. The rest of the design system is still
+derived from a checkout that is seven weeks behind what ships. A fresh drop of
+`profolio-reactjs` is the single highest-value thing that could arrive next —
+it would also let the harness boot today's product and re-capture all thirteen
+states.
+
+## What the real page cannot give
+
+Flows. antd v5 is CSS-in-JS: a component that has never rendered has neither
+markup nor styles in a snapshot. Measured on the file:
+
+```
+ant-modal   markup=0  css-rules=0
+ant-drawer  markup=0  css-rules=0
+ant-popover markup=0  css-rules=0
+ant-tooltip markup=3  css-rules=2     ← one had opened
+```
+
+Overlays come from the harness, which opens them by clicking — and the six it
+found were limited by the same fixture account. That is the next thing to fix.
+
 ## Still open
 
 All fifteen remaining rows are one of two cascades, and neither is a value I can
