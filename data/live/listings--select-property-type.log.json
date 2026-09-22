@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1918,
+  "note": "filter bar Property Type — 245x278, 8 options under 1 group header, multi-select",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

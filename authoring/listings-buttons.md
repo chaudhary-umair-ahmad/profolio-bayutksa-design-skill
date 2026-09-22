@@ -86,17 +86,20 @@ variants are mutually exclusive, and `listings.html` is the package-user one.
 | applied-tag row · Clear All | clears everything | `filters.js:435-443` | missing | unmeasured |
 | Save Search | — | not passed on this page | N/A | — |
 
-## D · Filters drawer — all 11 filters
+## D · Filters drawer — the 7 non-inline filters
 
 Measured at 450×900, header 91, body 718, footer 91 —
-`listings--drawer-filters.capture.json`. The harness renders 10 of the 11
-(Posted By needs `agencyUsersList.length > 1`).
+`listings--drawer-filters.capture.json`. It holds **only the filters the bar
+does not**, which a probe of the running product confirmed as six form items:
+Posted On · City (two selects) · TruCheck Status · Show Discounted · Price Range
+· Area Range. Posted By is the seventh and needs `agencyUsersList.length > 1`.
+The four inline filters stay in the bar and are **not** repeated here.
 
 | element | product behaviour | source | our state | measured from |
 |---|---|---|---|---|
 | drawer close `IoMdClose` | closes | `filters.js:523` | built | `listings--drawer-filters` |
-| Listing ID / REGA inputs | text inputs with clear | `filters.js:300-320` | missing | `listings--drawer-filters` |
-| Purpose / Property Type / TruCheck Status selects | Select dropdowns | `listingFilters.js:33,49,117` | dead ×4 (closed) | `listings--drawer-filters` |
+| TruCheck Status select | Select dropdown | `listingFilters.js:117-131` | dead (closed) | `listings--drawer-filters` |
+| Listing ID / REGA / Purpose / Property Type | **not in the drawer** — they are the four inline filters | `filters.js:62` | N/A — see section C | — |
 | Posted On | read-only input, `FiCalendar`, **click → DrawerPopover calendar** | `listingFilters.js:70-83`, `DateFilter.js:71-105` | missing | unmeasured |
 | Posted On · `DateRangePickerOne` | range calendar, `okText="Confirm"`, clearable | `DateFilter.js:71-105` | missing | **unmeasured** |
 | City | Algolia SelectSearch, multiple, clearable | `cityLocationFilter.js:155-200` | missing | `listings--drawer-filters` |
@@ -141,22 +144,22 @@ Measured at 450×900, header 91, body 718, footer 91 —
 | discount tag | inert | `listing-purpose.js:242-254` | built, inert — correct | `listings.capture.json` |
 | listing price / title | **not a link** in the product | `listing-purpose.js:261` | dead — 13 × `href="#"`; the product has no link here, so it should be inert text | — |
 | external-link icon | `target="_blank"` to `props.url` | `listing-purpose.js:282-284` | N/A — `showExternalLink` never set by the Bayut transformer | — |
-| health / quality chip | **hover Popover**: Overall Quality panel | `listing-health.js:122-146` | missing | unmeasured |
-| health popover · Refresh | opens QuotaCreditModal | `health.js:110-121` | missing | unmeasured |
-| health popover · Add (Images) | navigates `/post-listing/:id#images` | `health.js:132-145` | missing | unmeasured |
-| health popover · Add (Features) | navigates `/post-listing/:id#amenities` | `health.js:247-257` | missing | unmeasured |
+| health / quality chip | **hover Popover**: Overall Quality panel. The trigger is the tag whose text is a percentage — td0 carries three tags and only that one opens anything | `listing-health.js:122-146` | missing | `listings--popover-health` — **440×352**, placement right, inner has **no padding** (the panel styles its own) |
+| health popover · Refresh | opens QuotaCreditModal | `health.js:110-121` | missing | `listings--popover-health` |
+| health popover · Add (Images) | navigates `/post-listing/:id#images` | `health.js:132-145` | missing | `listings--popover-health` |
+| health popover · Add (Features) | navigates `/post-listing/:id#amenities` | `health.js:247-257` | missing | `listings--popover-health` |
 | product badge / status tag | inert | `listing-purpose.js:267-281` | built, inert — correct | `listings.capture.json` |
 | purpose / type Tag | inert | `listing-purpose.js:288-304` | built, inert — correct | `listings.capture.json` |
 | spec icons + area | inert | `listing-purpose.js:306-329` | built, inert — correct | `listings.capture.json` |
 | Bayut ID | inert text | `listing-purpose.js:334-335` | built, inert — correct | `listings.capture.json` |
-| REGA ID · `AiOutlineInfoCircle` | **hover Popover** "Expiring on: \<date\>" | `listing-purpose.js:346-358` | missing | unmeasured |
+| REGA ID · `AiOutlineInfoCircle` | **hover Popover** "Expiring on: \<date\>" | `listing-purpose.js:346-358` | missing | unmeasured — the probe hovered all 23 candidates in row 0 and this one never opened: the fixture row carries no `regaExpiryDate` |
 | Permit No / "Unlicensed" Tag | inert | `listing-purpose.js:363-379` | built, inert — correct | `listings.capture.json` |
 
 ## H · Timeline cell — `user.isCurrencyUser` only
 
 | element | product behaviour | source | our state | measured from |
 |---|---|---|---|---|
-| "Posted on" · `AiOutlineInfoCircle` | **hover Popover**, full date + time | `expiry-renewal.js:60-67` | missing | unmeasured |
+| "Posted on" · `AiOutlineInfoCircle` | **hover Popover**, full date + time | `expiry-renewal.js:60-67` | missing | `listings--popover-timeline` — **180×54**, placement top, pad 16 |
 | second date row | hidden — `HIDE_AUTO_RENEWAL:true` | `expiry-renewal.js:71-80`, `constants.js:214` | N/A | — |
 | auto-renew Switch + its confirm Modal | **does not render for KSA** — `HIDE_TIMELINE_DATA:true` | `expiry-renewal.js:82-118`, `constants.js:215` | N/A | — |
 
@@ -166,7 +169,7 @@ Measured at 450×900, header 91, body 718, footer 91 —
 |---|---|---|---|---|
 | Views | **no icon, no tooltip** | `listing-stats.js:134` | built, inert — correct | `listings.capture.json` |
 | Clicks | **no icon, no tooltip** | `listing-stats.js:135` | built, inert — correct | `listings.capture.json` |
-| Leads · `AiOutlineInfoCircle` | **hover Popover**, LMS breakdown (Calls / WhatsApp / Emails / SMS) | `listing-stats.js:93-125` | missing | unmeasured |
+| Leads · `AiOutlineInfoCircle` | **hover Popover**, LMS breakdown (Calls / WhatsApp / Emails / SMS) | `listing-stats.js:93-125` | missing | `listings--popover-leads` — **216×235**, placement top, pad 16 |
 | stats while loading | Skeleton per value | `listing-stats.js:91` | missing | `listings--loading` |
 
 ## J · Status cell
@@ -174,7 +177,7 @@ Measured at 450×900, header 91, body 718, footer 91 —
 | element | product behaviour | source | our state | measured from |
 |---|---|---|---|---|
 | status pill | **inert Tag** | `platforms-status.js:12-14` | built, inert — correct | `listings.capture.json` |
-| rejection `AiOutlineInfoCircle` | **click Popover**, placement right, reasons list — the only click popover in the table body; only when the disposition carries `comments` | `platforms-status.js:16-33`, `listingUtilities.js:100` | missing | unmeasured |
+| rejection `AiOutlineInfoCircle` | **click Popover**, placement right, reasons list — the only click popover in the table body; only when the disposition carries `comments` | `platforms-status.js:16-33`, `listingUtilities.js:100` | missing | unmeasured — no fixture row is `rejected` with `comments`, so the icon does not render |
 
 ## K · Upgrades cell — 6 circles, 4 states
 
@@ -218,7 +221,7 @@ kebab Dropdown (`:111-126`).
 | 5 | Apply Discount | stores the discount session, then navigates. **`null` unless `discount_applicable`** | `listingUtilities.js:217-237` | dead — should be a stub link | `listings--action-discount` |
 | 6 | Mark as Booked | → **BookingModal**. **Only `listing_purpose.slug === 'daily-rental'`** | `listingUtilities.js:238-250` | built → `modal-booking`, **1 entry point in 13 rows** | `design-capture-flows-only-booking.real` |
 | 7 | Delete | → **ConfirmationModal** + reason Radio.Group + "other" free text | `listingUtilities.js:314-334`, `listing-row-actions.js:157-198` | built → `modal-delete` | `listings--modal-delete` |
-| — | per-button Tooltip ×7 | Edit / Preview / View on Bayut / Delete / Mark as Booked / Apply Discount / TruCheck \<status\> | `table-actions.js:62-109`, `listingUtilities.js:158-175` | missing | unmeasured |
+| — | per-button Tooltip ×7 | Edit 66×40 / Preview 92×40 / View on Bayut 132×40 / Delete 84×40 / Apply Discount 137×40 / Mark as Booked / TruCheck \<status\>. Placement left, white, pad 6/20 | `table-actions.js:62-109`, `listingUtilities.js:158-175` | missing | `listings--tooltip-action` |
 | — | Delete suppressed | `pending-otp-verification` + `otp_attempts >= 3` | `listingUtilities.js:316-322` | missing | unmeasured |
 | — | disable / hide / enable / unhide / change_listing_owner | **not in `listingRowActions.ksa`** — they never render here | `listingUtilities.js:279-313, 335-344` | N/A | — |
 
@@ -244,23 +247,51 @@ kebab Dropdown (`:111-126`).
 
 ---
 
-## Where the values come from — the four genuinely unmeasured components
+## Where the values come from — and what is left
 
-Everything else on this screen has a capture behind it. These four do not exist
-in any capture in `data/live/`, and between them they account for most of the
-`missing` rows above:
+A probe drove the running product and hovered all 23 hoverable things in row 0,
+opened both filter-bar selects and the Posted On calendar. Nine states that had
+never been captured now are, and with them went most of what this file called
+`unmeasured` in its first draft:
 
-| component | what it unblocks |
+| now measured | size |
 |---|---|
-| **an open `Select` listbox** (`ant-select-dropdown`) | 6 filter controls |
-| **the date range calendar** (`ant-picker-dropdown`) | Posted On, and the booking modal's date field |
-| **the table-body Popovers** (`ant-popover` in a row) | health ×4 controls, REGA, Timeline, Leads, status rejection, `+N` |
-| **`ActionPopOver`** / **`OtpVerificationModal`** / **CreditsQuota + CreditInfoDrawer** | the upgrade panel, the Publish flow, the whole member-area variant |
+| health / quality popover | 440×352, placement right, **no inner padding** |
+| Timeline "Posted on" popover | 180×54, pad 16 |
+| Leads popover | 216×235, pad 16 |
+| upgrade-circle tooltip (= `ActionPopOver`, default) | 109–250 wide, **white**, `#5A5F7D`, pad 6/20 |
+| row-action tooltip | 66–137 wide, placement left, same skin |
+| Purpose select dropdown | 245×137, 3 flat options |
+| Property Type select dropdown | 245×278, 8 options under 1 group header |
+| Posted On calendar | popover 802×381 — **`react-date-range`, not an antd picker** |
 
-`QuotaCreditModal` is **not** on that list: `listings--upgrade-signature`
-(708×414) and `listings--upgrade-photography` (708×546) already carry both of
-its shapes. The seventy-two dead circles are a *building* gap, not a measuring
-one.
+Two corrections came out of that run and are folded in above: the product's
+**tooltips are white with `#5A5F7D` text**, not antd's dark default; and the
+date picker is `react-date-range` (`datePicker.js:15`), so building it means
+reproducing `rdr*` markup, not `ant-picker`.
+
+`QuotaCreditModal` was never the problem it was described as:
+`listings--upgrade-signature` (708×414) and `listings--upgrade-photography`
+(708×546) already carry both of its shapes. The seventy-two dead circles are a
+building gap, not a measuring one.
+
+### What is still unmeasured, and why
+
+Almost none of it is a capture problem now. It is that **this account cannot
+produce the state**:
+
+| unmeasured | what it needs |
+|---|---|
+| REGA "Expiring on" popover | a row with `regaExpiryDate` |
+| status rejection-reasons popover | a `rejected` row carrying `comments` |
+| applied / pending circle tooltip | a row with an applied and a pending product |
+| "not available in your region" tooltip | a service that is not applicable |
+| `+N` overflow popover | more property types selected than fit |
+| Booked chip tooltip | a row with booked ranges |
+| OtpVerificationModal, Publish/Delete suppression | a row in `pending-otp-verification` |
+| banner, CreditsQuota, CreditInfoDrawer | a **member-area** user — `is_package_user: false` |
+
+That is the fixture work, and it is what makes the rest of this file finishable.
 
 ---
 

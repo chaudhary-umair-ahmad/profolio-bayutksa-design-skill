@@ -204,7 +204,15 @@ async function captureRoute(browser, base, route, locale) {
   if (WITH_STATES) {
     const file = join(HERE, 'interactions', `${slug(route)}.mjs`);
     if (existsSync(file)) {
-      const steps = (await import(file)).default;
+      let steps = (await import(file)).default;
+      /* --states=a,b runs only those steps. A full sweep of Listings is 27
+         page loads; while adding one state you want the one. */
+      const only = (arg('--states') || '').split(',').map((x) => x.trim()).filter(Boolean);
+      if (only.length) {
+        const unknown = only.filter((o) => !steps.some((st) => st.name === o));
+        if (unknown.length) console.log(`  unknown state(s): ${unknown.join(', ')}`);
+        steps = steps.filter((st) => only.includes(st.name));
+      }
       for (const step of steps) {
         try {
           MODE = step.mode || null;

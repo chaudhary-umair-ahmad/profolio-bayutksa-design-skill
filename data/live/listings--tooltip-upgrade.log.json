@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": false,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1918,
+  "note": "hover Upgrades[0] — 153x40 \"Mark Signature\". This is ActionPopOver in its default state (platformActions.js:124); applied and pending add an \"Expiring on\" line and need a fixture row in those states",
+  "url": "http://127.0.0.1:3000/en/listings"
+}

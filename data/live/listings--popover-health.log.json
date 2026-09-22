@@ -1,0 +1,15 @@
+{
+  "finalPath": "/en/listings",
+  "shell": true,
+  "errorCard": false,
+  "overlay": {
+    "modal": false,
+    "drawer": false,
+    "popover": true,
+    "dropdown": false
+  },
+  "spinning": false,
+  "pageHeight": 1918,
+  "note": "hover the quality chip — 440x352 \"Overall Quality\", with Refresh and two Add buttons inside",
+  "url": "http://127.0.0.1:3000/en/listings"
+}
