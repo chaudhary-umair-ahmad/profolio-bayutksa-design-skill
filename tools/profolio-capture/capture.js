@@ -122,7 +122,12 @@
 
   return {
     capture: 1,
-    route: location.pathname,
+    /* the pathname with its identifiers masked. A detail route carries the
+       thing it is showing — /en/post-listing/88240117 — and a capture taken
+       from a real signed-in browser would put a real listing id in the one
+       field nobody thinks of as content. scripts/test-capture.mjs caught this
+       on a state that navigated; the shape of the route is what we want. */
+    route: location.pathname.replace(/\/\d{3,}/g, '/:id'),
     capturedAt: new Date().toISOString(),
     viewport: { w: innerWidth, h: innerHeight, dpr: devicePixelRatio,
                 page: { w: document.documentElement.scrollWidth, h: document.documentElement.scrollHeight } },
