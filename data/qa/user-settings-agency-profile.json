@@ -1,0 +1,90 @@
+{
+  "route": "user-settings-agency-profile",
+  "at": "2026-09-22T11:21:31.394Z",
+  "shellFails": [
+    {
+      "id": "shell.title",
+      "diff": 30.9
+    },
+    {
+      "id": "shell.header",
+      "diff": 8.5
+    }
+  ],
+  "diffs": [
+    {
+      "id": "shell.title",
+      "diff": 30.9
+    },
+    {
+      "id": "shell.header",
+      "diff": 8.5
+    },
+    {
+      "id": "settings.side",
+      "diff": 6
+    },
+    {
+      "id": "sfield",
+      "diff": 5.8
+    },
+    {
+      "id": "settings.main",
+      "diff": 5.8
+    },
+    {
+      "id": "shell.content",
+      "diff": 5.7
+    },
+    {
+      "id": "sfield.control",
+      "diff": 5.3
+    },
+    {
+      "id": "shell.sider",
+      "diff": 4.7
+    },
+    {
+      "id": "shell.footer",
+      "diff": 2.1
+    }
+  ],
+  "offScale": {
+    "size": [],
+    "weight": [],
+    "space": []
+  },
+  "literals": [
+    ".pf-sfield[data-h=\"118\"] { block-size: 118px }"
+  ],
+  "lowContrast": 0,
+  "contrastMatchingProduct": 2,
+  "productLow": [
+    {
+      "col": "rgb(255,255,255)",
+      "n": 7,
+      "ratio": 1
+    },
+    {
+      "col": "rgb(173,180,210)",
+      "n": 4,
+      "ratio": 2.05
+    },
+    {
+      "col": "rgb(157,157,157)",
+      "n": 2,
+      "ratio": 2.71
+    },
+    {
+      "col": "rgb(24,144,255)",
+      "n": 1,
+      "ratio": 3.24
+    }
+  ],
+  "notModelled": [
+    "table.thumb"
+  ],
+  "rtlOverflow": false,
+  "physical": 0,
+  "states": []
+}

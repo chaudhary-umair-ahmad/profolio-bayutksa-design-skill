@@ -38,7 +38,7 @@ export const NAV = [
   ['Agent Performance',  'AgentPerformanceIcon', null],
   ['Reports',            'SideMenuReports',      null],
   ['Agency Staff',       'SideMenuAgency',       null],
-  ['Settings',           'IoSettingsOutline',    null],
+  ['Settings',           'IoSettingsOutline',    'user-settings-user-profile.html'],
   ['Credits & Packages', 'SideMenuPropShop',     null],
 ];
 const href = (page, label) => page || `not-built.html?screen=${encodeURIComponent(label)}`;

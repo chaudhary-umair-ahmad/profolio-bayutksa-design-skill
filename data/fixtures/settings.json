@@ -1,5 +1,5 @@
 {
-  "_": "The user-settings family. Nav labels and icons are appRoutes.js's getUserSettingsRoutes(); field labels, placeholders and types are src/tenant/bayut/data/profileFields.js. Field ORDER is transcribed from data/live/user-settings-*.capture.json, because a capture records where a control sits and never what it says.",
+  "_": "The user-settings family. Nav labels and icons are appRoutes.js's getUserSettingsRoutes(); field labels, placeholders and types are src/tenant/bayut/data/profileFields.js and agencySettingsFields.js. Field ORDER is transcribed from data/live/user-settings-*.capture.json, because a capture records where a control sits and never what it says. THREE of the six nav entries have a page of their own for this tenant: SHOW_BANK_DETAIL is false (constants.js:235) so /bank-detail falls through to the profile, and /licenses and /preferences fall through to /change-password. scripts/check-captures.mjs reports all three as redirects.",
   "user": {
     "name": "Faisal Al-Harbi",
     "role": "Agency User",
@@ -39,7 +39,7 @@
     {
       "label": "Bank Detail",
       "icon": "FiCreditCard",
-      "page": "user-settings-bank-detail.html"
+      "page": null
     },
     {
       "label": "Change Password",
@@ -135,6 +135,92 @@
           "type": "upload",
           "span": true,
           "upload": true
+        }
+      ]
+    },
+    {
+      "slug": "user-settings-agency-profile",
+      "route": "user-settings-agency-profile",
+      "title": "Agency Settings",
+      "formTitle": "Agency Information",
+      "formCardH": 902,
+      "noHeaderCard": true,
+      "cols": 413,
+      "fields": [
+        {
+          "label": "Agency Name",
+          "placeholder": "Enter Business Name",
+          "type": "input"
+        },
+        {
+          "label": "Phone Number",
+          "placeholder": "Enter Phone Number",
+          "type": "input"
+        },
+        {
+          "label": "Commercial Registration Number",
+          "placeholder": "Enter Registration Number",
+          "type": "input"
+        },
+        {
+          "label": "Website",
+          "placeholder": "www.example.com",
+          "type": "input"
+        },
+        {
+          "label": "City",
+          "placeholder": "Select City",
+          "type": "select"
+        },
+        {
+          "label": "National Short Address",
+          "placeholder": "Enter National Short Address",
+          "type": "input",
+          "span": true
+        },
+        {
+          "label": "Address",
+          "placeholder": "Enter Business Address",
+          "type": "input",
+          "span": true,
+          "mid": true,
+          "h": 118
+        },
+        {
+          "label": "Agency Logo",
+          "placeholder": "Browse and Upload",
+          "type": "upload",
+          "span": true,
+          "upload": true,
+          "h": 85
+        }
+      ]
+    },
+    {
+      "slug": "user-settings-change-password",
+      "route": "user-settings-change-password",
+      "title": "Change Password",
+      "formTitle": "Change Password",
+      "formCardH": 416,
+      "noHeaderCard": true,
+      "fields": [
+        {
+          "label": "Enter Old Password",
+          "placeholder": "Enter Old Password",
+          "type": "password",
+          "span": true
+        },
+        {
+          "label": "Enter New Password",
+          "placeholder": "Enter New Password",
+          "type": "password",
+          "span": true
+        },
+        {
+          "label": "Confirm Password",
+          "placeholder": "Confirm Password",
+          "type": "password",
+          "span": true
         }
       ]
     }

@@ -10,7 +10,7 @@
  *
  *   node scripts/bundle.mjs
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -19,9 +19,16 @@ const css = readFileSync(join(D, 'profolio.css'), 'utf8');
 const fonts = readFileSync(join(D, 'fonts.css'), 'utf8');
 const proto = readFileSync(join(D, 'prototype.js'), 'utf8');
 
-for (const [src, out] of [['dashboard.html', 'dashboard.bundled.html'],
-                          ['listings.html', 'listings.bundled.html'],
-                          ['components.html', 'components.bundled.html']]) {
+/* EVERY page in deliverables/, not a hand-kept three. Three settings pages
+   shipped unbundled the day they were generated because this list did not
+   know about them — the same failure mode as check.mjs's page list. */
+const PAGES = readdirSync(D)
+  .filter((f) => f.endsWith('.html'))
+  .filter((f) => !/bundled|not-built|inline-art|qa-|\.qa\.|profolio-ksa/.test(f))
+  .sort()
+  .map((f) => [f, f.replace(/\.html$/, '.bundled.html')]);
+
+for (const [src, out] of PAGES) {
   const html = readFileSync(join(D, src), 'utf8');
   const link = '<link rel="stylesheet" href="profolio.css">';
   const fontLink = '<link rel="stylesheet" href="fonts.css">';

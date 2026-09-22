@@ -672,6 +672,7 @@
   --sfield-control-h:44px;
   --sfield-gap:8px;                    /* label to control */
   --sfield-col:390px;
+  --sfield-col-wide:413px;             /* Agency Settings */
   --sfield-gutter:54px;
   --sfield-row-gap:24px;               /* 98 pitch less the 74 field */
   --sfield-tall:164px;                 /* a generate-content textarea */
@@ -2920,6 +2921,10 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 .pf-card-title{font-size:var(--fs-card-title);font-weight:var(--fw-600);margin:var(--sp-0) var(--sp-0) var(--sp-12)}
 /* two 390 columns with a 54 gutter and a 98 row pitch — a field is a 22 label
    over a 44 control with 8 between them */
+/* Agency Settings uses 413 columns where the profile form uses 390 — same
+   54 gutter, same 98 pitch, a wider card because it has no header card above
+   it. data/live/user-settings-agency-profile.capture.json */
+.pf-form-grid[data-cols="413"]{grid-template-columns:repeat(2,var(--sfield-col-wide))}
 .pf-form-grid{
   display:grid;
   grid-template-columns:repeat(2,var(--sfield-col));
@@ -2955,7 +2960,20 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
 /* a disabled field is filled, not just dimmed — rgba(0,0,0,.04), measured on
    the three read-only fields at the top of the profile form */
 .pf-sfield .pf-input > input:disabled{background:var(--input-disabled-bg);cursor:not-allowed}
+/* Change Password uses antd's Input.Password: the BORDER is on the affix
+   wrapper and the inner input has none — the opposite of the profile form,
+   where the input carries it. Two components, two answers. */
+.pf-sfield.password .pf-input{
+  border:var(--border-w) solid var(--input-border);
+  border-radius:var(--radius-control);
+  padding-inline:var(--sp-12);
+}
+.pf-sfield.password .pf-input > input{border:0;padding-inline:var(--sp-0)}
+/* a row whose measured height is not the 74 a label and a control come to */
+.pf-sfield[data-h="118"]{block-size:118px}
+.pf-sfield[data-h="85"]{block-size:85px}
 .pf-sfield.upload{block-size:var(--sfield-upload)}
+.pf-sfield.upload[data-h]{block-size:auto}
 .pf-upload{display:flex;align-items:center;gap:var(--sp-16)}
 .pf-upload-art{
   inline-size:var(--sfield-upload-art);block-size:var(--sfield-upload-art);
@@ -3888,7 +3906,7 @@ body[data-page-state="loading"] .pf-filter-actions .pf-btn[data-variant="primary
       <a class="pf-rail-item" href="not-built.html?screen=Agent%20Performance" title="Agent Performance"><svg class="i i-20"><use href="#pf-AgentPerformanceIcon"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Reports" title="Reports"><svg class="i i-20"><use href="#pf-SideMenuReports"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Agency%20Staff" title="Agency Staff"><svg class="i i-20"><use href="#pf-SideMenuAgency"/></svg></a>
-      <a class="pf-rail-item" href="not-built.html?screen=Settings" title="Settings"><svg class="i i-20"><use href="#pf-IoSettingsOutline"/></svg></a>
+      <a class="pf-rail-item" href="user-settings-user-profile.html" title="Settings"><svg class="i i-20"><use href="#pf-IoSettingsOutline"/></svg></a>
       <a class="pf-rail-item" href="not-built.html?screen=Credits%20%26%20Packages" title="Credits &amp; Packages"><svg class="i i-20"><use href="#pf-SideMenuPropShop"/></svg></a>
     </nav>
     <div class="pf-rail-bottom">

@@ -1,12 +1,12 @@
 {
-  "score": 93.2,
-  "checks": 148,
+  "score": 87.3,
+  "checks": 142,
   "disagreements": [
     {
       "id": "shell.content",
       "prop": "height",
-      "live": "1580.64px",
-      "ours": "1578.12px",
+      "live": "958.016px",
+      "ours": "890.125px",
       "w": 3
     },
     {
@@ -19,17 +19,24 @@
     {
       "id": "settings.main",
       "prop": "box.h",
-      "live": 1541,
-      "ours": 1538,
+      "live": 918,
+      "ours": 850,
       "w": 2
     },
     {
       "id": "settings.side",
       "prop": "height",
-      "live": "1540.64px",
-      "ours": "1538.12px",
+      "live": "918.016px",
+      "ours": "850.125px",
+      "w": 2
+    },
+    {
+      "id": "table.thumb",
+      "prop": "(region)",
+      "live": "present",
+      "ours": "MISSING",
       "w": 2
     }
   ],
-  "at": "2026-09-22T11:21:03.458Z"
+  "at": "2026-09-22T11:21:41.183Z"
 }

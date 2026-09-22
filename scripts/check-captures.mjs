@@ -53,6 +53,19 @@ const tally = (tree) => {
   return t;
 };
 
+/* A ROUTE THAT DOES NOT EXIST redirects, and the capture is of whatever it
+   landed on. /user-settings/bank-detail captured 309 nodes and a form
+   identical to user-profile's, because SHOW_BANK_DETAIL is false for this
+   tenant and the route falls through. A capture like that passes every content
+   check and describes the wrong screen, so: two routes whose trees are
+   identical are one route and a redirect. */
+const shapeOf = (tree) => {
+  const parts = [];
+  const walk = (n, d) => { if (d > 6) return; parts.push(n.tag + ':' + Math.round(n.box?.w || 0) + 'x' + Math.round(n.box?.h || 0)); (n.children || []).forEach((k) => walk(k, d + 1)); };
+  walk(tree, 0);
+  return parts.join('|');
+};
+
 const routes = [...new Set(readdirSync(LIVE)
   .filter((f) => /\.capture\.json$/.test(f))
   .map((f) => f.replace(/\.capture\.json$/, ''))
@@ -60,22 +73,28 @@ const routes = [...new Set(readdirSync(LIVE)
 
 console.log('\n  route                          nodes  rows fields cards  verdict');
 const empty = [];
+const dupes = [];
+const shapes = new Map();
 for (const r of routes) {
   const cap = JSON.parse(readFileSync(join(LIVE, `${r}.capture.json`), 'utf8'));
   const t = tally(cap.tree);
   /* a page has content when it renders DATA (rows, a chart) or a FORM, or when
      it deliberately renders an empty state — the product's own "no records"
      card is content, and a page that shows it is buildable */
+  const shape = shapeOf(cap.tree);
+  const twin = shapes.get(shape);
+  if (twin) dupes.push([r, twin]); else shapes.set(shape, r);
   const has = t.rows > 0 || t.fields >= 3 || t.charts > 0 || t.empty > 0;
-  const verdict = has ? 'buildable'
+  const verdict = twin ? `REDIRECT — identical to ${twin}` : has ? 'buildable'
     : cap.nodes < SHELL_ONLY ? 'EMPTY — shell only, needs fixtures'
       : 'EMPTY — chrome but no content, needs fixtures';
-  if (!has) empty.push(r);
+  if (!has && !twin) empty.push(r);
   console.log('  ' + r.padEnd(30) + String(cap.nodes).padStart(5)
     + String(t.rows).padStart(6) + String(t.fields).padStart(7) + String(t.cards).padStart(6)
     + '  ' + verdict);
 }
 
-console.log(`\n  ${routes.length - empty.length} buildable · ${empty.length} need fixtures first\n`);
+console.log(`\n  ${routes.length - empty.length - dupes.length} buildable · ${empty.length} need fixtures · ${dupes.length} redirect elsewhere\n`);
+for (const [a, b] of dupes) console.log(`  ${a} is ${b} under another name — the route does not exist for this tenant`);
 if (empty.length) console.log('  ' + empty.join('\n  ') + '\n');
-if (strict && empty.length) process.exit(1);
+if (strict && (empty.length || dupes.length)) process.exit(1);

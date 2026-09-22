@@ -80,7 +80,10 @@ const headerCard = (p) => `        <section class="pf-card pf-settings-head">
 /* a field is a 22-tall label over a 44-tall control; `span` makes it 835 */
 const field = (f, i) => {
   const id = `f-${i}`;
-  const cls = ['pf-sfield', f.span ? 'span-all' : '', f.tall ? 'tall' : '', f.upload ? 'upload' : ''].filter(Boolean).join(' ');
+  const cls = ['pf-sfield', f.span ? 'span-all' : '', f.tall ? 'tall' : '', f.upload ? 'upload' : '', f.type === 'password' ? 'password' : ''].filter(Boolean).join(' ');
+  /* a measured row height, where the product's differs from the 74 a label and
+     a control come to — Agency Settings has a 118 and an 85 */
+  const h = f.h ? ` style-h="${f.h}"` : '';
   const control = f.type === 'upload'
     /* the form's last row, 133 tall — an image-select (profileFields.js
        `profile_image`), not another input */
@@ -90,7 +93,7 @@ const field = (f, i) => {
     : f.type === 'textarea'
       ? `<textarea class="pf-textarea" id="${id}" placeholder="${esc(f.placeholder)}"></textarea>`
       : `<span class="pf-input"><input id="${id}" type="text" placeholder="${esc(f.placeholder)}"${f.disabled ? ' disabled' : ''}><span class="pf-input-suffix"></span></span>`;
-  return `            <div class="${cls}">
+  return `            <div class="${cls}"${f.h ? ` data-h="${f.h}"` : ''}>
               <label class="pf-field-label" for="${id}">${esc(f.label)}</label>
               ${control}
             </div>`;
@@ -118,10 +121,11 @@ ${navCard(p.title)}
 ${completionCard}
         </div>
         <div class="pf-settings-main">
-${headerCard(p)}
+${/* only the profile page carries a 997x152 header card; Agency Settings and
+      Change Password go straight to their form card */ p.noHeaderCard ? '' : headerCard(p) + '\n'}
           <section class="pf-card pf-settings-form">
             <h5 class="pf-card-title">${esc(p.formTitle)}</h5>
-            <form class="pf-form-grid">
+            <form class="pf-form-grid"${p.cols ? ` data-cols="${p.cols}"` : ''}>
 ${p.fields.map(field).join('\n')}
             </form>
             <div class="pf-form-actions">
